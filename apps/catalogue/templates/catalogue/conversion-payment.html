@@ -1,0 +1,58 @@
+{% extends 'catalogue/base.html' %}
+
+{% block content %}
+<section class="section conversion-payment">
+    <div class="container container--narrow">
+        <div class="cta-box conversion-payment__box">
+            <h1 class="cta-box__title">Paiement - Conversion audio</h1>
+            <p class="cta-box__text">
+                Votre demande a été enregistrée. Finalisez le paiement pour recevoir l’audio par e‑mail en moins de 24 heures.
+            </p>
+            {% if widget_code %}
+                <div class="conversion-payment__widget">
+                    {{ widget_code|safe }}
+                </div>
+            {% elif payment_url %}
+                <a class="btn btn--white btn--large conversion-payment__cta" href="{{ payment_url }}" target="_blank" rel="noopener">
+                    Acheter maintenant
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function() {
+        var script = document.createElement('script');
+        script.src = 'https://js.chariow.com/v1/widget.min.js';
+        script.async = true;
+        document.head.appendChild(script);
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://js.chariow.com/v1/widget.min.css';
+        document.head.appendChild(link);
+
+        function tryOpenWidget() {
+            var root = document.getElementById('chariow-widget');
+            if (!root) return false;
+            var btn = root.querySelector('button, a, [role="button"]');
+            if (btn) {
+                btn.click();
+                return true;
+            }
+            return false;
+        }
+
+        var attempts = 0;
+        var timer = setInterval(function() {
+            attempts += 1;
+            if (tryOpenWidget() || attempts > 20) {
+                clearInterval(timer);
+            }
+        }, 500);
+    })();
+</script>
+{% endblock %}

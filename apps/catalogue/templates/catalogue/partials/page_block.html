@@ -1,0 +1,425 @@
+{% load static %}
+
+{% if block.block_type == "rich_text" %}
+<section class="page-block page-block--text {{ block.css_class }}">
+    <div class="container container--narrow">
+        {% if block.titre %}<h2 class="section__title">{{ block.titre }}</h2>{% endif %}
+        {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
+        {% if block.contenu %}{{ block.contenu|safe }}{% endif %}
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "image" %}
+<section class="page-block page-block--image {{ block.css_class }}">
+    <div class="container">
+        {% if block.titre %}<h2 class="section__title">{{ block.titre }}</h2>{% endif %}
+        {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
+        {% if block.image %}
+        <img src="{{ block.image.url }}" alt="{{ block.titre|default:'Image' }}" class="page-block__image">
+        {% endif %}
+        {% if block.contenu %}<div class="page-block__text">{{ block.contenu|safe }}</div>{% endif %}
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "cta" %}
+<section class="page-block page-block--cta {{ block.css_class }}">
+    <div class="container">
+        <div class="cta-box">
+            {% if block.titre %}<h2 class="cta-box__title">{{ block.titre }}</h2>{% endif %}
+            {% if block.contenu %}<div class="cta-box__text">{{ block.contenu|safe }}</div>{% endif %}
+            {% if block.bouton_texte and block.bouton_url %}
+            <a href="{{ block.bouton_url }}" class="btn btn--primary btn--large">{{ block.bouton_texte }}</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "grid" %}
+<section class="page-block page-block--grid {{ block.css_class }}">
+    <div class="container">
+        {% if block.titre %}<h2 class="section__title">{{ block.titre }}</h2>{% endif %}
+        {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
+        <div class="page-block__grid">
+            {% for item in block.items.all %}
+            {% if item.est_actif %}
+            <article class="page-block__card">
+                {% if item.icone %}<i class="{{ item.icone }}"></i>{% endif %}
+                {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.titre|default:'Image' }}">{% endif %}
+                {% if item.titre %}<h3>{{ item.titre }}</h3>{% endif %}
+                {% if item.sous_titre %}<p class="page-block__card-subtitle">{{ item.sous_titre }}</p>{% endif %}
+                {% if item.contenu %}<div class="page-block__card-text">{{ item.contenu|safe }}</div>{% endif %}
+                {% if item.lien_texte and item.lien_url %}
+                <a href="{{ item.lien_url }}" class="btn btn--secondary">{{ item.lien_texte }}</a>
+                {% endif %}
+            </article>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "carousel" %}
+<section class="page-block page-block--carousel {{ block.css_class }}">
+    <div class="container">
+        {% if block.titre %}<h2 class="section__title">{{ block.titre }}</h2>{% endif %}
+        {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
+        <div class="page-block__carousel">
+            {% for item in block.items.all %}
+            {% if item.est_actif %}
+            <article class="page-block__slide">
+                {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.titre|default:'Slide' }}">{% endif %}
+                {% if item.titre %}<h3>{{ item.titre }}</h3>{% endif %}
+                {% if item.contenu %}<div class="page-block__card-text">{{ item.contenu|safe }}</div>{% endif %}
+            </article>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "stats" %}
+<section class="about-section {{ block.css_class }}">
+    <div class="container container--narrow">
+        {% if block.titre %}<h2>{{ block.titre }}</h2>{% else %}<h2>Quelques chiffres</h2>{% endif %}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">{{ livres_count }}</span>
+                <span class="stat-label">Livres publiés</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">{{ auteurs_count }}</span>
+                <span class="stat-label">Auteurs</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">{{ annees_experience }}</span>
+                <span class="stat-label">Années d'expérience</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">{{ pays_count }}</span>
+                <span class="stat-label">Pays couverts</span>
+            </div>
+            {% if prix_litteraires_count and prix_litteraires_count > 0 %}
+            <div class="stat-card">
+                <span class="stat-number">{{ prix_litteraires_count }}</span>
+                <span class="stat-label">Prix littéraires</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "team" %}
+<section class="team section {{ block.css_class }}" id="equipe">
+    <div class="container">
+        <h2 class="section__title">{{ block.titre|default:"Equipe" }}</h2>
+        {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
+        
+        <div class="team-grid auteurs-list">
+            {% for membre in membres %}
+            <div class="author-card team-member">
+                <div class="author-card__photo team-member__photo">
+                    {% if membre.photo %}
+                    <img src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}">
+                    {% endif %}
+                </div>
+                <div class="author-card__info team-member__info">
+                    <h3 class="author-card__name team-member__name">{{ membre.nom_complet }}</h3>
+                    <p class="author-card__specialty team-member__role">{{ membre.poste }}</p>
+                    {% if membre.nationalites.all %}
+                    <div class="author-card__nationality">
+                        {% for nat in membre.nationalites.all %}
+                        <span class="nationality">
+                            {% if nat.drapeau %}<img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">{% endif %}
+                            {{ nat.nom }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if membre.biographie %}
+                    <p class="author-card__bio team-member__bio">{{ membre.biographie|truncatewords:30 }}</p>
+                    {% endif %}
+                    {% if membre.email %}
+                    <a href="mailto:{{ membre.email }}" class="team-member__email">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "contact_form" %}
+<section class="contact section {{ block.css_class }}">
+    <div class="container">
+        <div class="contact__form-wrapper">
+            <h2>{{ block.titre|default:"Envoyez-nous un message" }}</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                <div class="form-feedback form-feedback--{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="POST" action="{% url 'catalogue:contact' %}" class="contact__form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_nom">{{ form.nom.label }} *</label>
+                    {{ form.nom }}
+                    {% if form.nom.errors %}
+                        <span class="form-error">{{ form.nom.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_email">{{ form.email.label }} *</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <span class="form-error">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_telephone">{{ form.telephone.label }}</label>
+                    {{ form.telephone }}
+                    {% if form.telephone.errors %}
+                        <span class="form-error">{{ form.telephone.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_sujet">{{ form.sujet.label }} *</label>
+                    {{ form.sujet }}
+                    {% if form.sujet.errors %}
+                        <span class="form-error">{{ form.sujet.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_message">{{ form.message.label }} *</label>
+                    {{ form.message }}
+                    {% if form.message.errors %}
+                        <span class="form-error">{{ form.message.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <button type="submit" class="btn btn--primary">Envoyer le message</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "home_carousel" %}
+<section class="hero {{ block.css_class }}">
+    <div class="hero__carousel">
+        {% for livre in livres_carousel %}
+        <div class="hero__slide {% if forloop.first %}active{% endif %}">
+            <div class="container">
+                <div class="hero__image">
+                    <div class="hero__visual">
+                        {% with auteur_principal=livre.auteurs.first %}
+                        {% if auteur_principal and auteur_principal.photo %}
+                        <img class="hero__author-photo" src="{{ auteur_principal.photo.url }}" alt="Photo de {{ auteur_principal.nom }}">
+                        {% endif %}
+                        {% endwith %}
+                        {% if livre.image_par_defaut %}
+                        <img class="hero__book-cover" src="{{ livre.image_par_defaut.url }}" alt="Couverture de {{ livre.titre }}">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="hero__content">
+                    <h1 class="hero__title">{{ livre.titre }}</h1>
+                    <p class="hero__author">{{ livre.auteurs_noms }}</p>
+                    <p class="hero__tagline">{{ livre.resume|truncatewords:30 }}</p>
+                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Découvrir</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="hero__controls">
+        <button id="hero-prev" class="hero__control-btn" aria-label="Précédent">&lt;</button>
+        <button id="hero-next" class="hero__control-btn" aria-label="Suivant">&gt;</button>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "home_nouveautes" %}
+<section class="new-releases section {{ block.css_class }}">
+    <div class="container">
+        <h2 class="section__title">{{ block.titre|default:"Nouveautés" }}</h2>
+        {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
+        <div class="tabs">
+            <button class="tabs__btn active" data-category="toutes" aria-pressed="true">Toutes</button>
+            <button class="tabs__btn" data-category="roman" aria-pressed="false">Romans</button>
+            <button class="tabs__btn" data-category="poemes" aria-pressed="false">Poèmes</button>
+            <button class="tabs__btn" data-category="essai" aria-pressed="false">Essais</button>
+            <button class="tabs__btn" data-category="policiers" aria-pressed="false">Polars/Thrillers</button>
+            <button class="tabs__btn" data-category="bd" aria-pressed="false">BD</button>
+            <button class="tabs__btn" data-category="theatres" aria-pressed="false">Théâtres</button>
+            <button class="tabs__btn" data-category="nouvelles" aria-pressed="false">Nouvelles</button>
+        </div>
+        <div class="book-grid">
+            {% for livre in nouveautes %}
+            <div class="book-card" data-category="{{ livre.categorie }}">
+                <div class="book-card__cover">
+                    {% if livre.image_par_defaut %}
+                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                    {% endif %}
+                    <div class="book-card__overlay">
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
+                    </div>
+                </div>
+                <div class="book-card__info">
+                    <h3 class="book-card__title">{{ livre.titre }}</h3>
+                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    {% if livre.meta_description %}
+                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "home_bestsellers" %}
+<section class="bestsellers section bg-light {{ block.css_class }}">
+    <div class="container">
+        <h2 class="section__title">{{ block.titre|default:"Meilleures Ventes" }}</h2>
+        {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
+        <div class="bestsellers__carousel book-grid">
+            {% for livre in bestsellers %}
+            <div class="book-card">
+                <div class="book-card__cover">
+                    <div class="bestsellers__rank">#{{ forloop.counter }}</div>
+                    {% if livre.image_par_defaut %}
+                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                    {% endif %}
+                    <div class="book-card__overlay">
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
+                    </div>
+                </div>
+                <div class="book-card__info">
+                    <h3 class="book-card__title">{{ livre.titre }}</h3>
+                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    {% if livre.meta_description %}
+                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "home_parutions" %}
+<section class="upcoming-releases section bg-light {{ block.css_class }}">
+    <div class="container">
+        <h2 class="section__title">{{ block.titre|default:"Prochaines Parutions" }}</h2>
+        <p class="section__subtitle">{{ block.sous_titre|default:"Découvrez les livres qui paraîtront bientôt" }}</p>
+        <div class="book-grid">
+            {% for livre in prochaines_parutions %}
+            <div class="book-card upcoming-book">
+                <div class="book-card__cover">
+                    {% if livre.image_par_defaut %}
+                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                    {% endif %}
+                    <div class="upcoming-badge">
+                        <i class="fas fa-calendar-alt"></i>
+                        {{ livre.parution|date:"d/m/Y" }}
+                    </div>
+                    <div class="book-card__overlay">
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Découvrir</a>
+                    </div>
+                </div>
+                <div class="book-card__info">
+                    <h3 class="book-card__title">{{ livre.titre }}</h3>
+                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    {% if livre.meta_description %}
+                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                    {% endif %}
+                    <p class="book-card__date">Parution : {{ livre.parution|date:"F Y" }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-content">Aucune prochaine parution pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "home_actualites" %}
+<section class="news-ticker section {{ block.css_class }}">
+    <div class="container">
+        <div class="news-ticker__header">
+            <h2 class="section__title">{{ block.titre|default:"Suivez l’actualité" }}</h2>
+            <div class="news-ticker__controls">
+                <button class="news-ticker__btn" type="button" data-news-action="prev" aria-label="Actualité précédente">&lt;</button>
+                <button class="news-ticker__btn" type="button" data-news-action="next" aria-label="Actualité suivante">&gt;</button>
+            </div>
+        </div>
+        <div class="news-ticker__viewport" data-news-ticker>
+            <div class="news-ticker__track">
+                {% for actualite in actualites_ticker %}
+                <article class="news-ticker__item">
+                    <a href="{% url 'catalogue:actualite-detail' actualite.slug %}">
+                        {% if actualite.image %}
+                        <div class="news-ticker__media">
+                            <img src="{{ actualite.image.url }}" alt="{{ actualite.titre }}" loading="lazy">
+                        </div>
+                        {% endif %}
+                        <span class="news-ticker__date">{{ actualite.date_publication|date:"d/m/Y" }}</span>
+                        <h3 class="news-ticker__title">{{ actualite.titre|safe }}</h3>
+                        <p class="news-ticker__excerpt">{{ actualite.extrait|striptags|truncatewords:18|safe }}</p>
+                    </a>
+                </article>
+                {% empty %}
+                <p class="no-content">Aucune actualité pour le moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if block.block_type == "home_newsletter" %}
+<section class="newsletter section {{ block.css_class }}" id="newsletter">
+    <div class="container">
+        <h2 class="section__title">{{ block.titre|default:"Restez informé de nos nouveautés" }}</h2>
+        {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="form-feedback form-feedback--{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        <form method="POST" action="" class="newsletter__form">
+            {% csrf_token %}
+            {{ form.email }}
+            {% if form.email.errors %}
+                <span class="form-error" style="color: #ff6b6b; margin-top: 0.5rem; display: block;">
+                    {{ form.email.errors.0 }}
+                </span>
+            {% endif %}
+            <button type="submit" class="btn btn--primary">S'abonner</button>
+        </form>
+    </div>
+</section>
+{% endif %}

@@ -1,0 +1,107 @@
+{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="container">
+        <h1 class="page-hero__title">{{ page.hero_title|default:"Mentions légales et conditions d'utilisation" }}</h1>
+        <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Informations légales, confidentialité et cookies" }}</p>
+    </div>
+</section>
+
+<section class="legal section">
+    <div class="container container--narrow">
+        {% if page_blocks %}
+            {% include "catalogue/partials/page_blocks.html" %}
+        {% elif page and page.body %}
+            {{ page.body|safe }}
+        {% else %}
+        <h2>INFORMATIONS LÉGALES</h2>
+
+        <h3>Société éditrice du site</h3>
+        <p>
+            Le présent site est édité par Editions Recréation, entreprise individuelle immatriculée au registre du commerce et du crédit mobilier
+            sous le numéro RCCM RB/ABC/19A 14932.
+        </p>
+        <p>Identifiant fiscal unique (IFU) : 0201910900947</p>
+        <p>Siège social : Abomey-Calavi, République du Bénin</p>
+        <p>Téléphone : (+229) 01 62 16 01 55 / (+229) 01 68 80 97 77</p>
+        <p>Adresse e-mail : <a href="mailto:contactedrecreation@gmail.com">contactedrecreation@gmail.com</a></p>
+        <p>Directeur de la publication : Marius CODJO BLIGUI</p>
+
+        <h3>Hébergement du site</h3>
+        <p>Les informations relatives à l’hébergement du site seront précisées ultérieurement.</p>
+
+        <h2>CONDITIONS D’UTILISATION</h2>
+        <h3>Préambule</h3>
+        <p>Les présentes conditions d’utilisation s’appliquent à toute personne accédant au site des Editions Recréation.</p>
+        <p>Est défini comme utilisateur toute personne accédant au site.</p>
+        <p>
+            En consultant le site, l’utilisateur reconnaît avoir pris connaissance des présentes mentions légales et conditions d’utilisation,
+            les avoir comprises et acceptées.
+        </p>
+        <p>
+            Les Editions Recréation se réservent le droit de modifier ou de mettre à jour ces conditions à tout moment, sans préavis.
+        </p>
+
+        <h2>Politique de confidentialité</h2>
+        <p>Les informations éventuellement recueillies sur le site sont destinées exclusivement aux Editions Recréation.</p>
+        <p>Ces données ne seront ni vendues, ni cédées à des tiers sans le consentement préalable des utilisateurs.</p>
+        <p>Les utilisateurs peuvent demander à tout moment :</p>
+        <ul class="legal-list">
+            <li>l’accès à leurs données</li>
+            <li>leur rectification</li>
+            <li>leur suppression</li>
+        </ul>
+        <p>Pour exercer ce droit, il suffit de contacter :</p>
+        <p>
+            Editions Recréation<br>
+            Abomey-Calavi – Bénin<br>
+            Email : <a href="mailto:contactedrecreation@gmail.com">contactedrecreation@gmail.com</a>
+        </p>
+
+        <h2>Cookies</h2>
+        <p>Le site peut utiliser des cookies afin d’améliorer l’expérience de navigation et d’analyser l’utilisation du site.</p>
+        <p>
+            L’utilisateur peut configurer son navigateur afin de refuser les cookies ou d’être informé de leur utilisation.
+        </p>
+
+        <h2>Propriété intellectuelle</h2>
+        <p>
+            L’ensemble des contenus présents sur le site (textes, images, illustrations, logos, éléments graphiques, etc.) est protégé
+            par les lois relatives à la propriété intellectuelle.
+        </p>
+        <p>
+            Toute reproduction, diffusion, modification ou exploitation de ces contenus, même partielle, sans autorisation préalable des Editions
+            Recréation, est strictement interdite.
+        </p>
+
+        <h2>Liens hypertextes</h2>
+        <p>Le site peut contenir des liens vers d’autres sites internet.</p>
+        <p>Les Editions Recréation ne peuvent être tenues responsables du contenu de ces sites externes.</p>
+        <p>
+            Toute création de lien vers le présent site doit faire l’objet d’une autorisation préalable des Editions Recréation.
+        </p>
+
+        <h2>Responsabilité</h2>
+        <p>Les Editions Recréation s’efforcent de fournir des informations aussi précises que possible sur le site.</p>
+        <p>
+            Toutefois, elles ne sauraient garantir l’exactitude, l’exhaustivité ou l’actualité des informations diffusées.
+        </p>
+        <p>
+            L’utilisateur reconnaît utiliser les informations disponibles sur le site sous sa responsabilité exclusive.
+        </p>
+        <p>
+            Les Editions Recréation ne pourront être tenues responsables des dommages directs ou indirects pouvant résulter de l’accès ou de
+            l’utilisation du site.
+        </p>
+
+        <h2>Droit applicable</h2>
+        <p>Les présentes mentions légales sont régies par le droit béninois.</p>
+        <p>Tout litige relatif à l’utilisation du site relève de la compétence des juridictions de la République du Bénin.</p>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

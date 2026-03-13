@@ -1,0 +1,64 @@
+{% extends "catalogue/base.html" %}
+{% block content %}
+<section class="section">
+    <div class="container container--narrow">
+        <h1 class="section-title">Créer un compte</h1>
+        <p class="section-subtitle">Identifiez-vous pour continuer à utiliser le service.</p>
+        <div class="contact__form-wrapper">
+            <form method="post" class="contact__form">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="form-error">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    <label for="id_email">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<span class="form-error">{{ form.email.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_first_name">Prénom</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}<span class="form-error">{{ form.first_name.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_last_name">Nom</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}<span class="form-error">{{ form.last_name.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_phone">Téléphone</label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}<span class="form-error">{{ form.phone.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_username">Nom d’utilisateur</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}<span class="form-error">{{ form.username.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_password1">Mot de passe</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}<span class="form-error">{{ form.password1.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_password2">Confirmer le mot de passe</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}<span class="form-error">{{ form.password2.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label>
+                        {{ form.newsletter_opt_in }} S’inscrire à la newsletter
+                    </label>
+                    {% if form.newsletter_opt_in.errors %}<span class="form-error">{{ form.newsletter_opt_in.errors.0 }}</span>{% endif %}
+                </div>
+                <button type="submit" class="btn btn--primary btn--large">Créer le compte</button>
+            </form>
+            <p style="margin-top: 0.8rem; text-align:center;">
+                Déjà un compte ? <a href="{% url 'catalogue:login' %}">Se connecter</a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

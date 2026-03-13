@@ -1,0 +1,57 @@
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="auteur-detail section">
+    <div class="container">
+        <div class="auteur-detail__header">
+            <div class="auteur-detail__photo">
+                <img src="{{ auteur.photo.url }}" alt="{{ auteur.nom }}">
+            </div>
+            <div class="auteur-detail__info">
+                <h1>{{ auteur.nom }}</h1>
+                <p class="auteur-detail__specialty">{{ auteur.specialite }}</p>
+                {% if auteur.nationalites.all %}
+                <div class="auteur-detail__nationality">
+                    {% for nat in auteur.nationalites.all %}
+                    <span class="badge badge--nationality">{{ nat.nom }}</span>{% if not forloop.last %} - {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="auteur-detail__bio">
+                    <h2>Biographie</h2>
+                    <div class="auteur-detail__bio-text">{{ auteur.biographie_html|safe }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bibliographie -->
+        <div class="auteur-detail__books">
+            <h2>Bibliographie ({{ nombre_livres }} livre{{ nombre_livres|pluralize }})</h2>
+            <div class="book-grid">
+                {% for livre in livres %}
+                <div class="book-card">
+                    <div class="book-card__cover">
+                        {% if livre.image_par_defaut %}
+                        <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                        {% endif %}
+                        <div class="book-card__overlay">
+                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
+                        </div>
+                    </div>
+                    <div class="book-card__info">
+                        <h3 class="book-card__title">{{ livre.titre }}</h3>
+                        <p class="book-card__date">{{ livre.parution|date:"Y" }}</p>
+                        {% if livre.meta_description %}
+                        <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

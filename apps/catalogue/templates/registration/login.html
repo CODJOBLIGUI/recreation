@@ -1,0 +1,30 @@
+{% extends "catalogue/base.html" %}
+{% block content %}
+<section class="section">
+    <div class="container container--narrow">
+        <h1 class="section-title">Connexion</h1>
+        <p class="section-subtitle">Inscrivez-vous ou connectez-vous pour utiliser ce service.</p>
+        <div class="contact__form-wrapper">
+            <form method="post" class="contact__form">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="form-group">
+                    <label for="id_username">Nom d’utilisateur</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label for="id_password">Mot de passe</label>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn--primary btn--large">Se connecter</button>
+            </form>
+            <p style="margin-top: 0.8rem; text-align:center;">
+                Pas de compte ? <a href="{% url 'catalogue:signup' %}">Créer un compte</a>
+            </p>
+            <p style="margin-top: 0.4rem; text-align:center;">
+                <a href="{% url 'catalogue:password_reset' %}">Mot de passe oublié ?</a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

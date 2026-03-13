@@ -1,0 +1,127 @@
+{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="container">
+        <h1 class="page-hero__title">Soumettre votre manuscrit</h1>
+        <p class="page-hero__subtitle">Partagez votre projet avec Editions Recréation</p>
+    </div>
+</section>
+
+<section class="manuscrit section">
+    <div class="container container--narrow">
+        <div class="manuscrit__intro">
+            <p>
+                Remplissez le formulaire ci-dessous pour nous proposer votre ouvrage. Les champs marqués * sont obligatoires.
+            </p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="form-feedback form-feedback--{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="{% url 'catalogue:soumission-manuscrit' %}" enctype="multipart/form-data" class="manuscrit__form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_nom_complet">{{ form.nom_complet.label }} *</label>
+                {{ form.nom_complet }}
+                {% if form.nom_complet.errors %}<span class="form-error">{{ form.nom_complet.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_nom_auteur">{{ form.nom_auteur.label }} *</label>
+                {{ form.nom_auteur }}
+                {% if form.nom_auteur.errors %}<span class="form-error">{{ form.nom_auteur.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_whatsapp">{{ form.whatsapp.label }} *</label>
+                {{ form.whatsapp }}
+                {% if form.whatsapp.errors %}<span class="form-error">{{ form.whatsapp.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_autre_numero">{{ form.autre_numero.label }}</label>
+                {{ form.autre_numero }}
+                {% if form.autre_numero.errors %}<span class="form-error">{{ form.autre_numero.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_nationalite">{{ form.nationalite.label }} *</label>
+                {{ form.nationalite }}
+                {% if form.nationalite.errors %}<span class="form-error">{{ form.nationalite.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_pays_residence">{{ form.pays_residence.label }} *</label>
+                {{ form.pays_residence }}
+                {% if form.pays_residence.errors %}<span class="form-error">{{ form.pays_residence.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_titre_ouvrage">{{ form.titre_ouvrage.label }} *</label>
+                {{ form.titre_ouvrage }}
+                {% if form.titre_ouvrage.errors %}<span class="form-error">{{ form.titre_ouvrage.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_genre_litteraire">{{ form.genre_litteraire.label }} *</label>
+                {{ form.genre_litteraire }}
+                {% if form.genre_litteraire.errors %}<span class="form-error">{{ form.genre_litteraire.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_type_contrat">{{ form.type_contrat.label }} *</label>
+                {{ form.type_contrat }}
+                {% if form.type_contrat.errors %}<span class="form-error">{{ form.type_contrat.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_synopsis">{{ form.synopsis.label }} *</label>
+                {{ form.synopsis }}
+                {% if form.synopsis.errors %}<span class="form-error">{{ form.synopsis.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_avantages">{{ form.avantages.label }} *</label>
+                {{ form.avantages }}
+                {% if form.avantages.errors %}<span class="form-error">{{ form.avantages.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_inconvenients">{{ form.inconvenients.label }} *</label>
+                {{ form.inconvenients }}
+                {% if form.inconvenients.errors %}<span class="form-error">{{ form.inconvenients.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_fichier_ouvrage">{{ form.fichier_ouvrage.label }} *</label>
+                {{ form.fichier_ouvrage }}
+                {% if form.fichier_ouvrage.errors %}<span class="form-error">{{ form.fichier_ouvrage.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_photo_auteur">{{ form.photo_auteur.label }} *</label>
+                {{ form.photo_auteur }}
+                {% if form.photo_auteur.errors %}<span class="form-error">{{ form.photo_auteur.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_carte_identite">{{ form.carte_identite.label }} *</label>
+                {{ form.carte_identite }}
+                {% if form.carte_identite.errors %}<span class="form-error">{{ form.carte_identite.errors.0 }}</span>{% endif %}
+            </div>
+
+            <button type="submit" class="btn btn--primary">Soumettre le manuscrit</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

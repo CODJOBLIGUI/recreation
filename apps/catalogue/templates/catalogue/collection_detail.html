@@ -1,0 +1,86 @@
+{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-header">
+    <div class="container">
+        <h1>{{ collection.nom }}</h1>
+        {% if collection.description %}
+        <p>{{ collection.description|striptags }}</p>
+        {% else %}
+        <p>Découvrez les livres de cette collection.</p>
+        {% endif %}
+    </div>
+</section>
+
+{% if collection.image %}
+<section class="section">
+    <div class="container">
+        <img src="{{ collection.image.url }}" alt="{{ collection.nom }}" class="collection-hero-image">
+    </div>
+</section>
+{% endif %}
+
+<section class="catalogue-grid section">
+    <div class="container">
+        <div class="book-grid">
+            {% for livre in livres %}
+            <div class="book-card">
+                <div class="book-card__cover">
+                    {% if livre.image_par_defaut %}
+                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                    {% endif %}
+                    <div class="book-card__overlay">
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Voir détails</a>
+                    </div>
+                </div>
+                <div class="book-card__info">
+                    <span class="book-card__category">{{ livre.get_categorie_display }}</span>
+                    <h3 class="book-card__title">{{ livre.titre }}</h3>
+                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    {% if livre.meta_description %}
+                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:18 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-results">Aucun livre publié dans cette collection.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% if auteurs_collection %}
+<section class="section">
+    <div class="container">
+        <h2>Auteurs de la collection</h2>
+        <div class="auteurs-list">
+            {% for auteur in auteurs_collection %}
+            <div class="author-card">
+                <div class="author-card__photo">
+                    <img src="{{ auteur.photo.url }}" alt="{{ auteur.nom }}">
+                </div>
+                <div class="author-card__info">
+                    <h3 class="author-card__name">{{ auteur.nom }}</h3>
+                    {% if auteur.nationalites.all %}
+                    <div class="author-card__nationality">
+                        {% for nat in auteur.nationalites.all %}
+                        <span class="nationality">
+                            {% if nat.drapeau %}<img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">{% endif %}
+                            {{ nat.nom }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <p class="author-card__bio">{{ auteur.biographie_texte|truncatewords:30 }}</p>
+                    <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">Voir la bibliographie</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

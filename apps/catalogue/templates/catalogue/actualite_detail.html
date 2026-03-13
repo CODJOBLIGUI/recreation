@@ -1,0 +1,61 @@
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<article class="actualite-detail section">
+    <div class="container container--narrow">
+        <!-- En-tête -->
+        <header class="actualite-detail__header">
+            <span class="actualite-detail__date">{{ actualite.date_publication|date:"d F Y" }}</span>
+            <h1 class="actualite-detail__title">{{ actualite.titre }}</h1>
+        </header>
+        
+        <!-- Image principale -->
+        {% if actualite.image %}
+        <div class="actualite-detail__image">
+            <img src="{{ actualite.image.url }}" alt="{{ actualite.titre }}">
+        </div>
+        {% endif %}
+        
+        <!-- Contenu -->
+        <div class="actualite-detail__content">
+            {{ actualite.contenu|safe }}
+        </div>
+        
+        <!-- Retour -->
+        <div class="actualite-detail__back">
+            <a href="{% url 'catalogue:actualites' %}" class="btn btn--secondary">
+                <i class="fas fa-arrow-left"></i> Retour aux actualités
+            </a>
+        </div>
+    </div>
+    
+    <!-- Actualités suggérées -->
+    {% if actualites_suggeres %}
+    <div class="actualites-suggeres section bg-light">
+        <div class="container">
+            <h2 class="section__title">Autres actualités</h2>
+            <div class="actualites-grid">
+                {% for actu in actualites_suggeres %}
+                <article class="news-card">
+                    <div class="news-card__image">
+                        {% if actu.image %}
+                        <img src="{{ actu.image.url }}" alt="{{ actu.titre }}">
+                        {% endif %}
+                    </div>
+                    <div class="news-card__content">
+                        <span class="news-card__date">{{ actu.date_publication|date:"d F Y" }}</span>
+                        <h3 class="news-card__title">{{ actu.titre }}</h3>
+                        <p class="news-card__excerpt">{{ actu.extrait|striptags|truncatewords:20|safe }}</p>
+                        <a href="{% url 'catalogue:actualite-detail' actu.slug %}" class="btn btn--secondary">Lire la suite</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</article>
+
+{% endblock %}

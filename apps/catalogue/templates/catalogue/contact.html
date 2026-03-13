@@ -1,0 +1,133 @@
+﻿
+{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="contact section">
+    <div class="container">
+        <div class="contact__grid">
+            <!-- Informations de contact -->
+            <div class="contact__info">
+                {% if page_blocks %}
+                    {% include "catalogue/partials/page_blocks.html" %}
+                {% elif page and page.body %}
+                    {{ page.body|safe }}
+                {% else %}
+                    <h1>Contactez-nous</h1>
+                    <p>Une question ? Un projet ? N'hésitez pas à nous contacter.</p>
+                    
+                    <div class="contact__details">
+                        <div class="contact__item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h3>Adresse</h3>
+                                <p><span class="contact__address-main">Bénin | Abomey-Calavi, France | Marseille, avec des Représentants éditoriaux dans 7 autres pays en Afrique.</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact__item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h3>Téléphone</h3>
+                                <p><a href="tel:+22901688097777">(+229) 01 68 80 97 77</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact__item" id="contact-email">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h3>Email</h3>
+                                <p><a href="mailto:contactedrecreation@gmail.com">contactedrecreation@gmail.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Formulaire de contact -->
+            <div class="contact__form-wrapper">
+                <h2>Envoyez-nous un message</h2>
+                
+                <!-- Affichage des messages de succès/erreur -->
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="form-feedback form-feedback--{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <!-- CORRECTION : Ajouter action pour soumettre à ContactView -->
+                <form method="POST" action="{% url 'catalogue:contact' %}" class="contact__form">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="id_nom">{{ form.nom.label }} *</label>
+                        {{ form.nom }}
+                        {% if form.nom.errors %}
+                            <span class="form-error">{{ form.nom.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_email">{{ form.email.label }} *</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <span class="form-error">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_telephone">{{ form.telephone.label }}</label>
+                        <div class="phone-input-group">
+                            <input type="text" class="form-control phone-code-input" list="country-codes" placeholder="+229" aria-label="Indicatif pays">
+                            {{ form.telephone }}
+                        </div>
+                        {% if form.telephone.errors %}
+                            <span class="form-error">{{ form.telephone.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_sujet">{{ form.sujet.label }} *</label>
+                        {{ form.sujet }}
+                        {% if form.sujet.errors %}
+                            <span class="form-error">{{ form.sujet.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_message">{{ form.message.label }} *</label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <span class="form-error">{{ form.message.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn--primary">Envoyer le message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function() {
+        const codeInput = document.querySelector(".phone-code-input");
+        const phoneInput = document.getElementById("phone");
+        if (!codeInput || !phoneInput) return;
+        codeInput.addEventListener("change", function() {
+            const code = codeInput.value.trim();
+            if (!code) return;
+            const current = phoneInput.value.trim();
+            if (current.startsWith(code)) return;
+            const stripped = current.replace(/^\+\d+\s*/, "");
+            phoneInput.value = code + " " + stripped;
+        });
+    })();
+</script>
+{% endblock %}

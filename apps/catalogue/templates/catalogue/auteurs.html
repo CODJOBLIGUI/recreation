@@ -1,0 +1,58 @@
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- En-tête -->
+<section class="page-header">
+    <div class="container">
+        <h1>Nos Auteurs</h1>
+        <p>Découvrez les plumes élues au sein de notre maison</p>
+        <form class="auteurs-filter" method="get">
+            <label class="sr-only" for="nationalite-filter">Filtrer par nationalité</label>
+            <select id="nationalite-filter" name="nationalite" aria-label="Filtrer par nationalité">
+                <option value="">Toutes les nationalités</option>
+                {% for nat in nationalites %}
+                <option value="{{ nat.id }}" {% if nationalite_actuelle == nat.id|stringformat:"s" %}selected{% endif %}>
+                    {{ nat.nom }}
+                </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn--white">Filtrer</button>
+        </form>
+    </div>
+</section>
+
+<!-- Grille des auteurs -->
+<section class="auteurs-grid section">
+    <div class="container">
+        <div class="auteurs-list">
+            {% for auteur in auteurs %}
+            <div class="author-card">
+                <div class="author-card__photo">
+                    <img src="{{ auteur.photo.url }}" alt="{{ auteur.nom }}">
+                </div>
+                <div class="author-card__info">
+                    <h3 class="author-card__name">{{ auteur.nom }}</h3>
+                    {% if auteur.nationalites.all %}
+                    <div class="author-card__nationality">
+                        {% for nat in auteur.nationalites.all %}
+                        <span class="badge badge--nationality">{{ nat.nom }}</span>{% if not forloop.last %} - {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <p class="author-card__bio">{{ auteur.biographie_texte|truncatewords:30 }}</p>
+                    <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">Voir la bibliographie</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'catalogue/js/auteurs.js' %}"></script>
+{% endblock %}
+

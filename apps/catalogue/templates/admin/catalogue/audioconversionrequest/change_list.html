@@ -1,0 +1,35 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools %}
+    <div class="object-tools">
+        <form method="get" class="admin-date-range" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <label>Du <input type="date" name="created_from" value="{{ request.GET.created_from }}"></label>
+            <label>Au <input type="date" name="created_to" value="{{ request.GET.created_to }}"></label>
+            {% for key, value in request.GET.items %}
+                {% if key != "created_from" and key != "created_to" %}
+                    <input type="hidden" name="{{ key }}" value="{{ value }}">
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="button">Filtrer</button>
+            <a href="?" class="button">Réinitialiser</a>
+            <button type="button" class="button" id="select-all-visible">Tout sélectionner (page)</button>
+        </form>
+    </div>
+    {{ block.super }}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var btn = document.getElementById("select-all-visible");
+            if (!btn) return;
+            btn.addEventListener("click", function() {
+                var checkboxes = document.querySelectorAll('input.action-select[type="checkbox"]');
+                checkboxes.forEach(function(cb) { cb.checked = true; });
+                var master = document.getElementById("action-toggle");
+                if (master) master.checked = true;
+            });
+        });
+    </script>
+{% endblock %}

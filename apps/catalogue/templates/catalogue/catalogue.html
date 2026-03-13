@@ -1,0 +1,147 @@
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
+{% load text_extras %}
+
+{% block content %}
+
+<!-- En-tête du catalogue -->
+<section class="page-header">
+    <div class="container">
+        <h1>{{ page_heading|default:"Notre Catalogue" }}</h1>
+        <p>{{ page_subtitle|default:"Découvrez tous nos livres" }}</p>
+    </div>
+</section>
+
+<!-- Barre de recherche et filtres -->
+<section class="catalogue-filters section">
+    <div class="container">
+        <div class="filters-bar">
+            <!-- Recherche -->
+            <div class="search-box">
+                <input type="text" 
+                       id="search-input" 
+                       placeholder="Rechercher un livre, auteur..." 
+                       value="{{ recherche }}"
+                       aria-label="Rechercher">
+                <span class="search-box__icon" aria-hidden="true">
+                    <i class="fas fa-search"></i>
+                </span>
+                <button type="button" id="catalogue-search-btn" class="search-box__btn" aria-label="Valider la recherche"><span class="search-box__btn-label">Rechercher</span></button>
+            </div>
+            
+            <!-- Filtres -->
+            <div class="filters">
+                <!-- Catégorie -->
+                <select id="category-filter" aria-label="Filtrer par catégorie">
+                    <option value="">Toutes les catégories</option>
+                    <option value="roman" {% if categorie_actuelle == 'roman' %}selected{% endif %}>Roman</option>
+                    <option value="poemes" {% if categorie_actuelle == 'poemes' %}selected{% endif %}>Poèmes</option>
+                    <option value="essai" {% if categorie_actuelle == 'essai' %}selected{% endif %}>Essai</option>
+                    <option value="policiers" {% if categorie_actuelle == 'policiers' %}selected{% endif %}>Polars/Thrillers</option>
+                    <option value="bd" {% if categorie_actuelle == 'bd' %}selected{% endif %}>BD</option>
+                    <option value="theatres" {% if categorie_actuelle == 'theatres' %}selected{% endif %}>Théâtres</option>
+                    <option value="nouvelles" {% if categorie_actuelle == 'nouvelles' %}selected{% endif %}>Nouvelles</option>
+                    <option value="jeunesse" {% if categorie_actuelle == 'jeunesse' %}selected{% endif %}>Jeunesse</option>
+                </select>
+                
+                <!-- Version -->
+                <select id="version-filter" aria-label="Filtrer par version">
+                    <option value="">Toutes les versions</option>
+                    <option value="papier" {% if version_actuelle == 'papier' %}selected{% endif %}>Papier</option>
+                    <option value="numerique" {% if version_actuelle == 'numerique' %}selected{% endif %}>Numérique</option>
+                    <option value="audio" {% if version_actuelle == 'audio' %}selected{% endif %}>Audio</option>
+                </select>
+                
+                <!-- Langue -->
+                <select id="language-filter" aria-label="Filtrer par langue">
+                    <option value="">Toutes les langues</option>
+                    {% for code, label in langues_list %}
+                    <option value="{{ code }}" {% if langue_actuelle == code %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+                
+                <!-- Tri -->
+                <select id="sort-filter" aria-label="Trier par">
+                    <option value="-parution">Plus récents</option>
+                    <option value="parution">Plus anciens</option>
+                    <option value="titre">Titre A-Z</option>
+                    <option value="auteur">Auteur A-Z</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Nombre de résultats -->
+        <p class="results-count">
+            <strong>{{ total_livres }}</strong> livre{{ total_livres|pluralize }} trouvé{{ total_livres|pluralize }}
+        </p>
+    </div>
+</section>
+
+<!-- Grille de livres -->
+<section class="catalogue-grid section">
+    <div class="container">
+        <div class="book-grid" id="books-container">
+            {% for livre in livres %}
+            <div class="book-card">
+                <div class="book-card__cover">
+                    {% if livre.image_affichage %}
+                    <img src="{{ livre.image_affichage.url }}" alt="{{ livre.titre }}" loading="lazy">
+                    {% endif %}
+                    <div class="book-card__overlay">
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Voir détails</a>
+                    </div>
+                </div>
+                <div class="book-card__info">
+                    <span class="book-card__category">{{ livre.get_categorie_display }}</span>
+                    <h3 class="book-card__title">{{ livre.titre|highlight_query:recherche }}</h3>
+                    <p class="book-card__author">{{ livre.auteurs_noms|highlight_query:recherche }}</p>
+                    {% if livre.meta_description %}
+                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:18|highlight_query:recherche }}</p>
+                    {% endif %}
+                </div>
+            
+            </div>
+            {% empty %}
+            <p class="no-results">Aucun livre trouvé pour ces critères.</p>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="pagination__btn">&laquo; Première</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination__btn">Précédent</a>
+            {% endif %}
+            
+            <span class="pagination__info">
+                Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination__btn">Suivant</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination__btn">Dernière &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Modal détails livre -->
+<!-- <div id="book-modal" class="modal" role="dialog" aria-hidden="true">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+        <button class="modal__close" aria-label="Fermer">&times;</button>
+        <div id="modal-body"> -->
+            <!-- Contenu chargé dynamiquement par JavaScript -->
+        <!-- </div>
+    </div>
+</div> -->
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'catalogue/js/filter.js' %}?v=5"></script>
+{% endblock %}
+
+

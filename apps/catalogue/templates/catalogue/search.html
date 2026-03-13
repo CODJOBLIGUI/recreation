@@ -1,0 +1,150 @@
+{% extends 'catalogue/base.html' %}
+{% load static %}
+{% load text_extras %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="container">
+        <h1 class="page-hero__title">Recherche</h1>
+        <p class="page-hero__subtitle">Trouvez rapidement livres, auteurs, actualités et pages</p>
+    </div>
+</section>
+
+<section class="search-results section">
+    <div class="container">
+        <form class="search-results__form" action="{% url 'catalogue:search' %}" method="get">
+            <input type="search" name="q" value="{{ query }}" placeholder="Rechercher..." aria-label="Rechercher sur le site">
+            <button type="submit" class="btn btn--primary">Rechercher</button>
+        </form>
+
+        {% if query %}
+            <p class="search-results__summary">
+                Résultats pour “{{ query }}” : {{ total_results }} trouvé(s)
+            </p>
+
+            {% if pages %}
+                <div class="search-results__block">
+                    <h2>Pages</h2>
+                    <div class="search-results__grid">
+                        {% for page in pages %}
+                            <a class="search-card" href="{{ page.url }}">
+                                <div class="search-card__type">Page</div>
+                                <h3 class="search-card__title">{{ page.title|highlight_query:query }}</h3>
+                                <p class="search-card__snippet">Accéder directement à cette page.</p>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if livres %}
+                <div class="search-results__block">
+                    <h2>Livres</h2>
+                    <div class="search-results__grid">
+                        {% for livre in livres %}
+                            <a class="search-card" href="{% url 'catalogue:livre-detail' livre.slug %}">
+                                <div class="search-card__media">
+                                    {% if livre.image %}
+                                    {% if livre.image_par_defaut %}
+                                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="search-card__body">
+                                    <div class="search-card__type">Livre</div>
+                                    <h3 class="search-card__title">{{ livre.titre|unescape|fix_mojibake|highlight_query:query }}</h3>
+                                    <p class="search-card__meta">par {{ livre.auteurs_noms|unescape|fix_mojibake|highlight_query:query }}</p>
+                                    {% if livre.meta_description %}
+                                    <p class="search-card__snippet">{{ livre.meta_description|striptags|unescape|fix_mojibake|truncatewords:18|highlight_query:query }}</p>
+                                    {% else %}
+                                    <p class="search-card__snippet">{{ livre.resume|striptags|unescape|fix_mojibake|truncatewords:18|highlight_query:query }}</p>
+                                    {% endif %}
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if auteurs %}
+                <div class="search-results__block">
+                    <h2>Auteurs</h2>
+                    <div class="search-results__grid">
+                        {% for auteur in auteurs %}
+                            <a class="search-card" href="{% url 'catalogue:auteur-detail' auteur.slug %}">
+                                <div class="search-card__media">
+                                    {% if auteur.photo %}
+                                    <img src="{{ auteur.photo.url }}" alt="{{ auteur.nom }}" loading="lazy">
+                                    {% endif %}
+                                </div>
+                                <div class="search-card__body">
+                                    <div class="search-card__type">Auteur</div>
+                                    <h3 class="search-card__title">{{ auteur.nom|unescape|fix_mojibake|highlight_query:query }}</h3>
+                                    <p class="search-card__snippet">{{ auteur.biographie_texte|striptags|unescape|fix_mojibake|truncatewords:18|highlight_query:query }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if membres %}
+                <div class="search-results__block">
+                    <h2>Équipe</h2>
+                    <div class="search-results__grid">
+                        {% for membre in membres %}
+                            <a class="search-card" href="{% url 'catalogue:a-propos' %}#equipe">
+                                <div class="search-card__media">
+                                    {% if membre.photo %}
+                                    <img src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}" loading="lazy">
+                                    {% endif %}
+                                </div>
+                                <div class="search-card__body">
+                                    <div class="search-card__type">Équipe</div>
+                                    <h3 class="search-card__title">{{ membre.nom_complet|unescape|fix_mojibake|highlight_query:query }}</h3>
+                                    {% if membre.poste %}
+                                    <p class="search-card__meta">{{ membre.poste|unescape|fix_mojibake|highlight_query:query }}</p>
+                                    {% endif %}
+                                    {% if membre.biographie %}
+                                    <p class="search-card__snippet">{{ membre.biographie|striptags|unescape|fix_mojibake|truncatewords:16|highlight_query:query }}</p>
+                                    {% endif %}
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if actualites %}
+                <div class="search-results__block">
+                    <h2>Actualités</h2>
+                    <div class="search-results__grid">
+                        {% for actualite in actualites %}
+                            <a class="search-card" href="{% url 'catalogue:actualite-detail' actualite.slug %}">
+                                <div class="search-card__media">
+                                    {% if actualite.image %}
+                                    <img src="{{ actualite.image.url }}" alt="{{ actualite.titre|fix_mojibake }}" loading="lazy">
+                                    {% endif %}
+                                </div>
+                                <div class="search-card__body">
+                                    <div class="search-card__type">Actualité</div>
+                                    <h3 class="search-card__title">{{ actualite.titre|unescape|fix_mojibake|highlight_query:query }}</h3>
+                                    <p class="search-card__snippet">{{ actualite.extrait|striptags|unescape|fix_mojibake|truncatewords:18|highlight_query:query }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if total_results == 0 %}
+                <p class="no-content">Aucun résultat pour cette recherche.</p>
+            {% endif %}
+        {% else %}
+            <p class="no-content">Saisissez un terme pour lancer la recherche.</p>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

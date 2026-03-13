@@ -1,0 +1,168 @@
+/*
+ * RESPONSIVE CSS SUPPLÉMENTAIRE
+ * Ajustements pour tablettes et mobiles
+ */
+
+/* Tablettes (768px - 1024px) */
+@media (max-width: 1024px) {
+    .hero__title {
+        font-size: 2.5rem;
+    }
+    
+    .container {
+        width: 95%;
+    }
+    
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+/* Petits écrans (max 768px) */
+@media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.5rem; }
+    
+    .section {
+        padding: 3rem 0;
+    }
+    
+    .hero {
+        padding: 2rem 0;
+    }
+    
+    .hero__title {
+        font-size: 2rem;
+    }
+    
+    .hero__author {
+        font-size: 1rem;
+    }
+    
+    .tabs {
+        gap: 0.5rem;
+    }
+    
+    .tabs__btn {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+    }
+    
+    .newsletter__form {
+        flex-direction: column;
+    }
+    
+    .footer-fayard__actions {
+        gap: 2rem;
+    }
+    
+    .footer-fayard__logo {
+        font-size: 2rem;
+    }
+}
+
+/* Très petits écrans (max 480px) */
+@media (max-width: 480px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .modal__content {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .hero__controls {
+        bottom: 1rem;
+    }
+    
+    .hero__control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .header__nav {
+        display: none;
+    }
+    
+    .header__hamburger {
+        display: flex;
+    }
+    
+    .hero__slide .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero__image {
+        order: -1;
+    }
+    
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .filters-bar {
+        flex-direction: column;
+    }
+    
+    .search-box {
+        width: 100%;
+    }
+    
+    .contact__grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .auteurs-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .author-card {
+        flex-direction: column;
+    }
+    
+    .footer-fayard__bottom {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+.page-hero__title {
+font-size: 2rem;
+}
+.contrats__grid {
+    grid-template-columns: 1fr;
+}
+
+.team-grid {
+    grid-template-columns: 1fr;
+}
+
+.actualites-grid {
+    grid-template-columns: 1fr;
+}
+
+.cta-box {
+    padding: 3rem 2rem;
+}
+
+.cta-box__title {
+    font-size: 1.75rem;
+}
+}

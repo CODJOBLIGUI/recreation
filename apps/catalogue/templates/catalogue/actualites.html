@@ -1,0 +1,72 @@
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
+{% load text_extras %}
+
+{% block content %}
+
+<section class="page-header">
+    <div class="container">
+        <h1>Actualités</h1>
+        <p>Découvrez nos actualités et nos événements du moment.</p>
+    </div>
+</section>
+
+<section class="actualites section">
+    <div class="container">
+        <form class="actualites-filter" method="get">
+            <label for="filtre">Filtrer</label>
+            <select id="filtre" name="filtre">
+                <option value="tous" {% if filtre_actuel == "tous" %}selected{% endif %}>Toutes</option>
+                <option value="a-la-une" {% if filtre_actuel == "a-la-une" %}selected{% endif %}>À la une</option>
+            </select>
+            <label for="annee">Année</label>
+            <select id="annee" name="annee">
+                <option value="">Toutes</option>
+                {% for annee in annees_actualites %}
+                    <option value="{{ annee }}" {% if annee_actuelle == annee|stringformat:"s" %}selected{% endif %}>{{ annee }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn--secondary">Appliquer</button>
+        </form>
+        <div class="actualites-grid">
+            {% for actualite in actualites %}
+            <article class="news-card">
+                <div class="news-card__image">
+                    {% if actualite.image %}
+                    <img src="{{ actualite.image.url }}" alt="{{ actualite.titre|fix_mojibake }}">
+                    {% else %}
+                    <img src="{% static 'catalogue/images/news/placeholder.jpg' %}" alt="{{ actualite.titre|fix_mojibake }}">
+                    {% endif %}
+                </div>
+                <div class="news-card__content">
+                    <span class="news-card__date">{{ actualite.date_publication|date:"d F Y" }}</span>
+                    <h3 class="news-card__title">{{ actualite.titre|fix_mojibake }}</h3>
+                    <p class="news-card__excerpt">{{ actualite.extrait|striptags|truncatewords:24|safe|fix_mojibake }}</p>
+                    <a href="{% url 'catalogue:actualite-detail' actualite.slug %}" class="btn btn--secondary">Lire la suite</a>
+                </div>
+            </article>
+            {% empty %}
+            <p class="no-content">Aucune actualité pour le moment.</p>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination__btn">Précédent</a>
+            {% endif %}
+            
+            <span class="pagination__info">Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination__btn">Suivant</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}
+
+

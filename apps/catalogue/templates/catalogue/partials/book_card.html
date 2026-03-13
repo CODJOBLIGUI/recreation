@@ -1,0 +1,27 @@
+﻿<div class="book-card">
+    <a href="{{ livre.get_absolute_url }}" class="book-card__cover-link">
+        <div class="book-card__cover">
+            {% if livre.image_par_defaut %}
+                <img src="{{ livre.image_par_defaut.url }}" alt="Couverture de {{ livre.titre }}" loading="lazy">
+            {% else %}
+                <div class="placeholder-image"><span>{{ livre.titre }}</span></div>
+            {% endif %}
+            <div class="book-card__overlay">
+                <span class="btn btn--secondary">Voir les détails</span>
+            </div>
+        </div>
+    </a>
+    <div class="book-card__info">
+        <h3 class="book-card__title"><a href="{{ livre.get_absolute_url }}">{{ livre.titre|truncatechars:45 }}</a></h3>
+        {% if livre.auteurs.all %}
+        <p class="book-card__author">
+            {% for auteur in livre.auteurs.all %}
+                <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+            {% endfor %}
+        </p>
+        {% endif %}
+        {% if livre.meta_description %}
+        <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+        {% endif %}
+    </div>
+</div>
