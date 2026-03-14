@@ -138,6 +138,7 @@
 
     .header__hamburger {
         order: 1;
+        z-index: 2;
     }
 
     .header-search {
@@ -149,8 +150,29 @@
     }
 
     .header-search__btn {
-        padding: 0 0.75rem;
+        padding: 0 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .header__newsletter-form input {
         font-size: 0.85rem;
+        padding: 0.35rem 0.6rem;
+        min-width: 0;
+    }
+
+    .header__newsletter-form button {
+        font-size: 0.8rem;
+        padding: 0.35rem 0.6rem;
+    }
+
+    .header-search input {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.6rem 0.4rem 2rem;
+    }
+
+    .header__hamburger {
+        width: 38px;
+        height: 38px;
     }
 
     .header .container {
@@ -272,6 +294,14 @@
     .header-search input {
         padding-left: 2rem;
         font-size: 0.85rem;
+    }
+
+    .header__newsletter-form {
+        padding: 0.2rem 0.35rem;
+    }
+
+    .header-search__btn {
+        min-width: 88px;
     }
 
     .new-releases .book-grid,
