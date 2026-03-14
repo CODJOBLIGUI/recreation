@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtualenv
+venv/
+.venv/
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+
+# Temp / cache
+tmp/
+pip_tmp/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Accidental files
+cd
+git
