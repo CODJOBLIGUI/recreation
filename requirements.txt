@@ -8,7 +8,7 @@ Pillow==11.3.0
 python-dotenv==1.0.1
 
 # Admin UI
-django-unfold==0.83.1
+django-unfold==0.81.0
 
 # Rich text editor (admin)
 django-ckeditor==6.7.3
