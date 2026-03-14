@@ -24,13 +24,13 @@
 
     if (hamburgerMenu) {
         hamburgerMenu.addEventListener('click', function() {
-            // Toggle du menu
-            navigation.classList.toggle('active');
-            this.classList.toggle('active');
+            if (navDrawer && navDrawer.classList.contains('is-open')) {
+                closeNavDrawer();
+            } else {
+                openNavDrawer();
+            }
 
-            // Mettre a jour aria-expanded
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            this.setAttribute('aria-expanded', !isExpanded);
+            this.classList.toggle('active');
         });
     }
 
