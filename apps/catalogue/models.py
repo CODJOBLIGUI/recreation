@@ -693,6 +693,15 @@ class AudioConversionRequest(TimeStampedModel):
         return f"{self.email} - {self.statut}"
 
 
+class AudioConversionGenerated(AudioConversionRequest):
+    """Proxy pour afficher uniquement les audios générés."""
+
+    class Meta:
+        proxy = True
+        verbose_name = "Audio généré"
+        verbose_name_plural = "Audios générés"
+
+
 class UserProfile(TimeStampedModel):
     """Profil utilisateur (infos complémentaires)."""
 

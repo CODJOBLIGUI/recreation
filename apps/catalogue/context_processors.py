@@ -21,6 +21,28 @@ def global_context(request):
     menu_header_links = MenuLink.objects.filter(is_active=True, location="header").order_by("order", "title")
     menu_footer_links = MenuLink.objects.filter(is_active=True, location="footer").order_by("order", "title")
 
+    footer_menu_columns = {
+        "Catalogue": [],
+        "Ressources": [],
+        "Services": [],
+    }
+
+    for link in menu_header_links:
+        title = (link.title or "").lower()
+        url = (link.url or "").lower()
+
+        if title == "accueil":
+            continue
+
+        if any(keyword in title for keyword in ["catalogue", "livres", "collection"]):
+            footer_menu_columns["Catalogue"].append(link)
+        elif any(keyword in title for keyword in ["actualité", "actualite", "a propos", "à propos", "mentions", "confidential", "cookies"]):
+            footer_menu_columns["Ressources"].append(link)
+        elif any(keyword in title for keyword in ["contrat", "soumettre", "manuscrit", "contact", "conversion", "service"]):
+            footer_menu_columns["Services"].append(link)
+        else:
+            footer_menu_columns["Ressources"].append(link)
+
     return {
         "categories_list": Livre.CATEGORIES,
         "collections_list": collections,
@@ -28,4 +50,5 @@ def global_context(request):
         "social_links": social_links,
         "menu_header_links": menu_header_links,
         "menu_footer_links": menu_footer_links,
+        "footer_menu_columns": footer_menu_columns,
     }

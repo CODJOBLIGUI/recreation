@@ -18,12 +18,13 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail
+from django.db import close_old_connections
 from django.contrib.auth.views import LoginView as DjangoLoginView, PasswordResetView as DjangoPasswordResetView
 from datetime import date
 import unicodedata
 
 from .forms import ContactForm, NewsletterForm, SoumissionManuscritForm, AudioConversionForm, StyledSignupForm, StyledLoginForm
-from .utils.audio_conversion import estimate_pages_from_text, count_pages_for_file
+from .utils.audio_conversion import estimate_pages_from_text, count_pages_for_file, extract_text_from_file
 from .models import (
     Actualite,
     Auteur,
@@ -261,6 +262,26 @@ class LivresAudioView(CatalogueView):
         if livres_page:
             for livre in livres_page:
                 livre.image_affichage = livre.image_pour_version("audio")
+        return context
+
+
+class LivresPapierView(CatalogueView):
+    """Vue liste livres papier."""
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(version_papier=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_heading"] = "Livres papier"
+        context["page_subtitle"] = "Découvrez nos ouvrages disponibles en version papier"
+        context["page_title"] = "Livres papier - Editions Recréation"
+        context["version_actuelle"] = "papier"
+        livres_page = context.get("livres")
+        if livres_page:
+            for livre in livres_page:
+                livre.image_affichage = livre.image_pour_version("papier")
         return context
 
 
@@ -735,10 +756,22 @@ class ActualitesView(ListView):
         qs = Actualite.objects.filter(est_publie=True).order_by("-est_une_a_la_une", "-date_publication")
         filtre = self.request.GET.get("filtre", "tous")
         annee = self.request.GET.get("annee", "")
+        date_debut = self.request.GET.get("date_debut")
+        date_fin = self.request.GET.get("date_fin")
         if filtre == "a-la-une":
             qs = qs.filter(est_une_a_la_une=True)
         if annee:
             qs = qs.filter(date_publication__year=annee)
+        if date_debut:
+            try:
+                qs = qs.filter(date_publication__gte=date.fromisoformat(date_debut))
+            except ValueError:
+                pass
+        if date_fin:
+            try:
+                qs = qs.filter(date_publication__lte=date.fromisoformat(date_fin))
+            except ValueError:
+                pass
         return qs
 
     def get_context_data(self, **kwargs):
@@ -746,6 +779,8 @@ class ActualitesView(ListView):
         context["page_title"] = "Actualit\u00e9s - Editions Recr\u00e9ation"
         context["filtre_actuel"] = self.request.GET.get("filtre", "tous")
         context["annee_actuelle"] = self.request.GET.get("annee", "")
+        context["date_debut"] = self.request.GET.get("date_debut", "")
+        context["date_fin"] = self.request.GET.get("date_fin", "")
         context["annees_actualites"] = (
             Actualite.objects.filter(est_publie=True)
             .dates("date_publication", "year", order="DESC")
@@ -856,34 +891,75 @@ class AudioConversionView(LoginRequiredMixin, FormView):
             demande.payment_tier = 5
         demande.save()
 
-        if not demande.paiement_requis and texte:
+        # Extraire le texte depuis le fichier si nécessaire
+        audio_text = texte
+        if fichier:
+            try:
+                audio_text = extract_text_from_file(fichier).strip()
+                if audio_text:
+                    demande.texte = audio_text
+            except Exception as exc:
+                demande.statut = "error"
+                demande.async_error = str(exc)
+                demande.save(update_fields=["statut", "async_error", "updated_at"])
+                messages.error(self.request, "Extraction du texte impossible. Merci de réessayer ou d’utiliser un autre fichier.")
+                self.request.session["audio_request_id"] = demande.id
+                return redirect(self.success_url)
+
+        if audio_text:
             try:
                 from gtts import gTTS
             except Exception:
                 messages.error(self.request, "Conversion indisponible pour le moment. Veuillez réessayer plus tard.")
+                self.request.session["audio_request_id"] = demande.id
                 return redirect(self.success_url)
 
-            try:
-                import uuid
-                slow = True if demande.voix == "slow" else False
-                tts = gTTS(texte, lang=demande.langue, slow=slow)
-                audio_bytes = ContentFile(b"")
-                filename = f"conversion-{uuid.uuid4().hex}.mp3"
-                tts.write_to_fp(audio_bytes)
-                audio_bytes.seek(0)
-                demande.audio.save(filename, audio_bytes, save=False)
-                demande.statut = "free_generated"
-                demande.save(update_fields=["audio", "statut", "updated_at"])
-                messages.success(self.request, "Votre audio est prêt. Vous pouvez le télécharger.")
-            except Exception:
-                messages.error(self.request, "La conversion a échoué. Vérifiez votre connexion et réessayez.")
-                return redirect(self.success_url)
-            self.request.session["audio_request_id"] = demande.id
-            return redirect(self.success_url)
-        else:
+            def _generate_audio(demande_id, text, langue, voix):
+                close_old_connections()
+                try:
+                    import uuid
+                    obj = AudioConversionRequest.objects.get(pk=demande_id)
+                    slow = True if voix == "slow" else False
+                    tts = gTTS(text, lang=langue, slow=slow)
+                    audio_bytes = ContentFile(b"")
+                    filename = f"conversion-{uuid.uuid4().hex}.mp3"
+                    tts.write_to_fp(audio_bytes)
+                    audio_bytes.seek(0)
+                    obj.audio.save(filename, audio_bytes, save=False)
+                    obj.save(update_fields=["audio", "updated_at"])
+                except Exception:
+                    obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
+                    if obj:
+                        obj.statut = "error"
+                        obj.save(update_fields=["statut", "updated_at"])
+
+            if demande.paiement_requis:
+                import threading
+                threading.Thread(
+                    target=_generate_audio,
+                    args=(demande.id, audio_text, demande.langue, demande.voix),
+                    daemon=True,
+                ).start()
+            else:
+                try:
+                    _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
+                    demande.statut = "free_generated"
+                    demande.save(update_fields=["statut", "updated_at"])
+                except Exception:
+                    demande.statut = "error"
+                    demande.save(update_fields=["statut", "updated_at"])
+                    messages.error(self.request, "La conversion a échoué. Vérifiez votre connexion et réessayez.")
+                    self.request.session["audio_request_id"] = demande.id
+                    return redirect(self.success_url)
+
+        self.request.session["audio_request_id"] = demande.id
+
+        if demande.paiement_requis:
             messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
-            self.request.session["audio_request_id"] = demande.id
-            return redirect(self.success_url)
+            return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
+
+        messages.success(self.request, "Votre audio est prêt. Vous pouvez le télécharger.")
+        return redirect(self.success_url)
 
 
 def conversion_payment_redirect(request, demande_id):

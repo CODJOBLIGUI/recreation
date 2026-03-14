@@ -55,11 +55,7 @@
                                     <div class="search-card__type">Livre</div>
                                     <h3 class="search-card__title">{{ livre.titre|unescape|fix_mojibake|highlight_query:query }}</h3>
                                     <p class="search-card__meta">par {{ livre.auteurs_noms|unescape|fix_mojibake|highlight_query:query }}</p>
-                                    {% if livre.meta_description %}
-                                    <p class="search-card__snippet">{{ livre.meta_description|striptags|unescape|fix_mojibake|truncatewords:18|highlight_query:query }}</p>
-                                    {% else %}
                                     <p class="search-card__snippet">{{ livre.resume|striptags|unescape|fix_mojibake|truncatewords:18|highlight_query:query }}</p>
-                                    {% endif %}
                                 </div>
                             </a>
                         {% endfor %}

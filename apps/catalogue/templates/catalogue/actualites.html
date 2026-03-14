@@ -14,19 +14,34 @@
 <section class="actualites section">
     <div class="container">
         <form class="actualites-filter" method="get">
-            <label for="filtre">Filtrer</label>
-            <select id="filtre" name="filtre">
-                <option value="tous" {% if filtre_actuel == "tous" %}selected{% endif %}>Toutes</option>
-                <option value="a-la-une" {% if filtre_actuel == "a-la-une" %}selected{% endif %}>À la une</option>
-            </select>
-            <label for="annee">Année</label>
-            <select id="annee" name="annee">
-                <option value="">Toutes</option>
-                {% for annee in annees_actualites %}
-                    <option value="{{ annee }}" {% if annee_actuelle == annee|stringformat:"s" %}selected{% endif %}>{{ annee }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit" class="btn btn--secondary">Appliquer</button>
+            <div class="filter-group">
+                <label for="filtre">Type d’actualités</label>
+                <select id="filtre" name="filtre">
+                    <option value="tous" {% if filtre_actuel == "tous" %}selected{% endif %}>Toutes</option>
+                    <option value="a-la-une" {% if filtre_actuel == "a-la-une" %}selected{% endif %}>À la une</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Période de publication</label>
+                <div class="filter-row">
+                    <input type="date" id="date-debut" name="date_debut" value="{{ date_debut|default:'' }}">
+                    <span class="filter-sep">au</span>
+                    <input type="date" id="date-fin" name="date_fin" value="{{ date_fin|default:'' }}">
+                </div>
+            </div>
+            <div class="filter-group">
+                <label for="annee">Année (optionnel)</label>
+                <select id="annee" name="annee">
+                    <option value="">Toutes les années</option>
+                    {% for annee in annees_actualites %}
+                        <option value="{{ annee }}" {% if annee_actuelle == annee|stringformat:"s" %}selected{% endif %}>{{ annee }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-actions">
+                <button type="submit" class="btn btn--secondary">Appliquer</button>
+                <a href="{% url 'catalogue:actualites' %}" class="btn btn--ghost">Réinitialiser</a>
+            </div>
         </form>
         <div class="actualites-grid">
             {% for actualite in actualites %}

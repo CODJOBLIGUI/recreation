@@ -24,6 +24,7 @@ from .models import (
     MessageContact,
     Nationalite,
     AudioConversionRequest,
+    AudioConversionGenerated,
     Page,
     PageBlock,
     PageBlockItem,
@@ -428,7 +429,7 @@ class ActualiteAdmin(ModelAdmin):
     }
     list_display = ("titre", "date_publication", "est_publie", "est_une_a_la_une", "created_at")
     list_editable = ("est_publie", "est_une_a_la_une")
-    list_filter = ("est_publie", "est_une_a_la_une", "date_publication")
+    list_filter = ("est_publie", "est_une_a_la_une", ("date_publication", admin.DateFieldListFilter))
     search_fields = ("titre", "extrait", "contenu")
     prepopulated_fields = {"slug": ("titre",)}
     date_hierarchy = "date_publication"
@@ -690,6 +691,15 @@ class AudioConversionRequestAdmin(ModelAdmin):
         return "-"
 
     audio_link.short_description = "Audio"
+
+
+@admin.register(AudioConversionGenerated)
+class AudioConversionGeneratedAdmin(AudioConversionRequestAdmin):
+    """Liste dédiée des audios générés."""
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.filter(audio__isnull=False).exclude(audio="")
 
     def marquer_paye_et_envoyer(self, request, queryset):
         from django.core.mail import EmailMessage

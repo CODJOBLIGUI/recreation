@@ -158,10 +158,17 @@
                 <div class="nav-drawer__collections">
                     <a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a>
                     <a href="{% url 'catalogue:livres-audio' %}">Livres audio</a>
+                    <a href="{% url 'catalogue:livres-papier' %}">Livres papier</a>
                 </div>
                 <div class="nav-drawer__section-title">Autres services</div>
                 <div class="nav-drawer__collections">
-                    <a href="{% url 'catalogue:conversion-audio' %}">Conversion de texte en audio</a>
+                    <a href="{% url 'catalogue:conversion-audio' %}">
+                        <span class="footer-fayard__btn-icon" aria-hidden="true">
+                            <i class="fas fa-headphones"></i>
+                            <i class="fas fa-book"></i>
+                        </span>
+                        Conversion de texte en audio
+                    </a>
                 </div>
             </nav>
             <div class="nav-drawer__cta">
@@ -195,53 +202,116 @@
     <!-- Pied de page -->
     <footer class="footer-fayard">
         <div class="container">
-            <!-- Logo et adresse -->
-            <div class="footer-fayard__brand">
-                <h2 class="footer-fayard__logo">{{ appearance.site_name|default:"Editions Recréation" }}</h2>
-                <p class="footer-fayard__slogan">
-                    <em>Avec le verbe, recréons le monde et conservons en une copie dans un livre !</em>
-                </p>
-                <p class="footer-fayard__address">
-                    <span class="footer-fayard__address-main">Bénin | Abomey-Calavi, France | Marseille, avec des Représentants éditoriaux dans 7 autres pays en Afrique.</span>
-                </p>
-            </div>
+            <div class="footer-fayard__grid">
+                <div class="footer-fayard__left">
+                    <!-- Logo et adresse -->
+                    <div class="footer-fayard__brand">
+                        <h2 class="footer-fayard__logo">{{ appearance.site_name|default:"Editions Recréation" }}</h2>
+                        <p class="footer-fayard__slogan">
+                            <em>Avec le verbe, recréons le monde et conservons en une copie dans un livre !</em>
+                        </p>
+                        <p class="footer-fayard__address">
+                            <span class="footer-fayard__address-main">Bénin | Abomey-Calavi, France | Marseille, avec des Représentants éditoriaux dans 7 autres pays en Afrique.</span>
+                        </p>
+                    </div>
 
-            <!-- Actions rapides -->
-            <div class="footer-fayard__actions">
-                <a href="tel:+22901688097777" class="footer-fayard__action">
-                    <i class="fas fa-phone"></i>
-                    <span>Téléphone</span>
-                </a>
-                <a href="{% url 'catalogue:soumission-manuscrit' %}" class="footer-fayard__action">
-                    <i class="fas fa-file-alt"></i>
-                    <span>Soumettre un manuscrit</span>
-                </a>
-                <a href="{% url 'catalogue:contact' %}" class="footer-fayard__action">
-                    <i class="fas fa-envelope"></i>
-                    <span>E-mail</span>
-                </a>
-            </div>
+                    <!-- Actions rapides -->
+                    <div class="footer-fayard__actions">
+                        <a href="tel:+22901688097777" class="footer-fayard__action">
+                            <i class="fas fa-phone"></i>
+                            <span>Téléphone</span>
+                        </a>
+                        <a href="{% url 'catalogue:soumission-manuscrit' %}" class="footer-fayard__action">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Soumettre un manuscrit</span>
+                        </a>
+                        <a href="{% url 'catalogue:contact' %}" class="footer-fayard__action">
+                            <i class="fas fa-envelope"></i>
+                            <span>E-mail</span>
+                        </a>
+                    </div>
 
-            <!-- Réseaux sociaux -->
-            <div class="footer-fayard__social">
-                <h3 class="footer-fayard__social-title">Nous suivre les réseaux sociaux</h3>
-                <div class="footer-fayard__social-icons">
-                    {% for social in social_links %}
-                    <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">
-                        <i class="{{ social.icon }}"></i>
-                    </a>
-                    {% endfor %}
+                    <!-- Réseaux sociaux -->
+                    <div class="footer-fayard__social">
+                        <h3 class="footer-fayard__social-title">Nous suivre les réseaux sociaux</h3>
+                        <div class="footer-fayard__social-icons">
+                            {% for social in social_links %}
+                            <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">
+                                <i class="{{ social.icon }}"></i>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-fayard__menu">
+                    <div class="footer-fayard__menu-columns">
+                        <div class="footer-fayard__menu-col">
+                            <h3 class="footer-fayard__menu-title">Catalogue</h3>
+                            <ul class="footer-fayard__menu-list">
+                                <li><a href="{% url 'catalogue:catalogue' %}">Catalogue</a></li>
+                                <li><a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a></li>
+                                <li><a href="{% url 'catalogue:livres-audio' %}">Livres audio</a></li>
+                                <li><a href="{% url 'catalogue:livres-papier' %}">Livres papier</a></li>
+                            </ul>
+
+                            <h3 class="footer-fayard__menu-title footer-fayard__menu-title--spaced">Collections</h3>
+                            <ul class="footer-fayard__menu-list">
+                                {% for collection in collections_list|slice:":6" %}
+                                {% if collection.slug %}
+                                <li><a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a></li>
+                                {% else %}
+                                <li>{{ collection.nom }}</li>
+                                {% endif %}
+                                {% empty %}
+                                <li class="footer-fayard__menu-empty">Collections à venir</li>
+                                {% endfor %}
+                            </ul>
+
+                            <div class="footer-fayard__menu-cta">
+                                <a href="{% url 'catalogue:conversion-audio' %}" class="btn btn--secondary footer-fayard__audio-btn">
+                                    <span class="footer-fayard__btn-icon" aria-hidden="true">
+                                        <i class="fas fa-headphones"></i>
+                                        <i class="fas fa-book"></i>
+                                    </span>
+                                    Conversion de texte en audio
+                                </a>
+                                <a href="https://recreation.mychariow.shop/" class="btn btn--secondary footer-fayard__shop-btn" target="_blank" rel="noopener">
+                                    <span class="footer-fayard__btn-icon" aria-hidden="true">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </span>
+                                    Recréation Shop
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="footer-fayard__menu-col">
+                            <h3 class="footer-fayard__menu-title">Ressources</h3>
+                            <ul class="footer-fayard__menu-list">
+                                <li><a href="{% url 'catalogue:actualites' %}">Actualités</a></li>
+                                <li><a href="{% url 'catalogue:auteurs' %}">Auteurs</a></li>
+                                <li><a href="{% url 'catalogue:a-propos' %}">A propos</a></li>
+                                <li><a href="{% url 'catalogue:index' %}#nouveautes">Nouveautés</a></li>
+                                <li><a href="{% url 'catalogue:index' %}#a-paraitre">À paraître</a></li>
+                                <li><a href="{% url 'catalogue:index' %}#meilleures-ventes">Meilleures ventes</a></li>
+                                <li><a href="{% url 'catalogue:nos-contrats' %}">Nos contrats</a></li>
+                                <li><a href="{% url 'catalogue:a-propos' %}#equipe">Equipe</a></li>
+                                <li><a href="{% url 'catalogue:soumission-manuscrit' %}">Devenir auteur</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Copyright -->
             <div class="footer-fayard__bottom">
-                <p>&copy; Editions Recréation - Tous droits réservés - 2026</p>
                 <div class="footer-fayard__links">
                     <a href="{% url 'catalogue:mentions-legales' %}">Mentions légales</a>
                     <a href="{% url 'catalogue:confidentialite' %}">Confidentialité</a>
                     <a href="{% url 'catalogue:cookies' %}">Cookies</a>
                 </div>
+                <a href="{% url 'catalogue:contact' %}" class="footer-fayard__contact-link">Nous contacter</a>
+                <p>&copy; Editions Recréation - Tous droits réservés - 2026</p>
             </div>
         </div>
     </footer>

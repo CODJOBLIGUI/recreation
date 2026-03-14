@@ -24,7 +24,4 @@ EbookLib==0.18
 beautifulsoup4==4.12.3
 
 # Recommande pour la production avec PostgreSQL
-psycopg2-binary==2.9.9
-dj-database-url==2.2.0
-gunicorn==22.0.0
-whitenoise==6.7.0
+# psycopg2-binary==2.9.9
