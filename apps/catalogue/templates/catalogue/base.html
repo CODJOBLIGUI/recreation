@@ -1,4 +1,5 @@
 ﻿{% load static %}
+{% load text_extras %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -198,7 +199,7 @@
     <main>
         {% block content %}{% endblock %}
     </main>
-    
+{% filter strip_upper_accents %}
     <!-- Pied de page -->
     <footer class="footer-fayard">
         <div class="container">
@@ -315,9 +316,9 @@
             </div>
         </div>
     </footer>
+{% endfilter %}
 
-    <a
-        href="{{ appearance.whatsapp|default:'https://wa.me/c/22968809777' }}"
+    <a         href="{{ appearance.whatsapp|default:'https://wa.me/c/22968809777' }}"
         class="whatsapp-float"
         aria-label="WhatsApp"
         target="_blank"

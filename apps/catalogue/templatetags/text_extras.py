@@ -124,3 +124,19 @@ def highlight_query(value, query):
         output.append(escape(original_text[last_index:]))
 
     return mark_safe("".join(output))
+
+
+@register.filter(name="strip_upper_accents")
+def strip_upper_accents(value):
+    if value is None:
+        return ""
+    text = str(value)
+    output = []
+    for ch in text:
+        if ch.isupper():
+            normalized = unicodedata.normalize("NFKD", ch)
+            stripped = "".join(c for c in normalized if unicodedata.category(c) != "Mn")
+            output.append(stripped)
+        else:
+            output.append(ch)
+    return mark_safe("".join(output))
