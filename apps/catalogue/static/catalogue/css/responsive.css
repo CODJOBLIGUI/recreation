@@ -94,6 +94,39 @@
         min-width: 0;
         flex: 1;
     }
+
+    .header__top {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .header__logo img {
+        max-height: 60px;
+    }
+
+    .header__newsletter-form {
+        width: 100%;
+        order: 2;
+    }
+
+    .header__newsletter-form input {
+        width: 100%;
+    }
+
+    .header__actions {
+        width: 100%;
+        justify-content: space-between;
+        order: 3;
+    }
+
+    .header__social {
+        display: none;
+    }
+
+    .header-search__btn {
+        padding: 0 0.75rem;
+        font-size: 0.85rem;
+    }
     
     .footer-fayard__actions {
         gap: 2rem;
@@ -129,6 +162,19 @@
         width: 34px;
         height: 34px;
         font-size: 1.35rem;
+    }
+
+    .header-search {
+        gap: 0.4rem;
+    }
+
+    .header-search__icon {
+        left: 0.5rem;
+    }
+
+    .header-search input {
+        padding-left: 2rem;
+        font-size: 0.85rem;
     }
 }
 
