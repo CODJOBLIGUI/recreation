@@ -143,3 +143,38 @@ video {
 
     .tabs { flex-wrap: wrap; gap: 0.5rem; }
 }
+/* ========================================
+   MOBILE NAV SINGLE LINE (HEADER)
+   ======================================== */
+@media (max-width: 768px) {
+    .header__nav {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        width: 100%;
+    }
+
+    .header__nav-list {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.75rem;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .header__nav-list::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .header__nav-list a {
+        white-space: nowrap;
+    }
+
+    .header__nav .header__menu-btn,
+    .header__nav .nav-menu-btn,
+    #nav-menu-btn {
+        flex: 0 0 auto;
+    }
+}
