@@ -250,12 +250,16 @@
             toggle.type = 'button';
             toggle.className = 'password-toggle';
             toggle.setAttribute('aria-pressed', 'false');
-            toggle.textContent = 'Afficher';
+            toggle.setAttribute('aria-label', 'Afficher le mot de passe');
+            toggle.innerHTML = '<i class="fa-regular fa-eye" aria-hidden="true"></i>';
 
             toggle.addEventListener('click', () => {
                 const isHidden = input.type === 'password';
                 input.type = isHidden ? 'text' : 'password';
-                toggle.textContent = isHidden ? 'Masquer' : 'Afficher';
+                toggle.innerHTML = isHidden
+                    ? '<i class="fa-regular fa-eye-slash" aria-hidden="true"></i>'
+                    : '<i class="fa-regular fa-eye" aria-hidden="true"></i>';
+                toggle.setAttribute('aria-label', isHidden ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
                 toggle.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
             });
 

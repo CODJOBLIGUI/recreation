@@ -3563,4 +3563,15 @@ html {
 .password-toggle:hover {
     color: var(--color-accent);
     border-color: var(--color-accent);
+}.password-toggle {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle i {
+    font-size: 0.95rem;
 }
