@@ -308,3 +308,33 @@ font-size: 2rem;
   .footer-fayard__links { display: grid; gap: 0.4rem; justify-content: center; }
   .footer-fayard__links a { text-decoration: none; }
 }
+@media (max-width: 768px) {
+  /* Force mobile to look like desktop layout (compressed) */
+  .header__top, .header__bottom { max-width: 100%; }
+  .header__top { display: flex; flex-wrap: nowrap; gap: 0.5rem; align-items: center; }
+  .header__social { display: flex !important; }
+  .header__search { flex: 1; }
+  .header__newsletter { flex: 1; }
+  .header__nav { display: flex !important; }
+  .header__nav-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .header__nav-brand { font-size: 1.4rem; }
+
+  .hero__slide .container { grid-template-columns: minmax(170px, 40%) 1fr !important; }
+  .hero__visual { gap: 0.6rem; }
+  .hero__copy h2 { font-size: 1.1rem; }
+  .hero__copy p { font-size: 0.8rem; }
+
+  .new-releases .book-carousel__track,
+  .bestsellers .book-carousel__track,
+  .upcoming-releases .book-carousel__track {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+  .new-releases .book-card,
+  .bestsellers .book-card,
+  .upcoming-releases .book-card {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
