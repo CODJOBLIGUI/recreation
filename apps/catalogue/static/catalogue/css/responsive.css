@@ -454,3 +454,19 @@ font-size: 2rem;
   .hero__tagline { font-size: 0.45rem !important; line-height: 1.2 !important; margin-bottom: 0.45rem !important; }
   .hero .btn--primary { font-size: 0.45rem !important; padding: 0.22rem 0.5rem !important; }
 }
+@media (max-width: 768px) {
+  /* Mobile hero: keep text in its column (no spill under images) */
+  .hero__slide .container { grid-template-columns: minmax(120px, 40%) 1fr !important; }
+  .hero__image { align-self: center; }
+  .hero__content { min-width: 0; max-width: none; }
+  .hero__title,
+  .hero__author,
+  .hero__tagline {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .hero__title { -webkit-line-clamp: 2; }
+  .hero__author { -webkit-line-clamp: 1; }
+  .hero__tagline { -webkit-line-clamp: 3; }
+}
