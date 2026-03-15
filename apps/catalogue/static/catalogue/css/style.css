@@ -3252,23 +3252,21 @@ html {
 
 
 
-/* OVERRIDE: force horizontal cards on home sections */
+/* OVERRIDE: grid columns for home cards */
 .new-releases .book-grid,
 .bestsellers .book-grid,
 .upcoming-releases .book-grid {
-    display: flex !important;
+    display: grid !important;
     width: 100% !important;
-    flex-wrap: wrap !important;
-    flex-direction: row !important;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 2rem !important;
-    justify-content: flex-start !important;
-    align-items: stretch !important;
+    justify-items: start;
+    align-items: stretch;
 }
 
 .new-releases .book-card,
 .bestsellers .book-card,
 .upcoming-releases .book-card {
-    width: 240px !important;
-    max-width: 240px !important;
-    flex: 0 0 240px !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
