@@ -438,3 +438,19 @@ font-size: 2rem;
   .hero__copy p { font-size: 0.36rem !important; }
   .hero__copy .btn { font-size: 0.38rem !important; padding: 0.2rem 0.45rem !important; }
 }
+@media (max-width: 768px) {
+  /* Mobile hero: correct class selectors, keep text beside images */
+  .hero__slide .container {
+    grid-template-columns: minmax(120px, 38%) 1fr !important;
+    gap: 0.6rem !important;
+    align-items: center !important;
+  }
+  .hero__visual { gap: 6px !important; padding: 0 6px !important; flex-wrap: nowrap !important; }
+  .hero__author-photo { width: 90px !important; height: auto !important; }
+  .hero__book-cover { width: 100px !important; max-height: 140px !important; }
+  .hero__content { max-width: none !important; }
+  .hero__title { font-size: 0.6rem !important; margin-bottom: 0.3rem !important; }
+  .hero__author { font-size: 0.5rem !important; margin-bottom: 0.2rem !important; }
+  .hero__tagline { font-size: 0.45rem !important; line-height: 1.2 !important; margin-bottom: 0.45rem !important; }
+  .hero .btn--primary { font-size: 0.45rem !important; padding: 0.22rem 0.5rem !important; }
+}
