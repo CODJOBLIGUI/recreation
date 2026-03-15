@@ -102,7 +102,23 @@ def extract_text_from_file(file_field):
         except Exception as exc:
             raise RuntimeError("python-docx n'est pas installé.") from exc
         doc = Document(local_path)
-        return "\n".join(p.text for p in doc.paragraphs if p.text)
+        lines = []
+        # Paragraphs
+        for p in doc.paragraphs:
+            if p.text:
+                lines.append(p.text)
+        # Tables
+        for table in doc.tables:
+            for row in table.rows:
+                cells = []
+                for cell in row.cells:
+                    cell_text = " ".join(
+                        part.text.strip() for part in cell.paragraphs if part.text.strip()
+                    )
+                    cells.append(cell_text)
+                if any(cells):
+                    lines.append(" | ".join(cells))
+        return "\n".join(lines)
 
     if ext in {".pdf"}:
         try:
