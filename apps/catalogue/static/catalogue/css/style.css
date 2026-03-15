@@ -2612,6 +2612,7 @@ html {
     width: 100%;
     max-width: 260px;
     text-align: center;
+    flex: 0 0 260px;
 }
 
 .new-releases .book-card__info,
