@@ -229,3 +229,53 @@ video {
         font-size: 0.95rem;
     }
 }
+/* ========================================
+   MOBILE HERO DESKTOP STYLE
+   ======================================== */
+@media (max-width: 768px) {
+    .hero__slide .container {
+        grid-template-columns: minmax(170px, 38%) 1fr;
+        gap: 0.8rem;
+        align-items: center;
+    }
+
+    .hero__visual {
+        gap: 8px;
+    }
+
+    .hero__author-photo {
+        width: 120px;
+        height: 160px;
+    }
+
+    .hero__book-cover {
+        width: 120px;
+        max-height: 170px;
+    }
+
+    .hero__title {
+        font-size: 1.25rem;
+        line-height: 1.25;
+        margin-bottom: 0.4rem;
+    }
+
+    .hero__author {
+        font-size: 0.95rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .hero__tagline {
+        font-size: 0.85rem;
+        line-height: 1.35;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .hero__content .btn {
+        margin-top: 0.6rem;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+}
