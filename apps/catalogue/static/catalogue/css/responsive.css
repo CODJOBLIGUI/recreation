@@ -478,3 +478,8 @@ font-size: 2rem;
   }
   .hero__visual { justify-content: flex-start; }
 }
+@media (max-width: 768px) {
+  /* Mobile hero: reduce vertical padding so background fits images */
+  .hero__slide { padding-top: 1rem !important; padding-bottom: 1.2rem !important; }
+  .hero__carousel { padding-bottom: 0.5rem; }
+}
