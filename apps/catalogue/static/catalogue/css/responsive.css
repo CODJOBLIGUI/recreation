@@ -214,3 +214,18 @@ video {
         flex: 0 0 auto;
     }
 }
+/* ========================================
+   MOBILE NAV WRAP FIX
+   ======================================== */
+@media (max-width: 768px) {
+    .header__nav-list {
+        overflow-x: visible;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        row-gap: 0.35rem;
+    }
+
+    .header__nav-list a {
+        font-size: 0.95rem;
+    }
+}
