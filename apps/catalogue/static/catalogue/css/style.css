@@ -2606,46 +2606,6 @@ html {
     overflow: hidden;
 }
 
-.new-releases .book-card,
-.bestsellers .book-card,
-.upcoming-releases .book-card {
-    width: 100%;
-    max-width: 260px;
-    text-align: center;
-    flex: 0 0 260px;
-}
-
-.new-releases .book-card__info,
-.bestsellers .book-card__info,
-.upcoming-releases .book-card__info {
-    text-align: center;
-}
-
-.upcoming-releases .section__subtitle {
-    text-align: center;
-    margin: -1.5rem 0 2rem;
-    color: var(--color-text-light);
-}
-
-/* Alignement central du bloc livres dans la zone accueil */
-.new-releases .book-grid,
-.bestsellers .book-grid,
-.upcoming-releases .book-grid {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: flex-start;
-    align-items: stretch;
-}
-
-@media (max-width: 900px) {
-    .new-releases .book-grid,
-    .bestsellers .book-grid,
-    .upcoming-releases .book-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    }
-}
 
 /* Resserre les espacements du bloc Nouveautés */
 .new-releases .section__title {
@@ -3252,21 +3212,16 @@ html {
 
 
 
-/* OVERRIDE: grid columns for home cards */
-.new-releases .book-grid,
-.bestsellers .book-grid,
-.upcoming-releases .book-grid {
-    display: grid !important;
-    width: 100% !important;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 2rem !important;
-    justify-items: start;
-    align-items: stretch;
+
+
+.upcoming-releases .section__subtitle {
+    margin: -1.5rem 0 2rem;
+    color: var(--color-text-light);
 }
 
-.new-releases .book-card,
-.bestsellers .book-card,
-.upcoming-releases .book-card {
-    width: 100% !important;
-    max-width: 100% !important;
+
+.upcoming-releases .section__subtitle {
+    margin: -1.5rem 0 2rem;
+    color: var(--color-text-light);
 }
+
