@@ -201,7 +201,7 @@
 
     .header__actions {
         grid-area: actions;
-        grid-template-columns: 40px 1fr;
+        grid-template-columns: 1fr;
         gap: 0.6rem;
         width: 100%;
     }
@@ -310,16 +310,20 @@
         background: #f7f5f2;
         border: 1px solid var(--color-border);
         border-radius: 999px;
-        padding: 0.2rem 0.35rem;
+        padding: 0.25rem 0.5rem 0.25rem 2rem;
     }
 
     .header-search__icon {
-        position: static;
-        margin-left: 0.35rem;
+        position: absolute;
+        left: 0.6rem;
+        margin-left: 0;
     }
 
     .header-search input {
         background: transparent;
+        flex: 1;
+        min-width: 0;
+        max-width: none;
     }
     
     .footer-fayard__actions {
