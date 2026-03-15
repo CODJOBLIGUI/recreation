@@ -2630,11 +2630,12 @@ html {
 .new-releases .book-grid,
 .bestsellers .book-grid,
 .upcoming-releases .book-grid {
-    display: grid;
+    display: flex;
     width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    flex-wrap: wrap;
     gap: 2rem;
-    justify-content: start;
+    justify-content: flex-start;
+    align-items: stretch;
 }
 
 @media (max-width: 900px) {
