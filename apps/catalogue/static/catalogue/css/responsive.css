@@ -267,6 +267,12 @@
         left: 1.9rem;
         top: 0.1rem;
         background: #fff;
+        pointer-events: none;
+    }
+
+    .header-search input {
+        padding-top: 0.65rem;
+        line-height: 1.2;
     }
 
     .header__newsletter-form button {
