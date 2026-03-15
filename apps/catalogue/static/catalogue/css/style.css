@@ -2670,6 +2670,39 @@ html {
     text-align: center;
 }
 
+/* Grille des cartes (desktop) */
+.new-releases .book-carousel__track,
+.bestsellers .book-carousel__track,
+.upcoming-releases .book-carousel__track {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+    .new-releases .book-carousel__track,
+    .bestsellers .book-carousel__track,
+    .upcoming-releases .book-carousel__track {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .new-releases .book-carousel__track,
+    .bestsellers .book-carousel__track,
+    .upcoming-releases .book-carousel__track {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .new-releases .book-carousel__track,
+    .bestsellers .book-carousel__track,
+    .upcoming-releases .book-carousel__track {
+        grid-template-columns: 1fr;
+    }
+}
+
 .upcoming-releases .section__subtitle {
     text-align: center;
     margin: -1.5rem 0 2rem;
