@@ -158,6 +158,7 @@
         font-size: 0.85rem;
         padding: 0.35rem 0.6rem;
         min-width: 0;
+        max-width: 170px;
     }
 
     .header__newsletter-form button {
@@ -168,6 +169,7 @@
     .header-search input {
         font-size: 0.85rem;
         padding: 0.4rem 0.6rem 0.4rem 2rem;
+        max-width: 200px;
     }
 
     .header__hamburger {
@@ -348,6 +350,16 @@
 
     .header-search__btn {
         min-width: 88px;
+    }
+
+    .header__newsletter-form input {
+        max-width: 150px;
+        font-size: 0.8rem;
+    }
+
+    .header-search input {
+        max-width: 180px;
+        font-size: 0.8rem;
     }
 
     .new-releases .book-grid,
