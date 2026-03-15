@@ -1,5 +1,5 @@
-ï»¿/*
- * RESPONSIVE CSS SUPPLÃ‰MENTAIRE
+/*
+ * RESPONSIVE CSS SUPPLÉMENTAIRE
  * Ajustements pour tablettes et mobiles
  */
 
@@ -44,7 +44,7 @@
     }
 }
 
-/* Petits Ã©crans (max 768px) */
+/* Petits écrans (max 768px) */
 @media (max-width: 768px) {
     h1 { font-size: 2rem; }
     h2 { font-size: 1.75rem; }
@@ -94,15 +94,39 @@
         min-width: 0;
         flex: 1;
     }
-    
-        gap: 2rem;
+
+    .header__top {
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .header__brand {
+        order: 1;
+        flex: 1 1 auto;
+        min-width: 0;
+        gap: 0.5rem;
+    }
+
+    .header__social {
+        order: 2;
+        margin-left: auto;
+        gap: 0.4rem;
+        align-self: center;
+    }
+
+    .header-social__icon {
+        font-size: 0.9rem;
+    }
+
+    .header__actions {
+        order: 3;
+        width: 100%;
     }
     
-        font-size: 2rem;
-    }
 }
 
-/* TrÃ¨s petits Ã©crans (max 480px) */
+/* Très petits écrans (max 480px) */
 @media (max-width: 480px) {
     .book-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -202,10 +226,6 @@
         flex-direction: column;
     }
     
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
 }
 
 @media (max-width: 768px) {
@@ -302,7 +322,7 @@ font-size: 2rem;
     justify-content: space-between;
   }
   .footer-fayard__action i { opacity: 0.7; }
-  .footer-fayard__action::after { content: "â–¾"; margin-left: auto; opacity: 0.7; }
+  .footer-fayard__action::after { content: "?"; margin-left: auto; opacity: 0.7; }
 
   .footer-fayard__bottom { order: 4; text-align: center; }
   .footer-fayard__links { display: grid; gap: 0.4rem; justify-content: center; }
@@ -492,3 +512,4 @@ font-size: 2rem;
     border-radius: 999px;
   }
 }
+
