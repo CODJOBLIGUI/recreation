@@ -765,3 +765,58 @@ video {
         min-width: 0;
     }
 }
+/* ========================================
+   HEADER SEARCH - MOBILE MATCH DESKTOP
+   ======================================== */
+@media (max-width: 768px) {
+    .header-search {
+        display: flex !important;
+        width: 100% !important;
+        align-items: center;
+        gap: 0.5rem;
+        background: #ffffff;
+        border: 1px solid rgba(10, 24, 255, 0.18);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        border-radius: 999px;
+        padding: 0.45rem 0.75rem 0.45rem 2.2rem;
+        min-height: 44px;
+        max-width: none !important;
+        box-sizing: border-box;
+    }
+
+    .header-search__icon {
+        position: absolute;
+        left: 0.75rem;
+        color: rgba(10, 24, 255, 0.75);
+        font-size: 1rem;
+    }
+
+    .header-search input {
+        border: 0;
+        outline: none;
+        background: transparent;
+        font-size: 1rem;
+        min-width: 0;
+        max-width: none;
+        width: 100%;
+        color: var(--color-text);
+    }
+
+    .header-search input::placeholder {
+        color: rgba(44,44,44,0.55);
+    }
+
+    .header-search__btn {
+        border: 0;
+        background: var(--color-accent);
+        color: white;
+        padding: 0.55rem 1.1rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 6px 14px rgba(10,24,255,0.22);
+        min-width: unset;
+        white-space: nowrap;
+    }
+}
