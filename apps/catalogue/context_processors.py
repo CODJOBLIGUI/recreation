@@ -5,6 +5,9 @@ def global_context(request):
     """
     Contexte global pour tous les templates.
     """
+    if request.path.startswith("/admin/"):
+        return {}
+
     appearance = SiteAppearance.objects.first()
     collections = Collection.objects.filter(est_active=True).order_by("ordre_affichage", "nom")
 
@@ -43,12 +46,15 @@ def global_context(request):
         else:
             footer_menu_columns["Ressources"].append(link)
 
-    return {
-        "categories_list": Livre.CATEGORIES,
-        "collections_list": collections,
-        "appearance": appearance,
-        "social_links": social_links,
-        "menu_header_links": menu_header_links,
-        "menu_footer_links": menu_footer_links,
-        "footer_menu_columns": footer_menu_columns,
-    }
+    try:
+        return {
+            "categories_list": Livre.CATEGORIES,
+            "collections_list": collections,
+            "appearance": appearance,
+            "social_links": social_links,
+            "menu_header_links": menu_header_links,
+            "menu_footer_links": menu_footer_links,
+            "footer_menu_columns": footer_menu_columns,
+        }
+    except Exception:
+        return {}
