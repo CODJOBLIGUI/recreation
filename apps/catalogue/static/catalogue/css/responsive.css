@@ -385,3 +385,10 @@ font-size: 2rem;
   .hero__copy p { font-size: 0.75rem; }
   .hero__copy .btn { font-size: 0.75rem; padding: 0.4rem 0.7rem; }
 }
+@media (max-width: 768px) {
+  /* Reduce hero carousel text by ~45% on mobile */
+  .hero__copy h2 { font-size: 0.8rem !important; }
+  .hero__copy h3 { font-size: 0.65rem !important; }
+  .hero__copy p { font-size: 0.6rem !important; }
+  .hero__copy .btn { font-size: 0.6rem !important; padding: 0.35rem 0.6rem !important; }
+}
