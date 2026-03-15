@@ -137,6 +137,8 @@
                         <p class="book-card__author">{{ livre_suggere.auteurs_noms }}</p>
                         {% if livre_suggere.meta_description %}
                         <p class="book-card__meta-desc">{{ livre_suggere.meta_description|truncatewords:16 }}</p>
+                        {% elif livre_suggere.resume %}
+                        <p class="book-card__meta-desc">{{ livre_suggere.resume|truncatewords:16 }}</p>
                         {% endif %}
                     </div>
                 </div>

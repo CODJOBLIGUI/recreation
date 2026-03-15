@@ -97,6 +97,8 @@
                     <p class="book-card__author">{{ livre.auteurs_noms|highlight_query:recherche }}</p>
                     {% if livre.meta_description %}
                     <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:18|highlight_query:recherche }}</p>
+                    {% elif livre.resume %}
+                    <p class="book-card__meta-desc">{{ livre.resume|truncatewords:18|highlight_query:recherche }}</p>
                     {% endif %}
                 </div>
             

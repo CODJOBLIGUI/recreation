@@ -22,6 +22,8 @@
         {% endif %}
         {% if livre.meta_description %}
         <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+        {% elif livre.resume %}
+        <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
         {% endif %}
     </div>
 </div>
