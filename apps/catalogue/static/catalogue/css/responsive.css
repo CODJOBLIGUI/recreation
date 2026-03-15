@@ -305,6 +305,22 @@
     .header-search {
         width: 100%;
     }
+
+    .header-search {
+        background: #f7f5f2;
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
+        padding: 0.2rem 0.35rem;
+    }
+
+    .header-search__icon {
+        position: static;
+        margin-left: 0.35rem;
+    }
+
+    .header-search input {
+        background: transparent;
+    }
     
     .footer-fayard__actions {
         gap: 2rem;
