@@ -3707,3 +3707,14 @@ html {
 .book-carousel__controls {
     justify-content: center;
 }
+/* ========================================
+   BOOK CAROUSEL TRACK CENTER
+   ======================================== */
+.book-carousel__viewport {
+    display: flex;
+    justify-content: center;
+}
+
+.book-carousel__track {
+    justify-content: center;
+}
