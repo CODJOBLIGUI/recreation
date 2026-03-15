@@ -702,6 +702,35 @@ class AudioConversionGenerated(AudioConversionRequest):
         verbose_name_plural = "Audios générés"
 
 
+class AudioConversionChunk(TimeStampedModel):
+    """Segment audio généré pour une demande de conversion."""
+
+    request = models.ForeignKey(
+        AudioConversionRequest,
+        on_delete=models.CASCADE,
+        related_name="chunks",
+        verbose_name="Demande",
+    )
+    order = models.PositiveIntegerField(default=1, verbose_name="Ordre")
+    start_page = models.PositiveIntegerField(default=1, verbose_name="Page de début")
+    end_page = models.PositiveIntegerField(default=1, verbose_name="Page de fin")
+    audio = models.FileField(
+        upload_to="audio_requests/chunks/%Y/%m/",
+        blank=True,
+        null=True,
+        verbose_name="Audio (segment)",
+    )
+    error = models.TextField(blank=True, verbose_name="Erreur")
+
+    class Meta:
+        ordering = ["order"]
+        verbose_name = "Segment audio"
+        verbose_name_plural = "Segments audio"
+
+    def __str__(self):
+        return f"{self.request_id} - Partie {self.order}"
+
+
 class UserProfile(TimeStampedModel):
     """Profil utilisateur (infos complémentaires)."""
 

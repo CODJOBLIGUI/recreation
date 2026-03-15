@@ -38,6 +38,7 @@ from .models import (
     PageBlock,
     PrixLitteraire,
     AudioConversionRequest,
+    AudioConversionChunk,
     SoumissionManuscrit,
 )
 from apps.core.models import SiteAppearance
@@ -840,6 +841,8 @@ class AudioConversionView(LoginRequiredMixin, FormView):
         last_id = self.request.session.get("audio_request_id")
         if last_id:
             context["last_request"] = AudioConversionRequest.objects.filter(id=last_id).first()
+            if context["last_request"]:
+                context["last_request_chunks"] = context["last_request"].chunks.all()
             appearance = SiteAppearance.objects.first()
             if appearance and context["last_request"]:
                 tier = context["last_request"].payment_tier or 1
@@ -937,24 +940,62 @@ class AudioConversionView(LoginRequiredMixin, FormView):
                     return
 
                 obj.texte = text
-                obj.async_progress = 60
-                obj.save(update_fields=["texte", "async_progress", "updated_at"])
+                obj.save(update_fields=["texte", "updated_at"])
 
                 from gtts import gTTS
                 import uuid
 
-                slow = True if obj.voix == "slow" else False
-                tts = gTTS(text, lang=obj.langue, slow=slow)
-                audio_bytes = ContentFile(b"")
-                filename = f"conversion-{uuid.uuid4().hex}.mp3"
-                tts.write_to_fp(audio_bytes)
-                audio_bytes.seek(0)
-                obj.audio.save(filename, audio_bytes, save=False)
+                pages_count = obj.pages_count or estimate_pages_from_text(text)
+                pages_per_chunk = 50
+                chars_per_page = max(500, int(len(text) / max(pages_count, 1)))
+                chunk_size = chars_per_page * pages_per_chunk
+
+                chunks = []
+                start = 0
+                while start < len(text):
+                    end = min(start + chunk_size, len(text))
+                    if end < len(text):
+                        cut = text.rfind(" ", start, end)
+                        if cut > start + 200:
+                            end = cut
+                    chunk_text = text[start:end].strip()
+                    if chunk_text:
+                        chunks.append(chunk_text)
+                    start = end
+
+                if not chunks:
+                    chunks = [text]
+
+                AudioConversionChunk.objects.filter(request=obj).delete()
+                total_chunks = len(chunks)
+
+                for index, chunk_text in enumerate(chunks, start=1):
+                    start_page = (index - 1) * pages_per_chunk + 1
+                    end_page = min(index * pages_per_chunk, pages_count)
+                    chunk = AudioConversionChunk.objects.create(
+                        request=obj,
+                        order=index,
+                        start_page=start_page,
+                        end_page=end_page,
+                    )
+
+                    slow = True if obj.voix == "slow" else False
+                    tts = gTTS(chunk_text, lang=obj.langue, slow=slow)
+                    audio_bytes = ContentFile(b"")
+                    filename = f"conversion-{uuid.uuid4().hex}-part{index}.mp3"
+                    tts.write_to_fp(audio_bytes)
+                    audio_bytes.seek(0)
+                    chunk.audio.save(filename, audio_bytes, save=False)
+                    chunk.save(update_fields=["audio", "updated_at"])
+
+                    obj.async_progress = int((index / total_chunks) * 100)
+                    obj.save(update_fields=["async_progress", "updated_at"])
+
                 obj.async_status = "finished"
                 obj.async_progress = 100
                 obj.async_finished_at = timezone.now()
                 obj.statut = "delivered" if obj.paiement_requis else "free_generated"
-                obj.save(update_fields=["audio", "statut", "async_status", "async_progress", "async_finished_at", "updated_at"])
+                obj.save(update_fields=["statut", "async_status", "async_progress", "async_finished_at", "updated_at"])
             except Exception as exc:
                 obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
                 if not obj:
@@ -1025,6 +1066,7 @@ def conversion_status(request, demande_id):
             "progress": demande.async_progress,
             "error": demande.async_error,
             "audio_url": demande.audio.url if demande.audio else "",
+            "has_chunks": demande.chunks.filter(audio__isnull=False).exists(),
             "statut": demande.statut,
             "payment_required": demande.paiement_requis,
         }

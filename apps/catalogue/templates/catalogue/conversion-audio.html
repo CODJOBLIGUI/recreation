@@ -51,10 +51,22 @@
         {% if last_request and last_request.audio and not last_request.paiement_requis %}
             <div class="cta-box conversion-audio__result">
                 <h2 class="cta-box__title">Votre audio est prêt</h2>
-                <audio controls class="conversion-audio__player">
-                    <source src="{{ last_request.audio.url }}" type="audio/mpeg">
-                </audio>
-                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                {% if last_request_chunks %}
+                    <div class="conversion-audio__chunk-list">
+                        {% for chunk in last_request_chunks %}
+                            {% if chunk.audio %}
+                                <a class="btn btn--primary btn--large" href="{{ chunk.audio.url }}" download>
+                                    Télécharger l’audio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <audio controls class="conversion-audio__player">
+                        <source src="{{ last_request.audio.url }}" type="audio/mpeg">
+                    </audio>
+                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                {% endif %}
                 {% if last_request.texte %}
                 <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
                 {% endif %}
@@ -62,10 +74,22 @@
         {% elif last_request and last_request.audio and last_request.statut == "paid" %}
             <div class="cta-box conversion-audio__result">
                 <h2 class="cta-box__title">Votre audio est prêt</h2>
-                <audio controls class="conversion-audio__player">
-                    <source src="{{ last_request.audio.url }}" type="audio/mpeg">
-                </audio>
-                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                {% if last_request_chunks %}
+                    <div class="conversion-audio__chunk-list">
+                        {% for chunk in last_request_chunks %}
+                            {% if chunk.audio %}
+                                <a class="btn btn--primary btn--large" href="{{ chunk.audio.url }}" download>
+                                    Télécharger l’audio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <audio controls class="conversion-audio__player">
+                        <source src="{{ last_request.audio.url }}" type="audio/mpeg">
+                    </audio>
+                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                {% endif %}
                 {% if last_request.texte %}
                 <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
                 {% endif %}
@@ -73,10 +97,22 @@
         {% elif last_request and last_request.audio and last_request.statut == "delivered" %}
             <div class="cta-box conversion-audio__result">
                 <h2 class="cta-box__title">Votre audio est prêt</h2>
-                <audio controls class="conversion-audio__player">
-                    <source src="{{ last_request.audio.url }}" type="audio/mpeg">
-                </audio>
-                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                {% if last_request_chunks %}
+                    <div class="conversion-audio__chunk-list">
+                        {% for chunk in last_request_chunks %}
+                            {% if chunk.audio %}
+                                <a class="btn btn--primary btn--large" href="{{ chunk.audio.url }}" download>
+                                    Télécharger l’audio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <audio controls class="conversion-audio__player">
+                        <source src="{{ last_request.audio.url }}" type="audio/mpeg">
+                    </audio>
+                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                {% endif %}
                 {% if last_request.texte %}
                 <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
                 {% endif %}
@@ -251,7 +287,7 @@
                     .then((data) => {
                         if (!data || !data.ok) return;
                         updateProgress(data);
-                        if (data.status === "finished" && data.audio_url) {
+                        if (data.status === "finished" && (data.audio_url || data.has_chunks)) {
                             polling = false;
                             window.location.reload();
                         }
