@@ -701,3 +701,57 @@ font-size: 2rem;
     }
 }
 
+
+/* ===============================
+   UNIFORMISATION MULTI-ÉCRANS
+   =============================== */
+:root {
+    --container-max: 1200px;
+    --container-pad: clamp(16px, 3vw, 28px);
+    --title-scale: clamp(1.6rem, 3.2vw, 2.6rem);
+    --subtitle-scale: clamp(0.95rem, 1.6vw, 1.15rem);
+}
+
+.container {
+    width: min(var(--container-max), 100% - (var(--container-pad) * 2));
+}
+
+.container--narrow {
+    width: min(800px, 100% - (var(--container-pad) * 2));
+}
+
+.section {
+    padding: clamp(2.5rem, 4vw, 4rem) 0;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+.page-hero__title {
+    font-size: var(--title-scale);
+}
+
+.page-hero__subtitle {
+    font-size: var(--subtitle-scale);
+}
+
+.book-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.book-card__title {
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+}
+
+.book-card__author,
+.book-card__meta-desc {
+    font-size: clamp(0.85rem, 1.4vw, 1rem);
+}
+
+.header__nav-list {
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+}
