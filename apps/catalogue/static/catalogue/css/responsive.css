@@ -421,6 +421,10 @@
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .catalogue-filters .filters {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ========================================
@@ -438,6 +442,43 @@
     
     .header__hamburger {
         display: none;
+    }
+
+    /* Catalogue filters: stack and fit within mobile width */
+    .catalogue-filters .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .catalogue-filters .search-box {
+        width: 100%;
+    }
+
+    .catalogue-filters .search-box input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .catalogue-filters .search-box__btn {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .catalogue-filters .filters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+        width: 100%;
+    }
+
+    .catalogue-filters .filters select {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .catalogue-filters .results-count {
+        font-size: 0.9rem;
     }
     
     .hero__slide .container {
