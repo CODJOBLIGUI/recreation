@@ -76,3 +76,108 @@ body {
 .book-carousel__track {
     justify-content: flex-start;
 }
+/* ========================================
+   MOBILE OPTIMISÉ MAIS FIDÈLE
+   ======================================== */
+@media (max-width: 900px) {
+    .container { width: 94%; }
+    .section { padding: 2.75rem 0; }
+    .header__top { gap: 0.6rem; }
+}
+
+@media (max-width: 768px) {
+    .header__top {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "brand social"
+            "actions actions";
+        align-items: center;
+        gap: 0.6rem 0.8rem;
+    }
+
+    .header__brand { grid-area: brand; }
+    .header__social { grid-area: social; gap: 0.35rem; }
+    .header__actions {
+        grid-area: actions;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+        width: 100%;
+    }
+
+    .header__newsletter-form,
+    .header-search {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .header__nav {
+        width: 100%;
+    }
+
+    .header__nav-list {
+        flex-wrap: wrap;
+        gap: 0.5rem 0.75rem;
+    }
+
+    .page-hero__title { font-size: 1.8rem; }
+    .page-hero__subtitle { font-size: 1rem; }
+
+    .hero__slide .container {
+        grid-template-columns: minmax(160px, 42%) 1fr;
+        gap: 0.75rem;
+        align-items: center;
+    }
+
+    .book-grid,
+    .new-releases .book-grid,
+    .bestsellers .book-grid,
+    .upcoming-releases .book-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .book-card__title { font-size: 1rem; }
+    .book-card__author,
+    .book-card__meta-desc { font-size: 0.9rem; }
+
+    .catalogue-filters .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .catalogue-filters .search-box,
+    .catalogue-filters .search-box input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .catalogue-filters .filters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+        width: 100%;
+    }
+
+    .catalogue-filters .filters select { width: 100%; }
+
+    .actualites-grid,
+    .team-grid,
+    .contrats__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .header__social { display: none; }
+    .hero__slide .container { grid-template-columns: 1fr; }
+    .book-grid,
+    .new-releases .book-grid,
+    .bestsellers .book-grid,
+    .upcoming-releases .book-grid {
+        grid-template-columns: 1fr;
+    }
+    .tabs { flex-wrap: wrap; gap: 0.5rem; }
+}
