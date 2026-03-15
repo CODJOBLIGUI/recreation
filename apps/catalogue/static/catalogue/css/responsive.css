@@ -305,3 +305,11 @@ video {
     .hero__author { font-size: 0.85rem; }
     .hero__tagline { font-size: 0.75rem; -webkit-line-clamp: 3; }
 }
+/* ========================================
+   MOBILE FOOTER SIZE
+   ======================================== */
+@media (max-width: 768px) {
+    .footer-fayard__logo { font-size: 1.6rem; }
+    .footer-fayard__slogan,
+    .footer-fayard__address { font-size: 0.85rem; line-height: 1.3; }
+}
