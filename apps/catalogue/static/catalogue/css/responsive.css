@@ -387,7 +387,11 @@
 
 @media (max-width: 768px) {
     .header__nav {
-        display: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        width: 100%;
     }
     
     .header__hamburger {
@@ -463,6 +467,40 @@
 @media (max-width: 768px) {
 .page-hero__title {
 font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+    .header__nav-brand {
+        font-size: 1.6rem;
+    }
+
+    .header__nav-list {
+        flex-wrap: wrap;
+        gap: 0.5rem 0.75rem;
+    }
+
+    .header__nav-list a {
+        font-size: 0.85rem;
+    }
+
+    .nav-menu-btn {
+        padding: 0.35rem 0.7rem;
+        font-size: 0.75rem;
+    }
+
+    .header__newsletter-form .sr-only,
+    .header-search .sr-only {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 0 0.25rem 0 !important;
+        overflow: visible !important;
+        clip: auto !important;
+        white-space: normal !important;
+        display: block !important;
+        font-size: 0.75rem;
+        color: var(--color-text-light);
+    }
 }
 .contrats__grid {
     grid-template-columns: 1fr;
