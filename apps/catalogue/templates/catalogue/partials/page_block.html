@@ -284,7 +284,11 @@
                 </div>
                 <div class="book-card__info">
                     <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    <p class="book-card__author">
+                        {% for auteur in livre.auteurs.all %}
+                            <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+                        {% endfor %}
+                    </p>
                     {% if livre.meta_description %}
                     <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
                     {% endif %}
@@ -315,7 +319,11 @@
                 </div>
                 <div class="book-card__info">
                     <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    <p class="book-card__author">
+                        {% for auteur in livre.auteurs.all %}
+                            <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+                        {% endfor %}
+                    </p>
                     {% if livre.meta_description %}
                     <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
                     {% endif %}
@@ -349,7 +357,11 @@
                 </div>
                 <div class="book-card__info">
                     <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    <p class="book-card__author">
+                        {% for auteur in livre.auteurs.all %}
+                            <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+                        {% endfor %}
+                    </p>
                     {% if livre.meta_description %}
                     <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
                     {% endif %}
