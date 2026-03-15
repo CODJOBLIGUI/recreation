@@ -409,3 +409,12 @@ font-size: 2rem;
   .filters { flex-wrap: wrap; gap: 0.5rem; }
   .filters select { padding: 0.5rem 0.7rem; font-size: 0.7rem; }
 }
+@media (max-width: 768px) {
+  /* Mobile hero: smaller images + much smaller text in column 2 */
+  .hero__visual .hero__author { width: 90px !important; }
+  .hero__visual .hero__book { width: 100px !important; }
+  .hero__copy h2 { font-size: 0.55rem !important; }
+  .hero__copy h3 { font-size: 0.45rem !important; }
+  .hero__copy p { font-size: 0.42rem !important; }
+  .hero__copy .btn { font-size: 0.45rem !important; padding: 0.25rem 0.5rem !important; }
+}
