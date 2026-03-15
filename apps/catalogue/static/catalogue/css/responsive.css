@@ -231,6 +231,7 @@
     .header-search {
         max-width: 100%;
         box-sizing: border-box;
+        flex-wrap: nowrap;
     }
 
     .header__newsletter-form .sr-only,
@@ -436,31 +437,31 @@
     }
     
     .hero__slide .container {
-        grid-template-columns: 1.05fr 0.95fr;
+        grid-template-columns: 0.95fr 1.05fr;
         gap: 1rem;
         align-items: center;
     }
     
     .hero__image {
-        order: 2;
+        order: 1;
     }
 
     .hero__content {
-        order: 1;
+        order: 2;
         text-align: left;
     }
 
     .hero__title {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
     .hero__author {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         letter-spacing: 0.02em;
     }
 
     .hero__tagline {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         line-height: 1.4;
         margin-bottom: 0.8rem;
     }
@@ -478,14 +479,14 @@
     }
 
     .hero__author-photo {
-        width: 122px;
-        height: 170px;
+        width: 110px;
+        height: 150px;
     }
 
     .hero__book-cover {
-        width: 108px;
+        width: 100px;
         height: auto;
-        max-height: 164px;
+        max-height: 150px;
         top: auto;
         right: auto;
         transform: none;
