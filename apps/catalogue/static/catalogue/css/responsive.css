@@ -513,3 +513,36 @@ font-size: 2rem;
   }
 }
 
+
+/* OVERRIDE: align social icons with newsletter on mobile */
+@media (max-width: 768px) {
+  .header__top {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+  }
+
+  .header__brand {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    gap: 0.4rem !important;
+  }
+
+  .header__social {
+    display: flex !important;
+    margin-left: auto !important;
+    gap: 0.35rem !important;
+    align-self: center !important;
+  }
+
+  .header-social__icon {
+    font-size: 0.85rem !important;
+  }
+
+  .header__actions {
+    width: 100% !important;
+    order: 3 !important;
+  }
+}
