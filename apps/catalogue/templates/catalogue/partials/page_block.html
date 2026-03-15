@@ -45,7 +45,7 @@
         <div class="page-block__grid">
             {% for item in block.items.all %}
             {% if item.est_actif %}
-            <article class="page-block__card">
+            <article class="page-block__card{% if item.image %} page-block__card--media{% endif %}">
                 {% if item.icone %}<i class="{{ item.icone }}"></i>{% endif %}
                 {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.titre|default:'Image' }}">{% endif %}
                 {% if item.titre %}<h3>{{ item.titre }}</h3>{% endif %}
@@ -70,7 +70,7 @@
         <div class="page-block__carousel">
             {% for item in block.items.all %}
             {% if item.est_actif %}
-            <article class="page-block__slide">
+            <article class="page-block__slide{% if item.image %} page-block__slide--media{% endif %}">
                 {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.titre|default:'Slide' }}">{% endif %}
                 {% if item.titre %}<h3>{{ item.titre }}</h3>{% endif %}
                 {% if item.contenu %}<div class="page-block__card-text">{{ item.contenu|safe }}</div>{% endif %}
@@ -287,8 +287,6 @@
                     <p class="book-card__author">{{ livre.auteurs_noms }}</p>
                     {% if livre.meta_description %}
                     <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                    {% elif livre.resume %}
-                    <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
                     {% endif %}
                 </div>
             </div>
@@ -320,8 +318,6 @@
                     <p class="book-card__author">{{ livre.auteurs_noms }}</p>
                     {% if livre.meta_description %}
                     <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                    {% elif livre.resume %}
-                    <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
                     {% endif %}
                 </div>
             </div>
@@ -356,8 +352,6 @@
                     <p class="book-card__author">{{ livre.auteurs_noms }}</p>
                     {% if livre.meta_description %}
                     <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                    {% elif livre.resume %}
-                    <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
                     {% endif %}
                     <p class="book-card__date">Parution : {{ livre.parution|date:"F Y" }}</p>
                 </div>
