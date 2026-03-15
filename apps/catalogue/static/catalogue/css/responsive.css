@@ -470,3 +470,11 @@ font-size: 2rem;
   .hero__author { -webkit-line-clamp: 1; }
   .hero__tagline { -webkit-line-clamp: 3; }
 }
+@media (max-width: 768px) {
+  /* Mobile hero: shift divider to the right so text starts after visuals */
+  .hero__slide .container {
+    grid-template-columns: minmax(150px, 55%) 1fr !important;
+    gap: 0.75rem !important;
+  }
+  .hero__visual { justify-content: flex-start; }
+}
