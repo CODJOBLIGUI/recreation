@@ -338,3 +338,30 @@ font-size: 2rem;
     max-width: none !important;
   }
 }
+@media (max-width: 768px) {
+  /* Mobile header: remove extra menu, fit search/social, place nav under brand */
+  .header__hamburger { display: none !important; }
+
+  .header__top {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .header__brand { flex: 1 1 100%; align-items: center; gap: 0.5rem; }
+  .header__logo img { max-height: 48px; }
+  .header__newsletter-form { padding: 0.2rem 0.35rem; }
+  .header__newsletter-form input { min-width: 90px; font-size: 0.75rem; }
+  .header__newsletter-form button { font-size: 0.7rem; padding: 0.2rem 0.5rem; }
+
+  .header__actions { flex: 1 1 100%; }
+  .header-search { width: 100%; max-width: 100%; }
+  .header-search input { min-width: 0; font-size: 0.75rem; }
+  .header-search__btn { font-size: 0.7rem; padding: 0.25rem 0.5rem; }
+
+  .header__social { flex: 1 1 100%; justify-content: flex-end; gap: 0.4rem; }
+  .header-social__icon { font-size: 0.85rem; }
+
+  .header__nav { flex-wrap: wrap; gap: 0.5rem; }
+  .header__nav-brand { flex: 0 0 100%; font-size: 1.5rem; }
+  .header__nav-list { flex: 1 1 auto; flex-wrap: wrap; gap: 0.6rem; font-size: 0.8rem; }
+  .nav-menu-btn { margin-left: auto; transform: scale(0.9); }
+}
