@@ -3656,9 +3656,9 @@ html {
     box-shadow: 0 10px 18px rgba(0,0,0,0.12);
 }
 
-.book-carousel__viewport {\r\n    overflow: visible;\r\n    padding-bottom: 0.5rem;\r\n}
+.book-carousel__viewport {\r\n    overflow: hidden;\r\n}
 
-.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 1.2rem;\r\n    overflow-x: auto;\r\n    padding-bottom: 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: stretch;\r\n}
+.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 1.2rem;\r\n    overflow-x: auto;\r\n    padding: 0 16px 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: stretch;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0 16px;\r\n}
 
 .book-carousel__track::-webkit-scrollbar {
     height: 8px;
@@ -3700,9 +3700,9 @@ html {
 /* ========================================
    BOOK CAROUSEL TRACK CENTER
    ======================================== */
-.book-carousel__viewport {\r\n    overflow: visible;\r\n    padding-bottom: 0.5rem;\r\n}
+.book-carousel__viewport {\r\n    overflow: hidden;\r\n}
 
-.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 1.2rem;\r\n    overflow-x: auto;\r\n    padding-bottom: 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: stretch;\r\n}
+.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 1.2rem;\r\n    overflow-x: auto;\r\n    padding: 0 16px 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: stretch;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0 16px;\r\n}
 /* ========================================
    BOOK CAROUSEL ZOOM
    ======================================== */
