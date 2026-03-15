@@ -3695,3 +3695,15 @@ html {
         flex: 0 0 80vw;
     }
 }
+/* ========================================
+   BOOK CAROUSEL CENTER (HOME)
+   ======================================== */
+.section__header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.book-carousel__controls {
+    justify-content: center;
+}
