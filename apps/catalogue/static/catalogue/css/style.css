@@ -2632,8 +2632,9 @@ html {
 .upcoming-releases .book-grid {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 250px));
-    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    justify-content: start;
 }
 
 /* Resserre les espacements du bloc Nouveautés */
