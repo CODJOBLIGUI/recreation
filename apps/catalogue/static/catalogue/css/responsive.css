@@ -431,3 +431,10 @@ font-size: 2rem;
   .hero__copy p { max-width: 100%; }
   .hero__copy p { line-height: 1.2; }
 }
+@media (max-width: 768px) {
+  /* Mobile hero: even smaller text + button */
+  .hero__copy h2 { font-size: 0.45rem !important; }
+  .hero__copy h3 { font-size: 0.38rem !important; }
+  .hero__copy p { font-size: 0.36rem !important; }
+  .hero__copy .btn { font-size: 0.38rem !important; padding: 0.2rem 0.45rem !important; }
+}
