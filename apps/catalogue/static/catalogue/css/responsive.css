@@ -432,21 +432,42 @@
     }
     
     .header__hamburger {
-        display: flex;
+        display: none;
     }
     
     .hero__slide .container {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 1rem;
+        align-items: center;
     }
     
     .hero__image {
-        order: 1;
+        order: 2;
     }
 
     .hero__content {
-        order: 2;
+        order: 1;
         text-align: left;
+    }
+
+    .hero__title {
+        font-size: 1.1rem;
+    }
+
+    .hero__author {
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+    }
+
+    .hero__tagline {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        margin-bottom: 0.8rem;
+    }
+
+    .hero .btn--primary {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.85rem;
     }
 
     .hero__visual {
