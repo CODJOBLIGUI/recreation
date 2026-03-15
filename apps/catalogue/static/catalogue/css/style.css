@@ -3718,3 +3718,15 @@ html {
 .book-carousel__track {
     justify-content: center;
 }
+/* ========================================
+   BOOK CAROUSEL ZOOM
+   ======================================== */
+.book-carousel__track .book-card {
+    transform: scale(0.96);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.book-carousel__track .book-card.book-card--active {
+    transform: scale(1.02);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
