@@ -895,6 +895,8 @@ body.nav-drawer-open {
     object-fit: contain !important;
     object-position: center;
     transition: var(--transition-smooth);
+    border-radius: inherit;
+    display: block;
 }
 
 .book-card:hover .book-card__cover img {
