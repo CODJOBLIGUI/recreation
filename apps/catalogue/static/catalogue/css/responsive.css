@@ -178,3 +178,39 @@ video {
         flex: 0 0 auto;
     }
 }
+/* ========================================
+   MOBILE HEADER NAV LINE
+   ======================================== */
+@media (max-width: 768px) {
+    .header__nav {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        width: 100%;
+        margin-top: 0.2rem;
+    }
+
+    .header__nav-brand a {
+        font-size: 1.6rem;
+    }
+
+    .header__nav-list {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.7rem;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .header__nav-list a {
+        white-space: nowrap;
+    }
+
+    .header__nav .header__menu-btn,
+    .header__nav .nav-menu-btn,
+    #nav-menu-btn {
+        flex: 0 0 auto;
+    }
+}
