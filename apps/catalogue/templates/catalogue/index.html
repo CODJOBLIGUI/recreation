@@ -49,7 +49,13 @@
 <!-- Section Nouveautés -->
 <section class="new-releases section" id="nouveautes">
     <div class="container">
-        <h2 class="section__title">Nouveautés</h2>
+        <div class="section__header">
+            <h2 class="section__title">Nouveautés</h2>
+            <div class="book-carousel__controls">
+                <button class="book-carousel__btn" type="button" data-book-action="prev" data-book-target="nouveautes" aria-label="Nouveautés précédentes">&lt;</button>
+                <button class="book-carousel__btn" type="button" data-book-action="next" data-book-target="nouveautes" aria-label="Nouveautés suivantes">&gt;</button>
+            </div>
+        </div>
         
         <!-- Onglets de catégories -->
         <div class="tabs">
@@ -63,29 +69,32 @@
             <button class="tabs__btn" data-category="nouvelles" aria-pressed="false">Nouvelles</button>
         </div>
         
-        <!-- Grille de livres -->
-        <div class="book-grid">
-            {% for livre in nouveautes %}
-            <div class="book-card" data-category="{{ livre.categorie }}">
-                <div class="book-card__cover">
-                    {% if livre.image_par_defaut %}
-                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
-                    {% endif %}
-                    <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
+        <div class="book-carousel" data-book-carousel="nouveautes">
+            <div class="book-carousel__viewport">
+                <div class="book-carousel__track">
+                    {% for livre in nouveautes %}
+                    <div class="book-card" data-category="{{ livre.categorie }}">
+                        <div class="book-card__cover">
+                            {% if livre.image_par_defaut %}
+                            <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                            {% endif %}
+                            <div class="book-card__overlay">
+                                <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
+                            </div>
+                        </div>
+                        <div class="book-card__info">
+                            <h3 class="book-card__title">{{ livre.titre }}</h3>
+                            <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                            {% if livre.meta_description %}
+                            <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                            {% elif livre.resume %}
+                            <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-                <div class="book-card__info">
-                    <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
-                    {% if livre.meta_description %}
-                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                    {% elif livre.resume %}
-                    <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
-                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}
         </div>
     </div>
 </section>
@@ -93,10 +102,18 @@
 <!-- Section Meilleures Ventes -->
 <section class="bestsellers section bg-light" id="meilleures-ventes">
     <div class="container">
-        <h2 class="section__title">Meilleures Ventes</h2>
-        <div class="bestsellers__carousel book-grid">
-            {% for livre in bestsellers %}
-            <div class="book-card">
+        <div class="section__header">
+            <h2 class="section__title">Meilleures Ventes</h2>
+            <div class="book-carousel__controls">
+                <button class="book-carousel__btn" type="button" data-book-action="prev" data-book-target="meilleures-ventes" aria-label="Meilleures ventes précédentes">&lt;</button>
+                <button class="book-carousel__btn" type="button" data-book-action="next" data-book-target="meilleures-ventes" aria-label="Meilleures ventes suivantes">&gt;</button>
+            </div>
+        </div>
+        <div class="book-carousel" data-book-carousel="meilleures-ventes">
+            <div class="book-carousel__viewport">
+                <div class="book-carousel__track">
+                    {% for livre in bestsellers %}
+                    <div class="book-card">
                 <div class="book-card__cover">
                     <div class="bestsellers__rank">#{{ forloop.counter }}</div>
                     {% if livre.image_par_defaut %}
@@ -116,7 +133,9 @@
                     {% endif %}
                 </div>
             </div>
-            {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -125,12 +144,22 @@
 <!-- Section Prochaines Parutions -->
 <section class="upcoming-releases section bg-light" id="a-paraitre">
     <div class="container">
-        <h2 class="section__title">Prochaines Parutions</h2>
-        <p class="section__subtitle">Découvrez les livres qui paraîtront bientôt</p>
+        <div class="section__header">
+            <div>
+                <h2 class="section__title">Prochaines Parutions</h2>
+                <p class="section__subtitle">Découvrez les livres qui paraîtront bientôt</p>
+            </div>
+            <div class="book-carousel__controls">
+                <button class="book-carousel__btn" type="button" data-book-action="prev" data-book-target="a-paraitre" aria-label="Prochaines parutions précédentes">&lt;</button>
+                <button class="book-carousel__btn" type="button" data-book-action="next" data-book-target="a-paraitre" aria-label="Prochaines parutions suivantes">&gt;</button>
+            </div>
+        </div>
         
-        <div class="book-grid">
-            {% for livre in prochaines_parutions %}
-            <div class="book-card upcoming-book">
+        <div class="book-carousel" data-book-carousel="a-paraitre">
+            <div class="book-carousel__viewport">
+                <div class="book-carousel__track">
+                    {% for livre in prochaines_parutions %}
+                    <div class="book-card upcoming-book">
                 <div class="book-card__cover">
                     {% if livre.image_par_defaut %}
                     <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
@@ -154,9 +183,11 @@
                     <p class="book-card__date">Parution : {{ livre.parution|date:"F Y" }}</p>
                 </div>
             </div>
-            {% empty %}
-            <p class="no-content">Aucune prochaine parution pour le moment.</p>
-            {% endfor %}
+                    {% empty %}
+                    <p class="no-content">Aucune prochaine parution pour le moment.</p>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 </section>
