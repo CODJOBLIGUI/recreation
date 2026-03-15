@@ -31,7 +31,7 @@
 
             function getStep() {
                 var width = items[0].getBoundingClientRect().width;
-                return width + getGap();
+                return track.clientWidth;
             }
 
             var step = getStep();
@@ -132,7 +132,7 @@
         return;
     }
 
-    var step = items[0].getBoundingClientRect().width + 16;
+    var step = track.clientWidth;
     var autoTimer = null;
 
     function scrollNext() {
@@ -154,7 +154,7 @@
 
     function startAuto() {
         stopAuto();
-        autoTimer = setInterval(scrollNext, 4500);
+        autoTimer = setInterval(scrollNext, 5000);
     }
 
     function stopAuto() {

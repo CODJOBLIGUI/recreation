@@ -3658,7 +3658,7 @@ html {
 
 .book-carousel__viewport {\r\n    overflow: hidden;\r\n}
 
-.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 1.2rem;\r\n    overflow-x: auto;\r\n    padding: 0 16px 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: stretch;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0 16px;\r\n}
+.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 0;\r\n    overflow-x: auto;\r\n    padding: 0 0 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0;\r\n}
 
 .book-carousel__track::-webkit-scrollbar {
     height: 8px;
@@ -3669,21 +3669,14 @@ html {
     border-radius: 999px;
 }
 
-.book-carousel__track .book-card {
-    flex: 0 0 clamp(200px, 26vw, 260px);
-    scroll-snap-align: start;
-}
+.book-carousel__track .book-card {\r\n    flex: 0 0 100%;\r\n    max-width: 520px;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    scroll-snap-align: center;\r\n    transform: scale(0.98);\r\n    transition: transform 0.35s ease, box-shadow 0.35s ease;\r\n}
 
 @media (max-width: 768px) {
-    .book-carousel__track .book-card {
-        flex: 0 0 min(78vw, 280px);
-    }
+    .book-carousel__track .book-card {\r\n    flex: 0 0 100%;\r\n    max-width: 520px;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    scroll-snap-align: center;\r\n    transform: scale(0.98);\r\n    transition: transform 0.35s ease, box-shadow 0.35s ease;\r\n}
 }
 
 @media (max-width: 480px) {
-    .book-carousel__track .book-card {
-        flex: 0 0 80vw;
-    }
+    .book-carousel__track .book-card {\r\n    flex: 0 0 100%;\r\n    max-width: 520px;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    scroll-snap-align: center;\r\n    transform: scale(0.98);\r\n    transition: transform 0.35s ease, box-shadow 0.35s ease;\r\n}
 }
 /* ========================================
    BOOK CAROUSEL CENTER (HOME)
@@ -3702,16 +3695,28 @@ html {
    ======================================== */
 .book-carousel__viewport {\r\n    overflow: hidden;\r\n}
 
-.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 1.2rem;\r\n    overflow-x: auto;\r\n    padding: 0 16px 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: stretch;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0 16px;\r\n}
+.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 0;\r\n    overflow-x: auto;\r\n    padding: 0 0 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0;\r\n}
 /* ========================================
    BOOK CAROUSEL ZOOM
    ======================================== */
-.book-carousel__track .book-card {
-    transform: scale(0.96);
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
-}
+.book-carousel__track .book-card {\r\n    flex: 0 0 100%;\r\n    max-width: 520px;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    scroll-snap-align: center;\r\n    transform: scale(0.98);\r\n    transition: transform 0.35s ease, box-shadow 0.35s ease;\r\n}
 
 .book-carousel__track .book-card.book-card--active {
     transform: scale(1.02);
     box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+/* ========================================
+   NEWS TICKER SINGLE CARD
+   ======================================== */
+.news-ticker__track {
+    gap: 0;
+    scroll-snap-type: x mandatory;
+}
+
+.news-ticker__item {
+    flex: 0 0 100%;
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+    scroll-snap-align: center;
 }
