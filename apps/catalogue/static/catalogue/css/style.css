@@ -1,4 +1,4 @@
-ï»¿/* ========================================
+/* ========================================
    VARIABLES CSS
    ======================================== */
 
@@ -7,7 +7,7 @@
     --color-primary: #F5F1E8;      /* Beige chaud */
     --color-white: #FFFFFF;
     --color-text: #2C2C2C;         /* Charbon */
-    --color-text-light: #4A4A4A;   /* Gris foncÃ© */
+    --color-text-light: #4A4A4A;   /* Gris foncé */
     --color-accent: #0A18FF;      /* Bleu logo */
     --color-accent-dark: #001FD8; /* Bleu logo fonce */
     --color-border: #E0D9CD;
@@ -1751,7 +1751,7 @@ body.nav-drawer-open {
     background-color: var(--color-accent);
 }
 
-/* A PROPOS - fond avec icÃ´nes reliÃ©es */
+/* A PROPOS - fond avec icônes reliées */
 .page-hero--about {
     position: relative;
     overflow: hidden;
@@ -2017,7 +2017,7 @@ body.nav-drawer-open {
 
 
 /* ========================================
-   Ã‰QUIPE
+   ÉQUIPE
    ======================================== */
 
 .team-grid {
@@ -2137,7 +2137,7 @@ body.nav-drawer-open {
 
 
 /* ========================================
-   ACTUALITÃ‰S
+   ACTUALITÉS
    ======================================== */
 
 .actualites-grid {
@@ -2226,7 +2226,7 @@ body.nav-drawer-open {
     color: #4A4A4A;
 }
 
-/* DÃ©tail actualitÃ© */
+/* Détail actualité */
 .actualite-detail__header {
     text-align: center;
     margin-bottom: 2rem;
@@ -2647,7 +2647,7 @@ html {
     }
 }
 
-/* Resserre les espacements du bloc NouveautÃ©s */
+/* Resserre les espacements du bloc Nouveautés */
 .new-releases .section__title {
     margin-bottom: 1.5rem;
 }
@@ -2739,13 +2739,13 @@ html {
 }
 
 
-/* Resserre l'espace entre le hero et NouveautÃ©s */
+/* Resserre l'espace entre le hero et Nouveautés */
 .new-releases.section {
     padding-top: 2rem;
 }
 
 
-/* Resserre l'espace entre NouveautÃ©s et Meilleures Ventes */
+/* Resserre l'espace entre Nouveautés et Meilleures Ventes */
 .bestsellers.section {
     padding-top: 2rem;
 }
@@ -2757,7 +2757,7 @@ html {
     background-color: #eef6ff;
 }
 
-/* Resserre l'espace entre Suivez l'actualitÃ© et la newsletter */
+/* Resserre l'espace entre Suivez l'actualité et la newsletter */
 .news-ticker.section {
     padding-bottom: 2rem;
 }
@@ -3248,4 +3248,27 @@ html {
 .auteur-detail__photo img,
 .hero__author-photo {
     border-radius: var(--radius-media) !important;
+}
+
+
+
+/* OVERRIDE: force horizontal cards on home sections */
+.new-releases .book-grid,
+.bestsellers .book-grid,
+.upcoming-releases .book-grid {
+    display: flex !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    flex-direction: row !important;
+    gap: 2rem !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+}
+
+.new-releases .book-card,
+.bestsellers .book-card,
+.upcoming-releases .book-card {
+    width: 240px !important;
+    max-width: 240px !important;
+    flex: 0 0 240px !important;
 }
