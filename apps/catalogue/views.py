@@ -889,77 +889,84 @@ class AudioConversionView(LoginRequiredMixin, FormView):
             demande.payment_tier = 4
         else:
             demande.payment_tier = 5
+        demande.texte = texte
+        demande.async_status = "queued"
+        demande.async_progress = 0
+        demande.async_error = ""
+        demande.async_started_at = None
+        demande.async_finished_at = None
         demande.save()
 
-        # Extraire le texte depuis le fichier si nécessaire
-        audio_text = texte
-        if fichier:
-            try:
-                audio_text = extract_text_from_file(fichier).strip()
-                if audio_text:
-                    demande.texte = audio_text
-            except Exception as exc:
-                demande.statut = "error"
-                demande.async_error = str(exc)
-                demande.save(update_fields=["statut", "async_error", "updated_at"])
-                messages.error(self.request, "Extraction du texte impossible. Merci de réessayer ou d’utiliser un autre fichier.")
-                self.request.session["audio_request_id"] = demande.id
-                return redirect(self.success_url)
-
-        if audio_text:
-            try:
-                from gtts import gTTS
-            except Exception:
-                messages.error(self.request, "Conversion indisponible pour le moment. Veuillez réessayer plus tard.")
-                self.request.session["audio_request_id"] = demande.id
-                return redirect(self.success_url)
-
-            def _generate_audio(demande_id, text, langue, voix):
-                close_old_connections()
-                try:
-                    import uuid
-                    obj = AudioConversionRequest.objects.get(pk=demande_id)
-                    slow = True if voix == "slow" else False
-                    tts = gTTS(text, lang=langue, slow=slow)
-                    audio_bytes = ContentFile(b"")
-                    filename = f"conversion-{uuid.uuid4().hex}.mp3"
-                    tts.write_to_fp(audio_bytes)
-                    audio_bytes.seek(0)
-                    obj.audio.save(filename, audio_bytes, save=False)
-                    obj.save(update_fields=["audio", "updated_at"])
-                except Exception:
-                    obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
-                    if obj:
-                        obj.statut = "error"
-                        obj.save(update_fields=["statut", "updated_at"])
-
-            if demande.paiement_requis:
-                import threading
-                threading.Thread(
-                    target=_generate_audio,
-                    args=(demande.id, audio_text, demande.langue, demande.voix),
-                    daemon=True,
-                ).start()
-            else:
-                try:
-                    _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
-                    demande.statut = "free_generated"
-                    demande.save(update_fields=["statut", "updated_at"])
-                except Exception:
-                    demande.statut = "error"
-                    demande.save(update_fields=["statut", "updated_at"])
-                    messages.error(self.request, "La conversion a échoué. Vérifiez votre connexion et réessayez.")
-                    self.request.session["audio_request_id"] = demande.id
-                    return redirect(self.success_url)
+        self._start_conversion_async(demande.id)
 
         self.request.session["audio_request_id"] = demande.id
-
         if demande.paiement_requis:
-            messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
-            return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
-
-        messages.success(self.request, "Votre audio est prêt. Vous pouvez le télécharger.")
+            messages.info(self.request, "Conversion en cours. Le paiement est requis pour recevoir l’audio.")
+        else:
+            messages.info(self.request, "Conversion en cours. Cette page se mettra à jour automatiquement.")
         return redirect(self.success_url)
+
+    def _start_conversion_async(self, demande_id):
+        import threading
+
+        def _generate_audio():
+            close_old_connections()
+            obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
+            if not obj:
+                return
+            obj.async_started_at = timezone.now()
+            obj.async_status = "started"
+            obj.async_progress = 5
+            obj.async_error = ""
+            obj.save(update_fields=["async_started_at", "async_status", "async_progress", "async_error", "updated_at"])
+
+            try:
+                text = obj.texte or ""
+                if obj.fichier and not text.strip():
+                    obj.async_progress = 20
+                    obj.save(update_fields=["async_progress", "updated_at"])
+                    text = extract_text_from_file(obj.fichier)
+
+                if not text.strip():
+                    obj.statut = "error"
+                    obj.async_status = "failed"
+                    obj.async_progress = 100
+                    obj.async_error = "Texte vide après extraction."
+                    obj.async_finished_at = timezone.now()
+                    obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "async_finished_at", "updated_at"])
+                    return
+
+                obj.texte = text
+                obj.async_progress = 60
+                obj.save(update_fields=["texte", "async_progress", "updated_at"])
+
+                from gtts import gTTS
+                import uuid
+
+                slow = True if obj.voix == "slow" else False
+                tts = gTTS(text, lang=obj.langue, slow=slow)
+                audio_bytes = ContentFile(b"")
+                filename = f"conversion-{uuid.uuid4().hex}.mp3"
+                tts.write_to_fp(audio_bytes)
+                audio_bytes.seek(0)
+                obj.audio.save(filename, audio_bytes, save=False)
+                obj.async_status = "finished"
+                obj.async_progress = 100
+                obj.async_finished_at = timezone.now()
+                obj.statut = "delivered" if obj.paiement_requis else "free_generated"
+                obj.save(update_fields=["audio", "statut", "async_status", "async_progress", "async_finished_at", "updated_at"])
+            except Exception as exc:
+                obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
+                if not obj:
+                    return
+                obj.statut = "error"
+                obj.async_status = "failed"
+                obj.async_progress = 100
+                obj.async_error = str(exc)
+                obj.async_finished_at = timezone.now()
+                obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "async_finished_at", "updated_at"])
+
+        threading.Thread(target=_generate_audio, daemon=True).start()
 
 
 def conversion_payment_redirect(request, demande_id):
@@ -1002,6 +1009,26 @@ def conversion_payment_redirect(request, demande_id):
         return redirect(payment_url)
     messages.error(request, "Le lien de paiement n’est pas encore disponible.")
     return redirect("catalogue:conversion-audio")
+
+
+def conversion_status(request, demande_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({"ok": False, "error": "auth_required"}, status=401)
+    demande = get_object_or_404(AudioConversionRequest, id=demande_id)
+    if demande.user and demande.user != request.user and not request.user.is_staff:
+        return JsonResponse({"ok": False, "error": "forbidden"}, status=403)
+    return JsonResponse(
+        {
+            "ok": True,
+            "id": demande.id,
+            "status": demande.async_status,
+            "progress": demande.async_progress,
+            "error": demande.async_error,
+            "audio_url": demande.audio.url if demande.audio else "",
+            "statut": demande.statut,
+            "payment_required": demande.paiement_requis,
+        }
+    )
 
 
 class SignupView(FormView):

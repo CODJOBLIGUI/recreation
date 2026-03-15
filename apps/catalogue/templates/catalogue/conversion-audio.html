@@ -32,6 +32,22 @@
             {% endfor %}
         {% endif %}
 
+        {% if last_request and not last_request.audio and last_request.async_status and last_request.async_status != "finished" and last_request.async_status != "failed" %}
+            <div class="cta-box conversion-audio__result">
+                <h2 class="cta-box__title">Conversion en cours</h2>
+                <p class="cta-box__text">Votre conversion est en cours. Cette page se met à jour automatiquement.</p>
+                <div class="conversion-audio__progress" data-status-url="{% url 'catalogue:conversion-audio-status' last_request.id %}">
+                    <div class="conversion-audio__progress-bar">
+                        <span class="conversion-audio__progress-fill" style="width: {{ last_request.async_progress|default:0 }}%;"></span>
+                    </div>
+                    <div class="conversion-audio__progress-text" id="conversion-progress-text">
+                        Progression : {{ last_request.async_progress|default:0 }}%
+                    </div>
+                    <div class="form-feedback form-feedback--error" id="conversion-error" style="display:none;"></div>
+                </div>
+            </div>
+        {% endif %}
+
         {% if last_request and last_request.audio and not last_request.paiement_requis %}
             <div class="cta-box conversion-audio__result">
                 <h2 class="cta-box__title">Votre audio est prêt</h2>
@@ -212,6 +228,46 @@
                     submitBtn.disabled = true;
                 }
             });
+        }
+
+        const progressBox = document.querySelector(".conversion-audio__progress");
+        if (progressBox && progressBox.dataset.statusUrl) {
+            const progressFill = progressBox.querySelector(".conversion-audio__progress-fill");
+            const progressText = document.getElementById("conversion-progress-text");
+            const errorBox = document.getElementById("conversion-error");
+            const statusUrl = progressBox.dataset.statusUrl;
+            let polling = true;
+
+            const updateProgress = (data) => {
+                const percent = Math.max(0, Math.min(100, data.progress || 0));
+                if (progressFill) progressFill.style.width = percent + "%";
+                if (progressText) progressText.textContent = "Progression : " + percent + "%";
+            };
+
+            const poll = () => {
+                if (!polling) return;
+                fetch(statusUrl, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (!data || !data.ok) return;
+                        updateProgress(data);
+                        if (data.status === "finished" && data.audio_url) {
+                            polling = false;
+                            window.location.reload();
+                        }
+                        if (data.status === "failed") {
+                            polling = false;
+                            if (errorBox) {
+                                errorBox.style.display = "block";
+                                errorBox.textContent = data.error || "La conversion a échoué. Veuillez réessayer.";
+                            }
+                        }
+                    })
+                    .catch(() => {});
+            };
+
+            poll();
+            setInterval(poll, 5000);
         }
 
         const player = document.querySelector(".conversion-audio__player");
