@@ -3720,3 +3720,46 @@ html {
     margin: 0 auto;
     scroll-snap-align: center;
 }
+/* ========================================
+   LEFT ALIGN OVERRIDES (HOME CAROUSELS)
+   ======================================== */
+.section__header {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.book-carousel__controls {
+    justify-content: flex-start;
+}
+
+.book-carousel__viewport {
+    display: block;
+}
+
+.book-carousel__track {
+    gap: 1.2rem;
+    padding: 0 16px 0.6rem;
+    justify-content: flex-start;
+    scroll-padding: 0 16px;
+}
+
+.book-carousel__track .book-card {
+    flex: 0 0 260px;
+    max-width: 260px;
+    width: 100%;
+    margin: 0;
+    scroll-snap-align: start;
+}
+
+.news-ticker__track {
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+}
+
+.news-ticker__item {
+    flex: 0 0 320px;
+    max-width: 320px;
+    width: 100%;
+    margin: 0;
+    scroll-snap-align: start;
+}
