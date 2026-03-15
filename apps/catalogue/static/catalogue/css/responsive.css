@@ -53,3 +53,26 @@ video {
 .book-card__meta-desc {
     font-size: clamp(0.85rem, 1.4vw, 1rem);
 }
+/* ========================================
+   OVERFLOW FIX
+   ======================================== */
+html,
+body {
+    overflow-x: hidden;
+}
+
+.header,
+.hero,
+.book-carousel {
+    max-width: 100%;
+}
+
+.hero__slide .container,
+.header__top,
+.header__actions {
+    max-width: 100%;
+}
+
+.book-carousel__track {
+    justify-content: flex-start;
+}
