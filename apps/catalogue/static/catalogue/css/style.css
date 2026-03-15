@@ -2754,17 +2754,7 @@ html {
     overflow: hidden;
 }
 
-.news-ticker__track {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(220px, 280px);
-    gap: 1rem;
-    scroll-behavior: smooth;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    scroll-snap-type: x mandatory;
-    justify-content: center;
-}
+.news-ticker__track {\r\n    display: flex;\r\n    gap: 1rem;\r\n    overflow-x: auto;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n}
 
 .news-ticker__track::-webkit-scrollbar {
     height: 6px;
@@ -2775,15 +2765,7 @@ html {
     border-radius: 999px;
 }
 
-.news-ticker__item {
-    background: #fff;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    padding: 1rem 1.25rem;
-    box-shadow: var(--shadow-sm);
-    scroll-snap-align: start;
-    min-height: 130px;
-}
+.news-ticker__item {\r\n    flex: 0 0 320px;\r\n    scroll-snap-align: start;\r\n}
 
 .news-ticker__media {
     width: 100%;
@@ -3658,7 +3640,7 @@ html {
 
 .book-carousel__viewport {\r\n    overflow: hidden;\r\n}
 
-.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 0;\r\n    overflow-x: auto;\r\n    padding: 0 0 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0;\r\n}
+.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 1.2rem;\r\n    overflow-x: auto;\r\n    padding: 0 16px 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: stretch;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0 16px;\r\n}
 
 .book-carousel__track::-webkit-scrollbar {
     height: 8px;
@@ -3669,97 +3651,15 @@ html {
     border-radius: 999px;
 }
 
-.book-carousel__track .book-card {\r\n    flex: 0 0 100%;\r\n    max-width: 520px;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    scroll-snap-align: center;\r\n    transform: scale(0.98);\r\n    transition: transform 0.35s ease, box-shadow 0.35s ease;\r\n}
+.book-carousel__track .book-card {\r\n    flex: 0 0 clamp(220px, 24vw, 280px);\r\n    scroll-snap-align: start;\r\n}
 
 @media (max-width: 768px) {
-    .book-carousel__track .book-card {\r\n    flex: 0 0 100%;\r\n    max-width: 520px;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    scroll-snap-align: center;\r\n    transform: scale(0.98);\r\n    transition: transform 0.35s ease, box-shadow 0.35s ease;\r\n}
+    .book-carousel__track .book-card {\r\n    flex: 0 0 clamp(220px, 24vw, 280px);\r\n    scroll-snap-align: start;\r\n}
 }
 
 @media (max-width: 480px) {
-    .book-carousel__track .book-card {\r\n    flex: 0 0 100%;\r\n    max-width: 520px;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    scroll-snap-align: center;\r\n    transform: scale(0.98);\r\n    transition: transform 0.35s ease, box-shadow 0.35s ease;\r\n}
-}
-/* ========================================
-   BOOK CAROUSEL CENTER (HOME)
-   ======================================== */
-.section__header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    .book-carousel__track .book-card {\r\n    flex: 0 0 clamp(220px, 24vw, 280px);\r\n    scroll-snap-align: start;\r\n}
 }
 
-.book-carousel__controls {
-    justify-content: center;
-}
-/* ========================================
-   BOOK CAROUSEL TRACK CENTER
-   ======================================== */
-.book-carousel__viewport {\r\n    overflow: hidden;\r\n}
 
-.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 0;\r\n    overflow-x: auto;\r\n    padding: 0 0 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0;\r\n}
-/* ========================================
-   BOOK CAROUSEL ZOOM
-   ======================================== */
-.book-carousel__track .book-card {\r\n    flex: 0 0 100%;\r\n    max-width: 520px;\r\n    width: 100%;\r\n    margin: 0 auto;\r\n    scroll-snap-align: center;\r\n    transform: scale(0.98);\r\n    transition: transform 0.35s ease, box-shadow 0.35s ease;\r\n}
 
-.book-carousel__track .book-card.book-card--active {
-    transform: scale(1.02);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-}
-/* ========================================
-   NEWS TICKER SINGLE CARD
-   ======================================== */
-.news-ticker__track {
-    gap: 0;
-    scroll-snap-type: x mandatory;
-}
-
-.news-ticker__item {
-    flex: 0 0 100%;
-    max-width: 520px;
-    width: 100%;
-    margin: 0 auto;
-    scroll-snap-align: center;
-}
-/* ========================================
-   LEFT ALIGN OVERRIDES (HOME CAROUSELS)
-   ======================================== */
-.section__header {
-    align-items: flex-start;
-    text-align: left;
-}
-
-.book-carousel__controls {
-    justify-content: flex-start;
-}
-
-.book-carousel__viewport {
-    display: block;
-}
-
-.book-carousel__track {
-    gap: 1.2rem;
-    padding: 0 16px 0.6rem;
-    justify-content: flex-start;
-    scroll-padding: 0 16px;
-}
-
-.book-carousel__track .book-card {
-    flex: 0 0 260px;
-    max-width: 260px;
-    width: 100%;
-    margin: 0;
-    scroll-snap-align: start;
-}
-
-.news-ticker__track {
-    gap: 1rem;
-    scroll-snap-type: x mandatory;
-}
-
-.news-ticker__item {
-    flex: 0 0 320px;
-    max-width: 320px;
-    width: 100%;
-    margin: 0;
-    scroll-snap-align: start;
-}

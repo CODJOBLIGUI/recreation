@@ -61,28 +61,6 @@
             var prevBtn = document.querySelector('[data-book-action="prev"][data-book-target="' + target + '"]');
             var nextBtn = document.querySelector('[data-book-action="next"][data-book-target="' + target + '"]');
 
-            function updateActive() {
-                var center = track.scrollLeft + (track.clientWidth / 2);
-                var closest = null;
-                var closestDist = Infinity;
-                items.forEach(function(item) {
-                    var rect = item.getBoundingClientRect();
-                    var itemCenter = (item.offsetLeft + (rect.width / 2));
-                    var dist = Math.abs(itemCenter - center);
-                    if (dist < closestDist) {
-                        closestDist = dist;
-                        closest = item;
-                    }
-                });
-                items.forEach(function(item) {
-                    if (item === closest) {
-                        item.classList.add("book-card--active");
-                    } else {
-                        item.classList.remove("book-card--active");
-                    }
-                });
-            }
-
             if (prevBtn) {
                 prevBtn.addEventListener("click", function() {
                     scrollPrev();

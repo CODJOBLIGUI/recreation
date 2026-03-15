@@ -1,13 +1,13 @@
 /*
- * RESPONSIVE CSS UNIFIÉ (SANS MOBILE SPÉCIFIQUE)
- * Même rendu que desktop, uniquement des espacements adaptatifs.
+ * RESPONSIVE CSS PRO
+ * Desktop / Tablet / Mobile avec structure fidèle et lisible.
  */
 
 :root {
     --container-max: 1200px;
     --container-pad: clamp(16px, 3vw, 28px);
-    --title-scale: clamp(1.6rem, 3.2vw, 2.6rem);
-    --subtitle-scale: clamp(0.95rem, 1.6vw, 1.15rem);
+    --title-scale: clamp(1.7rem, 3.2vw, 2.6rem);
+    --subtitle-scale: clamp(0.98rem, 1.6vw, 1.15rem);
 }
 
 .container {
@@ -15,7 +15,7 @@
 }
 
 .container--narrow {
-    width: min(800px, 100% - (var(--container-pad) * 2));
+    width: min(860px, 100% - (var(--container-pad) * 2));
 }
 
 .section {
@@ -28,28 +28,118 @@ video {
     height: auto;
 }
 
-.page-hero__title {
-    font-size: var(--title-scale);
+.page-hero__title { font-size: var(--title-scale); }
+.page-hero__subtitle { font-size: var(--subtitle-scale); }
+
+/* -------------------- Tablet <= 1024px -------------------- */
+@media (max-width: 1024px) {
+    .container { width: min(1000px, 100% - (var(--container-pad) * 2)); }
+
+    .hero__visual { gap: 10px; }
+
+    .book-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 }
 
-.page-hero__subtitle {
-    font-size: var(--subtitle-scale);
+/* -------------------- Mobile <= 768px -------------------- */
+@media (max-width: 768px) {
+    html { font-size: 15px; }
+
+    .header__top {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "brand social"
+            "actions actions";
+        align-items: center;
+        gap: 0.6rem 0.8rem;
+    }
+
+    .header__brand { grid-area: brand; }
+    .header__social { grid-area: social; gap: 0.35rem; }
+
+    .header__actions {
+        grid-area: actions;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+        width: 100%;
+    }
+
+    .header__newsletter-form,
+    .header-search {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .header__nav {
+        width: 100%;
+    }
+
+    .header__nav-list {
+        flex-wrap: wrap;
+        gap: 0.5rem 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    .hero__slide .container {
+        grid-template-columns: minmax(160px, 42%) 1fr;
+        gap: 0.75rem;
+        align-items: center;
+    }
+
+    .book-grid,
+    .new-releases .book-grid,
+    .bestsellers .book-grid,
+    .upcoming-releases .book-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .book-card__title { font-size: 1rem; }
+    .book-card__author,
+    .book-card__meta-desc { font-size: 0.9rem; }
+
+    .catalogue-filters .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .catalogue-filters .search-box,
+    .catalogue-filters .search-box input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .catalogue-filters .filters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+        width: 100%;
+    }
+
+    .catalogue-filters .filters select { width: 100%; }
+
+    .actualites-grid,
+    .team-grid,
+    .contrats__grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.header__nav-list {
-    flex-wrap: wrap;
-    row-gap: 0.4rem;
-}
+/* -------------------- Small phones <= 520px -------------------- */
+@media (max-width: 520px) {
+    .header__social { display: none; }
 
-.book-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
+    .hero__slide .container { grid-template-columns: 1fr; }
+    .hero__visual { justify-content: center; }
 
-.book-card__title {
-    font-size: clamp(1rem, 1.8vw, 1.25rem);
-}
+    .book-grid,
+    .new-releases .book-grid,
+    .bestsellers .book-grid,
+    .upcoming-releases .book-grid {
+        grid-template-columns: 1fr;
+    }
 
-.book-card__author,
-.book-card__meta-desc {
-    font-size: clamp(0.85rem, 1.4vw, 1rem);
+    .tabs { flex-wrap: wrap; gap: 0.5rem; }
 }
