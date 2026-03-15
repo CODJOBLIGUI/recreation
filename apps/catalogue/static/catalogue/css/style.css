@@ -3575,3 +3575,46 @@ html {
 .password-toggle i {
     font-size: 0.95rem;
 }
+/* ========================================
+   SEARCH BAR POLISH (HEADER)
+   ======================================== */
+.header-search {
+    background: #ffffff;
+    border: 1px solid rgba(10, 24, 255, 0.18);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    padding: 0.45rem 0.75rem 0.45rem 2.2rem;
+    min-height: 44px;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.header-search:focus-within {
+    border-color: rgba(10, 24, 255, 0.45);
+    box-shadow: 0 10px 26px rgba(10,24,255,0.16);
+}
+
+.header-search__icon {
+    color: rgba(10, 24, 255, 0.75);
+    font-size: 1rem;
+}
+
+.header-search input {
+    font-size: 1rem;
+    min-width: 220px;
+    width: 100%;
+    color: var(--color-text);
+}
+
+.header-search input::placeholder {
+    color: rgba(44,44,44,0.55);
+}
+
+.header-search__btn {
+    padding: 0.55rem 1.1rem;
+    font-size: 0.9rem;
+    box-shadow: 0 6px 14px rgba(10,24,255,0.22);
+}
+
+.header-search__btn:focus-visible {
+    outline: 3px solid rgba(10,24,255,0.25);
+    outline-offset: 2px;
+}
