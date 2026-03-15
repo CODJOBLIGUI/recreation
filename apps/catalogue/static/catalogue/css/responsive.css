@@ -546,3 +546,45 @@ font-size: 2rem;
     order: 3 !important;
   }
 }
+
+/* OVERRIDE: keep social icons on same row as newsletter (mobile) */
+@media (max-width: 768px) {
+  .header__top {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    align-items: center !important;
+    column-gap: 0.4rem !important;
+    row-gap: 0.35rem !important;
+  }
+
+  .header__brand {
+    display: contents !important;
+  }
+
+  .header__logo {
+    grid-column: 1;
+  }
+
+  .header__newsletter-form {
+    grid-column: 2;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .header__newsletter-form input {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .header__social {
+    grid-column: 3;
+    justify-self: end;
+    margin-left: 0 !important;
+  }
+
+  .header__actions {
+    grid-column: 1 / -1;
+    order: 3 !important;
+    width: 100% !important;
+  }
+}
