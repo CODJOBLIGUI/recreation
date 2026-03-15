@@ -46,9 +46,6 @@
 
 /* Petits écrans (max 768px) */
 @media (max-width: 768px) {
-    .header-search {
-        display: none !important;
-    }
     h1 { font-size: 2rem; }
     h2 { font-size: 1.75rem; }
     h3 { font-size: 1.5rem; }
@@ -754,4 +751,17 @@ video {
 .header__nav-list {
     flex-wrap: wrap;
     row-gap: 0.4rem;
+}
+@media (max-width: 768px) {
+    .header-search {
+        display: flex !important;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .header-search input {
+        flex: 1;
+        min-width: 0;
+    }
 }
