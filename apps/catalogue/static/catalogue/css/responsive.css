@@ -179,6 +179,52 @@
         padding: 0.6rem 0;
     }
 
+    /* Force header layout to keep desktop ordering on mobile */
+    .header__top {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "brand social"
+            "actions actions";
+        align-items: center;
+        gap: 0.5rem 0.75rem;
+    }
+
+    .header__brand {
+        grid-area: brand;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header__actions {
+        grid-area: actions;
+        grid-template-columns: 40px 1fr;
+        gap: 0.6rem;
+        width: 100%;
+    }
+
+    .header__social {
+        grid-area: social;
+        display: flex;
+        gap: 0.35rem;
+    }
+
+    .header-social__icon {
+        font-size: 0.85rem;
+    }
+
+    .header__newsletter-form {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.2rem 0.35rem;
+    }
+
+    .header__newsletter-form button {
+        white-space: nowrap;
+    }
+
     .header__top {
         align-items: flex-start;
     }

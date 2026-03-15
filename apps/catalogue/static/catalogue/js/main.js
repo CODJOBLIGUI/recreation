@@ -235,11 +235,41 @@
     // INITIALISATION AU CHARGEMENT
     // ========================================
 
+    function setupPasswordToggles() {
+        document.querySelectorAll('input[type="password"]').forEach((input) => {
+            if (input.closest('.password-field')) {
+                return;
+            }
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'password-field';
+            input.parentNode.insertBefore(wrapper, input);
+            wrapper.appendChild(input);
+
+            const toggle = document.createElement('button');
+            toggle.type = 'button';
+            toggle.className = 'password-toggle';
+            toggle.setAttribute('aria-pressed', 'false');
+            toggle.textContent = 'Afficher';
+
+            toggle.addEventListener('click', () => {
+                const isHidden = input.type === 'password';
+                input.type = isHidden ? 'text' : 'password';
+                toggle.textContent = isHidden ? 'Masquer' : 'Afficher';
+                toggle.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
+            });
+
+            wrapper.appendChild(toggle);
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Editions Recreation - Site charge');
 
         // Ajouter des classes pour les animations
         document.body.classList.add('loaded');
+
+        setupPasswordToggles();
     });
 
 })();
