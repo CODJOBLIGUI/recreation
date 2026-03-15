@@ -418,3 +418,16 @@ font-size: 2rem;
   .hero__copy p { font-size: 0.42rem !important; }
   .hero__copy .btn { font-size: 0.45rem !important; padding: 0.25rem 0.5rem !important; }
 }
+@media (max-width: 768px) {
+  /* Mobile hero: force text to stay beside images (no stacking) */
+  .hero__slide .container {
+    grid-template-columns: minmax(120px, 36%) 1fr !important;
+    align-items: center !important;
+  }
+  .hero__visual { flex-wrap: nowrap; }
+  .hero__copy { min-width: 0; }
+  .hero__copy h2,
+  .hero__copy h3,
+  .hero__copy p { max-width: 100%; }
+  .hero__copy p { line-height: 1.2; }
+}
