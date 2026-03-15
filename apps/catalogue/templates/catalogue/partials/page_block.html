@@ -273,27 +273,9 @@
         </div>
         <div class="book-grid">
             {% for livre in nouveautes %}
-            <div class="book-card" data-category="{{ livre.categorie }}">
-                <div class="book-card__cover">
-                    {% if livre.image_par_defaut %}
-                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
-                    {% endif %}
-                    <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
-                    </div>
+                <div data-category="{{ livre.categorie }}">
+                    {% include 'catalogue/partials/book_card.html' with livre=livre %}
                 </div>
-                <div class="book-card__info">
-                    <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">
-                        {% for auteur in livre.auteurs.all %}
-                            <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
-                        {% endfor %}
-                    </p>
-                    {% if livre.meta_description %}
-                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                    {% endif %}
-                </div>
-            </div>
             {% endfor %}
         </div>
     </div>
@@ -307,28 +289,7 @@
         {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
         <div class="bestsellers__carousel book-grid">
             {% for livre in bestsellers %}
-            <div class="book-card">
-                <div class="book-card__cover">
-                    <div class="bestsellers__rank">#{{ forloop.counter }}</div>
-                    {% if livre.image_par_defaut %}
-                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
-                    {% endif %}
-                    <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
-                    </div>
-                </div>
-                <div class="book-card__info">
-                    <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">
-                        {% for auteur in livre.auteurs.all %}
-                            <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
-                        {% endfor %}
-                    </p>
-                    {% if livre.meta_description %}
-                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                    {% endif %}
-                </div>
-            </div>
+                {% include 'catalogue/partials/book_card.html' with livre=livre %}
             {% endfor %}
         </div>
     </div>
@@ -342,32 +303,10 @@
         <p class="section__subtitle">{{ block.sous_titre|default:"Découvrez les livres qui paraîtront bientôt" }}</p>
         <div class="book-grid">
             {% for livre in prochaines_parutions %}
-            <div class="book-card upcoming-book">
-                <div class="book-card__cover">
-                    {% if livre.image_par_defaut %}
-                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
-                    {% endif %}
-                    <div class="upcoming-badge">
-                        <i class="fas fa-calendar-alt"></i>
-                        {{ livre.parution|date:"d/m/Y" }}
-                    </div>
-                    <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Découvrir</a>
-                    </div>
-                </div>
-                <div class="book-card__info">
-                    <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">
-                        {% for auteur in livre.auteurs.all %}
-                            <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
-                        {% endfor %}
-                    </p>
-                    {% if livre.meta_description %}
-                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                    {% endif %}
+                <div class="upcoming-book">
+                    {% include 'catalogue/partials/book_card.html' with livre=livre %}
                     <p class="book-card__date">Parution : {{ livre.parution|date:"F Y" }}</p>
                 </div>
-            </div>
             {% empty %}
             <p class="no-content">Aucune prochaine parution pour le moment.</p>
             {% endfor %}
