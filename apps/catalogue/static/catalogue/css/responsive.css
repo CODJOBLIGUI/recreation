@@ -396,3 +396,18 @@
   .footer-fayard__links { display: grid; gap: 0.4rem; justify-content: center; }
   .footer-fayard__links a { text-decoration: none; }
 }
+@media (max-width: 768px) {
+  /* Mobile header hard override: keep everything inside viewport */
+  .header__hamburger { display: none !important; }
+  .header__top, .header__actions, .header__social, .header__nav { max-width: 100%; }
+  .header__top { flex-wrap: wrap; gap: 0.5rem; }
+  .header__brand { flex: 1 1 100%; }
+  .header__actions { flex: 1 1 100%; }
+  .header-search { width: 100%; max-width: 100%; box-sizing: border-box; }
+  .header-search input { min-width: 0; width: 100%; }
+  .header__social { flex: 1 1 100%; flex-wrap: wrap; justify-content: flex-end; gap: 0.4rem; }
+  .header__nav { flex-wrap: wrap; gap: 0.5rem; }
+  .header__nav-brand { flex: 0 0 100%; font-size: 1.5rem; }
+  .header__nav-list { flex: 1 1 auto; flex-wrap: wrap; gap: 0.6rem; font-size: 0.8rem; }
+  .nav-menu-btn { margin-left: auto; transform: scale(0.9); }
+}
