@@ -1,4 +1,4 @@
-{% extends 'catalogue/base.html' %}
+﻿{% extends 'catalogue/base.html' %}
 {% load static %}
 
 {% block content %}
@@ -20,10 +20,11 @@
             {% if page.body %}
                 {{ page.body|safe }}
             {% else %}
-                <p class="no-content">Aucun contenu n'a encore été ajouté pour cette page.</p>
+                <p class="no-content">Aucun contenu n'a encore Ã©tÃ© ajoutÃ© pour cette page.</p>
             {% endif %}
         </div>
     </section>
 {% endif %}
 
 {% endblock %}
+

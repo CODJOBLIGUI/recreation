@@ -1,4 +1,4 @@
-/* ========================================
+ï»¿/* ========================================
    VARIABLES CSS
    ======================================== */
 
@@ -7,7 +7,7 @@
     --color-primary: #F5F1E8;      /* Beige chaud */
     --color-white: #FFFFFF;
     --color-text: #2C2C2C;         /* Charbon */
-    --color-text-light: #4A4A4A;   /* Gris foncé */
+    --color-text-light: #4A4A4A;   /* Gris foncÃ© */
     --color-accent: #0A18FF;      /* Bleu logo */
     --color-accent-dark: #001FD8; /* Bleu logo fonce */
     --color-border: #E0D9CD;
@@ -1187,186 +1187,6 @@ body.nav-drawer-open {
     color: white;
 }
 
-.footer-fayard__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 1.15fr);
-    gap: 2rem;
-}
-
-.footer-fayard__slogan,
-.footer-fayard__address {
-    line-height: 1.15;
-    margin: 0.15rem 0;
-    text-align: left;
-}
-
-.footer-fayard__slogan,
-.footer-fayard__address-main,
-.footer-fayard__social-title {
-    font-size: 0.5rem;
-}
-
-.footer-fayard__menu-columns {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.4rem;
-}
-
-.footer-fayard__menu-title {
-    color: #ffffff;
-    font-weight: 700;
-    margin: 0 0 0.75rem;
-}
-
-.footer-fayard__menu-title--spaced {
-    margin-top: 1.25rem;
-}
-
-.footer-fayard__menu-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 0.35rem;
-}
-
-.footer-fayard__menu-list a {
-    color: #ffffff;
-    text-decoration: none;
-}
-
-.footer-fayard__menu-empty {
-    color: #777;
-}
-
-.footer-fayard__menu-cta {
-    margin-top: 1rem;
-    display: grid;
-    gap: 0.6rem;
-}
-
-.footer-fayard__menu .btn.btn--secondary {
-    background: #ffffff;
-    color: #111111;
-    border: 1px solid #e0e0e0;
-    font-size: 0.85rem;
-    padding: 0.4rem 0.75rem;
-    width: fit-content;
-    align-self: flex-start;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.footer-fayard__audio-btn,
-.footer-fayard__shop-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.footer-fayard__btn-icon {
-    position: relative;
-    width: 1.4rem;
-    height: 1.4rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.footer-fayard__btn-icon .fa-headphones {
-    font-size: 1.2rem;
-}
-
-.footer-fayard__btn-icon .fa-book {
-    position: absolute;
-    font-size: 0.6rem;
-    left: 50%;
-    top: 52%;
-    transform: translate(-50%, -50%);
-}
-
-.footer-fayard__shop-btn {
-    text-align: center;
-}
-
-.footer-fayard__bottom {
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-.footer-fayard__bottom p {
-    margin: 0;
-}
-
-.footer-fayard__contact-link {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.footer-fayard__contact-link:hover {
-    color: var(--color-accent);
-}
-
-@media (max-width: 900px) {
-    .footer-fayard__grid {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-fayard__menu-columns {
-        grid-template-columns: 1fr;
-    }
-}
-
-.footer-fayard__brand,
-.footer-fayard__actions,
-.footer-fayard__social,
-.footer-fayard__bottom {
-    text-align: left;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-.footer-fayard__brand {
-    margin-bottom: 1.25rem;
-}
-
-.footer-fayard__slogan,
-.footer-fayard__address {
-    line-height: 1.2;
-    margin: 0.2rem 0;
-}
-
-.footer-fayard__actions {
-    gap: 1.25rem;
-    margin-bottom: 1.25rem;
-}
-
-.footer-fayard__action {
-    align-items: flex-start;
-}
-
-.footer-fayard__social {
-    margin-bottom: 1.25rem;
-}
-
-.footer-fayard__social-icons {
-    justify-content: flex-start;
-    gap: 0.75rem;
-}
-
-.footer-fayard__bottom {
-    padding-top: 1rem;
-    gap: 1rem;
-}
-
-.footer-fayard__links {
-    justify-content: flex-start;
-    gap: 1rem;
-}
-
 /* ========================================
    PAGE RECHERCHE
    ======================================== */
@@ -1424,51 +1244,17 @@ body.nav-drawer-open {
 
 /* Filtre actualites */
 .actualites-filter {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    align-items: end;
-    margin-bottom: 1.5rem;
-}
-
-.actualites-filter label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.35rem;
-}
-
-.actualites-filter select,
-.actualites-filter input[type="date"] {
-    width: 100%;
-    padding: 0.5rem 0.65rem;
-    border-radius: 8px;
-    border: 1px solid var(--color-border);
-    background: #fff;
-    font-size: 0.95rem;
-    font-family: "Cormorant Garamond", Garamond, "Times New Roman", serif;
-}
-
-.actualites-filter .filter-row {
     display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
     align-items: center;
-    gap: 0.5rem;
+    margin-bottom: 1.25rem;
 }
 
-.actualites-filter .filter-sep {
-    color: var(--color-text-light);
-    font-size: 0.9rem;
-}
-
-.actualites-filter .filter-actions {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.actualites-filter .btn--ghost {
-    background: transparent;
+.actualites-filter select {
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
     border: 1px solid var(--color-border);
-    color: var(--color-text);
 }
 
 /* ========================================
@@ -1525,19 +1311,11 @@ body.nav-drawer-open {
     background-color: var(--color-light-bg);
 }
 
-.catalogue-filters.section {
-    padding: 2rem 0 1rem;
-}
-
 .filters-bar {
     display: flex;
     gap: 1rem;
     align-items: center;
     flex-wrap: wrap;
-}
-
-.catalogue-filters .filters-bar {
-    gap: 0.75rem;
 }
 
 .search-box {
@@ -1555,11 +1333,6 @@ body.nav-drawer-open {
     border: 2px solid var(--color-border);
     border-radius: 4px;
     font-size: 1rem;
-}
-
-.catalogue-filters .search-box input {
-    padding: 0.6rem 2.5rem 0.6rem 0.9rem;
-    font-size: 0.95rem;
 }
 
 .search-box__icon {
@@ -1976,7 +1749,7 @@ body.nav-drawer-open {
     background-color: var(--color-accent);
 }
 
-/* A PROPOS - fond avec icônes reliées */
+/* A PROPOS - fond avec icÃ´nes reliÃ©es */
 .page-hero--about {
     position: relative;
     overflow: hidden;
@@ -2242,7 +2015,7 @@ body.nav-drawer-open {
 
 
 /* ========================================
-   ÉQUIPE
+   Ã‰QUIPE
    ======================================== */
 
 .team-grid {
@@ -2362,7 +2135,7 @@ body.nav-drawer-open {
 
 
 /* ========================================
-   ACTUALITÉS
+   ACTUALITÃ‰S
    ======================================== */
 
 .actualites-grid {
@@ -2448,7 +2221,7 @@ body.nav-drawer-open {
     color: #4A4A4A;
 }
 
-/* Détail actualité */
+/* DÃ©tail actualitÃ© */
 .actualite-detail__header {
     text-align: center;
     margin-bottom: 2rem;
@@ -2549,7 +2322,7 @@ html {
 
 #catalogue-search-btn.search-box__btn {
     min-width: 140px;
-    height: 42px;
+    height: 48px;
     padding: 0 1rem;
     background-color: var(--color-primary);
     color: #fff !important;
@@ -2571,7 +2344,7 @@ html {
 
 @media (max-width: 768px) {
     #catalogue-search-btn.search-box__btn {
-        min-width: 110px;
+        min-width: 120px;
     }
 }
 
@@ -2618,16 +2391,6 @@ html {
     border: 1px solid var(--color-border);
     border-radius: 16px;
     box-shadow: var(--shadow-sm);
-    height: 42px;
-    padding: 0.45rem 0.65rem;
-}
-
-.catalogue-filters .results-count {
-    margin: 0.5rem 0 0;
-}
-
-.catalogue-grid.section {
-    padding-top: 1.5rem;
 }
 
 /* ========================================
@@ -2754,7 +2517,17 @@ html {
     overflow: hidden;
 }
 
-.news-ticker__track {\r\n    display: flex;\r\n    gap: 1rem;\r\n    overflow-x: auto;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n}
+.news-ticker__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 280px);
+    gap: 1rem;
+    scroll-behavior: smooth;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x mandatory;
+    justify-content: center;
+}
 
 .news-ticker__track::-webkit-scrollbar {
     height: 6px;
@@ -2765,7 +2538,15 @@ html {
     border-radius: 999px;
 }
 
-.news-ticker__item {\r\n    flex: 0 0 320px;\r\n    scroll-snap-align: start;\r\n}
+.news-ticker__item {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    box-shadow: var(--shadow-sm);
+    scroll-snap-align: start;
+    min-height: 130px;
+}
 
 .news-ticker__media {
     width: 100%;
@@ -2920,13 +2701,13 @@ html {
 }
 
 
-/* Resserre l'espace entre le hero et Nouveautés */
+/* Resserre l'espace entre le hero et NouveautÃ©s */
 .new-releases.section {
     padding-top: 2rem;
 }
 
 
-/* Resserre l'espace entre Nouveautés et Meilleures Ventes */
+/* Resserre l'espace entre NouveautÃ©s et Meilleures Ventes */
 .bestsellers.section {
     padding-top: 2rem;
 }
@@ -2938,7 +2719,7 @@ html {
     background-color: #eef6ff;
 }
 
-/* Resserre l'espace entre Suivez l'actualité et la newsletter */
+/* Resserre l'espace entre Suivez l'actualitÃ© et la newsletter */
 .news-ticker.section {
     padding-bottom: 2rem;
 }
@@ -2962,17 +2743,14 @@ html {
 }
 
 .footer-fayard__address {
-    font-size: 0.5rem;
+    font-size: 0.475rem;
 }
 
 .footer-fayard__action span,
+.footer-fayard__social-title,
 .footer-fayard__bottom,
 .footer-fayard__links a {
     font-size: 0.4375rem;
-}
-
-.footer-fayard__social-title {
-    font-size: 0.5rem;
 }
 
 .value-initial {
@@ -3220,13 +2998,13 @@ html {
 }
 
 .footer-fayard__slogan {
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     color: #fff;
     font-style: italic;
     margin: 0.2rem 0 0.4rem;
     line-height: 1.2;
     max-width: none;
-    text-align: left;
+    text-align: center;
     white-space: nowrap;
     display: block;
     margin-left: auto;
@@ -3389,421 +3167,3 @@ html {
 .hero__author-photo {
     border-radius: var(--radius-media) !important;
 }
-
-
-/* Footer bottom alignment + size */
-.footer-fayard__bottom {
-    justify-content: space-between;
-    flex-wrap: wrap;
-    font-size: 0.875rem;
-}
-.footer-fayard__bottom p {
-    margin: 0;
-}
-.footer-fayard__links a,
-.footer-fayard__contact-link {
-    font-size: 0.875rem;
-}
-
-
-/* Footer hover states */
-.footer-fayard__menu-list a:hover,
-.footer-fayard__menu-list a:focus-visible {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-.footer-fayard__links a:hover,
-.footer-fayard__links a:focus-visible,
-.footer-fayard__contact-link:hover,
-.footer-fayard__contact-link:focus-visible {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-
-/* Footer action labels centered */
-.footer-fayard__action {
-    align-items: center;
-    text-align: center;
-}
-.footer-fayard__action span {
-    text-align: center;
-}
-
-
-/* Align icon + text in menu drawer */
-.nav-drawer__collections a {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.nav-drawer__collections a .footer-fayard__btn-icon {
-    flex: 0 0 auto;
-}
-
-
-/* Conversion text colors */
-.conversion-audio__text {
-    color: #ffffff;
-}
-.conversion-audio__text span.is-active {
-    background: #22c55e;
-    color: #0b1b10;
-}
-
-/* Footer text casing */
-.footer-fayard__menu-title,
-.footer-fayard__menu-list a,
-.footer-fayard__social-title,
-.footer-fayard__links a,
-.footer-fayard__contact-link {
-    text-transform: none;
-    letter-spacing: 0;
-}
-
-
-/* Conversion text color + highlight */
-.conversion-audio__text {
-    color: #ffffff;
-}
-.conversion-audio__text span.is-active {
-    background: #16a34a;
-    color: #06130a;
-}
-
-
-/* Conversion highlight override (yellow) */
-.conversion-audio__text span.is-active {
-    background: #fff3bf;
-    color: #111111;
-}
-
-
-/* Global hover/focus for clickable elements */
-.btn:hover,
-.btn:focus-visible,
-.header-social__icon:hover,
-.header-social__icon:focus-visible,
-.social-icon:hover,
-.social-icon:focus-visible,
-.nav-drawer__collections a:hover,
-.nav-drawer__collections a:focus-visible,
-.header__nav-list a:hover,
-.header__nav-list a:focus-visible,
-.footer-fayard a:hover,
-.footer-fayard a:focus-visible {
-    filter: brightness(1.08);
-    transform: translateY(-1px);
-}
-.btn,
-.header-social__icon,
-.social-icon,
-.nav-drawer__collections a,
-.header__nav-list a,
-.footer-fayard a {
-    transition: all 0.2s ease;
-}
-
-
-/* Hover for footer CTA + header socials */
-.footer-fayard__menu .btn.btn--secondary:hover,
-.footer-fayard__menu .btn.btn--secondary:focus-visible,
-.header-social__icon:hover,
-.header-social__icon:focus-visible {
-    transform: translateY(-2px);
-    filter: brightness(1.1);
-}
-
-/* Password toggle */
-.password-field {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.password-field input[type="password"],
-.password-field input[type="text"] {
-    padding-right: 5.5rem;
-}
-
-.password-toggle {
-    position: absolute;
-    right: 0.4rem;
-    top: 50%;
-    transform: translateY(-50%);
-    border: 1px solid var(--color-border);
-    background: #fff;
-    color: var(--color-text);
-    font-size: 0.8rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 999px;
-    cursor: pointer;
-}
-
-.password-toggle:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
-}.password-toggle {
-    width: 34px;
-    height: 34px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.password-toggle i {
-    font-size: 0.95rem;
-}
-/* ========================================
-   SEARCH BAR POLISH (HEADER)
-   ======================================== */
-.header-search {
-    background: #ffffff;
-    border: 1px solid rgba(10, 24, 255, 0.18);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    padding: 0.45rem 0.75rem 0.45rem 2.2rem;
-    min-height: 44px;
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-.header-search:focus-within {
-    border-color: rgba(10, 24, 255, 0.45);
-    box-shadow: 0 10px 26px rgba(10,24,255,0.16);
-}
-
-.header-search__icon {
-    color: rgba(10, 24, 255, 0.75);
-    font-size: 1rem;
-}
-
-.header-search input {
-    font-size: 1rem;
-    min-width: 220px;
-    width: 100%;
-    color: var(--color-text);
-}
-
-.header-search input::placeholder {
-    color: rgba(44,44,44,0.55);
-}
-
-.header-search__btn {
-    padding: 0.55rem 1.1rem;
-    font-size: 0.9rem;
-    box-shadow: 0 6px 14px rgba(10,24,255,0.22);
-}
-
-.header-search__btn:focus-visible {
-    outline: 3px solid rgba(10,24,255,0.25);
-    outline-offset: 2px;
-}
-/* ========================================
-   BOOK CAROUSEL (HOME SECTIONS)
-   ======================================== */
-.section__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.book-carousel {
-    position: relative;
-}
-
-.book-carousel__controls {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.book-carousel__btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 999px;
-    border: 1px solid var(--color-border);
-    background: #ffffff;
-    color: var(--color-text);
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.book-carousel__btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 18px rgba(0,0,0,0.12);
-}
-
-.book-carousel__viewport {\r\n    overflow: hidden;\r\n}
-
-.book-carousel__track {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    gap: 1.2rem;\r\n    overflow-x: auto;\r\n    padding: 0 16px 0.6rem;\r\n    scroll-snap-type: x mandatory;\r\n    scroll-behavior: smooth;\r\n    align-items: stretch;\r\n    justify-content: flex-start;\r\n    scroll-padding: 0 16px;\r\n}
-
-.book-carousel__track::-webkit-scrollbar {
-    height: 8px;
-}
-
-.book-carousel__track::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.2);
-    border-radius: 999px;
-}
-
-.book-carousel__track .book-card {\r\n    flex: 0 0 clamp(220px, 24vw, 280px);\r\n    scroll-snap-align: start;\r\n}
-
-@media (max-width: 768px) {
-    .book-carousel__track .book-card {\r\n    flex: 0 0 clamp(220px, 24vw, 280px);\r\n    scroll-snap-align: start;\r\n}
-}
-
-@media (max-width: 480px) {
-    .book-carousel__track .book-card {\r\n    flex: 0 0 clamp(220px, 24vw, 280px);\r\n    scroll-snap-align: start;\r\n}
-}
-
-
-
-
-/* Force Nouveautés to a single horizontal line */
-.new-releases .book-carousel__track { flex-wrap: nowrap; }
-.new-releases .book-carousel__track .book-card { flex: 0 0 260px; width: auto; max-width: none; }
-
-
-/* Improve card aesthetics in Nouveautés / Meilleures Ventes / Prochaines Parutions */
-.new-releases .book-card,
-.bestsellers .book-card,
-.upcoming-releases .book-card {
-  width: 260px;
-  max-width: 260px;
-  text-align: left;
-}
-.new-releases .book-card__info,
-.bestsellers .book-card__info,
-.upcoming-releases .book-card__info {
-  text-align: left;
-}
-.new-releases .book-card__cover,
-.bestsellers .book-card__cover,
-.upcoming-releases .book-card__cover {
-  aspect-ratio: 3 / 4;
-}
-.new-releases .book-card__cover img,
-.bestsellers .book-card__cover img,
-.upcoming-releases .book-card__cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-
-/* Uniform news cards to match book carousel style */
-.news-ticker__track { align-items: stretch; padding: 0 16px 0.6rem; }
-.news-ticker__item.book-card { flex: 0 0 260px; max-width: 260px; }
-.news-ticker__item .book-card__cover { aspect-ratio: 3 / 4; }
-.news-ticker__item .book-card__cover img { width: 100%; height: 100%; object-fit: cover; }
-.news-ticker__item .book-card__info { text-align: left; }
-
-
-/* Force homepage cards to stay on one horizontal line (Nouveautés -> Actualités) */
-.new-releases .book-carousel__track,
-.bestsellers .book-carousel__track,
-.upcoming-releases .book-carousel__track,
-.news-ticker__track {
-  flex-wrap: nowrap;
-  overflow-x: auto;
-}
-.new-releases .book-card,
-.bestsellers .book-card,
-.upcoming-releases .book-card,
-.news-ticker__item.book-card {
-  flex: 0 0 260px;
-  max-width: 260px;
-  width: 260px;
-}
-
-
-/* Force homepage carousels to a single horizontal row (override any conflicting rules) */
-.new-releases .book-carousel__track,
-.bestsellers .book-carousel__track,
-.upcoming-releases .book-carousel__track,
-.news-ticker__track {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-}
-
-
-/* New releases block: desktop grid like mockup */
-.new-releases .book-carousel__viewport { overflow: visible; }
-.new-releases .book-carousel__track {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5rem;
-  overflow: visible;
-  padding: 0;
-  scroll-snap-type: none;
-}
-.new-releases .book-card {
-  width: 100%;
-  max-width: none;
-  text-align: center;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-  border: 1px solid rgba(0,0,0,0.06);
-}
-.new-releases .book-card__cover { aspect-ratio: 3 / 4; }
-.new-releases .book-card__cover img { width: 100%; height: 100%; object-fit: cover; }
-.new-releases .book-card__info { text-align: center; padding: 0.75rem 0.9rem 1.1rem; }
-@media (max-width: 1200px) {
-  .new-releases .book-carousel__track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 900px) {
-  .new-releases .book-carousel__track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 600px) {
-  .new-releases .book-carousel__track { grid-template-columns: 1fr; }
-}
-
-
-/* Match Nouveautés grid style for Bestsellers & Upcoming */
-.bestsellers .book-carousel__viewport,
-.upcoming-releases .book-carousel__viewport { overflow: visible; }
-.bestsellers .book-carousel__track,
-.upcoming-releases .book-carousel__track {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5rem;
-  overflow: visible;
-  padding: 0;
-  scroll-snap-type: none;
-}
-.bestsellers .book-card,
-.upcoming-releases .book-card {
-  width: 100%;
-  max-width: none;
-  text-align: center;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-  border: 1px solid rgba(0,0,0,0.06);
-}
-.bestsellers .book-card__cover,
-.upcoming-releases .book-card__cover { aspect-ratio: 3 / 4; }
-.bestsellers .book-card__cover img,
-.upcoming-releases .book-card__cover img { width: 100%; height: 100%; object-fit: cover; }
-.bestsellers .book-card__info,
-.upcoming-releases .book-card__info { text-align: center; padding: 0.75rem 0.9rem 1.1rem; }
-@media (max-width: 1200px) {
-  .bestsellers .book-carousel__track,
-  .upcoming-releases .book-carousel__track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 900px) {
-  .bestsellers .book-carousel__track,
-  .upcoming-releases .book-carousel__track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 600px) {
-  .bestsellers .book-carousel__track,
-  .upcoming-releases .book-carousel__track { grid-template-columns: 1fr; }
-}
-
