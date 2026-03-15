@@ -483,3 +483,12 @@ font-size: 2rem;
   .hero__slide { padding-top: 1rem !important; padding-bottom: 1.2rem !important; }
   .hero__carousel { padding-bottom: 0.5rem; }
 }
+@media (max-width: 768px) {
+  /* Mobile tabs (filters): smaller pills */
+  .tabs { gap: 0.35rem; }
+  .tabs__btn {
+    padding: 0.25rem 0.55rem;
+    font-size: 0.6rem;
+    border-radius: 999px;
+  }
+}
