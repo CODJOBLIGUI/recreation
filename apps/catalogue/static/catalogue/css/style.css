@@ -3663,3 +3663,147 @@ html {
 
 
 
+
+/* Force Nouveautés to a single horizontal line */
+.new-releases .book-carousel__track { flex-wrap: nowrap; }
+.new-releases .book-carousel__track .book-card { flex: 0 0 260px; width: auto; max-width: none; }
+
+
+/* Improve card aesthetics in Nouveautés / Meilleures Ventes / Prochaines Parutions */
+.new-releases .book-card,
+.bestsellers .book-card,
+.upcoming-releases .book-card {
+  width: 260px;
+  max-width: 260px;
+  text-align: left;
+}
+.new-releases .book-card__info,
+.bestsellers .book-card__info,
+.upcoming-releases .book-card__info {
+  text-align: left;
+}
+.new-releases .book-card__cover,
+.bestsellers .book-card__cover,
+.upcoming-releases .book-card__cover {
+  aspect-ratio: 3 / 4;
+}
+.new-releases .book-card__cover img,
+.bestsellers .book-card__cover img,
+.upcoming-releases .book-card__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Uniform news cards to match book carousel style */
+.news-ticker__track { align-items: stretch; padding: 0 16px 0.6rem; }
+.news-ticker__item.book-card { flex: 0 0 260px; max-width: 260px; }
+.news-ticker__item .book-card__cover { aspect-ratio: 3 / 4; }
+.news-ticker__item .book-card__cover img { width: 100%; height: 100%; object-fit: cover; }
+.news-ticker__item .book-card__info { text-align: left; }
+
+
+/* Force homepage cards to stay on one horizontal line (Nouveautés -> Actualités) */
+.new-releases .book-carousel__track,
+.bestsellers .book-carousel__track,
+.upcoming-releases .book-carousel__track,
+.news-ticker__track {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+.new-releases .book-card,
+.bestsellers .book-card,
+.upcoming-releases .book-card,
+.news-ticker__item.book-card {
+  flex: 0 0 260px;
+  max-width: 260px;
+  width: 260px;
+}
+
+
+/* Force homepage carousels to a single horizontal row (override any conflicting rules) */
+.new-releases .book-carousel__track,
+.bestsellers .book-carousel__track,
+.upcoming-releases .book-carousel__track,
+.news-ticker__track {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+}
+
+
+/* New releases block: desktop grid like mockup */
+.new-releases .book-carousel__viewport { overflow: visible; }
+.new-releases .book-carousel__track {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  overflow: visible;
+  padding: 0;
+  scroll-snap-type: none;
+}
+.new-releases .book-card {
+  width: 100%;
+  max-width: none;
+  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.new-releases .book-card__cover { aspect-ratio: 3 / 4; }
+.new-releases .book-card__cover img { width: 100%; height: 100%; object-fit: cover; }
+.new-releases .book-card__info { text-align: center; padding: 0.75rem 0.9rem 1.1rem; }
+@media (max-width: 1200px) {
+  .new-releases .book-carousel__track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .new-releases .book-carousel__track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .new-releases .book-carousel__track { grid-template-columns: 1fr; }
+}
+
+
+/* Match Nouveautés grid style for Bestsellers & Upcoming */
+.bestsellers .book-carousel__viewport,
+.upcoming-releases .book-carousel__viewport { overflow: visible; }
+.bestsellers .book-carousel__track,
+.upcoming-releases .book-carousel__track {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  overflow: visible;
+  padding: 0;
+  scroll-snap-type: none;
+}
+.bestsellers .book-card,
+.upcoming-releases .book-card {
+  width: 100%;
+  max-width: none;
+  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.bestsellers .book-card__cover,
+.upcoming-releases .book-card__cover { aspect-ratio: 3 / 4; }
+.bestsellers .book-card__cover img,
+.upcoming-releases .book-card__cover img { width: 100%; height: 100%; object-fit: cover; }
+.bestsellers .book-card__info,
+.upcoming-releases .book-card__info { text-align: center; padding: 0.75rem 0.9rem 1.1rem; }
+@media (max-width: 1200px) {
+  .bestsellers .book-carousel__track,
+  .upcoming-releases .book-carousel__track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .bestsellers .book-carousel__track,
+  .upcoming-releases .book-carousel__track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .bestsellers .book-carousel__track,
+  .upcoming-releases .book-carousel__track { grid-template-columns: 1fr; }
+}
+
