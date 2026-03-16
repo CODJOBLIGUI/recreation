@@ -7452,6 +7452,11 @@ html {
     color: #ffffff !important;
 }
 
+.footer-fayard__title,
+.footer-fayard__subsection-title {
+    color: #ffffff !important;
+}
+
 .footer-shop-btn,
 .footer-shop-btn--audio {
     background: #ffffff !important;
