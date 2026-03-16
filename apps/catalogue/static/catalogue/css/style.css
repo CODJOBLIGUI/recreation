@@ -5401,14 +5401,14 @@ html {
 
 .livre-detail__image img {
     width: 100%;
-    max-width: 180px !important;
-    max-height: 300px !important;
+    max-width: 150px !important;
+    max-height: 220px !important;
     object-fit: contain;
     height: auto;
 }
 
 .livre-detail__image {
-    max-width: 180px;
+    max-width: 150px;
 }
 
 
@@ -5435,9 +5435,9 @@ html {
 
     width: 100%;
 
-    max-width: 180px;
+    max-width: 150px;
  
-    max-height: 300px;
+    max-height: 220px;
 
     height: auto;
 
@@ -5551,8 +5551,8 @@ html {
     }
 
     .livre-detail__image img {
-        max-width: 180px !important;
-        max-height: 260px !important;
+        max-width: 150px !important;
+        max-height: 220px !important;
     }
 }
 
@@ -6750,7 +6750,7 @@ html {
 
     width: 100% !important;
 
-    max-width: 180px !important;
+    max-width: 150px !important;
 
 }
 
