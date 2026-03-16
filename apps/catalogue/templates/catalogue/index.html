@@ -153,6 +153,7 @@
                         <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
                         {% endif %}
                         <p class="book-card__date">Parution : {{ livre.parution|date:"F Y" }}</p>
+                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">D?couvrir</a>
                     </div>
                 </div>
             {% empty %}
