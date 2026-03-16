@@ -1,234 +1,229 @@
-{% extends 'catalogue/base.html' %}
-{% load static %}
-
-{% block content %}
-
-{% if page_blocks %}
-    {% include "catalogue/partials/page_blocks.html" %}
-{% elif page and page.body %}
-    <section class="page-body section">
-        <div class="container container--narrow">
-            {{ page.body|safe }}
-        </div>
-    </section>
-{% else %}
-<!-- Section Hero avec carrousel -->
-<section class="hero">
-    <div class="hero__carousel">
-        {% for livre in livres_carousel %}
-        <div class="hero__slide {% if forloop.first %}active{% endif %}">
-            <div class="container">
-                <div class="hero__image">
-                    <div class="hero__visual">
-                        {% with auteur_principal=livre.auteurs.first %}
-                        {% if auteur_principal and auteur_principal.photo %}
-                        <img class="hero__author-photo" src="{{ auteur_principal.photo.url }}" alt="Photo de {{ auteur_principal.nom }}">
-                        {% endif %}
-                        {% endwith %}
-                        {% if livre.image_par_defaut %}
-                        <img class="hero__book-cover" src="{{ livre.image_par_defaut.url }}" alt="Couverture de {{ livre.titre }}">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="hero__content">
-                    <h1 class="hero__title">{{ livre.titre }}</h1>
-                    <p class="hero__author">{{ livre.auteurs_noms }}</p>
-                    <p class="hero__tagline">{{ livre.resume|truncatewords:30 }}</p>
-                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Découvrir</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="hero__controls">
-        <button id="hero-prev" class="hero__control-btn" aria-label="Précédent">&lt;</button>
-        <button id="hero-next" class="hero__control-btn" aria-label="Suivant">&gt;</button>
-    </div>
-</section>
-
-<!-- Section Nouveautés -->
-<section class="new-releases section" id="nouveautes">
-    <div class="container">
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if page_blocks %}
+    {% include "catalogue/partials/page_blocks.html" %}
+{% elif page and page.body %}
+    <section class="page-body section">
+        <div class="container container--narrow">
+            {{ page.body|safe }}
+        </div>
+    </section>
+{% else %}
+<!-- Section Hero avec carrousel -->
+<section class="hero">
+    <div class="hero__carousel">
+        {% for livre in livres_carousel %}
+        <div class="hero__slide {% if forloop.first %}active{% endif %}">
+            <div class="container">
+                <div class="hero__image">
+                    <div class="hero__visual">
+                        {% with auteur_principal=livre.auteurs.first %}
+                        {% if auteur_principal and auteur_principal.photo %}
+                        <img class="hero__author-photo" src="{{ auteur_principal.photo.url }}" alt="Photo de {{ auteur_principal.nom }}">
+                        {% endif %}
+                        {% endwith %}
+                        {% if livre.image_par_defaut %}
+                        <img class="hero__book-cover" src="{{ livre.image_par_defaut.url }}" alt="Couverture de {{ livre.titre }}">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="hero__content">
+                    <h1 class="hero__title">{{ livre.titre }}</h1>
+                    <p class="hero__author">{{ livre.auteurs_noms }}</p>
+                    <p class="hero__tagline">{{ livre.resume|truncatewords:30 }}</p>
+                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Découvrir</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="hero__controls">
+        <button id="hero-prev" class="hero__control-btn" aria-label="Précédent">&lt;</button>
+        <button id="hero-next" class="hero__control-btn" aria-label="Suivant">&gt;</button>
+    </div>
+</section>
+
+<!-- Section Nouveautés -->
+<section class="new-releases section" id="nouveautes">
+    <div class="container">
         <div class="section__header">
             <h2 class="section__title">Nouveautés</h2>
         </div>
-        
-        <!-- Onglets de catégories -->
-        <div class="tabs">
-            <button class="tabs__btn active" data-category="toutes" aria-pressed="true">Toutes</button>
-            <button class="tabs__btn" data-category="roman" aria-pressed="false">Romans</button>
-            <button class="tabs__btn" data-category="poemes" aria-pressed="false">Poèmes</button>
-            <button class="tabs__btn" data-category="essai" aria-pressed="false">Essais</button>
-            <button class="tabs__btn" data-category="policiers" aria-pressed="false">Polars/Thrillers</button>
-            <button class="tabs__btn" data-category="bd" aria-pressed="false">BD</button>
-            <button class="tabs__btn" data-category="theatres" aria-pressed="false">Théâtres</button>
-            <button class="tabs__btn" data-category="nouvelles" aria-pressed="false">Nouvelles</button>
-        </div>
-        
-        <div class="book-carousel" data-book-carousel="nouveautes">
-            <div class="book-carousel__viewport">
-                <div class="book-carousel__track">
-                    {% for livre in nouveautes %}
-                    <div class="book-card" data-category="{{ livre.categorie }}">
-                        <div class="book-card__cover">
-                            {% if livre.image_par_defaut %}
-                            <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
-                            {% endif %}
-                            <div class="book-card__overlay">
-                                <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
-                            </div>
-                        </div>
-                        <div class="book-card__info">
-                            <h3 class="book-card__title">{{ livre.titre }}</h3>
-                            <p class="book-card__author">{{ livre.auteurs_noms }}</p>
-                            {% if livre.meta_description %}
-                            <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                            {% elif livre.resume %}
-                            <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Section Meilleures Ventes -->
-<section class="bestsellers section bg-light" id="meilleures-ventes">
-    <div class="container">
+
+        <div class="tabs">
+            <button class="tabs__btn active" data-category="toutes" aria-pressed="true">Toutes</button>
+            <button class="tabs__btn" data-category="roman" aria-pressed="false">Romans</button>
+            <button class="tabs__btn" data-category="poemes" aria-pressed="false">Poèmes</button>
+            <button class="tabs__btn" data-category="essai" aria-pressed="false">Essais</button>
+            <button class="tabs__btn" data-category="policiers" aria-pressed="false">Polars/Thrillers</button>
+            <button class="tabs__btn" data-category="bd" aria-pressed="false">BD</button>
+            <button class="tabs__btn" data-category="theatres" aria-pressed="false">Théâtres</button>
+            <button class="tabs__btn" data-category="nouvelles" aria-pressed="false">Nouvelles</button>
+        </div>
+
+        <div class="book-grid">
+            {% for livre in nouveautes %}
+                <div class="book-card" data-category="{{ livre.categorie }}">
+                    <div class="book-card__cover">
+                        {% if livre.image_par_defaut %}
+                        <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                        {% endif %}
+                        <div class="book-card__overlay">
+                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
+                        </div>
+                    </div>
+                    <div class="book-card__info">
+                        <h3 class="book-card__title">{{ livre.titre }}</h3>
+                        <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                        {% if livre.meta_description %}
+                        <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                        {% elif livre.resume %}
+                        <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Section Meilleures Ventes -->
+<section class="bestsellers section bg-light" id="meilleures-ventes">
+    <div class="container">
         <div class="section__header">
             <h2 class="section__title">Meilleures Ventes</h2>
         </div>
-        <div class="book-carousel" data-book-carousel="meilleures-ventes">
-            <div class="book-carousel__viewport">
-                <div class="book-carousel__track">
-                    {% for livre in bestsellers %}
-                    <div class="book-card">
-                <div class="book-card__cover">
-                    <div class="bestsellers__rank">#{{ forloop.counter }}</div>
-                    {% if livre.image_par_defaut %}
-                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
-                    {% endif %}
-                    <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
-                    </div>
-                </div>
-                <div class="book-card__info">
-                    <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
-                    {% if livre.meta_description %}
-                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                    {% elif livre.resume %}
-                    <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
-                    {% endif %}
-                </div>
-            </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- Section Prochaines Parutions -->
-<section class="upcoming-releases section bg-light" id="a-paraitre">
-    <div class="container">
+        <div class="book-grid">
+            {% for livre in bestsellers %}
+                <div class="book-card">
+                    <div class="book-card__cover">
+                        <div class="bestsellers__rank">#{{ forloop.counter }}</div>
+                        {% if livre.image_par_defaut %}
+                        <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                        {% endif %}
+                        <div class="book-card__overlay">
+                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
+                        </div>
+                    </div>
+                    <div class="book-card__info">
+                        <h3 class="book-card__title">{{ livre.titre }}</h3>
+                        <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                        {% if livre.meta_description %}
+                        <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                        {% elif livre.resume %}
+                        <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Section Prochaines Parutions -->
+<section class="upcoming-releases section bg-light" id="a-paraitre">
+    <div class="container">
         <div class="section__header">
-            <div>
-                <h2 class="section__title">Prochaines Parutions</h2>
-                                    {% if livre.meta_description %}
-                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                    {% elif livre.resume %}
-                    <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
-                    {% endif %}
-                    <p class="book-card__date">Parution : {{ livre.parution|date:"F Y" }}</p>
-                </div>
-            </div>
-                    {% empty %}
-                    <p class="no-content">Aucune prochaine parution pour le moment.</p>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- Fil d'actualités -->
-<section class="news-ticker section">
-    <div class="container">
-        <div class="news-ticker__header">
-            <h2 class="section__title">Suivez l’actualité</h2>
-            <div class="news-ticker__controls">
-                <button class="news-ticker__btn" type="button" data-news-action="prev" aria-label="Actualité précédente">&lt;</button>
-                <button class="news-ticker__btn" type="button" data-news-action="next" aria-label="Actualité suivante">&gt;</button>
-            </div>
-        </div>
-        <div class="news-ticker__viewport" data-news-ticker>
-            <div class="news-ticker__track">
-                {% for actualite in actualites_ticker %}
-                <article class="news-ticker__item book-card">
-                    <div class="book-card__cover">
-                        {% if actualite.image %}
-                        <img src="{{ actualite.image.url }}" alt="{{ actualite.titre }}" loading="lazy">
-                        {% endif %}
-                        <div class="book-card__overlay">
-                            <a href="{% url 'catalogue:actualite-detail' actualite.slug %}" class="btn btn--secondary">Lire</a>
-                        </div>
-                    </div>
-                    <div class="book-card__info">
-                        <h3 class="book-card__title">{{ actualite.titre|safe }}</h3>
-                        <p class="book-card__meta-desc">{{ actualite.extrait|striptags|truncatewords:18|safe }}</p>
-                    </div>
-                </article>
-                {% empty %}
-                <p class="no-content">Aucune actualité pour le moment.</p>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- Section Newsletter -->
-<section class="newsletter section" id="newsletter">
-    <div class="container">
-        <h2 class="section__title">Restez informé de nos nouveautés</h2>
-        
-        <!-- Affichage des messages de succès/erreur -->
-        {% if messages %}
-            {% for message in messages %}
-            <div class="form-feedback form-feedback--{{ message.tags }}">
-                {{ message }}
-            </div>
-            {% endfor %}
-        {% endif %}
-        
-        <!-- Soumettre à IndexView avec action vide (même URL) -->
-        <form method="POST" action="" class="newsletter__form">
-            {% csrf_token %}
-            {{ form.email }}
-            {% if form.email.errors %}
-                <span class="form-error" style="color: #ff6b6b; margin-top: 0.5rem; display: block;">
-                    {{ form.email.errors.0 }}
-                </span>
-            {% endif %}
-            <button type="submit" class="btn btn--primary">S'abonner</button>
-        </form>
-    </div>
-{% endif %}
-
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'catalogue/js/carousel.js' %}"></script>
-<script src="{% static 'catalogue/js/home.js' %}"></script>
-{% endblock %}
-
-
-
-
-
+            <h2 class="section__title">Prochaines Parutions</h2>
+        </div>
+        <div class="book-grid">
+            {% for livre in prochaines_parutions %}
+                <div class="book-card upcoming-book">
+                    <div class="book-card__cover">
+                        {% if livre.image_par_defaut %}
+                        <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                        {% endif %}
+                        <div class="upcoming-badge">
+                            <i class="fas fa-calendar-alt"></i>
+                            {{ livre.parution|date:"d/m/Y" }}
+                        </div>
+                        <div class="book-card__overlay">
+                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Découvrir</a>
+                        </div>
+                    </div>
+                    <div class="book-card__info">
+                        <h3 class="book-card__title">{{ livre.titre }}</h3>
+                        <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                        {% if livre.meta_description %}
+                        <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                        {% elif livre.resume %}
+                        <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
+                        {% endif %}
+                        <p class="book-card__date">Parution : {{ livre.parution|date:"F Y" }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="no-content">Aucune prochaine parution pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Fil d'actualités -->
+<section class="news-ticker section">
+    <div class="container">
+        <div class="news-ticker__header">
+            <h2 class="section__title">Suivez l’actualité</h2>
+        </div>
+        <div class="book-grid">
+            {% for actualite in actualites_ticker %}
+            <article class="book-card">
+                <a href="{% url 'catalogue:actualite-detail' actualite.slug %}" class="book-card__cover-link">
+                    <div class="book-card__cover">
+                        {% if actualite.image %}
+                        <img src="{{ actualite.image.url }}" alt="{{ actualite.titre }}" loading="lazy">
+                        {% endif %}
+                        <div class="book-card__overlay">
+                            <span class="btn btn--secondary">Lire</span>
+                        </div>
+                    </div>
+                </a>
+                <div class="book-card__info">
+                    <h3 class="book-card__title">{{ actualite.titre|safe }}</h3>
+                    <p class="book-card__author">{{ actualite.date_publication|date:"d/m/Y" }}</p>
+                    <p class="book-card__meta-desc">{{ actualite.extrait|striptags|truncatewords:18|safe }}</p>
+                </div>
+            </article>
+            {% empty %}
+            <p class="no-content">Aucune actualité pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Section Newsletter -->
+<section class="newsletter section" id="newsletter">
+    <div class="container">
+        <h2 class="section__title">Restez informé de nos nouveautés</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="form-feedback form-feedback--{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="" class="newsletter__form">
+            {% csrf_token %}
+            {{ form.email }}
+            {% if form.email.errors %}
+                <span class="form-error" style="color: #ff6b6b; margin-top: 0.5rem; display: block;">
+                    {{ form.email.errors.0 }}
+                </span>
+            {% endif %}
+            <button type="submit" class="btn btn--primary">S'abonner</button>
+        </form>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'catalogue/js/carousel.js' %}"></script>
+<script src="{% static 'catalogue/js/home.js' %}"></script>
+{% endblock %}
