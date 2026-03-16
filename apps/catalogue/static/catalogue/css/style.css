@@ -3264,3 +3264,23 @@ html {
 
 
 \r\n
+/* OVERRIDE: small, non-distorted book cards in grid */
+.book-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.book-card {
+    width: 100%;
+    max-width: 220px;
+}
+
+.book-card__cover {
+    height: 220px;
+}
+
+.book-card__cover img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
