@@ -1,4 +1,4 @@
-Ôªø{% extends 'catalogue/base.html' %}
+{% extends 'catalogue/base.html' %}
 {% load static %}
 
 {% block content %}
@@ -34,34 +34,34 @@
                     <h1 class="hero__title">{{ livre.titre }}</h1>
                     <p class="hero__author">{{ livre.auteurs_noms }}</p>
                     <p class="hero__tagline">{{ livre.resume|truncatewords:30 }}</p>
-                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">D√©couvrir</a>
+                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">DÈcouvrir</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
     <div class="hero__controls">
-        <button id="hero-prev" class="hero__control-btn" aria-label="Pr√©c√©dent">&lt;</button>
+        <button id="hero-prev" class="hero__control-btn" aria-label="PrÈcÈdent">&lt;</button>
         <button id="hero-next" class="hero__control-btn" aria-label="Suivant">&gt;</button>
     </div>
 </section>
 
-<!-- Section Nouveaut√©s -->
+<!-- Section NouveautÈs -->
 <section class="new-releases section" id="nouveautes">
     <div class="container">
         <div class="section__header">
-            <h2 class="section__title">Nouveaut√©s</h2>
+            <h2 class="section__title">NouveautÈs</h2>
         </div>
         
-        <!-- Onglets de cat√©gories -->
+        <!-- Onglets de catÈgories -->
         <div class="tabs">
             <button class="tabs__btn active" data-category="toutes" aria-pressed="true">Toutes</button>
             <button class="tabs__btn" data-category="roman" aria-pressed="false">Romans</button>
-            <button class="tabs__btn" data-category="poemes" aria-pressed="false">Po√®mes</button>
+            <button class="tabs__btn" data-category="poemes" aria-pressed="false">PoËmes</button>
             <button class="tabs__btn" data-category="essai" aria-pressed="false">Essais</button>
             <button class="tabs__btn" data-category="policiers" aria-pressed="false">Polars/Thrillers</button>
             <button class="tabs__btn" data-category="bd" aria-pressed="false">BD</button>
-            <button class="tabs__btn" data-category="theatres" aria-pressed="false">Th√©√¢tres</button>
+            <button class="tabs__btn" data-category="theatres" aria-pressed="false">ThÈ‚tres</button>
             <button class="tabs__btn" data-category="nouvelles" aria-pressed="false">Nouvelles</button>
         </div>
         
@@ -75,7 +75,7 @@
                             <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
                             {% endif %}
                             <div class="book-card__overlay">
-                                <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir d√©tails</a>
+                                <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir dÈtails</a>
                             </div>
                         </div>
                         <div class="book-card__info">
@@ -112,7 +112,7 @@
                     <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
                     {% endif %}
                     <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir d√©tails</a>
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir dÈtails</a>
                     </div>
                 </div>
                 <div class="book-card__info">
@@ -139,31 +139,7 @@
         <div class="section__header">
             <div>
                 <h2 class="section__title">Prochaines Parutions</h2>
-                <p class="section__subtitle">D√©couvrez les livres qui para√Ætront bient√¥t</p>
-            </div>
-        </div>
-        
-        <div class="book-carousel" data-book-carousel="a-paraitre">
-            <div class="book-carousel__viewport">
-                <div class="book-carousel__track">
-                    {% for livre in prochaines_parutions %}
-                    <div class="book-card upcoming-book">
-                <div class="book-card__cover">
-                    {% if livre.image_par_defaut %}
-                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
-                    {% endif %}
-                    <div class="upcoming-badge">
-                        <i class="fas fa-calendar-alt"></i>
-                        {{ livre.parution|date:"d/m/Y" }}
-                    </div>
-                    <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">D√©couvrir</a>
-                    </div>
-                </div>
-                <div class="book-card__info">
-                    <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
-                    {% if livre.meta_description %}
+                                    {% if livre.meta_description %}
                     <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
                     {% elif livre.resume %}
                     <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
@@ -181,14 +157,14 @@
 </section>
 
 
-<!-- Fil d'actualit√©s -->
+<!-- Fil d'actualitÈs -->
 <section class="news-ticker section">
     <div class="container">
         <div class="news-ticker__header">
-            <h2 class="section__title">Suivez l‚Äôactualit√©</h2>
+            <h2 class="section__title">Suivez líactualitÈ</h2>
             <div class="news-ticker__controls">
-                <button class="news-ticker__btn" type="button" data-news-action="prev" aria-label="Actualit√© pr√©c√©dente">&lt;</button>
-                <button class="news-ticker__btn" type="button" data-news-action="next" aria-label="Actualit√© suivante">&gt;</button>
+                <button class="news-ticker__btn" type="button" data-news-action="prev" aria-label="ActualitÈ prÈcÈdente">&lt;</button>
+                <button class="news-ticker__btn" type="button" data-news-action="next" aria-label="ActualitÈ suivante">&gt;</button>
             </div>
         </div>
         <div class="news-ticker__viewport" data-news-ticker>
@@ -209,7 +185,7 @@
                     </div>
                 </article>
                 {% empty %}
-                <p class="no-content">Aucune actualit√© pour le moment.</p>
+                <p class="no-content">Aucune actualitÈ pour le moment.</p>
                 {% endfor %}
             </div>
         </div>
@@ -220,9 +196,9 @@
 <!-- Section Newsletter -->
 <section class="newsletter section" id="newsletter">
     <div class="container">
-        <h2 class="section__title">Restez inform√© de nos nouveaut√©s</h2>
+        <h2 class="section__title">Restez informÈ de nos nouveautÈs</h2>
         
-        <!-- Affichage des messages de succ√®s/erreur -->
+        <!-- Affichage des messages de succËs/erreur -->
         {% if messages %}
             {% for message in messages %}
             <div class="form-feedback form-feedback--{{ message.tags }}">
@@ -231,7 +207,7 @@
             {% endfor %}
         {% endif %}
         
-        <!-- Soumettre √† IndexView avec action vide (m√™me URL) -->
+        <!-- Soumettre ‡ IndexView avec action vide (mÍme URL) -->
         <form method="POST" action="" class="newsletter__form">
             {% csrf_token %}
             {{ form.email }}
@@ -251,6 +227,7 @@
 <script src="{% static 'catalogue/js/carousel.js' %}"></script>
 <script src="{% static 'catalogue/js/home.js' %}"></script>
 {% endblock %}
+
 
 
 
