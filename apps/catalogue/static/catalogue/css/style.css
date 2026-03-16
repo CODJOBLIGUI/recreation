@@ -304,7 +304,7 @@ ul, ol {
     font-family: "Times New Roman", Times, serif;
     font-weight: 800;
     letter-spacing: 0.02em;
-    text-transform: scale(1.02);
+    text-transform: scale(1.01);
     color: var(--color-accent);
     font-size: 2.8rem;
     line-height: 1;
@@ -402,7 +402,7 @@ ul, ol {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
-    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
     transform: translateX(100%);
     transition: var(--transition-smooth);
     z-index: 2;
@@ -735,12 +735,12 @@ body.nav-drawer-open {
     position: relative;
     right: auto;
     top: auto;
-    transform: scale(1.02);
+    transform: scale(1.01);
     width: 152px;
     height: auto;
     max-height: 228px;
     object-fit: contain;
-    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
     border-radius: var(--radius-media);
     background: transparent;
     border: none;
@@ -921,8 +921,8 @@ body.nav-drawer-open {
 \r\n
 
 .book-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
 }
 
 .book-card__cover {
@@ -946,13 +946,14 @@ body.nav-drawer-open {
 }
 
 .book-card:hover .book-card__cover img {
-    transform: scale(1.02);
+    transform: scale(1.01);
 }
 
 .book-card__overlay {
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1162,7 +1163,7 @@ body.nav-drawer-open {
     font-weight: 600;
     letter-spacing: 0;
     margin-bottom: 1.5rem;
-    text-transform: scale(1.02);
+    text-transform: scale(1.01);
 }
 
 .footer-fayard__social-icons {
@@ -1607,7 +1608,7 @@ body.nav-drawer-open {
 
 .author-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
 }
 
 .author-card__photo {
@@ -1888,7 +1889,7 @@ body.nav-drawer-open {
 }
 
 .contrat-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
     border-color: var(--color-accent);
 }
@@ -2204,7 +2205,7 @@ body.nav-drawer-open {
 
 .news-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
 }
 
 .news-card__image {
@@ -2596,7 +2597,7 @@ html {
 
 .news-ticker__item:hover {
     transform: translateY(-4px);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
 }
 
 .news-ticker__media {
