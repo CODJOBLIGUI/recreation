@@ -1,5 +1,5 @@
 /*
- * RESPONSIVE CSS SUPPLÉMENTAIRE
+ * RESPONSIVE CSS SUPPLÃ‰MENTAIRE
  * Ajustements pour tablettes et mobiles
  */
 
@@ -44,7 +44,7 @@
     }
 }
 
-/* Petits écrans (max 768px) */
+/* Petits Ã©crans (max 768px) */
 @media (max-width: 768px) {
     h1 { font-size: 2rem; }
     h2 { font-size: 1.75rem; }
@@ -126,7 +126,7 @@
     
 }
 
-/* Très petits écrans (max 480px) */
+/* TrÃ¨s petits Ã©crans (max 480px) */
 @media (max-width: 480px) {
     .book-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -299,32 +299,40 @@ font-size: 2rem;
   .footer-fayard__grid {
     display: flex !important;
     flex-direction: column !important;
-    gap: 1rem !important;
+    gap: 1.5rem !important;
   }
-  .footer-fayard__social { order: 1; text-align: center; }
+  .footer-fayard__col--brand { order: 1; text-align: center; }
+  .footer-fayard__col:nth-child(2) { order: 2; text-align: left; }
+  .footer-fayard__col:nth-child(3) { order: 3; text-align: left; }
+  .footer-fayard__social { text-align: center; }
   .footer-fayard__social-title { display: none; }
   .footer-fayard__social-icons { display: flex; justify-content: center; gap: 0.75rem; }
   .social-icon { width: 32px; height: 32px; background: #8c2f2f; color: #fff; box-shadow: none; }
 
-  .footer-fayard__brand { order: 2; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 0.75rem; }
+  .footer-fayard__brand { text-align: center; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 0.75rem; }
   .footer-fayard__logo { font-size: 1.8rem !important; line-height: 1.1; margin: 0 0 0.4rem; }
   .footer-fayard__slogan,
   .footer-fayard__address,
   .footer-fayard__address-main { font-size: 0.7rem; line-height: 1.35; }
 
-  .footer-fayard__actions { order: 3; display: grid; gap: 0; }
+  .footer-fayard__actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.9rem;
+  }
   .footer-fayard__action {
-    border-top: 1px solid rgba(255,255,255,0.15);
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    border-radius: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
     background: transparent;
-    padding: 0.85rem 0.5rem;
-    justify-content: space-between;
+    padding: 0.5rem 0.85rem;
+    justify-content: center;
   }
   .footer-fayard__action i { opacity: 0.7; }
-  .footer-fayard__action::after { content: "?"; margin-left: auto; opacity: 0.7; }
+  .footer-fayard__action::after { content: none; }
 
-  .footer-fayard__bottom { order: 4; text-align: center; }
+  .footer-fayard__bottom { text-align: center; }
   .footer-fayard__links { display: grid; gap: 0.4rem; justify-content: center; }
   .footer-fayard__links a { text-decoration: none; }
 }

@@ -3244,7 +3244,7 @@ html {
 }
 
 
-/* Arrondis irr?prochables pour les images d'auteurs */
+/* Arrondis irréprochables pour les images d'auteurs */
 .author-card__photo,
 .auteur-detail__photo {
     border-radius: var(--radius-media);
@@ -3422,7 +3422,7 @@ html {
 }
 
 
-/* Align Nouveaut?s cards to Bestsellers styling */
+/* Align Nouveautés cards to Bestsellers styling */
 .new-releases .book-card,
 .bestsellers .book-card {
     border-radius: 16px;
@@ -3494,12 +3494,16 @@ html {
     padding: 0.55rem 0.9rem;
     border-radius: 999px;
     background: #ffffff;
-    color: #1f1f1f;
+    color: #000000;
     font-weight: 600;
     font-size: 0.9rem;
     text-decoration: none;
     border: 1px solid rgba(255, 255, 255, 0.65);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.footer-audio-btn i {
+    color: #000000;
 }
 
 .footer-audio-btn__icon {
@@ -3539,8 +3543,9 @@ html {
 }
 
 .footer-fayard__actions {
-    display: grid;
-    gap: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
     margin: 1rem 0;
 }
 

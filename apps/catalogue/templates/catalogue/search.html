@@ -7,7 +7,7 @@
 <section class="page-hero">
     <div class="container">
         <h1 class="page-hero__title">Recherche</h1>
-        <p class="page-hero__subtitle">Trouvez rapidement livres, auteurs, actualit�f©s et pages</p>
+        <p class="page-hero__subtitle">Trouvez rapidement livres, auteurs, actualités et pages</p>
     </div>
 </section>
 
@@ -20,7 +20,7 @@
 
         {% if query %}
             <p class="search-results__summary">
-                R�f©sultats pour â�,��"{{ query }}â�,� : {{ total_results }} trouv�f©(s)
+                Résultats pour "{{ query }}" : {{ total_results }} trouvé(s)
             </p>
 
             {% if pages %}
@@ -31,7 +31,7 @@
                             <a class="search-card" href="{{ page.url }}">
                                 <div class="search-card__type">Page</div>
                                 <h3 class="search-card__title">{{ page.title|highlight_query:query }}</h3>
-                                <p class="search-card__snippet">Acc�f©der directement �f  cette page.</p>
+                                <p class="search-card__snippet">Accéder directement à cette page.</p>
                             </a>
                         {% endfor %}
                     </div>
@@ -87,7 +87,7 @@
 
             {% if membres %}
                 <div class="search-results__block">
-                    <h2>�f�?�quipe</h2>
+                    <h2>Équipe</h2>
                     <div class="search-results__grid">
                         {% for membre in membres %}
                             <a class="search-card" href="{% url 'catalogue:a-propos' %}#equipe">
@@ -97,7 +97,7 @@
                                     {% endif %}
                                 </div>
                                 <div class="search-card__body">
-                                    <div class="search-card__type">�f�?�quipe</div>
+                                    <div class="search-card__type">Équipe</div>
                                     <h3 class="search-card__title">{{ membre.nom_complet|unescape|fix_mojibake|highlight_query:query }}</h3>
                                     {% if membre.poste %}
                                     <p class="search-card__meta">{{ membre.poste|unescape|fix_mojibake|highlight_query:query }}</p>
@@ -114,7 +114,7 @@
 
             {% if actualites %}
                 <div class="search-results__block">
-                    <h2>Actualit�f©s</h2>
+                    <h2>Actualités</h2>
                     <div class="search-results__grid">
                         {% for actualite in actualites %}
                             <a class="search-card" href="{% url 'catalogue:actualite-detail' actualite.slug %}">
@@ -124,7 +124,7 @@
                                     {% endif %}
                                 </div>
                                 <div class="search-card__body">
-                                    <div class="search-card__type">Actualit�f©</div>
+                                    <div class="search-card__type">Actualité</div>
                                     <h3 class="search-card__title">{{ actualite.titre|unescape|fix_mojibake|highlight_query:query }}</h3>
                                     <p class="search-card__snippet">{{ actualite.extrait|striptags|unescape|fix_mojibake|truncatewords:18|highlight_query:query }}</p>
                                 </div>
@@ -135,7 +135,7 @@
             {% endif %}
 
             {% if total_results == 0 %}
-                <p class="no-content">Aucun r�f©sultat pour cette recherche.</p>
+                <p class="no-content">Aucun résultat pour cette recherche.</p>
             {% endif %}
         {% else %}
             <p class="no-content">Saisissez un terme pour lancer la recherche.</p>
