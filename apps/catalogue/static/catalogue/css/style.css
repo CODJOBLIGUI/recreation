@@ -6556,7 +6556,9 @@ html {
 
 .author-card__photo,
 
-.auteur-detail__photo {
+.auteur-detail__photo,
+
+.livre-detail__image {
 
     border-radius: var(--radius-media);
 
@@ -6570,7 +6572,9 @@ html {
 
 .auteur-detail__photo img,
 
-.hero__author-photo {
+.hero__author-photo,
+
+.livre-detail__image img {
 
     border-radius: var(--radius-media) !important;
 
