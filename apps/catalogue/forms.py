@@ -175,7 +175,7 @@ class AudioConversionForm(forms.ModelForm):
 
     def _count_sentences(self, text):
         import re
-        parts = re.split(r"[.!?]+", text or "")
+        parts = re.split(r"[.!]+", text or "")
         return len([p for p in (part.strip() for part in parts) if p])
 
     def clean(self):

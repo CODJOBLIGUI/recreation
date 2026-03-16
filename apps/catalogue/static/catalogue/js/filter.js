@@ -34,7 +34,7 @@
 
     if (searchButton) {
         searchButton.addEventListener('click', function() {
-            const searchTerm = searchInput ? searchInput.value.trim() : '';
+            const searchTerm = searchInput  searchInput.value.trim() : '';
             performSearch(searchTerm);
         });
     }

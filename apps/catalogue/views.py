@@ -323,7 +323,7 @@ class LivreDetailView(DetailView):
         broken_to_label = {
             "po\u00e3\u00a8mes": "Po\u00e8mes",
             "po\u010dmes": "Po\u00e8mes",
-            "po?mes": "Po\u00e8mes",
+            "pomes": "Po\u00e8mes",
             "litt\u00e3\u00a9rature fran\u00e3\u00a7aise": "Litt\u00e9rature fran\u00e7aise",
             "litt\u00e3\u00a9rature \u00e3\u00a9trang\u00e3\u00a8re": "Litt\u00e9rature \u00e9trang\u00e8re",
         }

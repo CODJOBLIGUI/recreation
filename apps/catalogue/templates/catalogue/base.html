@@ -1,257 +1,257 @@
-﻿{% load static text_extras %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ page_description|default:'Editions Recreation - Maison d\'edition africaine' }}">
-    <title>{{ page_title|default:'Editions Recreation' }}</title>
-    {% if appearance and appearance.favicon %}
-    <link rel="icon" type="image/png" href="{{ appearance.favicon.url }}">
-    {% else %}
-    <link rel="icon" type="image/x-icon" href="{% static 'catalogue/images/favicon.ico' %}?v=2">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'catalogue/images/favicon-32x32.png' %}?v=2">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'catalogue/images/apple-touch-icon.png' %}?v=2">
-    {% endif %}
-    
-    <!-- Polices Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Serif+4:wght@400;500;600&family=Montserrat:wght@600&display=swap" rel="stylesheet">
-    <!-- Font Awesome pour les icÃ´nes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- CSS Principal -->
-    <link rel="stylesheet" href="{% static 'catalogue/css/style.css' %}?v=22">
-    <link rel="stylesheet" href="{% static 'catalogue/css/responsive.css' %}?v=17?v=22">
-    <!-- CSS supplÃ©mentaire spÃ©cifique Ã  chaque page -->
-    {% block extra_css %}{% endblock %}
-</head>
-<body class="{% if request.resolver_match.url_name != 'index' %}page--inner{% endif %}">
-    {% if appearance %}
-    <style>
-        :root {
-            --color-primary: {{ appearance.primary_color }};
-            --color-accent: {{ appearance.accent_color }};
-            --color-accent-dark: {{ appearance.accent_dark }};
-            --color-text: {{ appearance.text_color }};
-            --color-text-light: {{ appearance.text_light }};
-            --color-light-bg: {{ appearance.light_bg }};
-            --color-dark-bg: {{ appearance.dark_bg }};
-            {% if appearance.font_heading %}--font-heading: {{ appearance.font_heading }};{% endif %}
-            {% if appearance.font_body %}--font-body: {{ appearance.font_body }};{% endif %}
-        }
-    </style>
-    {% endif %}
-    <!-- En-tÃªte avec navigation -->
-    <header class="header sticky">
-        <div class="container">
-            <!-- Ligne haute : logo + recherche + rÃ©seaux -->
-            <div class="header__top">
-                <!-- Logo + Newsletter -->
-                <div class="header__brand">
-                    <div class="header__logo">
-                        <a href="{% url 'catalogue:index' %}">
-                            {% if appearance and appearance.logo %}
-                            <img src="{{ appearance.logo.url }}" alt="Logo Editions RecrÃ©ation" width="180" height="60">
-                            {% else %}
-                            <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Logo Editions RecrÃ©ation" width="180" height="60">
-                            {% endif %}
-                        </a>
-                    </div>
-                    <form class="header__newsletter-form" action="{% url 'catalogue:index' %}#newsletter" method="post">
-                        {% csrf_token %}
-                        <label class="sr-only" for="header-newsletter-email">S'inscrire Ã  la newsletter</label>
-                        <input id="header-newsletter-email" name="email" type="email" placeholder="Votre email" required>
-                        <button type="submit">Newsletter</button>
-                    </form>
-                </div>
-
-                <!-- Actions header (recherche, menu mobile) -->
-                <div class="header__actions">
-                    <form class="header-search" action="{% url 'catalogue:search' %}" method="get" role="search">
-                        <label class="sr-only" for="header-search-input">Rechercher sur le site</label>
-                        <i class="fas fa-search header-search__icon" aria-hidden="true"></i>
-                        <input id="header-search-input" name="q" type="search" placeholder="Rechercher livres, auteurs, actualitÃ©s..." autocomplete="off">
-                        <button type="submit" class="header-search__btn">Rechercher</button>
-                    </form>
-                    <button id="hamburger-menu" class="header__action-btn header__hamburger" aria-label="Menu" aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
-                <!-- RÃ©seaux sociaux (barre d'accueil) -->
-                <div class="header__social">
-                    {% for social in social_links %}
-                    <a href="{{ social.url }}" aria-label="{{ social.label }}" class="header-social__icon">
-                        <i class="{{ social.icon }}"></i>
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Navigation principale -->
-            <nav class="header__nav">
-                <div class="header__nav-brand"><a href="{% url 'catalogue:index' %}">RecrÃ©ation</a></div>
-                <ul class="header__nav-list">
-                    {% if menu_header_links %}
-                        {% for link in menu_header_links %}
-                        {% if link.url != "/livres-numeriques/" and link.url != "/livres-audio/" and link.url != "/conversion-texte-audio/" %}
-                        <li>
-                            <a href="{{ link.url }}" {% if request.path == link.url or request.path|slice:":{{ link.url|length }}" == link.url %}class="active"{% endif %}>
-                                {{ link.title }}
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
-                    {% else %}
-                        <li><a href="{% url 'catalogue:index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Accueil</a></li>
-                        <li><a href="{% url 'catalogue:actualites' %}" {% if request.resolver_match.url_name == 'actualites' %}class="active"{% endif %}>ActualitÃ©s</a></li>
-                        <li><a href="{% url 'catalogue:auteurs' %}" {% if request.resolver_match.url_name == 'auteurs' %}class="active"{% endif %}>Auteurs</a></li>
-                        <li><a href="{% url 'catalogue:catalogue' %}" {% if request.resolver_match.url_name == 'catalogue' %}class="active"{% endif %}>Catalogue</a></li>
-                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
-                        <li><a href="{% url 'catalogue:nos-contrats' %}" {% if request.resolver_match.url_name == 'nos-contrats' %}class="active"{% endif %}>{{ "Nos contrats"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:a-propos' %}" {% if request.resolver_match.url_name == 'a-propos' %}class="active"{% endif %}>A propos</a></li>
-                        <li><a href="{% url 'catalogue:contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>{{ "Contact"|strip_upper_accents }}s</a></li>
-                    {% endif %}
-                    <li>
-                        <button id="nav-menu-btn" class="nav-menu-btn" type="button" aria-expanded="false" aria-controls="nav-drawer">
-                            <span class="nav-menu-btn__icon" aria-hidden="true">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </span>
-                            <span class="nav-menu-btn__label">Menu</span>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <div id="nav-drawer" class="nav-drawer" aria-hidden="true">
-        <div class="nav-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu principal">
-            <div class="nav-drawer__header">
-                <button id="nav-drawer-close" class="nav-drawer__close" type="button" aria-label="Fermer le menu">
-                    &times;
-                </button>
-                <span class="nav-drawer__title">Menu</span>
-            </div>
-            <nav class="nav-drawer__nav">
-                {% if collections_list %}
-                <div class="nav-drawer__section-title">{{ "Collections"|strip_upper_accents }}</div>
-                <div class="nav-drawer__collections">
-                    {% for collection in collections_list %}
-                    {% if collection.slug %}
-                    <a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a>
-                    {% else %}
-                    <span class="nav-drawer__collection-label">{{ collection.nom }}</span>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                {% endif %}
-                <div class="nav-drawer__section-title">Autres versions de livres</div>
-                <div class="nav-drawer__collections">
-                    <a href="{% url 'catalogue:livres-numeriques' %}">Livres numÃ©riques</a>
-                    <a href="{% url 'catalogue:livres-audio' %}">{{ "Livres audio"|strip_upper_accents }}</a>
-                </div>
-                <div class="nav-drawer__section-title">Autres services</div>
-                <div class="nav-drawer__collections">
-                    <a href="{% url 'catalogue:conversion-audio' %}">Conversion de texte en audio</a>
-                </div>
-            </nav>
-            <div class="nav-drawer__cta">
-                <h3>Abonnez-vous Ã  la newsletter</h3>
-                <p>Recevez nos actualitÃ©s et nouveautÃ©s.</p>
-                <a href="{% url 'catalogue:index' %}#newsletter" class="btn btn--primary">S'abonner</a>
-            </div>
-            <div class="nav-drawer__social">
-                <h4>Suivez RecrÃ©ation sur les rÃ©seaux sociaux</h4>
-                <div class="nav-drawer__social-icons">
-                    {% for social in social_links %}
-                    <a href="{{ social.url }}" aria-label="{{ social.label }}"><i class="{{ social.icon }}"></i></a>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="nav-drawer__shop">
-                <a href="https://recreation.mychariow.shop/" class="nav-drawer__shop-link" target="_blank" rel="noopener">
-                    <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-                    <span>RecrÃ©ation Shop</span>
-                </a>
-            </div>
-        </div>
-        <div class="nav-drawer__backdrop" tabindex="-1"></div>
-    </div>
-    <!-- Contenu principal (? remplir par les pages enfants) -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    
-    <!-- Pied de page -->
-    <footer class="footer-fayard">
-        <div class="container">
-            <div class="footer-fayard__grid">
-                <!-- Colonne 1 -->
-                <div class="footer-fayard__col footer-fayard__col--brand">
+﻿{% load static text_extras %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ page_description|default:'Editions Recreation - Maison d\'edition africaine' }}">
+    <title>{{ page_title|default:'Editions Recreation' }}</title>
+    {% if appearance and appearance.favicon %}
+    <link rel="icon" type="image/png" href="{{ appearance.favicon.url }}">
+    {% else %}
+    <link rel="icon" type="image/x-icon" href="{% static 'catalogue/images/favicon.ico' %}v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'catalogue/images/favicon-32x32.png' %}v=2">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'catalogue/images/apple-touch-icon.png' %}v=2">
+    {% endif %}
+    
+    <!-- Polices Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2family=Cormorant+Garamond:wght@500;600;700&family=Source+Serif+4:wght@400;500;600&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <!-- Font Awesome pour les icÃ´nes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="{% static 'catalogue/css/style.css' %}v=22">
+    <link rel="stylesheet" href="{% static 'catalogue/css/responsive.css' %}v=17v=22">
+    <!-- CSS supplÃ©mentaire spÃ©cifique Ã  chaque page -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{% if request.resolver_match.url_name != 'index' %}page--inner{% endif %}">
+    {% if appearance %}
+    <style>
+        :root {
+            --color-primary: {{ appearance.primary_color }};
+            --color-accent: {{ appearance.accent_color }};
+            --color-accent-dark: {{ appearance.accent_dark }};
+            --color-text: {{ appearance.text_color }};
+            --color-text-light: {{ appearance.text_light }};
+            --color-light-bg: {{ appearance.light_bg }};
+            --color-dark-bg: {{ appearance.dark_bg }};
+            {% if appearance.font_heading %}--font-heading: {{ appearance.font_heading }};{% endif %}
+            {% if appearance.font_body %}--font-body: {{ appearance.font_body }};{% endif %}
+        }
+    </style>
+    {% endif %}
+    <!-- En-tÃªte avec navigation -->
+    <header class="header sticky">
+        <div class="container">
+            <!-- Ligne haute : logo + recherche + rÃ©seaux -->
+            <div class="header__top">
+                <!-- Logo + Newsletter -->
+                <div class="header__brand">
+                    <div class="header__logo">
+                        <a href="{% url 'catalogue:index' %}">
+                            {% if appearance and appearance.logo %}
+                            <img src="{{ appearance.logo.url }}" alt="Logo Editions RecrÃ©ation" width="180" height="60">
+                            {% else %}
+                            <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Logo Editions RecrÃ©ation" width="180" height="60">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <form class="header__newsletter-form" action="{% url 'catalogue:index' %}#newsletter" method="post">
+                        {% csrf_token %}
+                        <label class="sr-only" for="header-newsletter-email">S'inscrire Ã  la newsletter</label>
+                        <input id="header-newsletter-email" name="email" type="email" placeholder="Votre email" required>
+                        <button type="submit">Newsletter</button>
+                    </form>
+                </div>
+
+                <!-- Actions header (recherche, menu mobile) -->
+                <div class="header__actions">
+                    <form class="header-search" action="{% url 'catalogue:search' %}" method="get" role="search">
+                        <label class="sr-only" for="header-search-input">Rechercher sur le site</label>
+                        <i class="fas fa-search header-search__icon" aria-hidden="true"></i>
+                        <input id="header-search-input" name="q" type="search" placeholder="Rechercher livres, auteurs, actualitÃ©s..." autocomplete="off">
+                        <button type="submit" class="header-search__btn">Rechercher</button>
+                    </form>
+                    <button id="hamburger-menu" class="header__action-btn header__hamburger" aria-label="Menu" aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+                <!-- RÃ©seaux sociaux (barre d'accueil) -->
+                <div class="header__social">
+                    {% for social in social_links %}
+                    <a href="{{ social.url }}" aria-label="{{ social.label }}" class="header-social__icon">
+                        <i class="{{ social.icon }}"></i>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Navigation principale -->
+            <nav class="header__nav">
+                <div class="header__nav-brand"><a href="{% url 'catalogue:index' %}">RecrÃ©ation</a></div>
+                <ul class="header__nav-list">
+                    {% if menu_header_links %}
+                        {% for link in menu_header_links %}
+                        {% if link.url != "/livres-numeriques/" and link.url != "/livres-audio/" and link.url != "/conversion-texte-audio/" %}
+                        <li>
+                            <a href="{{ link.url }}" {% if request.path == link.url or request.path|slice:":{{ link.url|length }}" == link.url %}class="active"{% endif %}>
+                                {{ link.title }}
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
+                    {% else %}
+                        <li><a href="{% url 'catalogue:index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Accueil</a></li>
+                        <li><a href="{% url 'catalogue:actualites' %}" {% if request.resolver_match.url_name == 'actualites' %}class="active"{% endif %}>ActualitÃ©s</a></li>
+                        <li><a href="{% url 'catalogue:auteurs' %}" {% if request.resolver_match.url_name == 'auteurs' %}class="active"{% endif %}>Auteurs</a></li>
+                        <li><a href="{% url 'catalogue:catalogue' %}" {% if request.resolver_match.url_name == 'catalogue' %}class="active"{% endif %}>Catalogue</a></li>
+                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
+                        <li><a href="{% url 'catalogue:nos-contrats' %}" {% if request.resolver_match.url_name == 'nos-contrats' %}class="active"{% endif %}>{{ "Nos contrats"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:a-propos' %}" {% if request.resolver_match.url_name == 'a-propos' %}class="active"{% endif %}>A propos</a></li>
+                        <li><a href="{% url 'catalogue:contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>{{ "Contact"|strip_upper_accents }}s</a></li>
+                    {% endif %}
+                    <li>
+                        <button id="nav-menu-btn" class="nav-menu-btn" type="button" aria-expanded="false" aria-controls="nav-drawer">
+                            <span class="nav-menu-btn__icon" aria-hidden="true">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                            <span class="nav-menu-btn__label">Menu</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div id="nav-drawer" class="nav-drawer" aria-hidden="true">
+        <div class="nav-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu principal">
+            <div class="nav-drawer__header">
+                <button id="nav-drawer-close" class="nav-drawer__close" type="button" aria-label="Fermer le menu">
+                    &times;
+                </button>
+                <span class="nav-drawer__title">Menu</span>
+            </div>
+            <nav class="nav-drawer__nav">
+                {% if collections_list %}
+                <div class="nav-drawer__section-title">{{ "Collections"|strip_upper_accents }}</div>
+                <div class="nav-drawer__collections">
+                    {% for collection in collections_list %}
+                    {% if collection.slug %}
+                    <a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a>
+                    {% else %}
+                    <span class="nav-drawer__collection-label">{{ collection.nom }}</span>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="nav-drawer__section-title">Autres versions de livres</div>
+                <div class="nav-drawer__collections">
+                    <a href="{% url 'catalogue:livres-numeriques' %}">Livres numÃ©riques</a>
+                    <a href="{% url 'catalogue:livres-audio' %}">{{ "Livres audio"|strip_upper_accents }}</a>
+                </div>
+                <div class="nav-drawer__section-title">Autres services</div>
+                <div class="nav-drawer__collections">
+                    <a href="{% url 'catalogue:conversion-audio' %}">Conversion de texte en audio</a>
+                </div>
+            </nav>
+            <div class="nav-drawer__cta">
+                <h3>Abonnez-vous Ã  la newsletter</h3>
+                <p>Recevez nos actualitÃ©s et nouveautÃ©s.</p>
+                <a href="{% url 'catalogue:index' %}#newsletter" class="btn btn--primary">S'abonner</a>
+            </div>
+            <div class="nav-drawer__social">
+                <h4>Suivez RecrÃ©ation sur les rÃ©seaux sociaux</h4>
+                <div class="nav-drawer__social-icons">
+                    {% for social in social_links %}
+                    <a href="{{ social.url }}" aria-label="{{ social.label }}"><i class="{{ social.icon }}"></i></a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="nav-drawer__shop">
+                <a href="https://recreation.mychariow.shop/" class="nav-drawer__shop-link" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                    <span>RecrÃ©ation Shop</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-drawer__backdrop" tabindex="-1"></div>
+    </div>
+    <!-- Contenu principal ( remplir par les pages enfants) -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Pied de page -->
+    <footer class="footer-fayard">
+        <div class="container">
+            <div class="footer-fayard__grid">
+                <!-- Colonne 1 -->
+                <div class="footer-fayard__col footer-fayard__col--brand">
                     <h2 class="footer-fayard__logo">
                         <a href="{% url 'catalogue:index' %}" class="footer-fayard__logo-link">
                             {{ appearance.site_name|default:"Editions Recr&eacute;ation"|strip_upper_accents }}
                         </a>
                     </h2>
-                    <p class="footer-fayard__slogan">Avec le verbe, recr&eacute;ons le monde et<br>conservons en une copie dans un livre !</p>
-                    <p class="footer-fayard__address">B&eacute;nin, Abomey-Calavi | France, Marseille<br>avec des Repr&eacute;sentants &eacute;ditoriaux dans<br>7 autres pays en Afrique.</p>
-
-                    <div class="footer-fayard__actions">
-                        <a href="tel:+22901688097777" class="footer-fayard__action">
-                            <i class="fas fa-phone"></i>
-                            <span>TÃ©lÃ©phone</span>
-                        </a>
-                        <a href="{% url 'catalogue:soumission-manuscrit' %}" class="footer-fayard__action">
-                            <i class="fas fa-file-alt"></i>
-                            <span>Soumettre un manuscrit</span>
-                        </a>
-                        <a href="{% url 'catalogue:contact' %}" class="footer-fayard__action">
-                            <i class="fas fa-envelope"></i>
-                            <span>E-mail</span>
-                        </a>
-                    </div>
-
-                    <div class="footer-fayard__social footer-fayard__social--footer">
-                        <h3 class="footer-fayard__social-title">Suivez Recr&eacute;ation sur les r&eacute;seaux sociaux</h3>
-                        <div class="footer-fayard__social-icons footer-fayard__social-icons--footer">
-                            {% for social in social_links %}
-                            <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">
-                                <i class="{{ social.icon }}"></i>
-                            </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                </div>
-
-                <!-- Colonne 2 -->
-                <div class="footer-fayard__col">
-                    <h3 class="footer-fayard__title footer-fayard__title--white footer-fayard__title--lg">{{ "Catalogue"|strip_upper_accents }}</h3>
-                    <ul class="footer-fayard__list">
-                        <li><a href="{% url 'catalogue:livres-numeriques' %}">{{ "Livres num&eacute;riques"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:livres-audio' %}">{{ "Livres audio"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:livres-papier' %}">{{ "Livres papier"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:index' %}#nouveautes">{{ "Nouveaut&eacute;s"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:index' %}#meilleures-ventes">{{ "Meilleures ventes"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:index' %}#a-paraitre">{{ "Prochaines parutions"|strip_upper_accents }}</a></li>
-</ul>
-                    <div class="footer-fayard__subsection-title">Collection</div>
-                    <ul class="footer-fayard__list footer-fayard__list--sub">
-                        {% if collections_list %}
-                        {% for collection in collections_list %}
-                        <li><a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a></li>
-                        {% endfor %}
-                        {% else %}
-                        <li><a href="{% url 'catalogue:collection-detail' '6-sens-requis' %}">6 Sens Requis</a></li>
-                        {% endif %}
-                    </ul>
+                    <p class="footer-fayard__slogan">Avec le verbe, recr&eacute;ons le monde et<br>conservons en une copie dans un livre !</p>
+                    <p class="footer-fayard__address">B&eacute;nin, Abomey-Calavi | France, Marseille<br>avec des Repr&eacute;sentants &eacute;ditoriaux dans<br>7 autres pays en Afrique.</p>
+
+                    <div class="footer-fayard__actions">
+                        <a href="tel:+22901688097777" class="footer-fayard__action">
+                            <i class="fas fa-phone"></i>
+                            <span>TÃ©lÃ©phone</span>
+                        </a>
+                        <a href="{% url 'catalogue:soumission-manuscrit' %}" class="footer-fayard__action">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Soumettre un manuscrit</span>
+                        </a>
+                        <a href="{% url 'catalogue:contact' %}" class="footer-fayard__action">
+                            <i class="fas fa-envelope"></i>
+                            <span>E-mail</span>
+                        </a>
+                    </div>
+
+                    <div class="footer-fayard__social footer-fayard__social--footer">
+                        <h3 class="footer-fayard__social-title">Suivez Recr&eacute;ation sur les r&eacute;seaux sociaux</h3>
+                        <div class="footer-fayard__social-icons footer-fayard__social-icons--footer">
+                            {% for social in social_links %}
+                            <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">
+                                <i class="{{ social.icon }}"></i>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Colonne 2 -->
+                <div class="footer-fayard__col">
+                    <h3 class="footer-fayard__title footer-fayard__title--white footer-fayard__title--lg">{{ "Catalogue"|strip_upper_accents }}</h3>
+                    <ul class="footer-fayard__list">
+                        <li><a href="{% url 'catalogue:livres-numeriques' %}">{{ "Livres num&eacute;riques"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:livres-audio' %}">{{ "Livres audio"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:livres-papier' %}">{{ "Livres papier"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:index' %}#nouveautes">{{ "Nouveaut&eacute;s"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:index' %}#meilleures-ventes">{{ "Meilleures ventes"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:index' %}#a-paraitre">{{ "Prochaines parutions"|strip_upper_accents }}</a></li>
+</ul>
+                    <div class="footer-fayard__subsection-title">Collection</div>
+                    <ul class="footer-fayard__list footer-fayard__list--sub">
+                        {% if collections_list %}
+                        {% for collection in collections_list %}
+                        <li><a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a></li>
+                        {% endfor %}
+                        {% else %}
+                        <li><a href="{% url 'catalogue:collection-detail' '6-sens-requis' %}">6 Sens Requis</a></li>
+                        {% endif %}
+                    </ul>
                     <div class="footer-fayard__cta">
                         <a href="{% url 'catalogue:conversion-audio' %}" class="footer-shop-btn footer-shop-btn--audio">
                             <span class="footer-audio-btn__icon">
@@ -261,107 +261,107 @@
                             <span>Conversion de texte en audio</span>
                         </a>
                     </div>
-                </div>
-
-                <!-- Colonne 3 -->
-                <div class="footer-fayard__col">
-                    <h3 class="footer-fayard__title footer-fayard__title--white footer-fayard__title--lg">{{ "Ressources"|strip_upper_accents }}</h3>
-                    <ul class="footer-fayard__list">
-                        <li><a href="{% url 'catalogue:actualites' %}" {% if request.resolver_match.url_name == 'actualites' %}class="active"{% endif %}>ActualitÃ©s</a></li>
-                        <li><a href="{% url 'catalogue:auteurs' %}">{{ "Nos auteurs"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:nos-contrats' %}">{{ "Nos contrats"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:a-propos' %}">{{ "Notre &eacute;quipe"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:a-propos' %}">{{ "A propos"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:contact' %}">{{ "Contact"|strip_upper_accents }}</a></li>
-                    </ul>
-                    <div class="footer-fayard__shop">
-                        <a href="https://recreation.mychariow.shop/" class="footer-shop-btn" target="_blank" rel="noopener">
-                            <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-                            <span>Recr&eacute;ation Shop</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-fayard__bottom">
-                <p>&copy; Editions Recr&eacute;ation - Tous droits r&eacute;serv&eacute;s - 2026</p>
-                <div class="footer-fayard__links">
-                    <a href="{% url 'catalogue:mentions-legales' %}">{{ "Mentions l&eacute;gales"|strip_upper_accents }}</a>
-                    <a href="{% url 'catalogue:confidentialite' %}">{{ "Confidentialit&eacute;"|strip_upper_accents }}</a>
-                    <a href="{% url 'catalogue:cookies' %}">{{ "Cookies"|strip_upper_accents }}</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <a
-        href="{{ appearance.whatsapp|default:'https://wa.me/c/22968809777' }}"
-        class="whatsapp-float"
-        aria-label="WhatsApp"
-        target="_blank"
-        rel="noopener">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    {% include "catalogue/partials/country_codes.html" %}
-
-    <!-- Scripts JavaScript -->
-    <!-- Exposer les URLs Django au JavaScript -->
-    <script>
-        // URLs Django accessibles depuis JavaScript
-        window.DJANGO_URLS = {
-            livresJson: "{% url 'catalogue:livres-json' %}",
-            auteursJson: "{% url 'catalogue:auteurs-json' %}",
-            livreDetailJson: function(id) {
-                return "{% url 'catalogue:livre-detail-json' 0 %}".replace('0', id);
-            }
-        };
-    </script>
-    
-    <!-- Scripts principaux -->
-    <script src="{% static 'catalogue/js/main.js' %}?v=7"></script>
-    <script>
-        (function() {
-            const inputs = document.querySelectorAll('input.phone-input');
-            inputs.forEach((input) => {
-                input.setAttribute('list', 'country-codes');
-                if (!input.placeholder) {
-                    input.placeholder = '+229 XX XX XX XX';
-                }
-            });
-        })();
-    </script>
-    <!-- Scripts supplÃ©mentaires spÃ©cifiques Ã  chaque page -->
-    {% block extra_js %}{% endblock %}
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                </div>
+
+                <!-- Colonne 3 -->
+                <div class="footer-fayard__col">
+                    <h3 class="footer-fayard__title footer-fayard__title--white footer-fayard__title--lg">{{ "Ressources"|strip_upper_accents }}</h3>
+                    <ul class="footer-fayard__list">
+                        <li><a href="{% url 'catalogue:actualites' %}" {% if request.resolver_match.url_name == 'actualites' %}class="active"{% endif %}>ActualitÃ©s</a></li>
+                        <li><a href="{% url 'catalogue:auteurs' %}">{{ "Nos auteurs"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:nos-contrats' %}">{{ "Nos contrats"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:a-propos' %}">{{ "Notre &eacute;quipe"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:a-propos' %}">{{ "A propos"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:contact' %}">{{ "Contact"|strip_upper_accents }}</a></li>
+                    </ul>
+                    <div class="footer-fayard__shop">
+                        <a href="https://recreation.mychariow.shop/" class="footer-shop-btn" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                            <span>Recr&eacute;ation Shop</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-fayard__bottom">
+                <p>&copy; Editions Recr&eacute;ation - Tous droits r&eacute;serv&eacute;s - 2026</p>
+                <div class="footer-fayard__links">
+                    <a href="{% url 'catalogue:mentions-legales' %}">{{ "Mentions l&eacute;gales"|strip_upper_accents }}</a>
+                    <a href="{% url 'catalogue:confidentialite' %}">{{ "Confidentialit&eacute;"|strip_upper_accents }}</a>
+                    <a href="{% url 'catalogue:cookies' %}">{{ "Cookies"|strip_upper_accents }}</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a
+        href="{{ appearance.whatsapp|default:'https://wa.me/c/22968809777' }}"
+        class="whatsapp-float"
+        aria-label="WhatsApp"
+        target="_blank"
+        rel="noopener">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    {% include "catalogue/partials/country_codes.html" %}
+
+    <!-- Scripts JavaScript -->
+    <!-- Exposer les URLs Django au JavaScript -->
+    <script>
+        // URLs Django accessibles depuis JavaScript
+        window.DJANGO_URLS = {
+            livresJson: "{% url 'catalogue:livres-json' %}",
+            auteursJson: "{% url 'catalogue:auteurs-json' %}",
+            livreDetailJson: function(id) {
+                return "{% url 'catalogue:livre-detail-json' 0 %}".replace('0', id);
+            }
+        };
+    </script>
+    
+    <!-- Scripts principaux -->
+    <script src="{% static 'catalogue/js/main.js' %}v=7"></script>
+    <script>
+        (function() {
+            const inputs = document.querySelectorAll('input.phone-input');
+            inputs.forEach((input) => {
+                input.setAttribute('list', 'country-codes');
+                if (!input.placeholder) {
+                    input.placeholder = '+229 XX XX XX XX';
+                }
+            });
+        })();
+    </script>
+    <!-- Scripts supplÃ©mentaires spÃ©cifiques Ã  chaque page -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

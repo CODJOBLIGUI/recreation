@@ -11,7 +11,7 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     # Favicon pour les navigateurs qui requièrent /favicon.ico à la racine
-    path('favicon.ico', RedirectView.as_view(url='/static/catalogue/images/favicon.ico?v=2', permanent=False)),
+    path('favicon.ico', RedirectView.as_view(url='/static/catalogue/images/favicon.icov=2', permanent=False)),
     # Interface d'administration Django
     path('admin/', admin.site.urls),
     # CKEditor upload endpoints

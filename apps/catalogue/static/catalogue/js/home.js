@@ -26,7 +26,7 @@
             function getGap() {
                 var styles = window.getComputedStyle(track);
                 var gap = parseFloat(styles.gap || styles.columnGap || "0");
-                return isNaN(gap) ? 0 : gap;
+                return isNaN(gap)  0 : gap;
             }
 
             function getStep() {
@@ -105,7 +105,7 @@
     }
 
     var track = viewport.querySelector(".news-ticker__track");
-    var items = track ? track.querySelectorAll(".news-ticker__item") : [];
+    var items = track  track.querySelectorAll(".news-ticker__item") : [];
     if (!track || items.length === 0) {
         return;
     }

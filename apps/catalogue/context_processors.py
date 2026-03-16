@@ -13,8 +13,8 @@ def global_context(request):
 
     social_links = [
         {"label": "Instagram", "icon": "fab fa-instagram", "url": appearance.instagram if appearance and appearance.instagram else "https://www.instagram.com/editionsrecreation"},
-        {"label": "Facebook", "icon": "fab fa-facebook-f", "url": appearance.facebook if appearance and appearance.facebook else "https://www.facebook.com/profile.php?id=100063943957824"},
-        {"label": "X", "icon": "fab fa-x-twitter", "url": appearance.x_twitter if appearance and appearance.x_twitter else "https://x.com/Edi_Recreation?s=09"},
+        {"label": "Facebook", "icon": "fab fa-facebook-f", "url": appearance.facebook if appearance and appearance.facebook else "https://www.facebook.com/profile.phpid=100063943957824"},
+        {"label": "X", "icon": "fab fa-x-twitter", "url": appearance.x_twitter if appearance and appearance.x_twitter else "https://x.com/Edi_Recreations=09"},
         {"label": "TikTok", "icon": "fab fa-tiktok", "url": appearance.tiktok if appearance and appearance.tiktok else "https://www.tiktok.com/@editionsrecreation"},
         {"label": "LinkedIn", "icon": "fab fa-linkedin-in", "url": appearance.linkedin if appearance and appearance.linkedin else "https://www.linkedin.com/company/editionsrecreation"},
         {"label": "YouTube", "icon": "fab fa-youtube", "url": appearance.youtube if appearance and appearance.youtube else "https://youtube.com/@editionsrecreation"},

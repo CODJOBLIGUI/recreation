@@ -1,156 +1,156 @@
-﻿{% extends 'catalogue/base.html' %}
-{% load static %}
-
-{% block content %}
-
-<section class="livre-detail section">
-    <div class="container">
-        <div class="livre-detail__grid">
-            <!-- Image du livre -->
-            <div class="livre-detail__image">
-                {% if livre.image_par_defaut %}
-                <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}">
-                {% endif %}
-            </div>
-            
-            <!-- Informations du livre -->
-            <div class="livre-detail__info">
-                <span class="livre-detail__category">{{ categorie_label }}</span>
-                <h1 class="livre-detail__title">{{ livre.titre }}</h1>
-                    <p class="livre-detail__author">
-                        par
-                        {% for auteur in livre.auteurs.all %}
-                            <a href="{% url 'catalogue:auteur-detail' auteur.slug %}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
-                        {% endfor %}
-                    </p>
-                
-                <div class="livre-detail__meta">
-                    {% if collection_label %}
-                    <p><strong>Collection :</strong> {{ collection_label }}</p>
-                    {% endif %}
-                    <p><strong>ISBN :</strong> {{ livre.isbn }}</p>
-                    <p><strong>Parution :</strong> {{ livre.parution|date:"d F Y" }}</p>
-                    <p><strong>Langue :</strong> {{ livre.get_langue_publication_display }}</p>
-                </div>
-                
-                <p class="livre-detail__price"><strong>Prix :</strong> {{ livre.prix }}</p>
-                
-                <div class="livre-detail__description">
-                    <h2>Résumé</h2>
-                    <p>{{ livre.resume }}</p>
-                </div>
-
-                
-                <!-- Boutons d'achat -->
-                <div class="purchase-buttons">
-                    <h3>Où acheter ce livre ?</h3>
-                    {% if livre.version_papier %}
-                    <div class="purchase-group">
-                        <h4>Version papier</h4>
-                        {% if livre.lien_chariow %}
-                        <a href="{{ livre.lien_chariow }}" target="_blank" class="purchase-btn purchase-btn--chariow">
-                            <i class="fas fa-shopping-cart"></i>
-                            Acheter sur Chariow
-                        </a>
-                        {% endif %}
-                        {% if livre.lien_amazon %}
-                        <a href="{{ livre.lien_amazon }}" target="_blank" class="purchase-btn purchase-btn--amazon">
-                            <i class="fab fa-amazon"></i>
-                            Acheter sur Amazon
-                        </a>
-                        {% endif %}
-                        {% if livre.lien_whatsapp %}
-                        <a href="{{ livre.lien_whatsapp }}" target="_blank" class="purchase-btn purchase-btn--whatsapp">
-                            <i class="fab fa-whatsapp"></i>
-                            Commander sur WhatsApp
-                        </a>
-                        {% endif %}
-                    </div>
-                    {% endif %}
-                    {% if livre.version_numerique %}
-                    <div class="purchase-group">
-                        <h4>Version numérique</h4>
-                        {% if livre.lien_chariow_numerique %}
-                        <a href="{{ livre.lien_chariow_numerique }}" target="_blank" class="purchase-btn purchase-btn--chariow">
-                            <i class="fas fa-shopping-cart"></i>
-                            Acheter sur Chariow
-                        </a>
-                        {% endif %}
-                        {% if livre.lien_amazon_numerique %}
-                        <a href="{{ livre.lien_amazon_numerique }}" target="_blank" class="purchase-btn purchase-btn--amazon">
-                            <i class="fab fa-amazon"></i>
-                            Acheter sur Amazon
-                        </a>
-                        {% endif %}
-                        {% if livre.lien_whatsapp_numerique %}
-                        <a href="{{ livre.lien_whatsapp_numerique }}" target="_blank" class="purchase-btn purchase-btn--whatsapp">
-                            <i class="fab fa-whatsapp"></i>
-                            Commander sur WhatsApp
-                        </a>
-                        {% endif %}
-                    </div>
-                    {% endif %}
-                    {% if livre.version_audio %}
-                    <div class="purchase-group">
-                        <h4>Version audio</h4>
-                        {% if livre.lien_chariow_audio %}
-                        <a href="{{ livre.lien_chariow_audio }}" target="_blank" class="purchase-btn purchase-btn--chariow">
-                            <i class="fas fa-shopping-cart"></i>
-                            Acheter sur Chariow
-                        </a>
-                        {% endif %}
-                        {% if livre.lien_amazon_audio %}
-                        <a href="{{ livre.lien_amazon_audio }}" target="_blank" class="purchase-btn purchase-btn--amazon">
-                            <i class="fab fa-amazon"></i>
-                            Acheter sur Amazon
-                        </a>
-                        {% endif %}
-                        {% if livre.lien_whatsapp_audio %}
-                        <a href="{{ livre.lien_whatsapp_audio }}" target="_blank" class="purchase-btn purchase-btn--whatsapp">
-                            <i class="fab fa-whatsapp"></i>
-                            Commander sur WhatsApp
-                        </a>
-                        {% endif %}
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        <!-- Livres suggérés -->
-        {% if livres_suggeres %}
-        <div class="suggested-books">
-            <h2>Vous aimerez aussi</h2>
-            <div class="book-grid">
-                {% for livre_suggere in livres_suggeres %}
-                <div class="book-card">
-                    <div class="book-card__cover">
-                        {% if livre_suggere.image_par_defaut %}
-                        <img src="{{ livre_suggere.image_par_defaut.url }}" alt="{{ livre_suggere.titre }}" loading="lazy">
-                        {% endif %}
-                        <div class="book-card__overlay">
-                            <a href="{% url 'catalogue:livre-detail' livre_suggere.slug %}" class="btn btn--secondary">Voir détails</a>
-                        </div>
-                    </div>
-                    <div class="book-card__info">
-                        <h3 class="book-card__title">{{ livre_suggere.titre }}</h3>
-                        <p class="book-card__author">{{ livre_suggere.auteurs_noms }}</p>
-                        {% if livre_suggere.meta_description %}
-                        <p class="book-card__meta-desc">{{ livre_suggere.meta_description|truncatewords:16 }}</p>
-                        {% elif livre_suggere.resume %}
-                        <p class="book-card__meta-desc">{{ livre_suggere.resume|truncatewords:16 }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-    </div>
-</section>
-
-{% endblock %}
-
-
-
-
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="livre-detail section">
+    <div class="container">
+        <div class="livre-detail__grid">
+            <!-- Image du livre -->
+            <div class="livre-detail__image">
+                {% if livre.image_par_defaut %}
+                <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}">
+                {% endif %}
+            </div>
+            
+            <!-- Informations du livre -->
+            <div class="livre-detail__info">
+                <span class="livre-detail__category">{{ categorie_label }}</span>
+                <h1 class="livre-detail__title">{{ livre.titre }}</h1>
+                    <p class="livre-detail__author">
+                        par
+                        {% for auteur in livre.auteurs.all %}
+                            <a href="{% url 'catalogue:auteur-detail' auteur.slug %}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+                        {% endfor %}
+                    </p>
+                
+                <div class="livre-detail__meta">
+                    {% if collection_label %}
+                    <p><strong>Collection :</strong> {{ collection_label }}</p>
+                    {% endif %}
+                    <p><strong>ISBN :</strong> {{ livre.isbn }}</p>
+                    <p><strong>Parution :</strong> {{ livre.parution|date:"d F Y" }}</p>
+                    <p><strong>Langue :</strong> {{ livre.get_langue_publication_display }}</p>
+                </div>
+                
+                <p class="livre-detail__price"><strong>Prix :</strong> {{ livre.prix }}</p>
+                
+                <div class="livre-detail__description">
+                    <h2>Résumé</h2>
+                    <p>{{ livre.resume }}</p>
+                </div>
+
+                
+                <!-- Boutons d'achat -->
+                <div class="purchase-buttons">
+                    <h3>Où acheter ce livre </h3>
+                    {% if livre.version_papier %}
+                    <div class="purchase-group">
+                        <h4>Version papier</h4>
+                        {% if livre.lien_chariow %}
+                        <a href="{{ livre.lien_chariow }}" target="_blank" class="purchase-btn purchase-btn--chariow">
+                            <i class="fas fa-shopping-cart"></i>
+                            Acheter sur Chariow
+                        </a>
+                        {% endif %}
+                        {% if livre.lien_amazon %}
+                        <a href="{{ livre.lien_amazon }}" target="_blank" class="purchase-btn purchase-btn--amazon">
+                            <i class="fab fa-amazon"></i>
+                            Acheter sur Amazon
+                        </a>
+                        {% endif %}
+                        {% if livre.lien_whatsapp %}
+                        <a href="{{ livre.lien_whatsapp }}" target="_blank" class="purchase-btn purchase-btn--whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            Commander sur WhatsApp
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% if livre.version_numerique %}
+                    <div class="purchase-group">
+                        <h4>Version numérique</h4>
+                        {% if livre.lien_chariow_numerique %}
+                        <a href="{{ livre.lien_chariow_numerique }}" target="_blank" class="purchase-btn purchase-btn--chariow">
+                            <i class="fas fa-shopping-cart"></i>
+                            Acheter sur Chariow
+                        </a>
+                        {% endif %}
+                        {% if livre.lien_amazon_numerique %}
+                        <a href="{{ livre.lien_amazon_numerique }}" target="_blank" class="purchase-btn purchase-btn--amazon">
+                            <i class="fab fa-amazon"></i>
+                            Acheter sur Amazon
+                        </a>
+                        {% endif %}
+                        {% if livre.lien_whatsapp_numerique %}
+                        <a href="{{ livre.lien_whatsapp_numerique }}" target="_blank" class="purchase-btn purchase-btn--whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            Commander sur WhatsApp
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% if livre.version_audio %}
+                    <div class="purchase-group">
+                        <h4>Version audio</h4>
+                        {% if livre.lien_chariow_audio %}
+                        <a href="{{ livre.lien_chariow_audio }}" target="_blank" class="purchase-btn purchase-btn--chariow">
+                            <i class="fas fa-shopping-cart"></i>
+                            Acheter sur Chariow
+                        </a>
+                        {% endif %}
+                        {% if livre.lien_amazon_audio %}
+                        <a href="{{ livre.lien_amazon_audio }}" target="_blank" class="purchase-btn purchase-btn--amazon">
+                            <i class="fab fa-amazon"></i>
+                            Acheter sur Amazon
+                        </a>
+                        {% endif %}
+                        {% if livre.lien_whatsapp_audio %}
+                        <a href="{{ livre.lien_whatsapp_audio }}" target="_blank" class="purchase-btn purchase-btn--whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            Commander sur WhatsApp
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Livres suggérés -->
+        {% if livres_suggeres %}
+        <div class="suggested-books">
+            <h2>Vous aimerez aussi</h2>
+            <div class="book-grid">
+                {% for livre_suggere in livres_suggeres %}
+                <div class="book-card">
+                    <div class="book-card__cover">
+                        {% if livre_suggere.image_par_defaut %}
+                        <img src="{{ livre_suggere.image_par_defaut.url }}" alt="{{ livre_suggere.titre }}" loading="lazy">
+                        {% endif %}
+                        <div class="book-card__overlay">
+                            <a href="{% url 'catalogue:livre-detail' livre_suggere.slug %}" class="btn btn--secondary">Voir détails</a>
+                        </div>
+                    </div>
+                    <div class="book-card__info">
+                        <h3 class="book-card__title">{{ livre_suggere.titre }}</h3>
+                        <p class="book-card__author">{{ livre_suggere.auteurs_noms }}</p>
+                        {% if livre_suggere.meta_description %}
+                        <p class="book-card__meta-desc">{{ livre_suggere.meta_description|truncatewords:16 }}</p>
+                        {% elif livre_suggere.resume %}
+                        <p class="book-card__meta-desc">{{ livre_suggere.resume|truncatewords:16 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}
+
+
+
+
