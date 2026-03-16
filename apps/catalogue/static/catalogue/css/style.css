@@ -3410,3 +3410,13 @@ html {
     margin-top: auto;
     align-self: flex-start;
 }
+
+
+/* Catalogue: category text style (capitalize, smaller, no blue) */
+.catalogue-grid .book-card__category {
+    color: var(--color-text-light);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+}

@@ -92,7 +92,7 @@
                     </div>
                 </div>
                 <div class="book-card__info">
-                    <span class="book-card__category">{{ livre.get_categorie_display }}</span>
+                    <span class="book-card__category">{{ livre.get_categorie_display|lower|capfirst }}</span>
                     <h3 class="book-card__title">{{ livre.titre|highlight_query:recherche }}</h3>
                     <p class="book-card__author">
                         {% for auteur in livre.auteurs.all %}
