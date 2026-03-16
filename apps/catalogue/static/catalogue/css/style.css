@@ -3268,3 +3268,62 @@ html {
     color: var(--color-text-light);
 }
 
+
+/* OVERRIDE: use news-ticker card style for Nouveautes */
+.new-releases .book-card {
+    background: #fff !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 16px !important;
+    padding: 1rem 1.25rem !important;
+    box-shadow: var(--shadow-sm) !important;
+    transition: var(--transition-smooth) !important;
+}
+
+.new-releases .book-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.new-releases .book-card__cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    background: #f4f4f4;
+}
+
+.new-releases .book-card__cover img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+}
+
+.new-releases .book-card__info {
+    padding: 0 !important;
+}
+
+.new-releases .book-card__title {
+    font-size: 1rem;
+    margin-bottom: 0.35rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.new-releases .book-card__author {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin-bottom: 0.35rem;
+}
+
+.new-releases .book-card__meta-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
