@@ -2115,6 +2115,13 @@ body.nav-drawer-open {
 
 }
 
+/* Newsletter (home): smaller button on desktop */
+.newsletter__form .btn {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+}
+
 
 
 .newsletter__input {

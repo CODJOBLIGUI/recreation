@@ -616,6 +616,17 @@ font-size: 2rem;
   }
 }
 
+/* Mobile footer: slightly smaller action labels + social title */
+@media (max-width: 768px) {
+  .footer-fayard__action span {
+    font-size: 0.75rem;
+  }
+
+  .footer-fayard__social-title {
+    font-size: 0.75rem;
+  }
+}
+
 /* FINAL MOBILE FILTERS: tidy spacing + prevent right overflow */
 @media (max-width: 768px) {
   .filters-bar {
