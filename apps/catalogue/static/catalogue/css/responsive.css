@@ -616,6 +616,42 @@ font-size: 2rem;
   }
 }
 
+/* Mobile footer: align menu blocks under social icons, no right overflow */
+@media (max-width: 768px) {
+  .footer-fayard__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-fayard__left,
+  .footer-fayard__menu,
+  .footer-fayard__menu-columns,
+  .footer-fayard__menu-col {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .footer-fayard__menu {
+    margin-top: 0.5rem;
+  }
+
+  .footer-fayard__menu-columns {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-fayard__menu-list {
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .footer-fayard__menu-title {
+    text-align: left;
+  }
+}
+
 /* Mobile footer: slightly smaller action labels + social title */
 @media (max-width: 768px) {
   .footer-fayard__action span {
