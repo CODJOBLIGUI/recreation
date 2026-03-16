@@ -320,30 +320,29 @@
     <div class="container">
         <div class="news-ticker__header">
             <h2 class="section__title">{{ block.titre|default:"Suivez lâ€™actualitÃ©" }}</h2>
-            <div class="news-ticker__controls">
-                <button class="news-ticker__btn" type="button" data-news-action="prev" aria-label="ActualitÃ© prÃ©cÃ©dente">&lt;</button>
-                <button class="news-ticker__btn" type="button" data-news-action="next" aria-label="ActualitÃ© suivante">&gt;</button>
-            </div>
         </div>
-        <div class="news-ticker__viewport" data-news-ticker>
-            <div class="news-ticker__track">
-                {% for actualite in actualites_ticker %}
-                <article class="news-ticker__item">
-                    <a href="{% url 'catalogue:actualite-detail' actualite.slug %}">
+        <div class="book-grid">
+            {% for actualite in actualites_ticker %}
+            <article class="book-card">
+                <a href="{% url 'catalogue:actualite-detail' actualite.slug %}" class="book-card__cover-link">
+                    <div class="book-card__cover">
                         {% if actualite.image %}
-                        <div class="news-ticker__media">
-                            <img src="{{ actualite.image.url }}" alt="{{ actualite.titre }}" loading="lazy">
-                        </div>
+                        <img src="{{ actualite.image.url }}" alt="{{ actualite.titre }}" loading="lazy">
                         {% endif %}
-                        <span class="news-ticker__date">{{ actualite.date_publication|date:"d/m/Y" }}</span>
-                        <h3 class="news-ticker__title">{{ actualite.titre|safe }}</h3>
-                        <p class="news-ticker__excerpt">{{ actualite.extrait|striptags|truncatewords:18|safe }}</p>
-                    </a>
-                </article>
-                {% empty %}
-                <p class="no-content">Aucune actualitÃ© pour le moment.</p>
-                {% endfor %}
-            </div>
+                        <div class="book-card__overlay">
+                            <span class="btn btn--secondary">Voir les détails</span>
+                        </div>
+                    </div>
+                </a>
+                <div class="book-card__info">
+                    <h3 class="book-card__title">{{ actualite.titre|safe }}</h3>
+                    <p class="book-card__author">{{ actualite.date_publication|date:"d/m/Y" }}</p>
+                    <p class="book-card__meta-desc">{{ actualite.extrait|striptags|truncatewords:18|safe }}</p>
+                </div>
+            </article>
+            {% empty %}
+            <p class="no-content">Aucune actualitÃ© pour le moment.</p>
+            {% endfor %}
         </div>
     </div>
 </section>
