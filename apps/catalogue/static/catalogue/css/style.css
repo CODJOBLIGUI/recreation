@@ -3479,6 +3479,52 @@ html {
     color: #ffffff;
 }
 
+.footer-fayard__title--lg {
+    font-size: 1.15rem;
+}
+
+.footer-fayard__cta {
+    margin-top: 1rem;
+}
+
+.footer-audio-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #1f1f1f;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.footer-audio-btn__icon {
+    position: relative;
+    width: 1.6rem;
+    height: 1.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-audio-btn__icon .fa-headphones {
+    font-size: 1.35rem;
+}
+
+.footer-audio-btn__icon .fa-book {
+    position: absolute;
+    font-size: 0.7rem;
+}
+
+.footer-audio-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+}
+
 .footer-fayard__logo {
     font-size: 2rem;
     margin-bottom: 0.5rem;

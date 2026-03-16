@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
-    <title>{{ page_title|default:'Editions Recréation' }}</title>
+    <meta name="description" content="{{ page_description|default:'Editions RecrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation - Maison d\'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©dition africaine' }}">
+    <title>{{ page_title|default:'Editions RecrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation' }}</title>
     {% if appearance and appearance.favicon %}
     <link rel="icon" type="image/png" href="{{ appearance.favicon.url }}">
     {% else %}
@@ -19,14 +19,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Serif+4:wght@400;500;600&family=Montserrat:wght@600&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome pour les icônes -->
+    <!-- Font Awesome pour les icÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´nes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- CSS Principal -->
     <link rel="stylesheet" href="{% static 'catalogue/css/style.css' %}?v=22">
     <link rel="stylesheet" href="{% static 'catalogue/css/responsive.css' %}?v=17?v=22">
     
-    <!-- CSS supplémentaire spécifique à chaque page -->
+    <!-- CSS supplÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©mentaire spÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©cifique ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  chaque page -->
     {% block extra_css %}{% endblock %}
 </head>
 <body class="{% if request.resolver_match.url_name != 'index' %}page--inner{% endif %}">
@@ -46,25 +46,25 @@
     </style>
     {% endif %}
 
-    <!-- En-tête avec navigation -->
+    <!-- En-tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªte avec navigation -->
     <header class="header sticky">
         <div class="container">
-            <!-- Ligne haute : logo + recherche + réseaux -->
+            <!-- Ligne haute : logo + recherche + rÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©seaux -->
             <div class="header__top">
                 <!-- Logo + Newsletter -->
                 <div class="header__brand">
                     <div class="header__logo">
                         <a href="{% url 'catalogue:index' %}">
                             {% if appearance and appearance.logo %}
-                            <img src="{{ appearance.logo.url }}" alt="Logo Editions Recréation" width="180" height="60">
+                            <img src="{{ appearance.logo.url }}" alt="Logo Editions RecrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation" width="180" height="60">
                             {% else %}
-                            <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Logo Editions Recréation" width="180" height="60">
+                            <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Logo Editions RecrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation" width="180" height="60">
                             {% endif %}
                         </a>
                     </div>
                     <form class="header__newsletter-form" action="{% url 'catalogue:index' %}#newsletter" method="post">
                         {% csrf_token %}
-                        <label class="sr-only" for="header-newsletter-email">S'inscrire à la newsletter</label>
+                        <label class="sr-only" for="header-newsletter-email">S'inscrire ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  la newsletter</label>
                         <input id="header-newsletter-email" name="email" type="email" placeholder="Votre email" required>
                         <button type="submit">Newsletter</button>
                     </form>
@@ -75,7 +75,7 @@
                     <form class="header-search" action="{% url 'catalogue:search' %}" method="get" role="search">
                         <label class="sr-only" for="header-search-input">Rechercher sur le site</label>
                         <i class="fas fa-search header-search__icon" aria-hidden="true"></i>
-                        <input id="header-search-input" name="q" type="search" placeholder="Rechercher livres, auteurs, actualités..." autocomplete="off">
+                        <input id="header-search-input" name="q" type="search" placeholder="Rechercher livres, auteurs, actualitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©s..." autocomplete="off">
                         <button type="submit" class="header-search__btn">Rechercher</button>
                     </form>
                     <button id="hamburger-menu" class="header__action-btn header__hamburger" aria-label="Menu" aria-expanded="false">
@@ -85,7 +85,7 @@
                     </button>
                 </div>
 
-                <!-- Réseaux sociaux (barre d'accueil) -->
+                <!-- RÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©seaux sociaux (barre d'accueil) -->
                 <div class="header__social">
                     {% for social in social_links %}
                     <a href="{{ social.url }}" aria-label="{{ social.label }}" class="header-social__icon">
@@ -97,7 +97,7 @@
 
             <!-- Navigation principale -->
             <nav class="header__nav">
-                <div class="header__nav-brand"><a href="{% url 'catalogue:index' %}">Recréation</a></div>
+                <div class="header__nav-brand"><a href="{% url 'catalogue:index' %}">RecrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation</a></div>
                 <ul class="header__nav-list">
                     {% if menu_header_links %}
                         {% for link in menu_header_links %}
@@ -109,11 +109,13 @@
                         </li>
                         {% endif %}
                         {% endfor %}
+                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
                     {% else %}
                         <li><a href="{% url 'catalogue:index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Accueil</a></li>
-                        <li><a href="{% url 'catalogue:actualites' %}" {% if request.resolver_match.url_name == 'actualites' %}class="active"{% endif %}>Actualités</a></li>
+                        <li><a href="{% url 'catalogue:actualites' %}" {% if request.resolver_match.url_name == 'actualites' %}class="active"{% endif %}>ActualitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©s</a></li>
                         <li><a href="{% url 'catalogue:auteurs' %}" {% if request.resolver_match.url_name == 'auteurs' %}class="active"{% endif %}>Auteurs</a></li>
                         <li><a href="{% url 'catalogue:catalogue' %}" {% if request.resolver_match.url_name == 'catalogue' %}class="active"{% endif %}>Catalogue</a></li>
+                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
                         <li><a href="{% url 'catalogue:nos-contrats' %}" {% if request.resolver_match.url_name == 'nos-contrats' %}class="active"{% endif %}>{{ "Nos contrats"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:a-propos' %}" {% if request.resolver_match.url_name == 'a-propos' %}class="active"{% endif %}>A propos</a></li>
                         <li><a href="{% url 'catalogue:contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>{{ "Contact"|strip_upper_accents }}s</a></li>
@@ -156,7 +158,7 @@
                 {% endif %}
                 <div class="nav-drawer__section-title">Autres versions de livres</div>
                 <div class="nav-drawer__collections">
-                    <a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a>
+                    <a href="{% url 'catalogue:livres-numeriques' %}">Livres numÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©riques</a>
                     <a href="{% url 'catalogue:livres-audio' %}">{{ "Livres audio"|strip_upper_accents }}</a>
                 </div>
                 <div class="nav-drawer__section-title">Autres services</div>
@@ -165,12 +167,12 @@
                 </div>
             </nav>
             <div class="nav-drawer__cta">
-                <h3>Abonnez-vous à la newsletter</h3>
-                <p>Recevez nos actualités et nouveautés.</p>
+                <h3>Abonnez-vous ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  la newsletter</h3>
+                <p>Recevez nos actualitÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©s et nouveautÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©s.</p>
                 <a href="{% url 'catalogue:index' %}#newsletter" class="btn btn--primary">S'abonner</a>
             </div>
             <div class="nav-drawer__social">
-                <h4>Suivez Recréation sur les réseaux sociaux</h4>
+                <h4>Suivez RecrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation sur les rÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©seaux sociaux</h4>
                 <div class="nav-drawer__social-icons">
                     {% for social in social_links %}
                     <a href="{{ social.url }}" aria-label="{{ social.label }}"><i class="{{ social.icon }}"></i></a>
@@ -180,14 +182,14 @@
             <div class="nav-drawer__shop">
                 <a href="https://recreation.mychariow.shop/" class="nav-drawer__shop-link" target="_blank" rel="noopener">
                     <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-                    <span>Recréation Shop</span>
+                    <span>RecrÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©ation Shop</span>
                 </a>
             </div>
         </div>
         <div class="nav-drawer__backdrop" tabindex="-1"></div>
     </div>
 
-    <!-- Contenu principal (à remplir par les pages enfants) -->
+    <!-- Contenu principal (ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  remplir par les pages enfants) -->
     <main>
         {% block content %}{% endblock %}
     </main>
@@ -231,7 +233,7 @@
 
                 <!-- Colonne 2 -->
                 <div class="footer-fayard__col">
-                    <h3 class="footer-fayard__title footer-fayard__title--white">{{ "Catalogue"|strip_upper_accents }}</h3>
+                    <h3 class="footer-fayard__title footer-fayard__title--white footer-fayard__title--lg">{{ "Catalogue"|strip_upper_accents }}</h3>
                     <ul class="footer-fayard__list">
                         <li><a href="{% url 'catalogue:livres-numeriques' %}">{{ "Livres num&eacute;riques"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:livres-audio' %}">{{ "Livres audio"|strip_upper_accents }}</a></li>
@@ -241,11 +243,20 @@
                         <li><a href="{% url 'catalogue:index' %}#a-paraitre">{{ "Prochaines parutions"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:catalogue' %}">{{ "Collections"|strip_upper_accents }}</a></li>
                     </ul>
+                    <div class="footer-fayard__cta">
+                        <a href="{% url 'catalogue:conversion-audio' %}" class="footer-audio-btn">
+                            <span class="footer-audio-btn__icon">
+                                <i class="fas fa-headphones"></i>
+                                <i class="fas fa-book"></i>
+                            </span>
+                            <span class="footer-audio-btn__text">Conversion de texte en audio</span>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Colonne 3 -->
                 <div class="footer-fayard__col">
-                    <h3 class="footer-fayard__title footer-fayard__title--white">{{ "Ressources"|strip_upper_accents }}</h3>
+                    <h3 class="footer-fayard__title footer-fayard__title--white footer-fayard__title--lg">{{ "Ressources"|strip_upper_accents }}</h3>
                     <ul class="footer-fayard__list">
                         <li><a href="{% url 'catalogue:actualites' %}">{{ "Actualit&eacute;s"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:auteurs' %}">{{ "Nos auteurs"|strip_upper_accents }}</a></li>
@@ -306,7 +317,7 @@
         })();
     </script>
     
-    <!-- Scripts supplémentaires spécifiques à chaque page -->
+    <!-- Scripts supplÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©mentaires spÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©cifiques ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  chaque page -->
     {% block extra_js %}{% endblock %}
 </body>
 </html>
