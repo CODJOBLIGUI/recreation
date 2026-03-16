@@ -3446,3 +3446,96 @@ html {
     border-radius: 16px;
     overflow: hidden;
 }
+
+
+/* ========================================
+   FOOTER - 3 COLUMNS (DESKTOP + MOBILE)
+   ======================================== */
+.footer-fayard {
+    background: #2c2c2c;
+    color: #ffffff;
+    padding: 3rem 0 2rem;
+}
+
+.footer-fayard a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-fayard__grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.footer-fayard__title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.footer-fayard__logo {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-fayard__slogan,
+.footer-fayard__address {
+    font-size: 0.95rem;
+    color: #e6e6e6;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+.footer-fayard__actions {
+    display: grid;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.footer-fayard__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+}
+
+.footer-fayard__social-icons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.footer-fayard__list {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.footer-fayard__bottom {
+    border-top: 1px solid rgba(255,255,255,0.15);
+    margin-top: 2rem;
+    padding-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: #e6e6e6;
+}
+
+.footer-fayard__links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+    .footer-fayard__grid {
+        grid-template-columns: 1fr;
+    }
+    .footer-fayard__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

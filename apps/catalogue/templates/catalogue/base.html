@@ -195,51 +195,73 @@
     <!-- Pied de page -->
     <footer class="footer-fayard">
         <div class="container">
-            <!-- Logo et adresse -->
-            <div class="footer-fayard__brand">
-                <h2 class="footer-fayard__logo">{{ appearance.site_name|default:"Editions Recréation" }}</h2>
-                <p class="footer-fayard__slogan">
-                    <em>Avec le verbe, recréons le monde et conservons en une copie dans un livre !</em>
-                </p>
-                <p class="footer-fayard__address">
-                    <span class="footer-fayard__address-main">Bénin | Abomey-Calavi, France | Marseille, avec des Représentants éditoriaux dans 7 autres pays en Afrique.</span>
-                </p>
-            </div>
+            <div class="footer-fayard__grid">
+                <!-- Colonne 1 -->
+                <div class="footer-fayard__col footer-fayard__col--brand">
+                    <h2 class="footer-fayard__logo">{{ appearance.site_name|default:"Editions Recr?ation" }}</h2>
+                    <p class="footer-fayard__slogan">Avec le verbe, recr?ons le monde et conservons en une copie dans un livre !</p>
+                    <p class="footer-fayard__address">B?nin | Abomey-Calavi, France | Marseille, avec des Repr?sentants ?ditoriaux dans 7 autres pays en Afrique.</p>
 
-            <!-- Actions rapides -->
-            <div class="footer-fayard__actions">
-                <a href="tel:+22901688097777" class="footer-fayard__action">
-                    <i class="fas fa-phone"></i>
-                    <span>Téléphone</span>
-                </a>
-                <a href="{% url 'catalogue:soumission-manuscrit' %}" class="footer-fayard__action">
-                    <i class="fas fa-file-alt"></i>
-                    <span>Soumettre un manuscrit</span>
-                </a>
-                <a href="{% url 'catalogue:contact' %}" class="footer-fayard__action">
-                    <i class="fas fa-envelope"></i>
-                    <span>E-mail</span>
-                </a>
-            </div>
+                    <div class="footer-fayard__actions">
+                        <a href="tel:+22901688097777" class="footer-fayard__action">
+                            <i class="fas fa-phone"></i>
+                            <span>T?l?phone</span>
+                        </a>
+                        <a href="{% url 'catalogue:soumission-manuscrit' %}" class="footer-fayard__action">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Soumettre un manuscrit</span>
+                        </a>
+                        <a href="{% url 'catalogue:contact' %}" class="footer-fayard__action">
+                            <i class="fas fa-envelope"></i>
+                            <span>E-mail</span>
+                        </a>
+                    </div>
 
-            <!-- Réseaux sociaux -->
-            <div class="footer-fayard__social">
-                <h3 class="footer-fayard__social-title">Nous suivre les réseaux sociaux</h3>
-                <div class="footer-fayard__social-icons">
-                    {% for social in social_links %}
-                    <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">
-                        <i class="{{ social.icon }}"></i>
-                    </a>
-                    {% endfor %}
+                    <div class="footer-fayard__social">
+                        <h3 class="footer-fayard__title">R?seaux sociaux</h3>
+                        <div class="footer-fayard__social-icons">
+                            {% for social in social_links %}
+                            <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">
+                                <i class="{{ social.icon }}"></i>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonne 2 -->
+                <div class="footer-fayard__col">
+                    <h3 class="footer-fayard__title">Catalogue</h3>
+                    <ul class="footer-fayard__list">
+                        <li><a href="{% url 'catalogue:livres-numeriques' %}">Livres num?riques</a></li>
+                        <li><a href="{% url 'catalogue:livres-audio' %}">Livres audio</a></li>
+                        <li><a href="{% url 'catalogue:livres-papier' %}">Livres papier</a></li>
+                        <li><a href="{% url 'catalogue:index' %}#nouveautes">Nouveaut?s</a></li>
+                        <li><a href="{% url 'catalogue:index' %}#meilleures-ventes">Meilleures ventes</a></li>
+                        <li><a href="{% url 'catalogue:index' %}#a-paraitre">Prochaines parutions</a></li>
+                        <li><a href="{% url 'catalogue:catalogue' %}">Collections</a></li>
+                    </ul>
+                </div>
+
+                <!-- Colonne 3 -->
+                <div class="footer-fayard__col">
+                    <h3 class="footer-fayard__title">Ressources</h3>
+                    <ul class="footer-fayard__list">
+                        <li><a href="{% url 'catalogue:actualites' %}">Actualit?s</a></li>
+                        <li><a href="{% url 'catalogue:auteurs' %}">Nos auteurs</a></li>
+                        <li><a href="{% url 'catalogue:nos-contrats' %}">Nos contrats</a></li>
+                        <li><a href="{% url 'catalogue:a-propos' %}">Notre ?quipe</a></li>
+                        <li><a href="{% url 'catalogue:a-propos' %}">? propos</a></li>
+                        <li><a href="{% url 'catalogue:contact' %}">Contact</a></li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- Copyright -->
             <div class="footer-fayard__bottom">
-                <p>&copy; Editions Recréation - Tous droits réservés - 2026</p>
+                <p>&copy; Editions Recr?ation - Tous droits r?serv?s - 2026</p>
                 <div class="footer-fayard__links">
-                    <a href="{% url 'catalogue:mentions-legales' %}">Mentions légales</a>
-                    <a href="{% url 'catalogue:confidentialite' %}">Confidentialité</a>
+                    <a href="{% url 'catalogue:mentions-legales' %}">Mentions l?gales</a>
+                    <a href="{% url 'catalogue:confidentialite' %}">Confidentialit?</a>
                     <a href="{% url 'catalogue:cookies' %}">Cookies</a>
                 </div>
             </div>
