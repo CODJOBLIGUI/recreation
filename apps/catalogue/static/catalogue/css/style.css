@@ -1098,6 +1098,13 @@ body.nav-drawer-open {
     letter-spacing: -1px;
     margin-bottom: 1rem;
 }
+.footer-fayard__logo-link {
+    color: inherit;
+    text-decoration: none;
+}
+.footer-fayard__logo-link:hover {
+    text-decoration: underline;
+}
 
 .footer-fayard__address {
     color: #999;
@@ -3666,5 +3673,13 @@ html {
 
 .footer-shop-btn:hover {
     border-color: #ffffff;
+}
+
+.footer-shop-btn--audio {
+    margin-top: 1rem;
+}
+
+.footer-shop-btn--audio .footer-audio-btn__icon i {
+    color: #ffffff;
 }
 

@@ -195,7 +195,11 @@
             <div class="footer-fayard__grid">
                 <!-- Colonne 1 -->
                 <div class="footer-fayard__col footer-fayard__col--brand">
-                    <h2 class="footer-fayard__logo">{{ appearance.site_name|default:"Editions Recr&eacute;ation"|strip_upper_accents }}</h2>
+                    <h2 class="footer-fayard__logo">
+                        <a href="{% url 'catalogue:index' %}" class="footer-fayard__logo-link">
+                            {{ appearance.site_name|default:"Editions Recr&eacute;ation"|strip_upper_accents }}
+                        </a>
+                    </h2>
                     <p class="footer-fayard__slogan">Avec le verbe, recr&eacute;ons le monde et<br>conservons en une copie dans un livre !</p>
                     <p class="footer-fayard__address">B&eacute;nin, Abomey-Calavi | France, Marseille<br>avec des Repr&eacute;sentants &eacute;ditoriaux dans<br>7 autres pays en Afrique.</p>
 
@@ -249,12 +253,12 @@
                         {% endif %}
                     </ul>
                     <div class="footer-fayard__cta">
-                        <a href="{% url 'catalogue:conversion-audio' %}" class="footer-audio-btn">
+                        <a href="{% url 'catalogue:conversion-audio' %}" class="footer-shop-btn footer-shop-btn--audio">
                             <span class="footer-audio-btn__icon">
                                 <i class="fas fa-headphones"></i>
                                 <i class="fas fa-book"></i>
                             </span>
-                            <span class="footer-audio-btn__text">Conversion de texte en audio</span>
+                            <span>Conversion de texte en audio</span>
                         </a>
                     </div>
                 </div>
