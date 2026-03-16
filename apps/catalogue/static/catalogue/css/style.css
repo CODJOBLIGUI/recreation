@@ -7442,3 +7442,28 @@ html {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
     transform: translateY(-3px);
 }
+.footer-fayard a {
+    color: #ffffff !important;
+}
+
+.footer-fayard__list a,
+.footer-fayard__list a:hover {
+    color: #ffffff !important;
+}
+
+.footer-shop-btn,
+.footer-shop-btn--audio {
+    background: #ffffff !important;
+    color: #111111 !important;
+    border: 1px solid #ffffff !important;
+}
+
+.footer-shop-btn i,
+.footer-shop-btn--audio .footer-audio-btn__icon i {
+    color: #111111 !important;
+}
+
+.footer-shop-btn span,
+.footer-shop-btn--audio span {
+    color: #111111 !important;
+}
