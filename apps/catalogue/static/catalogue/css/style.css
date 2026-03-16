@@ -3439,3 +3439,10 @@ html {
 .bestsellers .book-card__info {
     padding: 1.25rem;
 }
+
+
+/* News cards should follow book-card style */
+.news-ticker .book-card {
+    border-radius: 16px;
+    overflow: hidden;
+}
