@@ -9,7 +9,7 @@
         {% if collection.description %}
         <p>{{ collection.description|striptags }}</p>
         {% else %}
-        <p>DÃ©couvrez les livres de cette collection.</p>
+        <p>D�f©couvrez les livres de cette collection.</p>
         {% endif %}
     </div>
 </section>
@@ -32,7 +32,7 @@
                     <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
                     {% endif %}
                     <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Voir dÃ©tails</a>
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Voir d�f©tails</a>
                     </div>
                 </div>
                 <div class="book-card__info">
@@ -51,7 +51,7 @@
                 </div>
             </div>
             {% empty %}
-            <p class="no-results">Aucun livre publiÃ© dans cette collection.</p>
+            <p class="no-results">Aucun livre publi�f© dans cette collection.</p>
             {% endfor %}
         </div>
     </div>

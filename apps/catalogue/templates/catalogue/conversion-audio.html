@@ -8,8 +8,8 @@
         <h1 class="page-hero__title">{{ page.hero_title|default:"Transformez vos textes en audio en quelques clics" }}</h1>
         <p class="page-hero__subtitle conversion-audio__hero-note">
             Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum.
-            Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l’audio
-            et vous l’envoyons par e-mail.
+            Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l�?Taudio
+            et vous l�?Tenvoyons par e-mail.
         </p>
         {% if page.hero_subtitle %}
         <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
@@ -56,7 +56,7 @@
                         {% for chunk in last_request_chunks %}
                             {% if chunk.audio %}
                                 <a class="btn btn--primary btn--large" href="{{ chunk.audio.url }}" download>
-                                    Télécharger l’audio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
+                                    Télécharger l�?Taudio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
                                 </a>
                             {% endif %}
                         {% endfor %}
@@ -65,7 +65,7 @@
                     <audio controls class="conversion-audio__player">
                         <source src="{{ last_request.audio.url }}" type="audio/mpeg">
                     </audio>
-                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l�?Taudio (MP3)</a>
                 {% endif %}
                 {% if last_request.texte %}
                 <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
@@ -79,7 +79,7 @@
                         {% for chunk in last_request_chunks %}
                             {% if chunk.audio %}
                                 <a class="btn btn--primary btn--large" href="{{ chunk.audio.url }}" download>
-                                    Télécharger l’audio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
+                                    Télécharger l�?Taudio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
                                 </a>
                             {% endif %}
                         {% endfor %}
@@ -88,7 +88,7 @@
                     <audio controls class="conversion-audio__player">
                         <source src="{{ last_request.audio.url }}" type="audio/mpeg">
                     </audio>
-                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l�?Taudio (MP3)</a>
                 {% endif %}
                 {% if last_request.texte %}
                 <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
@@ -102,7 +102,7 @@
                         {% for chunk in last_request_chunks %}
                             {% if chunk.audio %}
                                 <a class="btn btn--primary btn--large" href="{{ chunk.audio.url }}" download>
-                                    Télécharger l’audio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
+                                    Télécharger l�?Taudio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
                                 </a>
                             {% endif %}
                         {% endfor %}
@@ -111,7 +111,7 @@
                     <audio controls class="conversion-audio__player">
                         <source src="{{ last_request.audio.url }}" type="audio/mpeg">
                     </audio>
-                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l�?Taudio (MP3)</a>
                 {% endif %}
                 {% if last_request.texte %}
                 <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
@@ -124,7 +124,7 @@
                         <h2 class="cta-box__title">Paiement requis</h2>
                         <span class="conversion-audio__badge">Traitement en quelques minutes selon la taille du texte/fichier</span>
                     </div>
-                    <p class="cta-box__text">Votre demande a été enregistrée. Veuillez procéder au paiement pour recevoir l’audio par e‑mail dans les minutes suivantes.</p>
+                    <p class="cta-box__text">Votre demande a été enregistrée. Veuillez procéder au paiement pour recevoir l�?Taudio par e�?'mail dans les minutes suivantes.</p>
                     <p class="form-feedback form-feedback--error" id="payment-error" style="display:none;">
                         Impossible de lancer le paiement. Veuillez réessayer ou nous contacter.
                     </p>
@@ -136,12 +136,12 @@
                             Payer maintenant
                         </a>
                     {% else %}
-                        <p class="form-feedback form-feedback--error">Le lien de paiement n’est pas encore disponible.</p>
+                        <p class="form-feedback form-feedback--error">Le lien de paiement n�?Test pas encore disponible.</p>
                     {% endif %}
                 </div>
                 <div id="payment-followup" {% if not last_request.paiement_initie_at %}style="display:none;"{% endif %}>
                     <h2 class="cta-box__title">Votre demande est en cours de traitement</h2>
-                    <p class="cta-box__text">Nos équipes vérifieront l’effectivité du paiement et vous feront un retour.</p>
+                    <p class="cta-box__text">Nos équipes vérifieront l�?Teffectivité du paiement et vous feront un retour.</p>
                     <p class="cta-box__text">Souhaitez-vous convertir un autre texte ou document ?</p>
                     <div class="cta-box__actions">
                         <button type="button" class="btn btn--primary btn--large" id="payment-yes">Oui</button>
@@ -311,13 +311,13 @@
         if (player && textContainer && textContainer.dataset.audioText) {
             const rawText = textContainer.dataset.audioText.trim();
             const parts = rawText
-                .split(/(?<=[.!?…])/)
+                .split(/(?<=[.!?�?�])/)
                 .map((p) => p.trim())
                 .filter(Boolean);
 
             const weights = parts.map((p) => {
                 const letters = p.replace(/\s+/g, "").length || 1;
-                const syllables = (p.match(/[aeiouyàâäéèêëîïôöùûüœ]+/gi) || []).length || 1;
+                const syllables = (p.match(/[aeiouyàâäéèêëîïôöùûü�"]+/gi) || []).length || 1;
                 return letters * 0.25 + syllables * 1.0 + 2.0;
             });
 

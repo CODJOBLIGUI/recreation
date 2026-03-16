@@ -9,7 +9,7 @@
                 {% csrf_token %}
                 {{ form.non_field_errors }}
                 <div class="form-group">
-                    <label for="id_username">Nom dâ€™utilisateur</label>
+                    <label for="id_username">Nom dâ�,��"�utilisateur</label>
                     {{ form.username }}
                 </div>
                 <div class="form-group">
@@ -19,10 +19,10 @@
                 <button type="submit" class="btn btn--primary btn--large">Se connecter</button>
             </form>
             <p style="margin-top: 0.8rem; text-align:center;">
-                Pas de compte ? <a href="{% url 'catalogue:signup' %}">CrÃ©er un compte</a>
+                Pas de compte ? <a href="{% url 'catalogue:signup' %}">Cr�f©er un compte</a>
             </p>
             <p style="margin-top: 0.4rem; text-align:center;">
-                <a href="{% url 'catalogue:password_reset' %}">Mot de passe oubliÃ© ?</a>
+                <a href="{% url 'catalogue:password_reset' %}">Mot de passe oubli�f© ?</a>
             </p>
         </div>
     </div>
