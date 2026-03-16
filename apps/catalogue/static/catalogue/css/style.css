@@ -7392,3 +7392,28 @@ html {
 }
 
 
+/* Global card hover: soft shadow outline on cursor */
+.book-card,
+.author-card,
+.news-card,
+.search-card,
+.contrat-card,
+.value-card,
+.stat-card,
+.page-block__card,
+.page-block__card--media {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.book-card:hover,
+.author-card:hover,
+.news-card:hover,
+.search-card:hover,
+.contrat-card:hover,
+.value-card:hover,
+.stat-card:hover,
+.page-block__card:hover,
+.page-block__card--media:hover {
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+    transform: translateY(-3px);
+}
