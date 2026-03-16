@@ -5382,7 +5382,7 @@ html {
 
     display: grid;
 
-    grid-template-columns: 1fr minmax(220px, 360px);
+    grid-template-columns: minmax(220px, 360px) 1fr;
 
     gap: 2rem;
 
@@ -5391,11 +5391,17 @@ html {
 }
 
 .livre-detail__info {
-    order: 1;
+    order: 2;
 }
 
 .livre-detail__image {
-    order: 2;
+    order: 1;
+}
+
+.livre-detail__image img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
 }
 
 
