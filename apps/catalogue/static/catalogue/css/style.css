@@ -7361,7 +7361,7 @@ html {
 
 /* Footer adjustments: smaller logo, white links, white buttons with black text/icons */
 .footer-fayard__logo {
-    font-size: 1.6rem !important;
+    font-size: 1rem !important;
 }
 
 .footer-fayard__list a {
