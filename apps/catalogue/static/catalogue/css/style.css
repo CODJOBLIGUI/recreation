@@ -7457,6 +7457,10 @@ html {
 .footer-fayard__title,
 .footer-fayard__subsection-title {
     color: #ffffff !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: 1.05rem !important;
 }
 
 .footer-shop-btn,
