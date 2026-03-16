@@ -3286,3 +3286,29 @@ html {
 .new-releases .book-grid > div {
     display: contents;
 }
+
+/* OVERRIDE: force home grids to wrap horizontally */
+.new-releases .book-grid,
+.bestsellers .book-grid,
+.upcoming-releases .book-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 220px)) !important;
+    gap: 1.5rem !important;
+    justify-content: start !important;
+    justify-items: start !important;
+}
+
+.new-releases .book-grid > *,
+.bestsellers .book-grid > *,
+.upcoming-releases .book-grid > * {
+    width: auto !important;
+    max-width: 220px !important;
+    justify-self: start !important;
+}
+
+.new-releases .book-card,
+.bestsellers .book-card,
+.upcoming-releases .book-card {
+    width: 100% !important;
+    max-width: 100% !important;
+}
