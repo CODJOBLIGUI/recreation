@@ -5382,12 +5382,20 @@ html {
 
     display: grid;
 
-    grid-template-columns: minmax(220px, 360px) 1fr;
+    grid-template-columns: 1fr minmax(220px, 360px);
 
     gap: 2rem;
 
     align-items: start;
 
+}
+
+.livre-detail__info {
+    order: 1;
+}
+
+.livre-detail__image {
+    order: 2;
 }
 
 
