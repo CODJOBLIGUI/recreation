@@ -1835,7 +1835,7 @@ body.nav-drawer-open {
 
     .book-grid--editorial {
 
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(160px, 40%) 1fr;
 
     }
 
@@ -4697,7 +4697,7 @@ body.nav-drawer-open {
 
     .contrats__grid {
 
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(160px, 40%) 1fr;
 
     }
 
@@ -4705,7 +4705,7 @@ body.nav-drawer-open {
 
     .team-grid {
 
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(160px, 40%) 1fr;
 
     }
 
@@ -4713,7 +4713,7 @@ body.nav-drawer-open {
 
     .actualites-grid {
 
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(160px, 40%) 1fr;
 
     }
 
@@ -5428,7 +5428,7 @@ html {
 
     width: 100%;
 
-    max-width: 360px;
+    max-width: 220px;
 
     max-height: 70vh;
 
@@ -5508,7 +5508,7 @@ html {
 
     .auteur-detail__header {
 
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(160px, 40%) 1fr;
 
     }
 
@@ -5533,6 +5533,17 @@ html {
 
 
 /* Resserre l'espace entre le hero et Nouveauts */
+
+@media (max-width: 900px) {
+    .livre-detail__image {
+        justify-self: start;
+    }
+
+    .livre-detail__image img {
+        max-width: 220px !important;
+        max-height: none !important;
+    }
+}
 
 .new-releases.section {
 
@@ -7218,7 +7229,7 @@ html {
 
     .footer-fayard__grid {
 
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(160px, 40%) 1fr;
 
     }
 
