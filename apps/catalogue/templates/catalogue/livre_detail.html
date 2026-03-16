@@ -20,7 +20,7 @@
                     <p class="livre-detail__author">
                         par
                         {% for auteur in livre.auteurs.all %}
-                            <a href="{% url 'catalogue:auteur-detail' auteur.slug %}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+                            <a href="{% url 'catalogue:auteur-detail' auteur.slug %}">{{ auteur.nom }}</span>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
                         {% endfor %}
                     </p>
                 
@@ -51,19 +51,19 @@
                         <a href="{{ livre.lien_chariow }}" target="_blank" class="purchase-btn purchase-btn--chariow">
                             <i class="fas fa-shopping-cart"></i>
                             Acheter sur Chariow
-                        </a>
+                        </span>
                         {% endif %}
                         {% if livre.lien_amazon %}
                         <a href="{{ livre.lien_amazon }}" target="_blank" class="purchase-btn purchase-btn--amazon">
                             <i class="fab fa-amazon"></i>
                             Acheter sur Amazon
-                        </a>
+                        </span>
                         {% endif %}
                         {% if livre.lien_whatsapp %}
                         <a href="{{ livre.lien_whatsapp }}" target="_blank" class="purchase-btn purchase-btn--whatsapp">
                             <i class="fab fa-whatsapp"></i>
                             Commander sur WhatsApp
-                        </a>
+                        </span>
                         {% endif %}
                     </div>
                     {% endif %}
@@ -74,19 +74,19 @@
                         <a href="{{ livre.lien_chariow_numerique }}" target="_blank" class="purchase-btn purchase-btn--chariow">
                             <i class="fas fa-shopping-cart"></i>
                             Acheter sur Chariow
-                        </a>
+                        </span>
                         {% endif %}
                         {% if livre.lien_amazon_numerique %}
                         <a href="{{ livre.lien_amazon_numerique }}" target="_blank" class="purchase-btn purchase-btn--amazon">
                             <i class="fab fa-amazon"></i>
                             Acheter sur Amazon
-                        </a>
+                        </span>
                         {% endif %}
                         {% if livre.lien_whatsapp_numerique %}
                         <a href="{{ livre.lien_whatsapp_numerique }}" target="_blank" class="purchase-btn purchase-btn--whatsapp">
                             <i class="fab fa-whatsapp"></i>
                             Commander sur WhatsApp
-                        </a>
+                        </span>
                         {% endif %}
                     </div>
                     {% endif %}
@@ -97,19 +97,19 @@
                         <a href="{{ livre.lien_chariow_audio }}" target="_blank" class="purchase-btn purchase-btn--chariow">
                             <i class="fas fa-shopping-cart"></i>
                             Acheter sur Chariow
-                        </a>
+                        </span>
                         {% endif %}
                         {% if livre.lien_amazon_audio %}
                         <a href="{{ livre.lien_amazon_audio }}" target="_blank" class="purchase-btn purchase-btn--amazon">
                             <i class="fab fa-amazon"></i>
                             Acheter sur Amazon
-                        </a>
+                        </span>
                         {% endif %}
                         {% if livre.lien_whatsapp_audio %}
                         <a href="{{ livre.lien_whatsapp_audio }}" target="_blank" class="purchase-btn purchase-btn--whatsapp">
                             <i class="fab fa-whatsapp"></i>
                             Commander sur WhatsApp
-                        </a>
+                        </span>
                         {% endif %}
                     </div>
                     {% endif %}
@@ -129,11 +129,11 @@
                         <img src="{{ livre_suggere.image_par_defaut.url }}" alt="{{ livre_suggere.titre }}" loading="lazy">
                         {% endif %}
                         <div class="book-card__overlay">
-                            <a href="{% url 'catalogue:livre-detail' livre_suggere.slug %}" class="btn btn--secondary">Voir détails</a>
+                            <a href="{% url 'catalogue:livre-detail' livre_suggere.slug %}" class="btn btn--secondary">Voir détails</span>
                         </div>
                     </div>
                     <div class="book-card__info">
-                        <h3 class="book-card__title">{{ livre_suggere.titre }}</h3>
+                        <h3 class="book-card__title"><a href="{% url 'catalogue:livre-detail' livre_suggere.slug %}">{{ livre_suggere.titre }}</a></h3>
                         <p class="book-card__author">{{ livre_suggere.auteurs_noms }}</p>
                         {% if livre_suggere.meta_description %}
                         <p class="book-card__meta-desc">{{ livre_suggere.meta_description|truncatewords:16 }}</p>

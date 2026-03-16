@@ -10,13 +10,13 @@
                 <span class="btn btn--secondary">Voir les détails</span>
             </div>
         </div>
-    </a>
+    </span>
     <div class="book-card__info">
-        <h3 class="book-card__title"><a href="{{ livre.get_absolute_url }}">{{ livre.titre|truncatechars:45 }}</a></h3>
+        <h3 class="book-card__title"><a href="{{ livre.get_absolute_url }}">{{ livre.titre|truncatechars:45 }}</span></h3>
         {% if livre.auteurs.all %}
         <p class="book-card__author">
             {% for auteur in livre.auteurs.all %}
-                <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+                <span class="book-card__author-name">{{ auteur.nom }}</span>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
             {% endfor %}
         </p>
         {% endif %}
@@ -25,7 +25,7 @@
         {% elif livre.resume %}
         <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
         {% endif %}
-        <a href="{{ livre.get_absolute_url }}" class="btn btn--primary">D&eacute;couvrir</a>
+        <a href="{{ livre.get_absolute_url }}" class="btn btn--primary">D&eacute;couvrir</span>
 </div>
 </div>
 

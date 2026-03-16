@@ -88,15 +88,15 @@
                     <img src="{{ livre.image_affichage.url }}" alt="{{ livre.titre }}" loading="lazy">
                     {% endif %}
                     <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Voir détails</a>
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Voir détails</span>
                     </div>
                 </div>
                 <div class="book-card__info">
                     <span class="book-card__category">{{ livre.get_categorie_display|lower|capfirst }}</span>
-                    <h3 class="book-card__title">{{ livre.titre|highlight_query:recherche }}</h3>
+                    <h3 class="book-card__title"><a href="{% url \'catalogue:livre-detail\' livre.slug %}">{{ livre.titre|highlight_query:recherche  }}</a></h3>
                     <p class="book-card__author">
                         {% for auteur in livre.auteurs.all %}
-                            <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom|highlight_query:recherche }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+                            <span class="book-card__author-name">{{ auteur.nom|highlight_query:recherche }}</span>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
                         {% endfor %}
                     </p>
                     {% if livre.meta_description %}
@@ -116,8 +116,8 @@
         {% if is_paginated %}
         <div class="pagination">
             {% if page_obj.has_previous %}
-            <a href="?page=1" class="pagination__btn">&laquo; Première</a>
-            <a href="?page={{ page_obj.previous_page_number }}" class="pagination__btn">Précédent</a>
+            <a href="?page=1" class="pagination__btn">&laquo; Première</span>
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination__btn">Précédent</span>
             {% endif %}
             
             <span class="pagination__info">
@@ -125,8 +125,8 @@
             </span>
             
             {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="pagination__btn">Suivant</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination__btn">Dernière &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination__btn">Suivant</span>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination__btn">Dernière &raquo;</span>
             {% endif %}
         </div>
         {% endif %}

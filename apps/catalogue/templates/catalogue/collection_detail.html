@@ -32,15 +32,15 @@
                     <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
                     {% endif %}
                     <div class="book-card__overlay">
-                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Voir détails</a>
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Voir détails</span>
                     </div>
                 </div>
                 <div class="book-card__info">
                     <span class="book-card__category">{{ livre.get_categorie_display }}</span>
-                    <h3 class="book-card__title">{{ livre.titre }}</h3>
+                    <h3 class="book-card__title"><a href="{% url 'catalogue:livre-detail' livre.slug %}">{{ livre.titre }}</a></h3>
                     <p class="book-card__author">
                         {% for auteur in livre.auteurs.all %}
-                            <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+                            <span class="book-card__author-name">{{ auteur.nom }}</span>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
                         {% endfor %}
                     </p>
                     {% if livre.meta_description %}
@@ -80,8 +80,8 @@
                     </div>
                     {% endif %}
                     <p class="author-card__bio">{{ auteur.biographie_texte|truncatewords:30 }}</p>
-                    <a href="{{ auteur.get_absolute_url }}" class="btn btn--primary">D&eacute;couvrir</a>
-                    <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">Voir la bibliographie</a>
+                    <a href="{{ auteur.get_absolute_url }}" class="btn btn--primary">D&eacute;couvrir</span>
+                    <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">Voir la bibliographie</span>
                 </div>
             </div>
             {% endfor %}

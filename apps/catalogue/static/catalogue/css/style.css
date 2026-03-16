@@ -3607,3 +3607,19 @@ html {
 .footer-fayard__col {
     padding-top: 0.25rem;
 }
+
+
+.book-card__title a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.book-card__title a:hover {
+    color: var(--color-accent-dark);
+    text-decoration: underline;
+}
+
+.book-card__author,
+.book-card__author-name {
+    color: #111111;
+}
