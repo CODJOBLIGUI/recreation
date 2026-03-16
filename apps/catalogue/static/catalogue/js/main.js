@@ -268,6 +268,15 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+
+        document.querySelectorAll('.book-card[data-card-link]').forEach(function(card){
+            card.addEventListener('click', function(e){
+                if (e.target.closest('a, button')) return;
+                const url = card.getAttribute('data-card-link');
+                if (url) window.location.href = url;
+            });
+        });
+
         console.log('Editions Recreation - Site charge');
 
         // Ajouter des classes pour les animations

@@ -1,4 +1,4 @@
-﻿<div class="book-card">
+﻿<div class="book-card" data-card-link="{{ livre.get_absolute_url }}">
     <a href="{{ livre.get_absolute_url }}" class="book-card__cover-link">
         <div class="book-card__cover">
             {% if livre.image_par_defaut %}
@@ -25,6 +25,7 @@
         {% elif livre.resume %}
         <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
         {% endif %}
-    </div>
+        <a href="{{ livre.get_absolute_url }}" class="btn btn--primary">D?couvrir</a>
+</div>
 </div>
 
