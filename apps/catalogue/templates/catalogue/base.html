@@ -197,7 +197,7 @@
                 <div class="footer-fayard__col footer-fayard__col--brand">
                     <h2 class="footer-fayard__logo">{{ appearance.site_name|default:"Editions Recr&eacute;ation"|strip_upper_accents }}</h2>
                     <p class="footer-fayard__slogan">Avec le verbe, recr&eacute;ons le monde et conservons en une copie dans un livre !</p>
-                    <p class="footer-fayard__address">B&eacute;nin | Abomey-Calavi, France | Marseille, avec des Repr&eacute;sentants &eacute;ditoriaux dans 7 autres pays en Afrique.</p>
+                    <p class="footer-fayard__address">B&eacute;nin, Abomey-Calavi | France, Marseille | avec des Repr&eacute;sentants &eacute;ditoriaux dans 7 autres pays en Afrique.</p>
 
                     <div class="footer-fayard__actions">
                         <a href="tel:+22901688097777" class="footer-fayard__action">
@@ -214,9 +214,9 @@
                         </a>
                     </div>
 
-                    <div class="footer-fayard__social">
-                        <h3 class="footer-fayard__title">{{ "R&eacute;seaux sociaux"|strip_upper_accents }}</h3>
-                        <div class="footer-fayard__social-icons">
+                    <div class="footer-fayard__social footer-fayard__social--footer">
+                        <h3 class="footer-fayard__social-title">Suivez Recr&eacute;ation sur les r&eacute;seaux sociaux</h3>
+                        <div class="footer-fayard__social-icons footer-fayard__social-icons--footer">
                             {% for social in social_links %}
                             <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">
                                 <i class="{{ social.icon }}"></i>
@@ -224,6 +224,7 @@
                             {% endfor %}
                         </div>
                     </div>
+                </div>
                 </div>
 
                 <!-- Colonne 2 -->
@@ -236,7 +237,16 @@
                         <li><a href="{% url 'catalogue:index' %}#nouveautes">{{ "Nouveaut&eacute;s"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:index' %}#meilleures-ventes">{{ "Meilleures ventes"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:index' %}#a-paraitre">{{ "Prochaines parutions"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:catalogue' %}">{{ "Collections"|strip_upper_accents }}</a></li>
+</ul>
+                    <div class="footer-fayard__subsection-title">Collection</div>
+                    <ul class="footer-fayard__list footer-fayard__list--sub">
+                        {% if collections_list %}
+                        {% for collection in collections_list %}
+                        <li><a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a></li>
+                        {% endfor %}
+                        {% else %}
+                        <li><a href="{% url 'catalogue:collection-detail' '6-sens-requis' %}">6 Sens Requis</a></li>
+                        {% endif %}
                     </ul>
                     <div class="footer-fayard__cta">
                         <a href="{% url 'catalogue:conversion-audio' %}" class="footer-audio-btn">
@@ -257,9 +267,15 @@
                         <li><a href="{% url 'catalogue:auteurs' %}">{{ "Nos auteurs"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:nos-contrats' %}">{{ "Nos contrats"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:a-propos' %}">{{ "Notre &eacute;quipe"|strip_upper_accents }}</a></li>
-                        <li><a href="{% url 'catalogue:a-propos' %}">{{ "&Agrave; propos"|strip_upper_accents }}</a></li>
+                        <li><a href="{% url 'catalogue:a-propos' %}">{{ "A propos"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:contact' %}">{{ "Contact"|strip_upper_accents }}</a></li>
                     </ul>
+                    <div class="footer-fayard__shop">
+                        <a href="https://recreation.mychariow.shop/" class="footer-shop-btn" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                            <span>Recr&eacute;ation Shop</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 

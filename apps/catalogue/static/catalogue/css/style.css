@@ -3607,3 +3607,61 @@ html {
 .footer-fayard__col {
     padding-top: 0.25rem;
 }
+
+
+.footer-fayard__subsection-title {
+    font-weight: 700;
+    margin: 1rem 0 0.5rem;
+    color: #ffffff;
+}
+
+.footer-fayard__list--sub {
+    margin-top: 0;
+}
+
+.footer-fayard__social-title {
+    font-weight: 700;
+    margin: 1rem 0 0.6rem;
+    color: #ffffff;
+}
+
+.footer-fayard__social-icons--footer .social-icon {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+}
+
+.footer-fayard__social-icons--footer .social-icon i {
+    color: #ffffff;
+}
+
+.footer-audio-btn__text {
+    color: #111111;
+}
+
+.footer-audio-btn__icon .fa-book {
+    position: absolute;
+    font-size: 0.7rem;
+    top: 0.35rem;
+}
+
+.footer-shop-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    background: transparent;
+    color: #ffffff;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    margin-top: 1rem;
+}
+
+.footer-shop-btn i {
+    color: #ffffff;
+}
+
+.footer-shop-btn:hover {
+    border-color: #ffffff;
+}
