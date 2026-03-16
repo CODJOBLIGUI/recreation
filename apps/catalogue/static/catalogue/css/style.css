@@ -3264,23 +3264,25 @@ html {
 
 
 \r\n
-/* OVERRIDE: small, non-distorted book cards in grid */
-.book-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+/* OVERRIDE: home sections use catalogue-like grid, wrap normally */
+.new-releases .book-grid,
+.bestsellers .book-grid,
+.upcoming-releases .book-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 1.5rem;
+    justify-items: start;
 }
 
-.book-card {
+.new-releases .book-card,
+.bestsellers .book-card,
+.upcoming-releases .book-card {
     width: 100%;
     max-width: 220px;
 }
 
-.book-card__cover {
-    height: 220px;
-}
-
-.book-card__cover img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
+/* If Nouveautes items are wrapped in a div, let cards be grid items */
+.new-releases .book-grid > div {
+    display: contents;
 }
