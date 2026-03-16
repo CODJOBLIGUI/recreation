@@ -666,6 +666,20 @@ font-size: 2rem;
     min-width: 220px;
     justify-content: center;
   }
+
+  /* Force footer into one single column on mobile */
+  .footer-fayard__menu {
+    order: 3;
+  }
+
+  .footer-fayard__menu-columns {
+    align-items: center;
+  }
+
+  .footer-fayard__menu-col {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 /* Mobile footer: slightly smaller action labels + social title */
