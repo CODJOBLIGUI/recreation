@@ -486,6 +486,26 @@ ul, ol {
     background: #ece8e3;
 }
 
+.nav-drawer__service {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-drawer__service .footer-audio-btn__icon {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.nav-drawer__service .footer-audio-btn__icon .fa-headphones {
+    font-size: 1.15rem;
+}
+
+.nav-drawer__service .footer-audio-btn__icon .fa-book {
+    font-size: 0.6rem;
+    top: 0.3rem;
+}
+
 .nav-drawer__collection-label {
     display: block;
     color: var(--color-text-light);
