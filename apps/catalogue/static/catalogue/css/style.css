@@ -3420,3 +3420,22 @@ html {
     text-transform: none;
     letter-spacing: 0;
 }
+
+
+/* Align Nouveaut?s cards to Bestsellers styling */
+.new-releases .book-card,
+.bestsellers .book-card {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: none;
+}
+
+.new-releases .book-card__cover img,
+.bestsellers .book-card__cover img {
+    object-fit: cover;
+}
+
+.new-releases .book-card__info,
+.bestsellers .book-card__info {
+    padding: 1.25rem;
+}
