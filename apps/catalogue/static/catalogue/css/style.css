@@ -968,6 +968,8 @@ body.nav-drawer-open {
 }
 
 .book-card__info {
+    display: flex;
+    flex-direction: column;
     padding: 1.25rem;
 }
 
@@ -1635,6 +1637,8 @@ body.nav-drawer-open {
 }
 
 .author-card__info {
+    display: flex;
+    flex-direction: column;
     padding: 1.25rem;
 }
 
@@ -3392,5 +3396,17 @@ html {
 }
 
 .book-card__info {
+    display: flex;
+    flex-direction: column;
     padding: 1.25rem;
+}
+
+.author-card__info .btn {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
+.book-card__info .btn {
+    margin-top: auto;
+    align-self: flex-start;
 }
