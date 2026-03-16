@@ -402,7 +402,7 @@ ul, ol {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
-    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+    box-shadow: none;
     transform: translateX(100%);
     transition: var(--transition-smooth);
     z-index: 2;
@@ -740,7 +740,7 @@ body.nav-drawer-open {
     height: auto;
     max-height: 228px;
     object-fit: contain;
-    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+    box-shadow: none;
     border-radius: var(--radius-media);
     background: transparent;
     border: none;
@@ -885,6 +885,7 @@ body.nav-drawer-open {
 }
 
 .book-grid--editorial > .book-grid__item:nth-child(1) .book-card__cover img {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     max-height: 520px;
 }
 
@@ -914,7 +915,7 @@ body.nav-drawer-open {
         grid-column: span 1;
     }
 }
-.book-card {\r\n    background-color: white;\r\n    border-radius: 8px;\r\n    overflow: hidden;\r\n    transition: var(--transition-smooth);\r\n    box-shadow: var(--shadow-sm);\r\n    width: fit-content;\r\n    max-width: 100%;\r\n}
+.book-card {\r\n    background-color: white;\r\n    border-radius: 8px;\r\n    overflow: hidden;\r\n    transition: var(--transition-smooth);\r\n    box-shadow: none;\r\n    width: fit-content;\r\n    max-width: 100%;\r\n}
 .book-card {
     cursor: pointer;
 }
@@ -922,7 +923,7 @@ body.nav-drawer-open {
 
 .book-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+    box-shadow: none;
 }
 
 .book-card__cover {
@@ -937,6 +938,7 @@ body.nav-drawer-open {
 }
 
 .book-card__cover img {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     width: 100%;
     height: auto;
     max-width: 100%;\r\n    max-height: 340px;\r\n    width: auto;
@@ -946,15 +948,15 @@ body.nav-drawer-open {
 }
 
 .book-card:hover .book-card__cover img {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     transform: scale(1.01);
 }
 
 .book-card__overlay {
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(2px);
-    display: flex;
+    background-color: rgba(0, 0, 0, 0.35);
+        display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
@@ -1601,14 +1603,14 @@ body.nav-drawer-open {
     background-color: white;
     padding: 0;
     border-radius: 16px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     transition: var(--transition-smooth);
     overflow: hidden;
 }
 
 .author-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+    box-shadow: none;
 }
 
 .author-card__photo {
@@ -2079,7 +2081,7 @@ body.nav-drawer-open {
     background: white;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     transition: var(--transition-smooth);
     text-align: left;
 }
@@ -2199,13 +2201,13 @@ body.nav-drawer-open {
     background: white;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     transition: var(--transition-smooth);
 }
 
 .news-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+    box-shadow: none;
 }
 
 .news-card__image {
@@ -2414,7 +2416,7 @@ html {
     border-radius: 18px;
     padding: 0.35rem 0.5rem;
     gap: 0.5rem;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
 }
 
 .catalogue-filters .search-box input {
@@ -2436,7 +2438,7 @@ html {
     background: #fff;
     border: 1px solid var(--color-border);
     border-radius: 16px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
 }
 
 /* ========================================
@@ -2556,7 +2558,7 @@ html {
     height: 42px;
     border-radius: 12px;
     cursor: pointer;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
 }
 
 .news-ticker__viewport {
@@ -2589,7 +2591,7 @@ html {
     border: 1px solid var(--color-border);
     border-radius: 16px;
     padding: 1rem 1.25rem;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     scroll-snap-align: start;
     min-height: 130px;
     transition: var(--transition-smooth);
@@ -2597,7 +2599,7 @@ html {
 
 .news-ticker__item:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+    box-shadow: none;
 }
 
 .news-ticker__media {
@@ -2812,7 +2814,7 @@ html {
     padding: 1.75rem;
     background-color: white;
     border-radius: 8px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     border: 1px solid rgba(0, 0, 0, 0.04);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     will-change: transform;
@@ -2864,7 +2866,7 @@ html {
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     text-align: left;
 }
 
@@ -2920,7 +2922,7 @@ html {
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1rem;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
 }
 
 .page-block__slide--media {
@@ -3114,7 +3116,7 @@ html {
     overflow: hidden;
     text-decoration: none;
     color: inherit;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     transition: var(--transition-smooth);
 }
 
@@ -3229,7 +3231,7 @@ html {
     border: 1px solid #e6eef7;
     border-radius: 12px;
     padding: 1.25rem 1.35rem;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
 }
 
 .value-card h3 {
@@ -3312,6 +3314,7 @@ html {
     grid-row: auto;
 }
 .book-grid--editorial > .book-grid__item:nth-child(1) .book-card__cover img {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     max-height: none;
 }
 
