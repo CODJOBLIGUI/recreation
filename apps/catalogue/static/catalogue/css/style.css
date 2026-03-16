@@ -1979,7 +1979,7 @@ body.nav-drawer-open {
     padding: 1.5rem;
     border-radius: 8px;
     text-align: center;
-    margin-top: auto;
+    margin-top: 0.6rem;
 }
 
 .price-label {
@@ -3402,12 +3402,12 @@ html {
 }
 
 .author-card__info .btn {
-    margin-top: auto;
+    margin-top: 0.6rem;
     align-self: flex-start;
 }
 
 .book-card__info .btn {
-    margin-top: auto;
+    margin-top: 0.6rem;
     align-self: flex-start;
 }
 
