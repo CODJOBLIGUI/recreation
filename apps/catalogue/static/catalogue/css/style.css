@@ -3265,29 +3265,52 @@ html {
 
 \r\n
 
-/* OVERRIDE: home sections use catalogue-like grid, wrap normally */
-.new-releases .book-grid,
-.bestsellers .book-grid,
-.upcoming-releases .book-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+
+
+/* ========================================
+   HOME GRID MINIATURES + NO CAROUSEL
+   ======================================== */
+
+/* Remove carousel look for actualites + page blocks */
+.news-ticker__controls { display: none; }
+.news-ticker__viewport { overflow: visible; }
+.news-ticker__track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    overflow: visible;
+    padding-bottom: 0;
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+    justify-content: start;
+}
+
+.page-block__carousel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    overflow: visible;
+    padding-bottom: 0;
+    scroll-snap-type: none;
+}
+
+/* Neutralize editorial jumbo layout */
+.book-grid--editorial {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 220px));
+    grid-auto-flow: row;
     gap: 1.5rem;
-    justify-items: start;
+    align-items: stretch;
+}
+.book-grid--editorial > .book-grid__item:nth-child(1) {
+    grid-column: auto;
+    grid-row: auto;
+}
+.book-grid--editorial > .book-grid__item:nth-child(1) .book-card__cover img {
+    max-height: none;
 }
 
-.new-releases .book-card,
-.bestsellers .book-card,
-.upcoming-releases .book-card {
-    width: 100%;
-    max-width: 220px;
-}
-
-/* If Nouveautes items are wrapped in a div, let cards be grid items */
-.new-releases .book-grid > div {
-    display: contents;
-}
-
-/* OVERRIDE: force home grids to wrap horizontally */
+/* Home sections: compact mini cards */
 .new-releases .book-grid,
 .bestsellers .book-grid,
 .upcoming-releases .book-grid {
@@ -3298,17 +3321,14 @@ html {
     justify-items: start !important;
 }
 
-.new-releases .book-grid > *,
-.bestsellers .book-grid > *,
-.upcoming-releases .book-grid > * {
-    width: auto !important;
-    max-width: 220px !important;
-    justify-self: start !important;
+.new-releases .book-grid > div {
+    display: contents;
 }
 
 .new-releases .book-card,
 .bestsellers .book-card,
 .upcoming-releases .book-card {
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: 220px !important;
 }
+
