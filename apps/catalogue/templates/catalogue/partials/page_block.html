@@ -338,7 +338,7 @@
                     <h3 class="book-card__title">{{ actualite.titre|safe }}</h3>
                     <p class="book-card__author">{{ actualite.date_publication|date:"d/m/Y" }}</p>
                     <p class="book-card__meta-desc">{{ actualite.extrait|striptags|truncatewords:18|safe }}</p>
-                    <a href="{% url 'catalogue:actualite-detail' actualite.slug %}" class="btn btn--primary">D?couvrir</a>
+                    <a href="{% url 'catalogue:actualite-detail' actualite.slug %}" class="btn btn--primary">D&eacute;couvrir</a>
                 </div>
             </article>
             {% empty %}
