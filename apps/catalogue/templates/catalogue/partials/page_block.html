@@ -271,9 +271,9 @@
             <button class="tabs__btn" data-category="theatres" aria-pressed="false">Théâtres</button>
             <button class="tabs__btn" data-category="nouvelles" aria-pressed="false">Nouvelles</button>
         </div>
-        <div class="book-grid">
+        <div class="book-grid book-grid--editorial">
             {% for livre in nouveautes %}
-                <div data-category="{{ livre.categorie }}">
+                <div class="book-grid__item" data-category="{{ livre.categorie }}">
                     {% include 'catalogue/partials/book_card.html' with livre=livre %}
                 </div>
             {% endfor %}
