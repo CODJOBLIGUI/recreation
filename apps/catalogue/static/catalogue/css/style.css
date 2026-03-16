@@ -3336,3 +3336,5 @@ html {
     max-width: 220px !important;
 }
 
+
+.book-card__cover-link { display: block; }
