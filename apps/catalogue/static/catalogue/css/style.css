@@ -1,4 +1,4 @@
-/* ========================================
+﻿/* ========================================
    VARIABLES CSS
    ======================================== */
 
@@ -3087,6 +3087,7 @@ html {
     font-size: 0.55rem;
     color: #fff;
     font-style: italic;
+    text-align: left;
     margin: 0.2rem 0 0.4rem;
     line-height: 1.2;
     max-width: none;
@@ -3244,7 +3245,7 @@ html {
 }
 
 
-/* Arrondis irréprochables pour les images d'auteurs */
+/* Arrondis irrÃ©prochables pour les images d'auteurs */
 .author-card__photo,
 .auteur-detail__photo {
     border-radius: var(--radius-media);
@@ -3422,7 +3423,7 @@ html {
 }
 
 
-/* Align Nouveautés cards to Bestsellers styling */
+/* Align NouveautÃ©s cards to Bestsellers styling */
 .new-releases .book-card,
 .bestsellers .book-card {
     border-radius: 16px;
@@ -3539,6 +3540,7 @@ html {
     font-size: 0.95rem;
     color: #e6e6e6;
     line-height: 1.5;
+    text-align: left;
     margin-bottom: 0.75rem;
 }
 
@@ -3665,3 +3667,4 @@ html {
 .footer-shop-btn:hover {
     border-color: #ffffff;
 }
+
