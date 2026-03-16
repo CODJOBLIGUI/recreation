@@ -7506,3 +7506,18 @@ html {
 .footer-fayard .footer-shop-btn--audio .footer-audio-btn__icon i {
     color: #111111 !important;
 }
+.footer-fayard,
+.footer-fayard * {
+    color: #ffffff !important;
+}
+
+.footer-fayard .footer-fayard__audio-btn,
+.footer-fayard .footer-fayard__shop-btn {
+    color: #111111 !important;
+}
+
+.footer-fayard .footer-fayard__audio-btn i,
+.footer-fayard .footer-fayard__shop-btn i,
+.footer-fayard .footer-fayard__btn-icon i {
+    color: #111111 !important;
+}
