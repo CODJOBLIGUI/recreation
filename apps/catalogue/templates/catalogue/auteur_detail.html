@@ -37,11 +37,11 @@
                         <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
                         {% endif %}
                         <div class="book-card__overlay">
-                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</span>
+                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
                         </div>
                     </div>
                     <div class="book-card__info">
-                        <h3 class="book-card__title"><a href="{% url 'catalogue:livre-detail' livre.slug %}">{{ livre.titre }}</a></h3>
+                        <h3 class="book-card__title">{{ livre.titre }}</h3>
                         <p class="book-card__date">{{ livre.parution|date:"Y" }}</p>
                         {% if livre.meta_description %}
                         <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>

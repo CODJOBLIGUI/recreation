@@ -34,7 +34,7 @@
                     <h1 class="hero__title">{{ livre.titre }}</h1>
                     <p class="hero__author">{{ livre.auteurs_noms }}</p>
                     <p class="hero__tagline">{{ livre.resume|truncatewords:30 }}</p>
-                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Découvrir</span>
+                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Découvrir</a>
                 </div>
             </div>
         </div>
@@ -72,12 +72,12 @@
                         <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
                         {% endif %}
                         <div class="book-card__overlay">
-                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</span>
+                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
                         </div>
                     </div>
                     <div class="book-card__info">
-                        <h3 class="book-card__title"><a href="{% url 'catalogue:livre-detail' livre.slug %}">{{ livre.titre }}</a></h3>
-                        <p class="book-card__author">{% for auteur in livre.auteurs.all %}<span class="book-card__author-name">{{ auteur.nom }}</span>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}{% endfor %}</p>
+                        <h3 class="book-card__title">{{ livre.titre }}</h3>
+                        <p class="book-card__author">{% for auteur in livre.auteurs.all %}<a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}{% endfor %}</p>
                         {% if livre.meta_description %}
                         <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
                         {% elif livre.resume %}
@@ -105,12 +105,12 @@
                         <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
                         {% endif %}
                         <div class="book-card__overlay">
-                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</span>
+                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
                         </div>
                     </div>
                     <div class="book-card__info">
-                        <h3 class="book-card__title"><a href="{% url 'catalogue:livre-detail' livre.slug %}">{{ livre.titre }}</a></h3>
-                        <p class="book-card__author">{% for auteur in livre.auteurs.all %}<span class="book-card__author-name">{{ auteur.nom }}</span>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}{% endfor %}</p>
+                        <h3 class="book-card__title">{{ livre.titre }}</h3>
+                        <p class="book-card__author">{% for auteur in livre.auteurs.all %}<a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}{% endfor %}</p>
                         {% if livre.meta_description %}
                         <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
                         {% elif livre.resume %}
@@ -141,19 +141,19 @@
                             {{ livre.parution|date:"d/m/Y" }}
                         </div>
                         <div class="book-card__overlay">
-                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Découvrir</span>
+                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Découvrir</a>
                         </div>
                     </div>
                     <div class="book-card__info">
-                        <h3 class="book-card__title"><a href="{% url 'catalogue:livre-detail' livre.slug %}">{{ livre.titre }}</a></h3>
-                        <p class="book-card__author">{% for auteur in livre.auteurs.all %}<span class="book-card__author-name">{{ auteur.nom }}</span>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}{% endfor %}</p>
+                        <h3 class="book-card__title">{{ livre.titre }}</h3>
+                        <p class="book-card__author">{% for auteur in livre.auteurs.all %}<a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}{% endfor %}</p>
                         {% if livre.meta_description %}
                         <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
                         {% elif livre.resume %}
                         <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
                         {% endif %}
                         <p class="book-card__date">Parution : {{ livre.parution|date:"F Y" }}</p>
-                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">D&eacute;couvrir</span>
+                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">D&eacute;couvrir</a>
                     </div>
                 </div>
             {% empty %}
@@ -181,12 +181,12 @@
                             <span class="btn btn--secondary">D&eacute;couvrir</span>
                         </div>
                     </div>
-                </span>
+                </a>
                 <div class="book-card__info">
                     <h3 class="book-card__title">{{ actualite.titre|safe }}</h3>
                     <p class="book-card__author">{{ actualite.date_publication|date:"d/m/Y" }}</p>
                     <p class="book-card__meta-desc">{{ actualite.extrait|striptags|truncatewords:18|safe }}</p>
-                    <a href="{% url 'catalogue:actualite-detail' actualite.slug %}" class="btn btn--primary">D&eacute;couvrir</span>
+                    <a href="{% url 'catalogue:actualite-detail' actualite.slug %}" class="btn btn--primary">D&eacute;couvrir</a>
                 </div>
             </article>
             {% empty %}
