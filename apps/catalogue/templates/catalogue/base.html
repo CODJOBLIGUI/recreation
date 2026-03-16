@@ -53,9 +53,9 @@
                     <div class="header__logo">
                         <a href="{% url 'catalogue:index' %}">
                             {% if appearance and appearance.logo %}
-                            <img src="{{ appearance.logo.url }}" alt="Logo Editions RecrÃ©ation" width="180" height="60">
+                            <img src="{{ appearance.logo.url }}" alt="Logo Editions Recr&eacute;ation" width="180" height="60">
                             {% else %}
-                            <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Logo Editions RecrÃ©ation" width="180" height="60">
+                            <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Logo Editions Recr&eacute;ation" width="180" height="60">
                             {% endif %}
                         </a>
                     </div>
@@ -93,7 +93,7 @@
 
             <!-- Navigation principale -->
             <nav class="header__nav">
-                <div class="header__nav-brand"><a href="{% url 'catalogue:index' %}">RecrÃ©ation</a></div>
+                <div class="header__nav-brand"><a href="{% url 'catalogue:index' %}">Recr&eacute;ation</a></div>
                 <ul class="header__nav-list">
                     {% if menu_header_links %}
                         {% for link in menu_header_links %}
@@ -168,7 +168,7 @@
                 <a href="{% url 'catalogue:index' %}#newsletter" class="btn btn--primary">S'abonner</a>
             </div>
             <div class="nav-drawer__social">
-                <h4>Suivez RecrÃ©ation sur les rÃ©seaux sociaux</h4>
+                <h4>Suivez Recr&eacute;ation sur les r&eacute;seaux sociaux</h4>
                 <div class="nav-drawer__social-icons">
                     {% for social in social_links %}
                     <a href="{{ social.url }}" aria-label="{{ social.label }}"><i class="{{ social.icon }}"></i></a>
@@ -178,7 +178,7 @@
             <div class="nav-drawer__shop">
                 <a href="https://recreation.mychariow.shop/" class="nav-drawer__shop-link" target="_blank" rel="noopener">
                     <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-                    <span>RecrÃ©ation Shop</span>
+                    <span>Recr&eacute;ation Shop</span>
                 </a>
             </div>
         </div>
