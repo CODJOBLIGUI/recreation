@@ -7,7 +7,7 @@
     --color-primary: #F5F1E8;      /* Beige chaud */
     --color-white: #FFFFFF;
     --color-text: #2C2C2C;         /* Charbon */
-    --color-text-light: #4A4A4A;   /* Gris foncé */
+    --color-text-light: #4A4A4A;   /* Gris fonc */
     --color-accent: #0A18FF;      /* Bleu logo */
     --color-accent-dark: #001FD8; /* Bleu logo fonce */
     --color-border: #E0D9CD;
@@ -304,7 +304,7 @@ ul, ol {
     font-family: "Times New Roman", Times, serif;
     font-weight: 800;
     letter-spacing: 0.02em;
-    text-transform: none;
+    text-transform: scale(1.02);
     color: var(--color-accent);
     font-size: 2.8rem;
     line-height: 1;
@@ -735,7 +735,7 @@ body.nav-drawer-open {
     position: relative;
     right: auto;
     top: auto;
-    transform: none;
+    transform: scale(1.02);
     width: 152px;
     height: auto;
     max-height: 228px;
@@ -914,7 +914,11 @@ body.nav-drawer-open {
         grid-column: span 1;
     }
 }
-.book-card {\r\n    background-color: white;\r\n    border-radius: 8px;\r\n    overflow: hidden;\r\n    transition: var(--transition-smooth);\r\n    box-shadow: var(--shadow-sm);\r\n    width: fit-content;\r\n    max-width: 100%;\r\n}\r\n
+.book-card {\r\n    background-color: white;\r\n    border-radius: 8px;\r\n    overflow: hidden;\r\n    transition: var(--transition-smooth);\r\n    box-shadow: var(--shadow-sm);\r\n    width: fit-content;\r\n    max-width: 100%;\r\n}
+.book-card {
+    cursor: pointer;
+}
+\r\n
 
 .book-card:hover {
     transform: translateY(-8px);
@@ -942,7 +946,7 @@ body.nav-drawer-open {
 }
 
 .book-card:hover .book-card__cover img {
-    transform: none;
+    transform: scale(1.02);
 }
 
 .book-card__overlay {
@@ -1158,7 +1162,7 @@ body.nav-drawer-open {
     font-weight: 600;
     letter-spacing: 0;
     margin-bottom: 1.5rem;
-    text-transform: none;
+    text-transform: scale(1.02);
 }
 
 .footer-fayard__social-icons {
@@ -1795,7 +1799,7 @@ body.nav-drawer-open {
     background-color: var(--color-accent);
 }
 
-/* A PROPOS - fond avec icônes reliées */
+/* A PROPOS - fond avec icnes relies */
 .page-hero--about {
     position: relative;
     overflow: hidden;
@@ -2061,7 +2065,7 @@ body.nav-drawer-open {
 
 
 /* ========================================
-   ÉQUIPE
+   QUIPE
    ======================================== */
 
 .team-grid {
@@ -2181,7 +2185,7 @@ body.nav-drawer-open {
 
 
 /* ========================================
-   ACTUALITÉS
+   ACTUALITS
    ======================================== */
 
 .actualites-grid {
@@ -2270,7 +2274,7 @@ body.nav-drawer-open {
     color: #4A4A4A;
 }
 
-/* Détail actualité */
+/* Dtail actualit */
 .actualite-detail__header {
     text-align: center;
     margin-bottom: 2rem;
@@ -2643,7 +2647,7 @@ html {
 }
 
 
-/* Resserre les espacements du bloc Nouveautés */
+/* Resserre les espacements du bloc Nouveauts */
 .new-releases .section__title {
     margin-bottom: 1.5rem;
 }
@@ -2735,13 +2739,13 @@ html {
 }
 
 
-/* Resserre l'espace entre le hero et Nouveautés */
+/* Resserre l'espace entre le hero et Nouveauts */
 .new-releases.section {
     padding-top: 2rem;
 }
 
 
-/* Resserre l'espace entre Nouveautés et Meilleures Ventes */
+/* Resserre l'espace entre Nouveauts et Meilleures Ventes */
 .bestsellers.section {
     padding-top: 2rem;
 }
@@ -2753,7 +2757,7 @@ html {
     background-color: #eef6ff;
 }
 
-/* Resserre l'espace entre Suivez l'actualité et la newsletter */
+/* Resserre l'espace entre Suivez l'actualit et la newsletter */
 .news-ticker.section {
     padding-bottom: 2rem;
 }
