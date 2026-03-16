@@ -597,6 +597,25 @@ font-size: 2rem;
   }
 }
 
+/* Mobile authors filter: prevent overflow */
+@media (max-width: 768px) {
+  .auteurs-filter {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    border-radius: 16px;
+  }
+
+  .auteurs-filter select,
+  .auteurs-filter .btn {
+    width: 100%;
+  }
+
+  .auteurs-filter select {
+    min-width: 0;
+  }
+}
+
 /* FINAL MOBILE FILTERS: tidy spacing + prevent right overflow */
 @media (max-width: 768px) {
   .filters-bar {
