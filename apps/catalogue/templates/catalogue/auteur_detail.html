@@ -45,8 +45,6 @@
                         <p class="book-card__date">{{ livre.parution|date:"Y" }}</p>
                         {% if livre.meta_description %}
                         <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
-                        {% elif livre.resume %}
-                        <p class="book-card__meta-desc">{{ livre.resume|truncatewords:16 }}</p>
                         {% endif %}
                     </div>
                 </div>
@@ -57,5 +55,3 @@
 </section>
 
 {% endblock %}
-
-
