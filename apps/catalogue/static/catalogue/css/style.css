@@ -5401,10 +5401,14 @@ html {
 
 .livre-detail__image img {
     width: 100%;
-    max-width: 180px !important;
-    max-height: 280px !important;
+    max-width: 220px !important;
+    max-height: 320px !important;
     object-fit: contain;
     height: auto;
+}
+
+.livre-detail__image {
+    max-width: 220px;
 }
 
 
