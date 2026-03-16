@@ -16,7 +16,7 @@
     const navigation = document.querySelector('.header__nav');
     const navDrawer = document.getElementById('nav-drawer');
     const navDrawerClose = document.getElementById('nav-drawer-close');
-    const navDrawerBackdrop = navDrawer  navDrawer.querySelector('.nav-drawer__backdrop') : null;
+    const navDrawerBackdrop = navDrawer ? navDrawer.querySelector('.nav-drawer__backdrop') : null;
 
     // ========================================
     // MENU MOBILE (HAMBURGER)
