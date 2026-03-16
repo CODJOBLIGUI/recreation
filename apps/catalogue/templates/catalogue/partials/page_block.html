@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 
 {% if block.block_type == "rich_text" %}
 <section class="page-block page-block--text {{ block.css_class }}">
@@ -89,7 +89,7 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <span class="stat-number">{{ livres_count }}</span>
-                <span class="stat-label">Livres publiés</span>
+                <span class="stat-label">Livres publiÃ©s</span>
             </div>
             <div class="stat-card">
                 <span class="stat-number">{{ auteurs_count }}</span>
@@ -97,7 +97,7 @@
             </div>
             <div class="stat-card">
                 <span class="stat-number">{{ annees_experience }}</span>
-                <span class="stat-label">Années d'expérience</span>
+                <span class="stat-label">AnnÃ©es d'expÃ©rience</span>
             </div>
             <div class="stat-card">
                 <span class="stat-number">{{ pays_count }}</span>
@@ -106,7 +106,7 @@
             {% if prix_litteraires_count and prix_litteraires_count > 0 %}
             <div class="stat-card">
                 <span class="stat-number">{{ prix_litteraires_count }}</span>
-                <span class="stat-label">Prix littéraires</span>
+                <span class="stat-label">Prix littÃ©raires</span>
             </div>
             {% endif %}
         </div>
@@ -243,14 +243,14 @@
                     <h1 class="hero__title">{{ livre.titre }}</h1>
                     <p class="hero__author">{{ livre.auteurs_noms }}</p>
                     <p class="hero__tagline">{{ livre.resume|truncatewords:30 }}</p>
-                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Découvrir</a>
+                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">DÃ©couvrir</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
     <div class="hero__controls">
-        <button id="hero-prev" class="hero__control-btn" aria-label="Précédent">&lt;</button>
+        <button id="hero-prev" class="hero__control-btn" aria-label="PrÃ©cÃ©dent">&lt;</button>
         <button id="hero-next" class="hero__control-btn" aria-label="Suivant">&gt;</button>
     </div>
 </section>
@@ -259,16 +259,16 @@
 {% if block.block_type == "home_nouveautes" %}
 <section class="new-releases section {{ block.css_class }}">
     <div class="container">
-        <h2 class="section__title">{{ block.titre|default:"Nouveautés" }}</h2>
+        <h2 class="section__title">{{ block.titre|default:"NouveautÃ©s" }}</h2>
         {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
         <div class="tabs">
             <button class="tabs__btn active" data-category="toutes" aria-pressed="true">Toutes</button>
             <button class="tabs__btn" data-category="roman" aria-pressed="false">Romans</button>
-            <button class="tabs__btn" data-category="poemes" aria-pressed="false">Poèmes</button>
+            <button class="tabs__btn" data-category="poemes" aria-pressed="false">PoÃ¨mes</button>
             <button class="tabs__btn" data-category="essai" aria-pressed="false">Essais</button>
             <button class="tabs__btn" data-category="policiers" aria-pressed="false">Polars/Thrillers</button>
             <button class="tabs__btn" data-category="bd" aria-pressed="false">BD</button>
-            <button class="tabs__btn" data-category="theatres" aria-pressed="false">Théâtres</button>
+            <button class="tabs__btn" data-category="theatres" aria-pressed="false">ThÃ©Ã¢tres</button>
             <button class="tabs__btn" data-category="nouvelles" aria-pressed="false">Nouvelles</button>
         </div>
         <div class="book-grid book-grid--editorial">
@@ -300,7 +300,7 @@
 <section class="upcoming-releases section bg-light {{ block.css_class }}">
     <div class="container">
         <h2 class="section__title">{{ block.titre|default:"Prochaines Parutions" }}</h2>
-        <p class="section__subtitle">{{ block.sous_titre|default:"Découvrez les livres qui paraîtront bientôt" }}</p>
+        <p class="section__subtitle">{{ block.sous_titre|default:"DÃ©couvrez les livres qui paraÃ®tront bientÃ´t" }}</p>
         <div class="book-grid">
             {% for livre in prochaines_parutions %}
                 <div class="upcoming-book">
@@ -319,10 +319,10 @@
 <section class="news-ticker section {{ block.css_class }}">
     <div class="container">
         <div class="news-ticker__header">
-            <h2 class="section__title">{{ block.titre|default:"Suivez l’actualité" }}</h2>
+            <h2 class="section__title">{{ block.titre|default:"Suivez lâ€™actualitÃ©" }}</h2>
             <div class="news-ticker__controls">
-                <button class="news-ticker__btn" type="button" data-news-action="prev" aria-label="Actualité précédente">&lt;</button>
-                <button class="news-ticker__btn" type="button" data-news-action="next" aria-label="Actualité suivante">&gt;</button>
+                <button class="news-ticker__btn" type="button" data-news-action="prev" aria-label="ActualitÃ© prÃ©cÃ©dente">&lt;</button>
+                <button class="news-ticker__btn" type="button" data-news-action="next" aria-label="ActualitÃ© suivante">&gt;</button>
             </div>
         </div>
         <div class="news-ticker__viewport" data-news-ticker>
@@ -341,7 +341,7 @@
                     </a>
                 </article>
                 {% empty %}
-                <p class="no-content">Aucune actualité pour le moment.</p>
+                <p class="no-content">Aucune actualitÃ© pour le moment.</p>
                 {% endfor %}
             </div>
         </div>
@@ -352,7 +352,7 @@
 {% if block.block_type == "home_newsletter" %}
 <section class="newsletter section {{ block.css_class }}" id="newsletter">
     <div class="container">
-        <h2 class="section__title">{{ block.titre|default:"Restez informé de nos nouveautés" }}</h2>
+        <h2 class="section__title">{{ block.titre|default:"Restez informÃ© de nos nouveautÃ©s" }}</h2>
         {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
         {% if messages %}
             {% for message in messages %}
@@ -374,3 +374,4 @@
     </div>
 </section>
 {% endif %}
+

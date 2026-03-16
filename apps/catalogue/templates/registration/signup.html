@@ -1,9 +1,9 @@
-{% extends "catalogue/base.html" %}
+﻿{% extends "catalogue/base.html" %}
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
-        <h1 class="section-title">Créer un compte</h1>
-        <p class="section-subtitle">Identifiez-vous pour continuer à utiliser le service.</p>
+        <h1 class="section-title">CrÃ©er un compte</h1>
+        <p class="section-subtitle">Identifiez-vous pour continuer Ã  utiliser le service.</p>
         <div class="contact__form-wrapper">
             <form method="post" class="contact__form">
                 {% csrf_token %}
@@ -18,7 +18,7 @@
                     {% if form.email.errors %}<span class="form-error">{{ form.email.errors.0 }}</span>{% endif %}
                 </div>
                 <div class="form-group">
-                    <label for="id_first_name">Prénom</label>
+                    <label for="id_first_name">PrÃ©nom</label>
                     {{ form.first_name }}
                     {% if form.first_name.errors %}<span class="form-error">{{ form.first_name.errors.0 }}</span>{% endif %}
                 </div>
@@ -28,12 +28,12 @@
                     {% if form.last_name.errors %}<span class="form-error">{{ form.last_name.errors.0 }}</span>{% endif %}
                 </div>
                 <div class="form-group">
-                    <label for="id_phone">Téléphone</label>
+                    <label for="id_phone">TÃ©lÃ©phone</label>
                     {{ form.phone }}
                     {% if form.phone.errors %}<span class="form-error">{{ form.phone.errors.0 }}</span>{% endif %}
                 </div>
                 <div class="form-group">
-                    <label for="id_username">Nom d’utilisateur</label>
+                    <label for="id_username">Nom dâ€™utilisateur</label>
                     {{ form.username }}
                     {% if form.username.errors %}<span class="form-error">{{ form.username.errors.0 }}</span>{% endif %}
                 </div>
@@ -49,16 +49,17 @@
                 </div>
                 <div class="form-group">
                     <label>
-                        {{ form.newsletter_opt_in }} S’inscrire à la newsletter
+                        {{ form.newsletter_opt_in }} Sâ€™inscrire Ã  la newsletter
                     </label>
                     {% if form.newsletter_opt_in.errors %}<span class="form-error">{{ form.newsletter_opt_in.errors.0 }}</span>{% endif %}
                 </div>
-                <button type="submit" class="btn btn--primary btn--large">Créer le compte</button>
+                <button type="submit" class="btn btn--primary btn--large">CrÃ©er le compte</button>
             </form>
             <p style="margin-top: 0.8rem; text-align:center;">
-                Déjà un compte ? <a href="{% url 'catalogue:login' %}">Se connecter</a>
+                DÃ©jÃ  un compte ? <a href="{% url 'catalogue:login' %}">Se connecter</a>
             </p>
         </div>
     </div>
 </section>
 {% endblock %}
+
