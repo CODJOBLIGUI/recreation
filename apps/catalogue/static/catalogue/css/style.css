@@ -5401,8 +5401,8 @@ html {
 
 .livre-detail__image img {
     width: 100%;
-    max-width: 240px !important;
-    max-height: 360px !important;
+    max-width: 180px !important;
+    max-height: 280px !important;
     object-fit: contain;
     height: auto;
 }
