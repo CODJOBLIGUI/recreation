@@ -42,8 +42,7 @@
                     </div>
                     {% endif %}
                     <p class="author-card__bio">{{ auteur.biographie_texte|truncatewords:30 }}</p>
-                    <a href="{{ auteur.get_absolute_url }}" class="btn btn--primary">D&eacute;couvrir</a>
-                    <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">Voir la bibliographie</a>
+            <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">Lire la biographie</a>
                 </div>
             </div>
             {% endfor %}
