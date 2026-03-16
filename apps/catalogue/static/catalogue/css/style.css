@@ -3475,6 +3475,10 @@ html {
     margin-bottom: 0.75rem;
 }
 
+.footer-fayard__title--white {
+    color: #ffffff;
+}
+
 .footer-fayard__logo {
     font-size: 2rem;
     margin-bottom: 0.5rem;

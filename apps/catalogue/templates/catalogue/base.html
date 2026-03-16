@@ -1,4 +1,4 @@
-﻿{% load static text_extras %}
+{% load static text_extras %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -231,7 +231,7 @@
 
                 <!-- Colonne 2 -->
                 <div class="footer-fayard__col">
-                    <h3 class="footer-fayard__title">{{ "Catalogue"|strip_upper_accents }}</h3>
+                    <h3 class="footer-fayard__title footer-fayard__title--white">{{ "Catalogue"|strip_upper_accents }}</h3>
                     <ul class="footer-fayard__list">
                         <li><a href="{% url 'catalogue:livres-numeriques' %}">{{ "Livres num&eacute;riques"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:livres-audio' %}">{{ "Livres audio"|strip_upper_accents }}</a></li>
@@ -245,7 +245,7 @@
 
                 <!-- Colonne 3 -->
                 <div class="footer-fayard__col">
-                    <h3 class="footer-fayard__title">{{ "Ressources"|strip_upper_accents }}</h3>
+                    <h3 class="footer-fayard__title footer-fayard__title--white">{{ "Ressources"|strip_upper_accents }}</h3>
                     <ul class="footer-fayard__list">
                         <li><a href="{% url 'catalogue:actualites' %}">{{ "Actualit&eacute;s"|strip_upper_accents }}</a></li>
                         <li><a href="{% url 'catalogue:auteurs' %}">{{ "Nos auteurs"|strip_upper_accents }}</a></li>
@@ -258,7 +258,7 @@
             </div>
 
             <div class="footer-fayard__bottom">
-                <p>&copy; Editions Recr?ation - Tous droits r?serv?s - 2026</p>
+                <p>&copy; Editions Recr&eacute;ation - Tous droits r&eacute;serv&eacute;s - 2026</p>
                 <div class="footer-fayard__links">
                     <a href="{% url 'catalogue:mentions-legales' %}">{{ "Mentions l&eacute;gales"|strip_upper_accents }}</a>
                     <a href="{% url 'catalogue:confidentialite' %}">{{ "Confidentialit&eacute;"|strip_upper_accents }}</a>
