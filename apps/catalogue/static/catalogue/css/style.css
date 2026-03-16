@@ -7521,3 +7521,23 @@ html {
 .footer-fayard .footer-fayard__btn-icon i {
     color: #111111 !important;
 }
+.footer-fayard__btn-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+}
+
+.footer-fayard__btn-icon .fa-headphones {
+    font-size: 1.4rem;
+}
+
+.footer-fayard__btn-icon .fa-book {
+    position: absolute;
+    font-size: 0.7rem;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
