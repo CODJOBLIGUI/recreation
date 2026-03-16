@@ -3539,3 +3539,16 @@ html {
         align-items: flex-start;
     }
 }
+
+
+/* Footer header alignment */
+.footer-fayard__grid {
+    align-items: start;
+}
+.footer-fayard__col--brand {
+    display: flex;
+    flex-direction: column;
+}
+.footer-fayard__col {
+    padding-top: 0.25rem;
+}
