@@ -760,8 +760,8 @@ class ActualitesView(ListView):
         date_fin = self.request.GET.get("date_fin")
         if filtre == "a-la-une":
             qs = qs.filter(est_une_a_la_une=True)
-        if annee:
-            qs = qs.filter(date_publication__year=annee)
+        if annee and str(annee).isdigit():
+            qs = qs.filter(date_publication__year=int(annee))
         if date_debut:
             try:
                 qs = qs.filter(date_publication__gte=date.fromisoformat(date_debut))
@@ -913,103 +913,102 @@ class AudioConversionView(FormView):
 
     def _start_conversion_async(self, demande_id):
         import threading
+        threading.Thread(target=lambda: self._run_conversion(demande_id), daemon=True).start()
 
-        def _generate_audio():
-            close_old_connections()
-            obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
-            if not obj:
-                return
-            obj.async_started_at = timezone.now()
-            obj.async_status = "started"
-            obj.async_progress = 5
-            obj.async_error = ""
-            obj.save(update_fields=["async_started_at", "async_status", "async_progress", "async_error", "updated_at"])
+    def _run_conversion(self, demande_id):
+        close_old_connections()
+        obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
+        if not obj:
+            return
+        obj.async_started_at = timezone.now()
+        obj.async_status = "started"
+        obj.async_progress = 5
+        obj.async_error = ""
+        obj.save(update_fields=["async_started_at", "async_status", "async_progress", "async_error", "updated_at"])
 
-            try:
-                text = obj.texte or ""
-                if obj.fichier and not text.strip():
-                    obj.async_progress = 20
-                    obj.save(update_fields=["async_progress", "updated_at"])
-                    text = extract_text_from_file(obj.fichier)
+        try:
+            text = obj.texte or ""
+            if obj.fichier and not text.strip():
+                obj.async_progress = 20
+                obj.save(update_fields=["async_progress", "updated_at"])
+                text = extract_text_from_file(obj.fichier)
 
-                if not text.strip():
-                    obj.statut = "error"
-                    obj.async_status = "failed"
-                    obj.async_progress = 100
-                    obj.async_error = "Texte vide après extraction."
-                    obj.async_finished_at = timezone.now()
-                    obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "async_finished_at", "updated_at"])
-                    return
-
-                obj.texte = text
-                obj.save(update_fields=["texte", "updated_at"])
-
-                from gtts import gTTS
-                import uuid
-
-                pages_count = obj.pages_count or estimate_pages_from_text(text)
-                pages_per_chunk = 50
-                chars_per_page = max(500, int(len(text) / max(pages_count, 1)))
-                chunk_size = chars_per_page * pages_per_chunk
-
-                chunks = []
-                start = 0
-                while start < len(text):
-                    end = min(start + chunk_size, len(text))
-                    if end < len(text):
-                        cut = text.rfind(" ", start, end)
-                        if cut > start + 200:
-                            end = cut
-                    chunk_text = text[start:end].strip()
-                    if chunk_text:
-                        chunks.append(chunk_text)
-                    start = end
-
-                if not chunks:
-                    chunks = [text]
-
-                AudioConversionChunk.objects.filter(request=obj).delete()
-                total_chunks = len(chunks)
-
-                for index, chunk_text in enumerate(chunks, start=1):
-                    start_page = (index - 1) * pages_per_chunk + 1
-                    end_page = min(index * pages_per_chunk, pages_count)
-                    chunk = AudioConversionChunk.objects.create(
-                        request=obj,
-                        order=index,
-                        start_page=start_page,
-                        end_page=end_page,
-                    )
-
-                    slow = True if obj.voix == "slow" else False
-                    tts = gTTS(chunk_text, lang=obj.langue, slow=slow)
-                    audio_bytes = ContentFile(b"")
-                    filename = f"conversion-{uuid.uuid4().hex}-part{index}.mp3"
-                    tts.write_to_fp(audio_bytes)
-                    audio_bytes.seek(0)
-                    chunk.audio.save(filename, audio_bytes, save=False)
-                    chunk.save(update_fields=["audio", "updated_at"])
-
-                    obj.async_progress = int((index / total_chunks) * 100)
-                    obj.save(update_fields=["async_progress", "updated_at"])
-
-                obj.async_status = "finished"
-                obj.async_progress = 100
-                obj.async_finished_at = timezone.now()
-                obj.statut = "delivered" if obj.paiement_requis else "free_generated"
-                obj.save(update_fields=["statut", "async_status", "async_progress", "async_finished_at", "updated_at"])
-            except Exception as exc:
-                obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
-                if not obj:
-                    return
+            if not text.strip():
                 obj.statut = "error"
                 obj.async_status = "failed"
                 obj.async_progress = 100
-                obj.async_error = str(exc)
+                obj.async_error = "Texte vide après extraction."
                 obj.async_finished_at = timezone.now()
                 obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "async_finished_at", "updated_at"])
+                return
 
-        threading.Thread(target=_generate_audio, daemon=True).start()
+            obj.texte = text
+            obj.save(update_fields=["texte", "updated_at"])
+
+            from gtts import gTTS
+            import uuid
+
+            pages_count = obj.pages_count or estimate_pages_from_text(text)
+            pages_per_chunk = 50
+            chars_per_page = max(500, int(len(text) / max(pages_count, 1)))
+            chunk_size = chars_per_page * pages_per_chunk
+
+            chunks = []
+            start = 0
+            while start < len(text):
+                end = min(start + chunk_size, len(text))
+                if end < len(text):
+                    cut = text.rfind(" ", start, end)
+                    if cut > start + 200:
+                        end = cut
+                chunk_text = text[start:end].strip()
+                if chunk_text:
+                    chunks.append(chunk_text)
+                start = end
+
+            if not chunks:
+                chunks = [text]
+
+            AudioConversionChunk.objects.filter(request=obj).delete()
+            total_chunks = len(chunks)
+
+            for index, chunk_text in enumerate(chunks, start=1):
+                start_page = (index - 1) * pages_per_chunk + 1
+                end_page = min(index * pages_per_chunk, pages_count)
+                chunk = AudioConversionChunk.objects.create(
+                    request=obj,
+                    order=index,
+                    start_page=start_page,
+                    end_page=end_page,
+                )
+
+                slow = True if obj.voix == "slow" else False
+                tts = gTTS(chunk_text, lang=obj.langue, slow=slow)
+                audio_bytes = ContentFile(b"")
+                filename = f"conversion-{uuid.uuid4().hex}-part{index}.mp3"
+                tts.write_to_fp(audio_bytes)
+                audio_bytes.seek(0)
+                chunk.audio.save(filename, audio_bytes, save=False)
+                chunk.save(update_fields=["audio", "updated_at"])
+
+                obj.async_progress = int((index / total_chunks) * 100)
+                obj.save(update_fields=["async_progress", "updated_at"])
+
+            obj.async_status = "finished"
+            obj.async_progress = 100
+            obj.async_finished_at = timezone.now()
+            obj.statut = "delivered" if obj.paiement_requis else "free_generated"
+            obj.save(update_fields=["statut", "async_status", "async_progress", "async_finished_at", "updated_at"])
+        except Exception as exc:
+            obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
+            if not obj:
+                return
+            obj.statut = "error"
+            obj.async_status = "failed"
+            obj.async_progress = 100
+            obj.async_error = str(exc)
+            obj.async_finished_at = timezone.now()
+            obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "async_finished_at", "updated_at"])
 
 
 def conversion_payment_redirect(request, demande_id):
