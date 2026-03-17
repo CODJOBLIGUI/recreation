@@ -268,6 +268,26 @@ class LivresAudioView(CatalogueView):
         return context
 
 
+class LivresPapierView(CatalogueView):
+    """Vue liste livres papier."""
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(version_papier=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_heading"] = "Livres papier"
+        context["page_subtitle"] = "Découvrez nos ouvrages disponibles en version papier"
+        context["page_title"] = "Livres papier - Editions Recréation"
+        context["version_actuelle"] = "papier"
+        livres_page = context.get("livres")
+        if livres_page:
+            for livre in livres_page:
+                livre.image_affichage = livre.image_pour_version("papier")
+        return context
+
+
 class LivreDetailView(DetailView):
     """Vue detail livre."""
 

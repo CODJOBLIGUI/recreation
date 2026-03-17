@@ -14,6 +14,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('catalogue/', views.CatalogueView.as_view(), name='catalogue'),
     path('livres-numeriques/', views.LivresNumeriquesView.as_view(), name='livres-numeriques'),
+    path('livres-papier/', views.LivresPapierView.as_view(), name='livres-papier'),
     path('livres-audio/', views.LivresAudioView.as_view(), name='livres-audio'),
     path('livre/<slug:slug>/', views.LivreDetailView.as_view(), name='livre-detail'),
     path('auteurs/', views.AuteursView.as_view(), name='auteurs'),
