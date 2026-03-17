@@ -941,6 +941,7 @@ def conversion_status(request):
             "ok": True,
             "progress": demande.async_progress,
             "status": demande.async_status,
+            "error": demande.async_error or "",
             "has_audio": bool(demande.audio),
             "audio_url": demande.audio.url if demande.audio else "",
         }

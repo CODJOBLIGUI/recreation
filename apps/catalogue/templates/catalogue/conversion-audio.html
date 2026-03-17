@@ -48,6 +48,9 @@
                     <h2 class="cta-box__title">Conversion en cours</h2>
                     <p class="cta-box__text">Votre audio est en préparation. Cette page se mettra à jour automatiquement.</p>
                     <p class="cta-box__text" id="conversion-live-progress">Progression : {{ last_request.async_progress|default:0 }}%</p>
+                    {% if last_request.async_error %}
+                    <p class="form-feedback form-feedback--error" id="conversion-error">{{ last_request.async_error }}</p>
+                    {% endif %}
                 </div>
             {% elif last_request and last_request.paiement_requis %}
                 <div class="cta-box conversion-audio__result conversion-audio__result--pay">
@@ -249,6 +252,7 @@
         {% if last_request and not last_request.audio and not last_request.paiement_requis %}
         const statusUrl = "{% url 'catalogue:conversion-status' %}";
         const liveProgress = document.getElementById("conversion-live-progress");
+        const errorBox = document.getElementById("conversion-error");
         if (progress && progressFill && progressText) {
             progress.style.display = "block";
         }
@@ -264,6 +268,13 @@
                     }
                     if (liveProgress) {
                         liveProgress.textContent = "Progression : " + value + "%";
+                    }
+                    if (data.error) {
+                        if (errorBox) {
+                            errorBox.textContent = data.error;
+                            errorBox.style.display = "block";
+                        }
+                        return;
                     }
                     if (data.has_audio) {
                         window.location.reload();
