@@ -119,8 +119,8 @@
         {% if is_paginated %}
         <div class="pagination">
             {% if page_obj.has_previous %}
-            <a href="page=1" class="pagination__btn">&laquo; Première</a>
-            <a href="page={{ page_obj.previous_page_number }}" class="pagination__btn">Précédent</a>
+            <a href="?page=1" class="pagination__btn">&laquo; Première</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination__btn">Précédent</a>
             {% endif %}
             
             <span class="pagination__info">
@@ -128,8 +128,8 @@
             </span>
             
             {% if page_obj.has_next %}
-            <a href="page={{ page_obj.next_page_number }}" class="pagination__btn">Suivant</a>
-            <a href="page={{ page_obj.paginator.num_pages }}" class="pagination__btn">Dernière &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination__btn">Suivant</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination__btn">Dernière &raquo;</a>
             {% endif %}
         </div>
         {% endif %}
@@ -156,4 +156,5 @@
 
 
 
+
 

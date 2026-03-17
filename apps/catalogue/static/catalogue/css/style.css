@@ -1271,6 +1271,12 @@ body.nav-drawer-open {
     color: var(--color-text-light);
 }
 
+.filter-date-label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
 /* ========================================
    PAGE MENTIONS LEGALES
    ======================================== */
