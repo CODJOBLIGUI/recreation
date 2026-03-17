@@ -27,6 +27,7 @@ from .utils.audio_conversion import (
     estimate_pages_from_text,
     count_pages_for_file,
     extract_text_from_file,
+    generate_tts_mp3,
 )
 from .models import (
     Actualite,
@@ -914,11 +915,9 @@ class AudioConversionView(LoginRequiredMixin, FormView):
                 import uuid
                 obj = AudioConversionRequest.objects.get(pk=demande_id)
                 slow = True if voix == "slow" else False
-                tts = gTTS(text, lang=langue, slow=slow)
-                audio_bytes = ContentFile(b"")
+                audio_stream = generate_tts_mp3(text, lang=langue, slow=slow, chunk_size=1000)
+                audio_bytes = ContentFile(audio_stream.getvalue())
                 filename = f"conversion-{uuid.uuid4().hex}.mp3"
-                tts.write_to_fp(audio_bytes)
-                audio_bytes.seek(0)
                 obj.audio.save(filename, audio_bytes, save=True)
 
             if demande.paiement_requis:

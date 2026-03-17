@@ -4,7 +4,7 @@ from django.utils.text import slugify
 from django_rq import job
 
 from .models import AudioConversionRequest
-from .utils.audio_conversion import extract_text_from_file
+from .utils.audio_conversion import extract_text_from_file, generate_tts_mp3
 
 
 def _set_progress(obj, status, progress, error=""):
@@ -36,15 +36,12 @@ def convert_audio_request(request_id):
             return
 
         _set_progress(obj, "started", 60)
-        from gtts import gTTS
         import uuid
 
         slow = True if obj.voix == "slow" else False
-        tts = gTTS(text, lang=obj.langue, slow=slow)
-        audio_bytes = ContentFile(b"")
+        audio_stream = generate_tts_mp3(text, lang=obj.langue, slow=slow, chunk_size=1000)
+        audio_bytes = ContentFile(audio_stream.getvalue())
         filename = f"conversion-{slugify(obj.email) or obj.id}-{uuid.uuid4().hex}.mp3"
-        tts.write_to_fp(audio_bytes)
-        audio_bytes.seek(0)
         obj.audio.save(filename, audio_bytes, save=False)
         obj.statut = "delivered"
         obj.async_finished_at = timezone.now()

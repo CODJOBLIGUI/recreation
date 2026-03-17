@@ -11,7 +11,7 @@ from ckeditor.fields import RichTextField
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from unfold.admin import ModelAdmin
 
-from .utils.audio_conversion import extract_text_from_file
+from .utils.audio_conversion import extract_text_from_file, generate_tts_mp3
 from .models import (
     Actualite,
     Auteur,
@@ -612,7 +612,6 @@ class AudioConversionRequestAdmin(ModelAdmin):
     paiement_initie.short_description = "Paiement initié"
 
     def _generate_audio_for_obj(self, obj):
-        from gtts import gTTS
         from django.core.files.base import ContentFile
         from django.utils.text import slugify
         import uuid
@@ -622,11 +621,9 @@ class AudioConversionRequestAdmin(ModelAdmin):
             text = extract_text_from_file(obj.fichier)
         if not text.strip():
             raise RuntimeError("Texte vide après extraction.")
-        tts = gTTS(text, lang="fr", slow=False)
-        audio_bytes = ContentFile(b"")
+        audio_stream = generate_tts_mp3(text, lang="fr", slow=False, chunk_size=1000)
+        audio_bytes = ContentFile(audio_stream.getvalue())
         filename = f"conversion-{slugify(obj.email) or obj.id}-{uuid.uuid4().hex}.mp3"
-        tts.write_to_fp(audio_bytes)
-        audio_bytes.seek(0)
         obj.audio.save(filename, audio_bytes, save=False)
         obj.statut = "delivered"
         obj.save(update_fields=["audio", "statut", "updated_at"])

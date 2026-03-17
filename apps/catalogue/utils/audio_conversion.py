@@ -194,3 +194,40 @@ def extract_text_from_file(file_field):
         return "\n".join(texts)
 
     raise RuntimeError("Type de fichier non pris en charge.")
+
+
+def _chunk_text(text, chunk_size=1000):
+    text = (text or "").strip()
+    if not text:
+        return []
+    chunks = []
+    start = 0
+    length = len(text)
+    while start < length:
+        end = min(start + chunk_size, length)
+        if end < length:
+            split_at = text.rfind(" ", start, end)
+            if split_at <= start:
+                split_at = end
+        else:
+            split_at = end
+        chunk = text[start:split_at].strip()
+        if chunk:
+            chunks.append(chunk)
+        start = split_at
+    return chunks
+
+
+def generate_tts_mp3(text, lang="fr", slow=False, chunk_size=1000):
+    from gtts import gTTS
+    chunks = _chunk_text(text, chunk_size=chunk_size)
+    if not chunks:
+        raise RuntimeError("Texte vide après extraction.")
+    output = io.BytesIO()
+    for part in chunks:
+        tts = gTTS(part, lang=lang, slow=slow)
+        tmp = io.BytesIO()
+        tts.write_to_fp(tmp)
+        output.write(tmp.getvalue())
+    output.seek(0)
+    return output
