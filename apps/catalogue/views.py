@@ -764,23 +764,39 @@ class ActualitesView(ListView):
 
     def get_queryset(self):
         qs = Actualite.objects.filter(est_publie=True).order_by("-est_une_a_la_une", "-date_publication")
-        filtre = self.request.GET.get("filtre", "tous")
         annee = self.request.GET.get("annee", "")
-        if filtre == "a-la-une":
-            qs = qs.filter(est_une_a_la_une=True)
+        mois = self.request.GET.get("mois", "")
         if annee:
             qs = qs.filter(date_publication__year=annee)
+        if mois:
+            qs = qs.filter(date_publication__month=mois)
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_title"] = "Actualit\u00e9s - Editions Recr\u00e9ation"
-        context["filtre_actuel"] = self.request.GET.get("filtre", "tous")
+        context["page_title"] = "Actualités - Editions Recréation"
         context["annee_actuelle"] = self.request.GET.get("annee", "")
-        context["annees_actualites"] = (
-            Actualite.objects.filter(est_publie=True)
-            .dates("date_publication", "year", order="DESC")
-        )
+        context["mois_actuel"] = self.request.GET.get("mois", "")
+        context["annees_actualites"] = [
+            d.year
+            for d in Actualite.objects.filter(est_publie=True).dates(
+                "date_publication", "year", order="DESC"
+            )
+        ]
+        context["mois_actualites"] = [
+            {"value": 1, "label": "Janvier"},
+            {"value": 2, "label": "Février"},
+            {"value": 3, "label": "Mars"},
+            {"value": 4, "label": "Avril"},
+            {"value": 5, "label": "Mai"},
+            {"value": 6, "label": "Juin"},
+            {"value": 7, "label": "Juillet"},
+            {"value": 8, "label": "Août"},
+            {"value": 9, "label": "Septembre"},
+            {"value": 10, "label": "Octobre"},
+            {"value": 11, "label": "Novembre"},
+            {"value": 12, "label": "Décembre"}
+        ]
         return context
 
 
@@ -1233,3 +1249,5 @@ def livre_detail_json(request, livre_id):
         },
     }
     return JsonResponse(data)
+
+
