@@ -1129,3 +1129,11 @@ font-size: 2rem;
   }
 }
 
+
+@media (max-width: 768px) {
+  /* Mobile footer: remove divider line under brand */
+  .footer-fayard__brand {
+    border-bottom: none !important;
+  }
+}
+
