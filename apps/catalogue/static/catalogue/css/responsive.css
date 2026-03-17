@@ -1112,3 +1112,20 @@ font-size: 2rem;
   }
 }
 
+
+@media (max-width: 768px) {
+  /* FINAL: force-hide footer menu + bottom links on mobile */
+  .footer-fayard__menu,
+  .footer-fayard__menu-columns,
+  .footer-fayard__menu-col,
+  .footer-fayard__bottom,
+  .footer-fayard__links,
+  .footer-fayard__contact-link {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+}
+
