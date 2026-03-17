@@ -1263,6 +1263,14 @@ body.nav-drawer-open {
     border: 1px solid var(--color-border);
 }
 
+.filter-date-hint {
+    display: block;
+    margin: 0.2rem 0 0.35rem;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+}
+
 /* ========================================
    PAGE MENTIONS LEGALES
    ======================================== */
