@@ -4,9 +4,9 @@ FICHIER : apps/catalogue/views.py
 
 from django.contrib import messages
 from django.db.models import Q
+from django.db import close_old_connections
 from django.http import JsonResponse
 from django.core.files.base import ContentFile
-from django.utils.text import slugify
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -18,6 +18,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail
 from django.contrib.auth.views import LoginView as DjangoLoginView, PasswordResetView as DjangoPasswordResetView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import date
 import unicodedata
 
@@ -25,8 +26,7 @@ from .forms import ContactForm, NewsletterForm, SoumissionManuscritForm, AudioCo
 from .utils.audio_conversion import (
     estimate_pages_from_text,
     count_pages_for_file,
-    MAX_PAGES_FOR_CONVERSION,
-    run_audio_conversion_job,
+    extract_text_from_file,
 )
 from .models import (
     Actualite,
@@ -808,7 +808,7 @@ class ActualiteDetailView(DetailView):
 FREE_TEXT_LIMIT = 5000
 
 
-class AudioConversionView(FormView):
+class AudioConversionView(LoginRequiredMixin, FormView):
     template_name = "catalogue/conversion-audio.html"
     form_class = AudioConversionForm
     success_url = reverse_lazy("catalogue:conversion-audio")
@@ -840,12 +840,6 @@ class AudioConversionView(FormView):
                     5: appearance.audio_payment_url_5,
                 }.get(tier) or appearance.audio_payment_url
                 context["payment_available"] = bool(context["payment_url"])
-        elif self.request.user.is_authenticated:
-            context["last_request"] = (
-                AudioConversionRequest.objects.filter(user=self.request.user, audio__isnull=False)
-                .order_by("-created_at")
-                .first()
-            )
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -853,6 +847,8 @@ class AudioConversionView(FormView):
             messages.info(request, "Veuillez vous connecter avec un compte client pour utiliser ce service.")
             logout(request)
             return redirect("catalogue:login")
+        if not request.user.is_authenticated:
+            messages.info(request, "Inscrivez-vous ou connectez-vous pour utiliser ce service.")
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -884,23 +880,75 @@ class AudioConversionView(FormView):
             demande.payment_tier = 5
         demande.save()
 
-        if not demande.paiement_requis and texte:
-            demande.statut = "processing"
-            demande.async_status = "queued"
-            demande.async_progress = 0
-            demande.async_error = ""
-            demande.save(update_fields=["statut", "async_status", "async_progress", "async_error", "updated_at"])
-            run_audio_conversion_job(demande.id)
-            messages.success(
-                self.request,
-                "Votre conversion a été lancée. L'audio apparaîtra automatiquement dès qu'il sera prêt.",
-            )
-            self.request.session["audio_request_id"] = demande.id
-            return redirect(self.success_url)
-        else:
+        # Extraire le texte depuis le fichier si nécessaire
+        audio_text = texte
+        if fichier:
+            try:
+                audio_text = extract_text_from_file(fichier).strip()
+                if audio_text:
+                    demande.texte = audio_text
+            except Exception as exc:
+                demande.statut = "error"
+                demande.async_error = str(exc)
+                demande.save(update_fields=["statut", "async_error", "updated_at"])
+                messages.error(self.request, "Extraction du texte impossible. Merci de réessayer ou d’utiliser un autre fichier.")
+                self.request.session["audio_request_id"] = demande.id
+                return redirect(self.success_url)
+
+        if audio_text:
+            try:
+                from gtts import gTTS
+            except Exception:
+                messages.error(self.request, "Conversion indisponible pour le moment. Veuillez réessayer plus tard.")
+                self.request.session["audio_request_id"] = demande.id
+                return redirect(self.success_url)
+
+            def _generate_audio(demande_id, text, langue, voix):
+                close_old_connections()
+                try:
+                    import uuid
+                    obj = AudioConversionRequest.objects.get(pk=demande_id)
+                    slow = True if voix == "slow" else False
+                    tts = gTTS(text, lang=langue, slow=slow)
+                    audio_bytes = ContentFile(b"")
+                    filename = f"conversion-{uuid.uuid4().hex}.mp3"
+                    tts.write_to_fp(audio_bytes)
+                    audio_bytes.seek(0)
+                    obj.audio.save(filename, audio_bytes, save=False)
+                    obj.save(update_fields=["audio", "updated_at"])
+                except Exception:
+                    obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
+                    if obj:
+                        obj.statut = "error"
+                        obj.save(update_fields=["statut", "updated_at"])
+
+            if demande.paiement_requis:
+                import threading
+                threading.Thread(
+                    target=_generate_audio,
+                    args=(demande.id, audio_text, demande.langue, demande.voix),
+                    daemon=True,
+                ).start()
+            else:
+                try:
+                    _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
+                    demande.statut = "free_generated"
+                    demande.save(update_fields=["statut", "updated_at"])
+                except Exception:
+                    demande.statut = "error"
+                    demande.save(update_fields=["statut", "updated_at"])
+                    messages.error(self.request, "La conversion a échoué. Vérifiez votre connexion et réessayez.")
+                    self.request.session["audio_request_id"] = demande.id
+                    return redirect(self.success_url)
+
+        self.request.session["audio_request_id"] = demande.id
+
+        if demande.paiement_requis:
             messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
-            self.request.session["audio_request_id"] = demande.id
-            return redirect(self.success_url)
+            return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
+
+        messages.success(self.request, "Votre audio est prêt. Vous pouvez le télécharger.")
+        return redirect(self.success_url)
 
 
 def conversion_payment_redirect(request, demande_id):
@@ -943,27 +991,6 @@ def conversion_payment_redirect(request, demande_id):
         return redirect(payment_url)
     messages.error(request, "Le lien de paiement n’est pas encore disponible.")
     return redirect("catalogue:conversion-audio")
-
-
-def conversion_status(request):
-    request_id = request.session.get("audio_request_id")
-    if not request_id:
-        return JsonResponse({"ok": False})
-    demande = AudioConversionRequest.objects.filter(id=request_id).first()
-    if not demande:
-        return JsonResponse({"ok": False})
-    if demande.user and request.user.is_authenticated and demande.user_id != request.user.id:
-        return JsonResponse({"ok": False})
-    return JsonResponse(
-        {
-            "ok": True,
-            "progress": demande.async_progress,
-            "status": demande.async_status,
-            "error": demande.async_error or "",
-            "has_audio": bool(demande.audio),
-            "audio_url": demande.audio.url if demande.audio else "",
-        }
-    )
 
 
 class SignupView(FormView):

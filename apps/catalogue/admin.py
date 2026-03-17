@@ -6,18 +6,12 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django import forms
-from django.utils.dateparse import parse_date
 from django.utils.html import format_html
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from unfold.admin import ModelAdmin
 
-from .utils.audio_conversion import (
-    extract_text_from_file,
-    run_audio_conversion_job,
-    count_pages_for_file,
-    MAX_PAGES_FOR_CONVERSION,
-)
+from .utils.audio_conversion import extract_text_from_file
 from .models import (
     Actualite,
     Auteur,
@@ -601,7 +595,7 @@ class AudioConversionRequestAdmin(ModelAdmin):
     search_fields = ("email", "whatsapp", "texte")
     readonly_fields = ("created_at", "updated_at", "audio", "fichier", "paiement_initie_at", "pages_count", "payment_tier")
     date_hierarchy = "created_at"
-    actions = ["convertir_fichier_en_audio", "marquer_paye_et_envoyer"]
+    actions = ["convertir_fichier_en_audio"]
     change_list_template = "admin/catalogue/audioconversionrequest/change_list.html"
     list_select_related = ("user",)
     fieldsets = (
@@ -616,18 +610,6 @@ class AudioConversionRequestAdmin(ModelAdmin):
 
     paiement_initie.boolean = True
     paiement_initie.short_description = "Paiement initié"
-
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        start_raw = request.GET.get("created_from", "")
-        end_raw = request.GET.get("created_to", "")
-        start_date = parse_date(start_raw) if start_raw else None
-        end_date = parse_date(end_raw) if end_raw else None
-        if start_date:
-            queryset = queryset.filter(created_at__date__gte=start_date)
-        if end_date:
-            queryset = queryset.filter(created_at__date__lte=end_date)
-        return queryset
 
     def _generate_audio_for_obj(self, obj):
         from gtts import gTTS
@@ -649,39 +631,36 @@ class AudioConversionRequestAdmin(ModelAdmin):
         obj.statut = "delivered"
         obj.save(update_fields=["audio", "statut", "updated_at"])
 
-    def _start_async_conversion(self, obj):
-        obj.statut = "processing"
-        obj.async_status = "queued"
-        obj.async_progress = 0
-        obj.async_error = ""
-        obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "updated_at"])
-        run_audio_conversion_job(obj.id)
-
     def convertir_fichier_en_audio(self, request, queryset):
-        queued = 0
-        skipped = 0
+        import requests
+
+        success = 0
+        failures = 0
+        try:
+            requests.get("https://translate.google.com", timeout=5)
+        except Exception:
+            self.message_user(request, "Connexion Internet indisponible. Impossible de générer l'audio.", level="error")
+            return
         for obj in queryset:
             if not obj.fichier and not obj.texte:
                 self.message_user(request, f"Aucun texte/fichier pour la demande #{obj.id}.", level="warning")
-                skipped += 1
                 continue
-            if obj.fichier:
-                pages = count_pages_for_file(obj.fichier)
-                if pages and pages > MAX_PAGES_FOR_CONVERSION:
-                    self.message_user(
-                        request,
-                        (
-                            f"Demande #{obj.id} : fichier très volumineux ({pages} pages). "
-                            f"Au-delà de {MAX_PAGES_FOR_CONVERSION} pages, la conversion peut être très longue."
-                        ),
-                        level="error",
-                    )
-            self._start_async_conversion(obj)
-            queued += 1
-        if queued:
-            self.message_user(request, f"{queued} conversion(s) lancée(s) en arrière-plan.", level="success")
-        if not queued and skipped:
-            self.message_user(request, "Aucune conversion n'a été lancée.", level="warning")
+            try:
+                obj.statut = "processing"
+                obj.async_error = ""
+                obj.save(update_fields=["statut", "async_error", "updated_at"])
+                self._generate_audio_for_obj(obj)
+                success += 1
+            except Exception as exc:
+                failures += 1
+                obj.statut = "error"
+                obj.async_error = str(exc)
+                obj.save(update_fields=["statut", "async_error", "updated_at"])
+                self.message_user(request, f"Erreur pour la demande #{obj.id}: {exc}", level="error")
+        if success:
+            self.message_user(request, f"{success} fichier(s) converti(s) avec succès.", level="success")
+        if failures and not success:
+            self.message_user(request, "Aucune conversion n'a abouti. Vérifiez les erreurs ci-dessus.", level="error")
 
     convertir_fichier_en_audio.short_description = "Convertir le fichier en MP3"
 
@@ -698,84 +677,6 @@ class AudioConversionRequestAdmin(ModelAdmin):
         return "-"
 
     audio_link.short_description = "Audio"
-
-    def marquer_paye_et_envoyer(self, request, queryset):
-        from django.core.mail import EmailMessage
-        import requests
-
-        appearance = SiteAppearance.objects.first()
-        from_email = appearance.site_email if appearance and appearance.site_email else None
-
-        success = 0
-        failures = 0
-        try:
-            requests.get("https://translate.google.com", timeout=5)
-        except Exception:
-            self.message_user(request, "Connexion Internet indisponible. Impossible de générer l'audio.", level="error")
-            return
-
-        for obj in queryset:
-            if not obj.email:
-                self.message_user(request, f"Aucun email pour la demande #{obj.id}.", level="warning")
-                continue
-            try:
-                obj.statut = "paid"
-                obj.save(update_fields=["statut", "updated_at"])
-                if not obj.audio:
-                    self._generate_audio_for_obj(obj)
-                email = EmailMessage(
-                    "Votre audio est prêt",
-                    "Bonjour,\n\nVotre conversion audio est prête. Vous trouverez le fichier MP3 en pièce jointe.\n\nEditions Recréation",
-                    from_email,
-                    [obj.email],
-                )
-                if obj.audio and obj.audio.path:
-                    email.attach_file(obj.audio.path)
-                email.send(fail_silently=True)
-                success += 1
-            except Exception as exc:
-                failures += 1
-                obj.statut = "error"
-                obj.async_error = str(exc)
-                obj.save(update_fields=["statut", "async_error", "updated_at"])
-                self.message_user(request, f"Erreur pour la demande #{obj.id}: {exc}", level="error")
-
-        if success:
-            self.message_user(request, f"{success} demande(s) traitée(s) et envoyée(s).", level="success")
-        if failures and not success:
-            self.message_user(request, "Aucun envoi n'a abouti. Vérifiez les erreurs ci-dessus.", level="error")
-
-    marquer_paye_et_envoyer.short_description = "Marquer payé + générer + envoyer par email"
-
-    def changelist_view(self, request, extra_context=None):
-        from django.utils import timezone
-        from django.db.models import Count, Q
-        from django.db.models.functions import TruncDate
-
-        extra_context = extra_context or {}
-        qs = self.get_queryset(request)
-        now = timezone.now()
-        last_30 = now - timezone.timedelta(days=30)
-
-        extra_context["stats"] = {
-            "total": qs.count(),
-            "gratuits": qs.filter(paiement_requis=False).count(),
-            "payants": qs.filter(paiement_requis=True).count(),
-            "paiement_initie": qs.filter(paiement_initie_at__isnull=False).count(),
-            "audios": qs.filter(audio__isnull=False).count(),
-        }
-
-        daily = (
-            qs.filter(created_at__date__gte=last_30.date())
-            .annotate(day=TruncDate("created_at"))
-            .values("day")
-            .annotate(total=Count("id"), payants=Count("id", filter=Q(paiement_requis=True)))
-            .order_by("day")
-        )
-        extra_context["daily"] = list(daily)
-        extra_context["daily_from"] = last_30.date()
-        extra_context["daily_to"] = now.date()
-        return super().changelist_view(request, extra_context=extra_context)
 
 
 @admin.register(MessageContact)

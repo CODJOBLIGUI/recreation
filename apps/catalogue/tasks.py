@@ -1,4 +1,4 @@
-from django.utils import timezone
+﻿from django.utils import timezone
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
 from django_rq import job
@@ -32,7 +32,7 @@ def convert_audio_request(request_id):
             text = extract_text_from_file(obj.fichier)
 
         if not text.strip():
-            _set_progress(obj, "failed", 100, "Texte vide après extraction.")
+            _set_progress(obj, "failed", 100, "Texte vide aprÃ¨s extraction.")
             return
 
         _set_progress(obj, "started", 60)
