@@ -1102,3 +1102,13 @@ font-size: 2rem;
   }
 }
 
+
+@media (max-width: 768px) {
+  /* Mobile footer: hide menu + contact section */
+  .footer-fayard__menu,
+  .footer-fayard__bottom,
+  .footer-fayard__contact-link {
+    display: none !important;
+  }
+}
+
