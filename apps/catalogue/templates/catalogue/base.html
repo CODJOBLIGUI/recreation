@@ -382,12 +382,12 @@
             <div class="footer-fayard__left">
                 <!-- Logo et adresse -->
                 <div class="footer-fayard__brand">
-                    <h2 class="footer-fayard__logo">{{ appearance.site_name|default:"Editions Recr?ation" }}</h2>
+                    <h2 class="footer-fayard__logo">{{ appearance.site_name|default:"Editions Recréation" }}</h2>
                     <p class="footer-fayard__slogan">
-                        <em>Avec le verbe, recr?ons le monde et conservons en une copie dans un livre !</em>
+                        <em>Avec le verbe, recréons le monde et conservons en une copie dans un livre !</em>
                     </p>
                     <p class="footer-fayard__address">
-                        <span class="footer-fayard__address-main">B?nin | Abomey-Calavi, France | Marseille, avec des Repr?sentants ?ditoriaux dans 7 autres pays en Afrique.</span>
+                        <span class="footer-fayard__address-main">Bénin | Abomey-Calavi, France | Marseille, avec des Représentants éditoriaux dans 7 autres pays en Afrique.</span>
                     </p>
                 </div>
 
@@ -395,7 +395,7 @@
                 <div class="footer-fayard__actions">
                     <a href="tel:+22901688097777" class="footer-fayard__action">
                         <i class="fas fa-phone"></i>
-                        <span>T?l?phone</span>
+                        <span>Téléphone</span>
                     </a>
                     <a href="{% url 'catalogue:soumission-manuscrit' %}" class="footer-fayard__action">
                         <i class="fas fa-file-alt"></i>
@@ -407,9 +407,9 @@
                     </a>
                 </div>
 
-                <!-- R?seaux sociaux -->
+                <!-- Réseaux sociaux -->
                 <div class="footer-fayard__social">
-                    <h3 class="footer-fayard__social-title">Nous suivre les r?seaux sociaux</h3>
+                    <h3 class="footer-fayard__social-title">Nous suivre les Réseaux sociaux</h3>
                     <div class="footer-fayard__social-icons">
                         {% for social in social_links %}
                         <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">
@@ -426,7 +426,7 @@
                         <h3 class="footer-fayard__menu-title">Catalogue</h3>
                         <ul class="footer-fayard__menu-list">
                             <li><a href="{% url 'catalogue:catalogue' %}">Catalogue</a></li>
-                            <li><a href="{% url 'catalogue:livres-numeriques' %}">Livres num?riques</a></li>
+                            <li><a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a></li>
                             <li><a href="{% url 'catalogue:livres-audio' %}">Livres audio</a></li>
                             <li><a href="{% url 'catalogue:livres-papier' %}">Livres papier</a></li>
                         </ul>
@@ -440,7 +440,7 @@
                             <li>{{ collection.nom }}</li>
                             {% endif %}
                             {% empty %}
-                            <li class="footer-fayard__menu-empty">Collections ? venir</li>
+                            <li class="footer-fayard__menu-empty">Collections à venir</li>
                             {% endfor %}
                         </ul>
 
@@ -456,7 +456,7 @@
                                 <span class="footer-fayard__btn-icon" aria-hidden="true">
                                     <i class="fa-solid fa-cart-shopping"></i>
                                 </span>
-                                Recr?ation Shop
+                                Recréation Shop
                             </a>
                         </div>
                     </div>
@@ -464,11 +464,11 @@
                     <div class="footer-fayard__menu-col">
                         <h3 class="footer-fayard__menu-title">Ressources</h3>
                         <ul class="footer-fayard__menu-list">
-                            <li><a href="{% url 'catalogue:actualites' %}">Actualit?s</a></li>
+                            <li><a href="{% url 'catalogue:actualites' %}">Actualités</a></li>
                             <li><a href="{% url 'catalogue:auteurs' %}">Auteurs</a></li>
                             <li><a href="{% url 'catalogue:a-propos' %}">A propos</a></li>
-                            <li><a href="{% url 'catalogue:index' %}#nouveautes">Nouveaut?s</a></li>
-                            <li><a href="{% url 'catalogue:index' %}#a-paraitre">A para?tre</a></li>
+                            <li><a href="{% url 'catalogue:index' %}#nouveautes">Nouveautés</a></li>
+                            <li><a href="{% url 'catalogue:index' %}#a-paraitre">A paraétre</a></li>
                             <li><a href="{% url 'catalogue:index' %}#meilleures-ventes">Meilleures ventes</a></li>
                             <li><a href="{% url 'catalogue:nos-contrats' %}">Nos contrats</a></li>
                             <li><a href="{% url 'catalogue:a-propos' %}#equipe">Equipe</a></li>
@@ -482,12 +482,12 @@
         <!-- Copyright -->
         <div class="footer-fayard__bottom">
             <div class="footer-fayard__links">
-                <a href="{% url 'catalogue:mentions-legales' %}">Mentions l?gales</a>
-                <a href="{% url 'catalogue:confidentialite' %}">Confidentialit?</a>
+                <a href="{% url 'catalogue:mentions-legales' %}">Mentions légales</a>
+                <a href="{% url 'catalogue:confidentialite' %}">Confidentialité</a>
                 <a href="{% url 'catalogue:cookies' %}">Cookies</a>
             </div>
             <a href="{% url 'catalogue:contact' %}" class="footer-fayard__contact-link">Nous contacter</a>
-            <p>&copy; Editions Recr?ation - Tous droits r?serv?s - 2026</p>
+            <p>&copy; Editions Recréation - Tous droits réservés - 2026</p>
         </div>
     </div>
 </footer>
@@ -614,6 +614,8 @@
 </body>
 
 </html>
+
+
 
 
 
