@@ -6,6 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
     <title>{{ page_title|default:'Editions Recréation' }}</title>
+    {% with site_url=request.scheme|add:"://"|add:request.get_host %}
+    {% if appearance and appearance.logo %}
+        {% with social_image=appearance.logo.url %}
+        <meta property="og:title" content="{{ page_title|default:'Editions Recréation' }}">
+        <meta property="og:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
+        <meta property="og:image" content="{{ site_url }}{{ social_image }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ page_title|default:'Editions Recréation' }}">
+        <meta name="twitter:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta name="twitter:image" content="{{ site_url }}{{ social_image }}">
+        {% endwith %}
+    {% else %}
+        {% with social_image=static('catalogue/images/logo.jpg') %}
+        <meta property="og:title" content="{{ page_title|default:'Editions Recréation' }}">
+        <meta property="og:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
+        <meta property="og:image" content="{{ site_url }}{{ social_image }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ page_title|default:'Editions Recréation' }}">
+        <meta name="twitter:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta name="twitter:image" content="{{ site_url }}{{ social_image }}">
+        {% endwith %}
+    {% endif %}
+    {% endwith %}
     {% if appearance and appearance.favicon %}
     <link rel="icon" type="image/png" href="{{ appearance.favicon.url }}">
     {% else %}
