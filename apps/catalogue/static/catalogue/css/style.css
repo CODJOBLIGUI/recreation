@@ -5938,7 +5938,7 @@ html {
 
     height: auto;
 
-    border-radius: 0;
+    border-radius: var(--radius-media);
 
     margin: 0;
 
