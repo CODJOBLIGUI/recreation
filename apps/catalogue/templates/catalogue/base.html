@@ -308,6 +308,8 @@
 
                     <a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a>
 
+                    <a href="{% url 'catalogue:livres-papier' %}">Livres papier</a>
+
                     <a href="{% url 'catalogue:livres-audio' %}">{{ "Livres audio"|strip_upper_accents }}</a>
 
                 </div>
@@ -406,7 +408,7 @@
                 </div>
 
                 <div class="footer-fayard__social">
-                    <h3 class="footer-fayard__social-title">Nous suivre les réseaux sur sociaux</h3>
+                    <h3 class="footer-fayard__social-title">Nous suivre sur les réseaux sociaux</h3>
                     <div class="footer-fayard__social-icons">
                         {% for social in social_links %}
                         <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">
@@ -551,6 +553,7 @@
 </body>
 
 </html>
+
 
 
 

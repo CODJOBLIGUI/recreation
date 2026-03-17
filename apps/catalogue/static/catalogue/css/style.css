@@ -7541,3 +7541,11 @@ html {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+.footer-fayard__social {
+    text-align: center;
+}
+
+.footer-fayard__social-title {
+    text-align: center;
+}
