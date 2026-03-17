@@ -911,30 +911,29 @@ class AudioConversionView(LoginRequiredMixin, FormView):
 
             def _generate_audio(demande_id, text, langue, voix):
                 close_old_connections()
-                try:
-                    import uuid
-                    obj = AudioConversionRequest.objects.get(pk=demande_id)
-                    slow = True if voix == "slow" else False
-                    tts = gTTS(text, lang=langue, slow=slow)
-                    audio_bytes = ContentFile(b"")
-                    filename = f"conversion-{uuid.uuid4().hex}.mp3"
-                    tts.write_to_fp(audio_bytes)
-                    audio_bytes.seek(0)
-                    obj.audio.save(filename, audio_bytes, save=True)
-                except Exception as exc:
-                    obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
-                    if obj:
-                        obj.statut = "error"
-                        obj.async_error = str(exc)
-                        obj.save(update_fields=["statut", "async_error", "updated_at"])
+                import uuid
+                obj = AudioConversionRequest.objects.get(pk=demande_id)
+                slow = True if voix == "slow" else False
+                tts = gTTS(text, lang=langue, slow=slow)
+                audio_bytes = ContentFile(b"")
+                filename = f"conversion-{uuid.uuid4().hex}.mp3"
+                tts.write_to_fp(audio_bytes)
+                audio_bytes.seek(0)
+                obj.audio.save(filename, audio_bytes, save=True)
 
             if demande.paiement_requis:
                 import threading
-                threading.Thread(
-                    target=_generate_audio,
-                    args=(demande.id, audio_text, demande.langue, demande.voix),
-                    daemon=True,
-                ).start()
+                def _run_thread():
+                    try:
+                        _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
+                    except Exception as exc:
+                        obj = AudioConversionRequest.objects.filter(pk=demande.id).first()
+                        if obj:
+                            obj.statut = "error"
+                            obj.async_error = str(exc)
+                            obj.save(update_fields=["statut", "async_error", "updated_at"])
+
+                threading.Thread(target=_run_thread, daemon=True).start()
             else:
                 try:
                     _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
