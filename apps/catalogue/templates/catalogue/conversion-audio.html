@@ -99,7 +99,6 @@
                 <div class="conversion-audio__progress-bar">
                     <span class="conversion-audio__progress-fill" id="conversion-progress-fill" style="width:0%;"></span>
                 </div>
-                <div class="conversion-audio__progress-text" id="conversion-progress-text">0%</div>
             </div>
             <form method="POST" enctype="multipart/form-data" class="contact__form">
                 {% csrf_token %}
@@ -178,7 +177,6 @@
         const form = document.querySelector(".conversion-audio__form form");
         const progress = document.getElementById("conversion-progress");
         const progressFill = document.getElementById("conversion-progress-fill");
-        const progressText = document.getElementById("conversion-progress-text");
         const submitBtn = document.getElementById("conversion-submit");
 
         function togglePayment() {
@@ -202,7 +200,7 @@
         if (fichier) fichier.addEventListener("change", togglePayment);
         togglePayment();
 
-        if (form && progress && progressFill && progressText) {
+        if (form && progress && progressFill) {
             form.addEventListener("submit", function() {
                 progress.style.display = "block";
                 if (submitBtn) {
@@ -213,7 +211,6 @@
                 const timer = setInterval(function() {
                     value = Math.min(maxValue, value + Math.floor(Math.random() * 8) + 2);
                     progressFill.style.width = value + "%";
-                    progressText.textContent = value + "%";
                     if (value >= maxValue) {
                         clearInterval(timer);
                     }
@@ -253,7 +250,7 @@
         const statusUrl = "{% url 'catalogue:conversion-status' %}";
         const liveProgress = document.getElementById("conversion-live-progress");
         const errorBox = document.getElementById("conversion-error");
-        if (progress && progressFill && progressText) {
+        if (progress && progressFill) {
             progress.style.display = "block";
         }
         const pollStatus = function() {
@@ -262,9 +259,8 @@
                 .then(data => {
                     if (!data || !data.ok) return;
                     const value = typeof data.progress === "number" ? data.progress : 0;
-                    if (progressFill && progressText) {
+                    if (progressFill) {
                         progressFill.style.width = value + "%";
-                        progressText.textContent = value + "%";
                     }
                     if (liveProgress) {
                         liveProgress.textContent = "Progression : " + value + "%";

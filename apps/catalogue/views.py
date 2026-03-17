@@ -853,8 +853,6 @@ class AudioConversionView(FormView):
             messages.info(request, "Veuillez vous connecter avec un compte client pour utiliser ce service.")
             logout(request)
             return redirect("catalogue:login")
-        if not request.user.is_authenticated:
-            messages.info(request, "Inscrivez-vous ou connectez-vous pour utiliser ce service.")
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
