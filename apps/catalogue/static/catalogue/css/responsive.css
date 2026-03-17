@@ -1103,30 +1103,9 @@ font-size: 2rem;
 }
 
 
-@media (max-width: 768px) {
-  /* Mobile footer: hide menu + contact section */
-  .footer-fayard__menu,
-  .footer-fayard__bottom,
-  .footer-fayard__contact-link {
-    display: none !important;
-  }
 }
 
 
-@media (max-width: 768px) {
-  /* FINAL: force-hide footer menu + bottom links on mobile */
-  .footer-fayard__menu,
-  .footer-fayard__menu-columns,
-  .footer-fayard__menu-col,
-  .footer-fayard__bottom,
-  .footer-fayard__links,
-  .footer-fayard__contact-link {
-    display: none !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-  }
 }
 
 
@@ -1134,6 +1113,48 @@ font-size: 2rem;
   /* Mobile footer: remove divider line under brand */
   .footer-fayard__brand {
     border-bottom: none !important;
+  }
+}
+
+
+@media (max-width: 768px) {
+  /* Mobile footer: centered like desktop + tighter spacing */
+  .footer-fayard {
+    text-align: center !important;
+  }
+  .footer-fayard__grid {
+    align-items: center !important;
+    gap: 0.8rem !important;
+  }
+  .footer-fayard__brand,
+  .footer-fayard__actions,
+  .footer-fayard__social {
+    text-align: center !important;
+  }
+  .footer-fayard__actions {
+    justify-content: center !important;
+    gap: 0.5rem !important;
+  }
+  .footer-fayard__social-icons {
+    justify-content: center !important;
+    gap: 0.45rem !important;
+  }
+  .footer-fayard__bottom {
+    display: block !important;
+    text-align: center !important;
+    margin-top: 0.6rem !important;
+  }
+  .footer-fayard__links {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+    align-items: center !important;
+    margin-bottom: 0.4rem !important;
+  }
+  .footer-fayard__links a,
+  .footer-fayard__bottom p {
+    font-size: 0.7rem !important;
+    line-height: 1.2 !important;
   }
 }
 
