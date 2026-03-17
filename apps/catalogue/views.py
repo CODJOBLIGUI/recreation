@@ -899,10 +899,7 @@ class AudioConversionView(FormView):
         demande.async_finished_at = None
         demande.save()
 
-        if not demande.paiement_requis and not fichier:
-            self._run_conversion(demande.id)
-        else:
-            self._start_conversion_async(demande.id)
+        self._start_conversion_async(demande.id)
 
         self.request.session["audio_request_id"] = demande.id
         if demande.paiement_requis:
@@ -1054,10 +1051,14 @@ def conversion_payment_redirect(request, demande_id):
 
 
 def conversion_status(request, demande_id):
-    if not request.user.is_authenticated:
-        return JsonResponse({"ok": False, "error": "auth_required"}, status=401)
     demande = get_object_or_404(AudioConversionRequest, id=demande_id)
-    if demande.user and demande.user != request.user and not request.user.is_staff:
+    if not request.user.is_authenticated:
+        session_id = request.session.get("audio_request_id")
+        if demande.user is None and session_id and str(session_id) == str(demande_id):
+            pass
+        else:
+            return JsonResponse({"ok": False, "error": "auth_required"}, status=401)
+    elif demande.user and demande.user != request.user and not request.user.is_staff:
         return JsonResponse({"ok": False, "error": "forbidden"}, status=403)
     return JsonResponse(
         {
