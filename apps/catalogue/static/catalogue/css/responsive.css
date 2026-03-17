@@ -1158,3 +1158,15 @@ font-size: 2rem;
   }
 }
 
+
+@media (max-width: 768px) {
+  /* Mobile footer: center brand + slogan + address + copyright */
+  .footer-fayard__logo,
+  .footer-fayard__slogan,
+  .footer-fayard__address,
+  .footer-fayard__address-main,
+  .footer-fayard__bottom p {
+    text-align: center !important;
+  }
+}
+
