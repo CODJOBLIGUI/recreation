@@ -233,6 +233,8 @@ class LivresNumeriquesView(CatalogueView):
     
     def get_queryset(self):
         queryset = super().get_queryset()
+        if isinstance(queryset, list):
+            return [livre for livre in queryset if livre.version_numerique]
         return queryset.filter(version_numerique=True)
     
     def get_context_data(self, **kwargs):
@@ -253,6 +255,8 @@ class LivresAudioView(CatalogueView):
     
     def get_queryset(self):
         queryset = super().get_queryset()
+        if isinstance(queryset, list):
+            return [livre for livre in queryset if livre.version_audio]
         return queryset.filter(version_audio=True)
     
     def get_context_data(self, **kwargs):
@@ -273,6 +277,8 @@ class LivresPapierView(CatalogueView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        if isinstance(queryset, list):
+            return [livre for livre in queryset if livre.version_papier]
         return queryset.filter(version_papier=True)
 
     def get_context_data(self, **kwargs):
