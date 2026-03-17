@@ -1,409 +1,315 @@
-﻿{% extends 'catalogue/base.html' %}
-{% load static %}
-
-{% block content %}
-
-<section class="page-hero page-hero--compact">
-    <div class="container">
-        <h1 class="page-hero__title">{{ page.hero_title|default:"Transformez vos textes en audio en quelques clics" }}</h1>
-        <p class="page-hero__subtitle conversion-audio__hero-note">
-            Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum.
-            Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l'audio
-            et vous l'envoyons par e-mail.
-        </p>
-        {% if page.hero_subtitle %}
-        <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
-        {% endif %}
-    </div>
-</section>
-
-{% if page_blocks %}
-    {% include "catalogue/partials/page_blocks.html" %}
-{% else %}
-{% endif %}
-
-<section class="section conversion-audio__form-section">
-    <div class="container container--narrow">
-        {% if messages %}
-            {% for message in messages %}
-            <div class="form-feedback form-feedback--{{ message.tags }}">
-                {{ message }}
-            </div>
-            {% endfor %}
-        {% endif %}
-
-        {% if last_request and not last_request.audio and last_request.async_status and last_request.async_status != "finished" and last_request.async_status != "failed" %}
-            <div class="cta-box conversion-audio__result">
-                <h2 class="cta-box__title">Conversion en cours</h2>
-                <p class="cta-box__text">Votre conversion est en cours. Cette page se met à jour automatiquement.</p>
-                <div class="conversion-audio__progress" data-status-url="{% url 'catalogue:conversion-audio-status' last_request.id %}">
-                    <div class="conversion-audio__progress-bar">
-                        <span class="conversion-audio__progress-fill" style="width: {{ last_request.async_progress|default:0 }}%;"></span>
-                    </div>
-                    <div class="conversion-audio__progress-text" id="conversion-progress-text">
-                        Progression : {{ last_request.async_progress|default:0 }}%
-                    </div>
-                    <div class="form-feedback form-feedback--error" id="conversion-error" style="display:none;"></div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if last_request and last_request.audio and not last_request.paiement_requis %}
-            <div class="cta-box conversion-audio__result">
-                <h2 class="cta-box__title">Votre audio est prêt</h2>
-                {% if last_request_chunks %}
-                    <div class="conversion-audio__chunk-list">
-                        {% for chunk in last_request_chunks %}
-                            {% if chunk.audio %}
-                                <a class="btn btn--primary btn--large" href="{{ chunk.audio.url }}" download>
-                                    Télécharger l'audio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <audio controls class="conversion-audio__player">
-                        <source src="{{ last_request.audio.url }}" type="audio/mpeg">
-                    </audio>
-                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l'audio (MP3)</a>
-                {% endif %}
-                {% if last_request.texte %}
-                <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
-                {% endif %}
-            </div>
-        {% elif last_request and last_request.audio and last_request.statut == "paid" %}
-            <div class="cta-box conversion-audio__result">
-                <h2 class="cta-box__title">Votre audio est prêt</h2>
-                {% if last_request_chunks %}
-                    <div class="conversion-audio__chunk-list">
-                        {% for chunk in last_request_chunks %}
-                            {% if chunk.audio %}
-                                <a class="btn btn--primary btn--large" href="{{ chunk.audio.url }}" download>
-                                    Télécharger l'audio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <audio controls class="conversion-audio__player">
-                        <source src="{{ last_request.audio.url }}" type="audio/mpeg">
-                    </audio>
-                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l'audio (MP3)</a>
-                {% endif %}
-                {% if last_request.texte %}
-                <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
-                {% endif %}
-            </div>
-        {% elif last_request and last_request.audio and last_request.statut == "delivered" %}
-            <div class="cta-box conversion-audio__result">
-                <h2 class="cta-box__title">Votre audio est prêt</h2>
-                {% if last_request_chunks %}
-                    <div class="conversion-audio__chunk-list">
-                        {% for chunk in last_request_chunks %}
-                            {% if chunk.audio %}
-                                <a class="btn btn--primary btn--large" href="{{ chunk.audio.url }}" download>
-                                    Télécharger l'audio (Partie {{ forloop.counter }} - p. {{ chunk.start_page }} à {{ chunk.end_page }})
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <audio controls class="conversion-audio__player">
-                        <source src="{{ last_request.audio.url }}" type="audio/mpeg">
-                    </audio>
-                    <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l'audio (MP3)</a>
-                {% endif %}
-                {% if last_request.texte %}
-                <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
-                {% endif %}
-            </div>
-        {% elif last_request and last_request.paiement_requis %}
-            <div class="cta-box conversion-audio__result conversion-audio__result--pay">
-                <div id="payment-required" {% if last_request.paiement_initie_at %}style="display:none;"{% endif %}>
-                    <div class="conversion-audio__result-header">
-                        <h2 class="cta-box__title">Paiement requis</h2>
-                        <span class="conversion-audio__badge">Traitement en quelques minutes selon la taille du texte/fichier</span>
-                    </div>
-                    <p class="cta-box__text">Votre demande a été enregistrée. Veuillez procéder au paiement pour recevoir l'audio par e-mail dans les minutes suivantes.</p>
-                    <p class="form-feedback form-feedback--error" id="payment-error" style="display:none;">
-                        Impossible de lancer le paiement. Veuillez réessayer ou nous contacter.
-                    </p>
-                    {% if payment_available %}
-                        <a
-                            class="btn btn--white btn--large"
-                            id="payment-start"
-                            href="{% url 'catalogue:conversion-audio-pay' last_request.id %}">
-                            Payer maintenant
-                        </a>
-                    {% else %}
-                        <p class="form-feedback form-feedback--error">Le lien de paiement n'est pas encore disponible.</p>
-                    {% endif %}
-                </div>
-                <div id="payment-followup" {% if not last_request.paiement_initie_at %}style="display:none;"{% endif %}>
-                    <h2 class="cta-box__title">Votre demande est en cours de traitement</h2>
-                    <p class="cta-box__text">Nos équipes vérifieront l'effectivité du paiement et vous feront un retour.</p>
-                    <p class="cta-box__text">Souhaitez-vous convertir un autre texte ou document </p>
-                    <div class="cta-box__actions">
-                        <button type="button" class="btn btn--primary btn--large" id="payment-yes">Oui</button>
-                        <button type="button" class="btn btn--white btn--large" id="payment-no">Non</button>
-                    </div>
-                    <div id="payment-no-actions" style="display:none;">
-                        <p class="cta-box__text">Souhaitez-vous discuter avec nous via WhatsApp </p>
-                        <div class="cta-box__actions">
-                            <a class="btn btn--primary btn--large" href="{{ appearance.whatsapp|default:'https://wa.me/c/22968809777' }}" target="_blank" rel="noopener">WhatsApp</a>
-                            <a class="btn btn--white btn--large" href="{% url 'catalogue:index' %}">Revenir à la page d'accueil</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        <div class="contact__form-wrapper conversion-audio__form">
-            <h2>Convertissez votre texte ici</h2>
-            <form method="POST" enctype="multipart/form-data" class="contact__form">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    <label for="id_texte">{{ form.texte.label }}</label>
-                    {{ form.texte }}
-                    {% if form.texte.errors %}
-                        <span class="form-error">{{ form.texte.errors.0 }}</span>
-                    {% endif %}
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_fichier">{{ form.fichier.label }}</label>
-                    {{ form.fichier }}
-                    {% if form.fichier.errors %}
-                        <span class="form-error">{{ form.fichier.errors.0 }}</span>
-                    {% endif %}
-                    <small class="form-hint">Tout fichier téléversé est soumis au paiement.</small>
-                    <small class="form-hint">Formats pris en charge : txt, docx, pdf, jpg, png, pptx, xlsx, epub.</small>
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_langue">{{ form.langue.label }}</label>
-                    {{ form.langue }}
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_voix">{{ form.voix.label }}</label>
-                    {{ form.voix }}
-                </div>
-
-                <div class="form-feedback form-feedback--info" id="payment-note" style="display:none;">
-                    Le texte dépasse la longueur autorisée en mode gratuit : payez un montant forfaitaire pour ce service.
-                </div>
-                
-                <div id="contact-fields">
-                    <div class="form-group">
-                        <label for="id_email">{{ form.email.label }} *</label>
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                            <span class="form-error">{{ form.email.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="id_whatsapp">{{ form.whatsapp.label }}</label>
-                        {{ form.whatsapp }}
-                        {% if form.whatsapp.errors %}
-                            <span class="form-error">{{ form.whatsapp.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-                </div>
-                
-                {% if form.non_field_errors %}
-                    <span class="form-error">{{ form.non_field_errors.0 }}</span>
-                {% endif %}
-                
-                <button type="submit" class="btn btn--primary btn--large" id="conversion-submit">Lancer la conversion</button>
-            </form>
-        </div>
-    </div>
-</section>
-
-
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    (function() {
-        const texte = document.getElementById("id_texte");
-        const fichier = document.getElementById("id_fichier");
-        const contactFields = document.getElementById("contact-fields");
-        const paymentNote = document.getElementById("payment-note");
-        const emailInput = document.getElementById("id_email");
-        const form = document.querySelector(".conversion-audio__form form");
-        const submitBtn = document.getElementById("conversion-submit");
-
-        function togglePayment() {
-            const textLength = (texte && texte.value)  texte.value.length : 0;
-            const hasFile = fichier && fichier.files && fichier.files.length > 0;
-            const needsPayment = hasFile || textLength > 5000;
-            if (needsPayment) {
-                paymentNote.style.display = textLength > 5000  "block" : "none";
-                if (emailInput) {
-                    emailInput.required = true;
-                }
-            } else {
-                paymentNote.style.display = "none";
-                if (emailInput) {
-                    emailInput.required = false;
-                }
-            }
-        }
-
-        if (texte) texte.addEventListener("input", togglePayment);
-        if (fichier) fichier.addEventListener("change", togglePayment);
-        togglePayment();
-
-        if (form) {
-            form.addEventListener("submit", function() {
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                }
-            });
-        }
-
-        const progressBox = document.querySelector(".conversion-audio__progress");
-        if (progressBox && progressBox.dataset.statusUrl) {
-            const progressFill = progressBox.querySelector(".conversion-audio__progress-fill");
-            const progressText = document.getElementById("conversion-progress-text");
-            const errorBox = document.getElementById("conversion-error");
-            const statusUrl = progressBox.dataset.statusUrl;
-            let polling = true;
-
-            const updateProgress = (data) => {
-                const percent = Math.max(0, Math.min(100, data.progress || 0));
-                if (progressFill) progressFill.style.width = percent + "%";
-                if (progressText) progressText.textContent = "Progression : " + percent + "%";
-            };
-
-            const poll = () => {
-                if (!polling) return;
-                fetch(statusUrl, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        if (!data || !data.ok) return;
-                        updateProgress(data);
-                        if (data.status === "finished" && (data.audio_url || data.has_chunks)) {
-                            polling = false;
-                            window.location.reload();
-                        }
-                        if (data.status === "failed") {
-                            polling = false;
-                            if (errorBox) {
-                                errorBox.style.display = "block";
-                                errorBox.textContent = data.error || "La conversion a échoué. Veuillez réessayer.";
-                            }
-                        }
-                    })
-                    .catch(() => {});
-            };
-
-            poll();
-            setInterval(poll, 5000);
-        }
-
-        const player = document.querySelector(".conversion-audio__player");
-        const textContainer = document.querySelector(".conversion-audio__text");
-        if (player && textContainer && textContainer.dataset.audioText) {
-            const rawText = textContainer.dataset.audioText.trim();
-            const parts = rawText
-                .split(/(<=[.!…])/)
-                .map((p) => p.trim())
-                .filter(Boolean);
-
-            const weights = parts.map((p) => {
-                const letters = p.replace(/\s+/g, "").length || 1;
-                const syllables = (p.match(/[aeiouyàâäéèêëîïôöùûüœ"]+/gi) || []).length || 1;
-                return letters * 0.25 + syllables * 1.0 + 2.0;
-            });
-
-            const totalWeight = weights.reduce((a, b) => a + b, 0) || 1;
-            let cursor = 0;
-            const spansHtml = parts.map((p, i) => {
-                const start = cursor / totalWeight;
-                cursor += weights[i];
-                const end = cursor / totalWeight;
-                return `<span data-start="${start.toFixed(5)}" data-end="${end.toFixed(5)}">${p}</span>`;
-            }).join(" ");
-
-            textContainer.innerHTML = spansHtml;
-            const spans = Array.from(textContainer.querySelectorAll("span"));
-            let duration = 0;
-            const setDuration = () => { duration = player.duration || 0; };
-            player.addEventListener("loadedmetadata", setDuration);
-            player.addEventListener("durationchange", setDuration);
-
-            player.addEventListener("timeupdate", () => {
-                if (!duration || spans.length === 0) return;
-                const ratio = player.currentTime / duration;
-                let activeIndex = 0;
-                for (let i = 0; i < spans.length; i++) {
-                    const start = parseFloat(spans[i].dataset.start || "0");
-                    const end = parseFloat(spans[i].dataset.end || "1");
-                    if (ratio >= start && ratio < end) {
-                        activeIndex = i;
-                        break;
-                    }
-                    if (ratio >= start) activeIndex = i;
-                }
-                spans.forEach((s, i) => s.classList.toggle("is-active", i === activeIndex));
-            });
-        }
-
-        const payBtn = document.getElementById("payment-start");
-        const paymentRequired = document.getElementById("payment-required");
-        const paymentFollowup = document.getElementById("payment-followup");
-        const paymentError = document.getElementById("payment-error");
-        const paymentNo = document.getElementById("payment-no");
-        const paymentYes = document.getElementById("payment-yes");
-        const paymentNoActions = document.getElementById("payment-no-actions");
-        const payBox = document.querySelector(".conversion-audio__result--pay");
-        const formWrapper = document.querySelector(".conversion-audio__form");
-
-        if (payBtn) {
-            payBtn.addEventListener("click", function() {
-                if (paymentError) paymentError.style.display = "none";
-                const payUrl = payBtn.getAttribute("href");
-                if (payUrl && navigator.sendBeacon) {
-                    navigator.sendBeacon(payUrl + "ajax=1");
-                } else if (payUrl) {
-                    fetch(payUrl + "ajax=1", { headers: { "X-Requested-With": "XMLHttpRequest" }, keepalive: true })
-                        .catch(function() {});
-                }
-            });
-        }
-
-        if (paymentNo && paymentNoActions) {
-            paymentNo.addEventListener("click", function() {
-                paymentNoActions.style.display = "block";
-                paymentNo.disabled = true;
-            });
-        }
-
-
-        if (paymentYes) {
-            paymentYes.addEventListener("click", function() {
-                if (payBox) {
-                    payBox.style.display = "none";
-                }
-                if (formWrapper) {
-                    const formEl = formWrapper.querySelector("form");
-                    if (formEl) {
-                        formEl.reset();
-                    }
-                    togglePayment();
-                    formWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            });
-        }
-
-    })();
-</script>
-{% endblock %}
-
-
-
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-hero page-hero--compact">
+    <div class="container">
+        <h1 class="page-hero__title">{{ page.hero_title|default:"Transformez vos textes en audio en quelques clics" }}</h1>
+        <p class="page-hero__subtitle conversion-audio__hero-note">
+            Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum.
+            Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l’audio
+            et vous l’envoyons par e-mail.
+        </p>
+        {% if page.hero_subtitle %}
+        <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
+        {% endif %}
+    </div>
+</section>
+
+{% if page_blocks %}
+    {% include "catalogue/partials/page_blocks.html" %}
+{% else %}
+{% endif %}
+
+<section class="section conversion-audio__form-section">
+    <div class="container container--narrow">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="form-feedback form-feedback--{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if last_request and last_request.audio and not last_request.paiement_requis %}
+            <div class="cta-box conversion-audio__result">
+                <h2 class="cta-box__title">Votre audio est prêt</h2>
+                <audio controls class="conversion-audio__player">
+                    <source src="{{ last_request.audio.url }}" type="audio/mpeg">
+                </audio>
+                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                {% if last_request.texte %}
+                <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
+                {% endif %}
+            </div>
+        {% elif last_request and last_request.audio and last_request.statut == "paid" %}
+            <div class="cta-box conversion-audio__result">
+                <h2 class="cta-box__title">Votre audio est prêt</h2>
+                <audio controls class="conversion-audio__player">
+                    <source src="{{ last_request.audio.url }}" type="audio/mpeg">
+                </audio>
+                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                {% if last_request.texte %}
+                <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
+                {% endif %}
+            </div>
+        {% elif last_request and last_request.audio and last_request.statut == "delivered" %}
+            <div class="cta-box conversion-audio__result">
+                <h2 class="cta-box__title">Votre audio est prêt</h2>
+                <audio controls class="conversion-audio__player">
+                    <source src="{{ last_request.audio.url }}" type="audio/mpeg">
+                </audio>
+                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                {% if last_request.texte %}
+                <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
+                {% endif %}
+            </div>
+        {% elif last_request and last_request.paiement_requis %}
+            <div class="cta-box conversion-audio__result conversion-audio__result--pay">
+                <div id="payment-required" {% if last_request.paiement_initie_at %}style="display:none;"{% endif %}>
+                    <div class="conversion-audio__result-header">
+                        <h2 class="cta-box__title">Paiement requis</h2>
+                        <span class="conversion-audio__badge">Traitement en quelques minutes selon la taille du texte/fichier</span>
+                    </div>
+                    <p class="cta-box__text">Votre demande a été enregistrée. Veuillez procéder au paiement pour recevoir l’audio par e‑mail dans les minutes suivantes.</p>
+                    <p class="form-feedback form-feedback--error" id="payment-error" style="display:none;">
+                        Impossible de lancer le paiement. Veuillez réessayer ou nous contacter.
+                    </p>
+                    {% if payment_available %}
+                        <a
+                            class="btn btn--white btn--large"
+                            id="payment-start"
+                            href="{% url 'catalogue:conversion-audio-pay' last_request.id %}">
+                            Payer maintenant
+                        </a>
+                    {% else %}
+                        <p class="form-feedback form-feedback--error">Le lien de paiement n’est pas encore disponible.</p>
+                    {% endif %}
+                </div>
+                <div id="payment-followup" {% if not last_request.paiement_initie_at %}style="display:none;"{% endif %}>
+                    <h2 class="cta-box__title">Votre demande est en cours de traitement</h2>
+                    <p class="cta-box__text">Nos équipes vérifieront l’effectivité du paiement et vous feront un retour.</p>
+                    <p class="cta-box__text">Souhaitez-vous convertir un autre texte ou document ?</p>
+                    <div class="cta-box__actions">
+                        <button type="button" class="btn btn--primary btn--large" id="payment-yes">Oui</button>
+                        <button type="button" class="btn btn--white btn--large" id="payment-no">Non</button>
+                    </div>
+                    <div id="payment-no-actions" style="display:none;">
+                        <p class="cta-box__text">Souhaitez-vous discuter avec nous via WhatsApp ?</p>
+                        <div class="cta-box__actions">
+                            <a class="btn btn--primary btn--large" href="{{ appearance.whatsapp|default:'https://wa.me/c/22968809777' }}" target="_blank" rel="noopener">WhatsApp</a>
+                            <a class="btn btn--white btn--large" href="{% url 'catalogue:index' %}">Revenir à la page d'accueil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="contact__form-wrapper conversion-audio__form">
+            <h2>Convertissez votre texte ici</h2>
+            <form method="POST" enctype="multipart/form-data" class="contact__form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_texte">{{ form.texte.label }}</label>
+                    {{ form.texte }}
+                    {% if form.texte.errors %}
+                        <span class="form-error">{{ form.texte.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_fichier">{{ form.fichier.label }}</label>
+                    {{ form.fichier }}
+                    {% if form.fichier.errors %}
+                        <span class="form-error">{{ form.fichier.errors.0 }}</span>
+                    {% endif %}
+                    <small class="form-hint">Tout fichier téléversé est soumis au paiement.</small>
+                    <small class="form-hint">Formats pris en charge : txt, docx, pdf, jpg, png, pptx, xlsx, epub.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_langue">{{ form.langue.label }}</label>
+                    {{ form.langue }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_voix">{{ form.voix.label }}</label>
+                    {{ form.voix }}
+                </div>
+
+                <div class="form-feedback form-feedback--info" id="payment-note" style="display:none;">
+                    Le texte dépasse la longueur autorisée en mode gratuit : payez un montant forfaitaire pour ce service.
+                </div>
+                
+                <div id="contact-fields">
+                    <div class="form-group">
+                        <label for="id_email">{{ form.email.label }} *</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <span class="form-error">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_whatsapp">{{ form.whatsapp.label }}</label>
+                        {{ form.whatsapp }}
+                        {% if form.whatsapp.errors %}
+                            <span class="form-error">{{ form.whatsapp.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if form.non_field_errors %}
+                    <span class="form-error">{{ form.non_field_errors.0 }}</span>
+                {% endif %}
+                
+                <button type="submit" class="btn btn--primary btn--large" id="conversion-submit">Lancer la conversion</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function() {
+        const texte = document.getElementById("id_texte");
+        const fichier = document.getElementById("id_fichier");
+        const contactFields = document.getElementById("contact-fields");
+        const paymentNote = document.getElementById("payment-note");
+        const emailInput = document.getElementById("id_email");
+        const form = document.querySelector(".conversion-audio__form form");
+        const submitBtn = document.getElementById("conversion-submit");
+
+        function togglePayment() {
+            const textLength = (texte && texte.value) ? texte.value.length : 0;
+            const hasFile = fichier && fichier.files && fichier.files.length > 0;
+            const needsPayment = hasFile || textLength > 5000;
+            if (needsPayment) {
+                paymentNote.style.display = textLength > 5000 ? "block" : "none";
+                if (emailInput) {
+                    emailInput.required = true;
+                }
+            } else {
+                paymentNote.style.display = "none";
+                if (emailInput) {
+                    emailInput.required = false;
+                }
+            }
+        }
+
+        if (texte) texte.addEventListener("input", togglePayment);
+        if (fichier) fichier.addEventListener("change", togglePayment);
+        togglePayment();
+
+        if (form) {
+            form.addEventListener("submit", function() {
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                }
+            });
+        }
+
+        const player = document.querySelector(".conversion-audio__player");
+        const textContainer = document.querySelector(".conversion-audio__text");
+        if (player && textContainer && textContainer.dataset.audioText) {
+            const rawText = textContainer.dataset.audioText.trim();
+            const parts = rawText
+                .split(/(?<=[.!?…])/)
+                .map((p) => p.trim())
+                .filter(Boolean);
+
+            const weights = parts.map((p) => {
+                const letters = p.replace(/\s+/g, "").length || 1;
+                const syllables = (p.match(/[aeiouyàâäéèêëîïôöùûüœ]+/gi) || []).length || 1;
+                return letters * 0.25 + syllables * 1.0 + 2.0;
+            });
+
+            const totalWeight = weights.reduce((a, b) => a + b, 0) || 1;
+            let cursor = 0;
+            const spansHtml = parts.map((p, i) => {
+                const start = cursor / totalWeight;
+                cursor += weights[i];
+                const end = cursor / totalWeight;
+                return `<span data-start="${start.toFixed(5)}" data-end="${end.toFixed(5)}">${p}</span>`;
+            }).join(" ");
+
+            textContainer.innerHTML = spansHtml;
+            const spans = Array.from(textContainer.querySelectorAll("span"));
+            let duration = 0;
+            const setDuration = () => { duration = player.duration || 0; };
+            player.addEventListener("loadedmetadata", setDuration);
+            player.addEventListener("durationchange", setDuration);
+
+            player.addEventListener("timeupdate", () => {
+                if (!duration || spans.length === 0) return;
+                const ratio = player.currentTime / duration;
+                let activeIndex = 0;
+                for (let i = 0; i < spans.length; i++) {
+                    const start = parseFloat(spans[i].dataset.start || "0");
+                    const end = parseFloat(spans[i].dataset.end || "1");
+                    if (ratio >= start && ratio < end) {
+                        activeIndex = i;
+                        break;
+                    }
+                    if (ratio >= start) activeIndex = i;
+                }
+                spans.forEach((s, i) => s.classList.toggle("is-active", i === activeIndex));
+            });
+        }
+
+        const payBtn = document.getElementById("payment-start");
+        const paymentRequired = document.getElementById("payment-required");
+        const paymentFollowup = document.getElementById("payment-followup");
+        const paymentError = document.getElementById("payment-error");
+        const paymentNo = document.getElementById("payment-no");
+        const paymentYes = document.getElementById("payment-yes");
+        const paymentNoActions = document.getElementById("payment-no-actions");
+        const payBox = document.querySelector(".conversion-audio__result--pay");
+        const formWrapper = document.querySelector(".conversion-audio__form");
+
+        if (payBtn) {
+            payBtn.addEventListener("click", function() {
+                if (paymentError) paymentError.style.display = "none";
+                const payUrl = payBtn.getAttribute("href");
+                if (payUrl && navigator.sendBeacon) {
+                    navigator.sendBeacon(payUrl + "?ajax=1");
+                } else if (payUrl) {
+                    fetch(payUrl + "?ajax=1", { headers: { "X-Requested-With": "XMLHttpRequest" }, keepalive: true })
+                        .catch(function() {});
+                }
+            });
+        }
+
+        if (paymentNo && paymentNoActions) {
+            paymentNo.addEventListener("click", function() {
+                paymentNoActions.style.display = "block";
+                paymentNo.disabled = true;
+            });
+        }
+
+
+        if (paymentYes) {
+            paymentYes.addEventListener("click", function() {
+                if (payBox) {
+                    payBox.style.display = "none";
+                }
+                if (formWrapper) {
+                    const formEl = formWrapper.querySelector("form");
+                    if (formEl) {
+                        formEl.reset();
+                    }
+                    togglePayment();
+                    formWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            });
+        }
+
+    })();
+</script>
+{% endblock %}
+
