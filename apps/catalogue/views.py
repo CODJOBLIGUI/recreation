@@ -914,8 +914,7 @@ class AudioConversionView(LoginRequiredMixin, FormView):
                     filename = f"conversion-{uuid.uuid4().hex}.mp3"
                     tts.write_to_fp(audio_bytes)
                     audio_bytes.seek(0)
-                    obj.audio.save(filename, audio_bytes, save=False)
-                    obj.save(update_fields=["audio", "updated_at"])
+                    obj.audio.save(filename, audio_bytes, save=True)
                 except Exception:
                     obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
                     if obj:
@@ -932,6 +931,9 @@ class AudioConversionView(LoginRequiredMixin, FormView):
             else:
                 try:
                     _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
+                    demande.refresh_from_db()
+                    if not demande.audio:
+                        raise RuntimeError("Audio non généré.")
                     demande.statut = "free_generated"
                     demande.save(update_fields=["statut", "updated_at"])
                 except Exception:
