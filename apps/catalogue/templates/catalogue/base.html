@@ -20,7 +20,7 @@
         <meta name="twitter:image" content="{{ site_url }}{{ social_image }}">
         {% endwith %}
     {% else %}
-        {% with social_image=static('catalogue/images/logo.jpg') %}
+        {% static 'catalogue/images/logo.jpg' as social_image %}
         <meta property="og:title" content="{{ page_title|default:'Editions Recréation' }}">
         <meta property="og:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
         <meta property="og:type" content="website">
@@ -324,6 +324,7 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
+
 
 
 
