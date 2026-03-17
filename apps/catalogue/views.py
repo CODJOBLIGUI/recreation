@@ -783,7 +783,9 @@ class ActualitesView(ListView):
         context["date_fin"] = self.request.GET.get("date_fin", "")
         context["annees_actualites"] = (
             Actualite.objects.filter(est_publie=True)
-            .dates("date_publication", "year", order="DESC")
+            .values_list("date_publication__year", flat=True)
+            .distinct()
+            .order_by("-date_publication__year")
         )
         return context
 
