@@ -2257,17 +2257,30 @@ body.nav-drawer-open {
     background: transparent;
     border: none;
     padding: 0;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .actualite-detail__image img {
-    width: 100%;
+    width: 320px;
+    max-width: 100%;
     height: auto;
+    border-radius: var(--radius-media);
 }
 
 .actualite-detail__content {
     font-size: 1.125rem;
     line-height: 1.8;
     margin-bottom: 3rem;
+}
+
+.actualite-detail__content img {
+    max-width: 320px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 1rem 0;
+    border-radius: var(--radius-media);
 }
 
 .actualite-detail__back {
