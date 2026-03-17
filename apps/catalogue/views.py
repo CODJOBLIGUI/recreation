@@ -829,14 +829,13 @@ class ActualiteDetailView(DetailView):
 # -------------------------------------------------------------------------------
 
 FREE_TEXT_LIMIT = 5000
+FREE_CONVERSION_LIMIT = 3
 
 
-class AudioConversionView(LoginRequiredMixin, FormView):
+class AudioConversionView(FormView):
     template_name = "catalogue/conversion-audio.html"
     form_class = AudioConversionForm
     success_url = reverse_lazy("catalogue:conversion-audio")
-    login_url = reverse_lazy("catalogue:login")
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         page = Page.objects.filter(slug="conversion-texte-audio", is_active=True).first()
@@ -870,8 +869,12 @@ class AudioConversionView(LoginRequiredMixin, FormView):
             messages.info(request, "Veuillez vous connecter avec un compte client pour utiliser ce service.")
             logout(request)
             return redirect("catalogue:login")
+
         if not request.user.is_authenticated:
-            messages.info(request, "Inscrivez-vous ou connectez-vous pour utiliser ce service.")
+            success_count = int(request.session.get("audio_success_count", 0) or 0)
+            if success_count >= FREE_CONVERSION_LIMIT:
+                messages.info(request, "Veuillez vous connecter pour continuer la conversion.")
+                return redirect("catalogue:login")
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -971,6 +974,8 @@ class AudioConversionView(LoginRequiredMixin, FormView):
             messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
             return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
 
+        success_count = int(self.request.session.get("audio_success_count", 0) or 0)
+        self.request.session["audio_success_count"] = success_count + 1
         messages.success(self.request, "Votre audio est prêt. Vous pouvez le télécharger.")
         return redirect(self.success_url)
 
