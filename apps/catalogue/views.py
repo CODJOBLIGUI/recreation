@@ -1,4 +1,4 @@
-"""
+﻿"""
 FICHIER : apps/catalogue/views.py
 """
 
@@ -226,7 +226,7 @@ class CatalogueView(ListView):
 
 
 class LivresNumeriquesView(CatalogueView):
-    """Vue liste livres numériques."""
+    """Vue liste livres numÃ©riques."""
     
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -234,9 +234,9 @@ class LivresNumeriquesView(CatalogueView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_heading"] = "Livres numériques"
-        context["page_subtitle"] = "Découvrez nos ouvrages disponibles en version numérique"
-        context["page_title"] = "Livres numériques - Editions Recréation"
+        context["page_heading"] = "Livres numÃ©riques"
+        context["page_subtitle"] = "DÃ©couvrez nos ouvrages disponibles en version numÃ©rique"
+        context["page_title"] = "Livres numÃ©riques - Editions RecrÃ©ation"
         context["version_actuelle"] = "numerique"
         livres_page = context.get("livres")
         if livres_page:
@@ -256,7 +256,7 @@ class LivresAudioView(CatalogueView):
         context = super().get_context_data(**kwargs)
         context["page_heading"] = "Livres audio"
         context["page_subtitle"] = "Explorez nos livres disponibles en version audio"
-        context["page_title"] = "Livres audio - Editions Recréation"
+        context["page_title"] = "Livres audio - Editions RecrÃ©ation"
         context["version_actuelle"] = "audio"
         livres_page = context.get("livres")
         if livres_page:
@@ -275,8 +275,8 @@ class LivresPapierView(CatalogueView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["page_heading"] = "Livres papier"
-        context["page_subtitle"] = "Découvrez nos ouvrages disponibles en version papier"
-        context["page_title"] = "Livres papier - Editions Recréation"
+        context["page_subtitle"] = "DÃ©couvrez nos ouvrages disponibles en version papier"
+        context["page_title"] = "Livres papier - Editions RecrÃ©ation"
         context["version_actuelle"] = "papier"
         livres_page = context.get("livres")
         if livres_page:
@@ -492,7 +492,7 @@ class CollectionDetailView(DetailView):
             {
                 "livres": livres,
                 "auteurs_collection": auteurs,
-                "page_title": collection.meta_title if collection.meta_title else f"{collection.nom} - Editions Recréation",
+                "page_title": collection.meta_title if collection.meta_title else f"{collection.nom} - Editions RecrÃ©ation",
                 "page_description": collection.meta_description if collection.meta_description else None,
             }
         )
@@ -701,12 +701,12 @@ class SearchView(TemplateView):
                 {"title": "\u00c0 propos", "url": reverse_lazy("catalogue:a-propos"), "keywords": "a propos histoire mission"},
                 {"title": "Catalogue", "url": reverse_lazy("catalogue:catalogue"), "keywords": "catalogue livres"},
                 {"title": "Conversion de texte en audio", "url": reverse_lazy("catalogue:conversion-audio"), "keywords": "conversion texte audio tts"},
-                {"title": "Livres numériques", "url": reverse_lazy("catalogue:livres-numeriques"), "keywords": "livres numeriques ebook"},
+                {"title": "Livres numÃ©riques", "url": reverse_lazy("catalogue:livres-numeriques"), "keywords": "livres numeriques ebook"},
                 {"title": "Livres audio", "url": reverse_lazy("catalogue:livres-audio"), "keywords": "livres audio audiobook"},
                 {"title": "Auteurs", "url": reverse_lazy("catalogue:auteurs"), "keywords": "auteurs \u00e9crivains"},
                 {"title": "Actualit\u00e9s", "url": reverse_lazy("catalogue:actualites"), "keywords": "actualites news"},
                 {"title": "Nos contrats", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "contrats publication"},
-                {"title": "Contrat à Compte d'Éditeur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte editeur"},
+                {"title": "Contrat à Compte d'Ã‰diteur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte editeur"},
                 {"title": "Contrat à Compte d'Auteur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte auteur"},
                 {"title": "Contrat à Compte Particitatif", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte participatif particitatif"},
                 {"title": "Contact", "url": reverse_lazy("catalogue:contact"), "keywords": "contact email telephone"},
@@ -897,7 +897,10 @@ class AudioConversionView(FormView):
         demande.async_finished_at = None
         demande.save()
 
-        self._start_conversion_async(demande.id)
+        if not demande.paiement_requis and not fichier:
+            self._run_conversion(demande.id)
+        else:
+            self._start_conversion_async(demande.id)
 
         self.request.session["audio_request_id"] = demande.id
         if demande.paiement_requis:
@@ -1045,7 +1048,7 @@ def conversion_payment_redirect(request, demande_id):
 
     if payment_url:
         return redirect(payment_url)
-    messages.error(request, "Le lien de paiement n’est pas encore disponible.")
+    messages.error(request, "Le lien de paiement nâ€™est pas encore disponible.")
     return redirect("catalogue:conversion-audio")
 
 
@@ -1088,7 +1091,7 @@ class SignupView(FormView):
         from_email = appearance.site_email if appearance and appearance.site_email else None
         send_mail(
             "Confirmez votre compte",
-            f"Bonjour {user.first_name},\n\nMerci de confirmer votre compte en cliquant sur ce lien :\n{activation_link}\n\nEditions Recréation",
+            f"Bonjour {user.first_name},\n\nMerci de confirmer votre compte en cliquant sur ce lien :\n{activation_link}\n\nEditions RecrÃ©ation",
             from_email,
             [user.email],
             fail_silently=True,
@@ -1096,7 +1099,7 @@ class SignupView(FormView):
 
         messages.success(
             self.request,
-            "Compte créé. Un email de confirmation vous a été envoyé. Activez votre compte pour continuer.",
+            "Compte crÃ©Ã©. Un email de confirmation vous a Ã©tÃ© envoyÃ©. Activez votre compte pour continuer.",
         )
         return super().form_valid(form)
 
@@ -1115,9 +1118,9 @@ def activate_account(request, uidb64, token):
         user.is_active = True
         user.save(update_fields=["is_active"])
         login(request, user)
-        messages.success(request, "Votre compte est activé. Vous pouvez utiliser le service.")
+        messages.success(request, "Votre compte est activÃ©. Vous pouvez utiliser le service.")
         return redirect("catalogue:conversion-audio")
-    messages.error(request, "Lien d’activation invalide ou expiré.")
+    messages.error(request, "Lien dâ€™activation invalide ou expirÃ©.")
     return redirect("catalogue:login")
 
 
@@ -1302,3 +1305,5 @@ def livre_detail_json(request, livre_id):
         },
     }
     return JsonResponse(data)
+
+

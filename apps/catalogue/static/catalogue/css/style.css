@@ -7549,3 +7549,8 @@ html {
 .footer-fayard__social-title {
     text-align: center;
 }
+
+.footer-fayard__address-main {
+    font-size: 1rem;
+    line-height: 1.6;
+}
