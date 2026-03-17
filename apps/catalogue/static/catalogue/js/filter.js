@@ -34,9 +34,48 @@
 
     if (searchButton) {
         searchButton.addEventListener('click', function() {
-            const searchTerm = searchInput  searchInput.value.trim() : '';
+            const searchTerm = searchInput ? searchInput.value.trim() : '';
             performSearch(searchTerm);
         });
+    }
+
+    const applyButton = document.getElementById('catalogue-apply-btn');
+
+    function applyAllFilters() {
+        const params = new URLSearchParams(window.location.search);
+
+        const term = searchInput ? searchInput.value.trim() : '';
+        if (term) {
+            params.set('search', term);
+        } else {
+            params.delete('search');
+        }
+
+        if (categoryFilter && categoryFilter.value) {
+            params.set('categorie', categoryFilter.value);
+        } else {
+            params.delete('categorie');
+        }
+
+        if (versionFilter && versionFilter.value) {
+            params.set('version', versionFilter.value);
+        } else {
+            params.delete('version');
+        }
+
+        if (languageFilter && languageFilter.value) {
+            params.set('langue', languageFilter.value);
+        } else {
+            params.delete('langue');
+        }
+
+        if (sortFilter && sortFilter.value) {
+            params.set('sort', sortFilter.value);
+        } else {
+            params.delete('sort');
+        }
+
+        window.location.search = params.toString();
     }
 
     /**
@@ -62,45 +101,15 @@
     // ========================================
 
     if (categoryFilter) {
-        categoryFilter.addEventListener('change', function() {
-            const params = new URLSearchParams(window.location.search);
-
-            if (this.value) {
-                params.set('categorie', this.value);
-            } else {
-                params.delete('categorie');
-            }
-
-            window.location.search = params.toString();
-        });
+        categoryFilter.addEventListener('change', applyAllFilters);
     }
     
     if (versionFilter) {
-        versionFilter.addEventListener('change', function() {
-            const params = new URLSearchParams(window.location.search);
-            
-            if (this.value) {
-                params.set('version', this.value);
-            } else {
-                params.delete('version');
-            }
-            
-            window.location.search = params.toString();
-        });
+        versionFilter.addEventListener('change', applyAllFilters);
     }
     
     if (languageFilter) {
-        languageFilter.addEventListener('change', function() {
-            const params = new URLSearchParams(window.location.search);
-            
-            if (this.value) {
-                params.set('langue', this.value);
-            } else {
-                params.delete('langue');
-            }
-            
-            window.location.search = params.toString();
-        });
+        languageFilter.addEventListener('change', applyAllFilters);
     }
 
     // ========================================
@@ -108,10 +117,12 @@
     // ========================================
 
     if (sortFilter) {
-        sortFilter.addEventListener('change', function() {
-            const params = new URLSearchParams(window.location.search);
-            params.set('sort', this.value);
-            window.location.search = params.toString();
+        sortFilter.addEventListener('change', applyAllFilters);
+    }
+
+    if (applyButton) {
+        applyButton.addEventListener('click', function() {
+            applyAllFilters();
         });
     }
 

@@ -30,7 +30,7 @@
             </div>
             
             <!-- Filtres -->
-            <div class="filters">
+            <div class="filters">
                 <!-- Catégorie -->
                 <select id="category-filter" aria-label="Filtrer par catégorie">
                     <option value="">Toutes les catégories</option>
@@ -53,7 +53,7 @@
                 </select>
                 
                 <!-- Langue -->
-                <select id="language-filter" aria-label="Filtrer par langue">
+                <select id="language-filter" aria-label="Filtrer par langue">
                     <option value="">Toutes les langues</option>
                     {% for code, label in langues_list %}
                     <option value="{{ code }}" {% if langue_actuelle == code %}selected{% endif %}>{{ label }}</option>
@@ -66,8 +66,10 @@
                     <option value="parution">Plus anciens</option>
                     <option value="titre">Titre A-Z</option>
                     <option value="auteur">Auteur A-Z</option>
-                </select>
-            </div>
+                </select>
+
+                <button type="button" id="catalogue-apply-btn" class="btn btn--secondary">Appliquer</button>
+            </div>
         </div>
         
         <!-- Nombre de résultats -->
