@@ -3,6 +3,7 @@ FICHIER : apps/catalogue/admin.py
 """
 
 from django.contrib import admin
+from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django import forms
@@ -88,6 +89,10 @@ class AuteurAdmin(ModelAdmin):
 
 @admin.register(Livre)
 class LivreAdmin(ModelAdmin):
+    formfield_overrides = {
+        RichTextField: {"widget": CKEditorUploadingWidget},
+        models.TextField: {"widget": CKEditorUploadingWidget},
+    }
     list_display = (
         "titre",
         "auteurs_affichage",
@@ -680,6 +685,7 @@ class AudioConversionRequestAdmin(ModelAdmin):
 class MessageContactAdmin(ModelAdmin):
     formfield_overrides = {
         RichTextField: {"widget": CKEditorUploadingWidget},
+        models.TextField: {"widget": CKEditorUploadingWidget},
     }
     list_display = ("nom", "email", "sujet", "statut", "lu", "date_reception")
     list_editable = ("statut", "lu")
@@ -721,6 +727,7 @@ class MessageContactAdmin(ModelAdmin):
 class SoumissionManuscritAdmin(ModelAdmin):
     formfield_overrides = {
         RichTextField: {"widget": CKEditorUploadingWidget},
+        models.TextField: {"widget": CKEditorUploadingWidget},
     }
     list_display = ("titre_ouvrage", "nom_auteur", "nom_complet", "type_contrat", "nationalite", "pays_residence", "whatsapp", "created_at")
     list_filter = ("created_at",)
