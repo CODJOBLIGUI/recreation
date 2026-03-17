@@ -17,13 +17,17 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail
-from django.db import close_old_connections
 from django.contrib.auth.views import LoginView as DjangoLoginView, PasswordResetView as DjangoPasswordResetView
 from datetime import date
 import unicodedata
 
 from .forms import ContactForm, NewsletterForm, SoumissionManuscritForm, AudioConversionForm, StyledSignupForm, StyledLoginForm
-from .utils.audio_conversion import estimate_pages_from_text, count_pages_for_file, extract_text_from_file
+from .utils.audio_conversion import (
+    estimate_pages_from_text,
+    count_pages_for_file,
+    MAX_PAGES_FOR_CONVERSION,
+    run_audio_conversion_job,
+)
 from .models import (
     Actualite,
     Auteur,
@@ -37,7 +41,6 @@ from .models import (
     PageBlock,
     PrixLitteraire,
     AudioConversionRequest,
-    AudioConversionChunk,
     SoumissionManuscrit,
 )
 from apps.core.models import SiteAppearance
@@ -226,7 +229,7 @@ class CatalogueView(ListView):
 
 
 class LivresNumeriquesView(CatalogueView):
-    """Vue liste livres numÃ©riques."""
+    """Vue liste livres numériques."""
     
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -234,9 +237,9 @@ class LivresNumeriquesView(CatalogueView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_heading"] = "Livres numÃ©riques"
-        context["page_subtitle"] = "DÃ©couvrez nos ouvrages disponibles en version numÃ©rique"
-        context["page_title"] = "Livres numÃ©riques - Editions RecrÃ©ation"
+        context["page_heading"] = "Livres numériques"
+        context["page_subtitle"] = "Découvrez nos ouvrages disponibles en version numérique"
+        context["page_title"] = "Livres numériques - Editions Recréation"
         context["version_actuelle"] = "numerique"
         livres_page = context.get("livres")
         if livres_page:
@@ -256,32 +259,12 @@ class LivresAudioView(CatalogueView):
         context = super().get_context_data(**kwargs)
         context["page_heading"] = "Livres audio"
         context["page_subtitle"] = "Explorez nos livres disponibles en version audio"
-        context["page_title"] = "Livres audio - Editions RecrÃ©ation"
+        context["page_title"] = "Livres audio - Editions Recréation"
         context["version_actuelle"] = "audio"
         livres_page = context.get("livres")
         if livres_page:
             for livre in livres_page:
                 livre.image_affichage = livre.image_pour_version("audio")
-        return context
-
-
-class LivresPapierView(CatalogueView):
-    """Vue liste livres papier."""
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(version_papier=True)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["page_heading"] = "Livres papier"
-        context["page_subtitle"] = "DÃ©couvrez nos ouvrages disponibles en version papier"
-        context["page_title"] = "Livres papier - Editions RecrÃ©ation"
-        context["version_actuelle"] = "papier"
-        livres_page = context.get("livres")
-        if livres_page:
-            for livre in livres_page:
-                livre.image_affichage = livre.image_pour_version("papier")
         return context
 
 
@@ -323,7 +306,7 @@ class LivreDetailView(DetailView):
         broken_to_label = {
             "po\u00e3\u00a8mes": "Po\u00e8mes",
             "po\u010dmes": "Po\u00e8mes",
-            "pomes": "Po\u00e8mes",
+            "po?mes": "Po\u00e8mes",
             "litt\u00e3\u00a9rature fran\u00e3\u00a7aise": "Litt\u00e9rature fran\u00e7aise",
             "litt\u00e3\u00a9rature \u00e3\u00a9trang\u00e3\u00a8re": "Litt\u00e9rature \u00e9trang\u00e8re",
         }
@@ -492,7 +475,7 @@ class CollectionDetailView(DetailView):
             {
                 "livres": livres,
                 "auteurs_collection": auteurs,
-                "page_title": collection.meta_title if collection.meta_title else f"{collection.nom} - Editions RecrÃ©ation",
+                "page_title": collection.meta_title if collection.meta_title else f"{collection.nom} - Editions Recréation",
                 "page_description": collection.meta_description if collection.meta_description else None,
             }
         )
@@ -701,12 +684,12 @@ class SearchView(TemplateView):
                 {"title": "\u00c0 propos", "url": reverse_lazy("catalogue:a-propos"), "keywords": "a propos histoire mission"},
                 {"title": "Catalogue", "url": reverse_lazy("catalogue:catalogue"), "keywords": "catalogue livres"},
                 {"title": "Conversion de texte en audio", "url": reverse_lazy("catalogue:conversion-audio"), "keywords": "conversion texte audio tts"},
-                {"title": "Livres numÃ©riques", "url": reverse_lazy("catalogue:livres-numeriques"), "keywords": "livres numeriques ebook"},
+                {"title": "Livres numériques", "url": reverse_lazy("catalogue:livres-numeriques"), "keywords": "livres numeriques ebook"},
                 {"title": "Livres audio", "url": reverse_lazy("catalogue:livres-audio"), "keywords": "livres audio audiobook"},
                 {"title": "Auteurs", "url": reverse_lazy("catalogue:auteurs"), "keywords": "auteurs \u00e9crivains"},
                 {"title": "Actualit\u00e9s", "url": reverse_lazy("catalogue:actualites"), "keywords": "actualites news"},
                 {"title": "Nos contrats", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "contrats publication"},
-                {"title": "Contrat à Compte d'Ã‰diteur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte editeur"},
+                {"title": "Contrat à Compte d'Éditeur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte editeur"},
                 {"title": "Contrat à Compte d'Auteur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte auteur"},
                 {"title": "Contrat à Compte Particitatif", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte participatif particitatif"},
                 {"title": "Contact", "url": reverse_lazy("catalogue:contact"), "keywords": "contact email telephone"},
@@ -756,22 +739,10 @@ class ActualitesView(ListView):
         qs = Actualite.objects.filter(est_publie=True).order_by("-est_une_a_la_une", "-date_publication")
         filtre = self.request.GET.get("filtre", "tous")
         annee = self.request.GET.get("annee", "")
-        date_debut = self.request.GET.get("date_debut")
-        date_fin = self.request.GET.get("date_fin")
         if filtre == "a-la-une":
             qs = qs.filter(est_une_a_la_une=True)
-        if annee and str(annee).isdigit():
-            qs = qs.filter(date_publication__year=int(annee))
-        if date_debut:
-            try:
-                qs = qs.filter(date_publication__gte=date.fromisoformat(date_debut))
-            except ValueError:
-                pass
-        if date_fin:
-            try:
-                qs = qs.filter(date_publication__lte=date.fromisoformat(date_fin))
-            except ValueError:
-                pass
+        if annee:
+            qs = qs.filter(date_publication__year=annee)
         return qs
 
     def get_context_data(self, **kwargs):
@@ -779,13 +750,9 @@ class ActualitesView(ListView):
         context["page_title"] = "Actualit\u00e9s - Editions Recr\u00e9ation"
         context["filtre_actuel"] = self.request.GET.get("filtre", "tous")
         context["annee_actuelle"] = self.request.GET.get("annee", "")
-        context["date_debut"] = self.request.GET.get("date_debut", "")
-        context["date_fin"] = self.request.GET.get("date_fin", "")
         context["annees_actualites"] = (
             Actualite.objects.filter(est_publie=True)
-            .values_list("date_publication__year", flat=True)
-            .distinct()
-            .order_by("-date_publication__year")
+            .dates("date_publication", "year", order="DESC")
         )
         return context
 
@@ -853,6 +820,12 @@ class AudioConversionView(FormView):
                     5: appearance.audio_payment_url_5,
                 }.get(tier) or appearance.audio_payment_url
                 context["payment_available"] = bool(context["payment_url"])
+        elif self.request.user.is_authenticated:
+            context["last_request"] = (
+                AudioConversionRequest.objects.filter(user=self.request.user, audio__isnull=False)
+                .order_by("-created_at")
+                .first()
+            )
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -860,6 +833,8 @@ class AudioConversionView(FormView):
             messages.info(request, "Veuillez vous connecter avec un compte client pour utiliser ce service.")
             logout(request)
             return redirect("catalogue:login")
+        if not request.user.is_authenticated:
+            messages.info(request, "Inscrivez-vous ou connectez-vous pour utiliser ce service.")
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -891,75 +866,23 @@ class AudioConversionView(FormView):
             demande.payment_tier = 5
         demande.save()
 
-        # Extraire le texte depuis le fichier si nécessaire
-        audio_text = texte
-        if fichier:
-            try:
-                audio_text = extract_text_from_file(fichier).strip()
-                if audio_text:
-                    demande.texte = audio_text
-            except Exception as exc:
-                demande.statut = "error"
-                demande.async_error = str(exc)
-                demande.save(update_fields=["statut", "async_error", "updated_at"])
-                messages.error(self.request, "Extraction du texte impossible. Merci de réessayer ou d’utiliser un autre fichier.")
-                self.request.session["audio_request_id"] = demande.id
-                return redirect(self.success_url)
-
-        if audio_text:
-            try:
-                from gtts import gTTS
-            except Exception:
-                messages.error(self.request, "Conversion indisponible pour le moment. Veuillez réessayer plus tard.")
-                self.request.session["audio_request_id"] = demande.id
-                return redirect(self.success_url)
-
-            def _generate_audio(demande_id, text, langue, voix):
-                close_old_connections()
-                try:
-                    import uuid
-                    obj = AudioConversionRequest.objects.get(pk=demande_id)
-                    slow = True if voix == "slow" else False
-                    tts = gTTS(text, lang=langue, slow=slow)
-                    audio_bytes = ContentFile(b"")
-                    filename = f"conversion-{uuid.uuid4().hex}.mp3"
-                    tts.write_to_fp(audio_bytes)
-                    audio_bytes.seek(0)
-                    obj.audio.save(filename, audio_bytes, save=False)
-                    obj.save(update_fields=["audio", "updated_at"])
-                except Exception:
-                    obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
-                    if obj:
-                        obj.statut = "error"
-                        obj.save(update_fields=["statut", "updated_at"])
-
-            if demande.paiement_requis:
-                import threading
-                threading.Thread(
-                    target=_generate_audio,
-                    args=(demande.id, audio_text, demande.langue, demande.voix),
-                    daemon=True,
-                ).start()
-            else:
-                try:
-                    _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
-                    demande.statut = "free_generated"
-                    demande.save(update_fields=["statut", "updated_at"])
-                except Exception:
-                    demande.statut = "error"
-                    demande.save(update_fields=["statut", "updated_at"])
-                    messages.error(self.request, "La conversion a échoué. Vérifiez votre connexion et réessayez.")
-                    self.request.session["audio_request_id"] = demande.id
-                    return redirect(self.success_url)
-
-        self.request.session["audio_request_id"] = demande.id
-
-        if demande.paiement_requis:
+        if not demande.paiement_requis and texte:
+            demande.statut = "processing"
+            demande.async_status = "queued"
+            demande.async_progress = 0
+            demande.async_error = ""
+            demande.save(update_fields=["statut", "async_status", "async_progress", "async_error", "updated_at"])
+            run_audio_conversion_job(demande.id)
+            messages.success(
+                self.request,
+                "Votre conversion a été lancée. L'audio apparaîtra automatiquement dès qu'il sera prêt.",
+            )
+            self.request.session["audio_request_id"] = demande.id
+            return redirect(self.success_url)
+        else:
             messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
-            return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
-
-        messages.success(self.request, "Votre audio est prêt. Vous pouvez le télécharger.")
-        return redirect(self.success_url)
+            self.request.session["audio_request_id"] = demande.id
+            return redirect(self.success_url)
 
 
 def conversion_payment_redirect(request, demande_id):
@@ -1000,31 +923,26 @@ def conversion_payment_redirect(request, demande_id):
 
     if payment_url:
         return redirect(payment_url)
-    messages.error(request, "Le lien de paiement nâ€™est pas encore disponible.")
+    messages.error(request, "Le lien de paiement n’est pas encore disponible.")
     return redirect("catalogue:conversion-audio")
 
 
-def conversion_status(request, demande_id):
-    demande = get_object_or_404(AudioConversionRequest, id=demande_id)
-    if not request.user.is_authenticated:
-        session_id = request.session.get("audio_request_id")
-        if demande.user is None and session_id and str(session_id) == str(demande_id):
-            pass
-        else:
-            return JsonResponse({"ok": False, "error": "auth_required"}, status=401)
-    elif demande.user and demande.user != request.user and not request.user.is_staff:
-        return JsonResponse({"ok": False, "error": "forbidden"}, status=403)
+def conversion_status(request):
+    request_id = request.session.get("audio_request_id")
+    if not request_id:
+        return JsonResponse({"ok": False})
+    demande = AudioConversionRequest.objects.filter(id=request_id).first()
+    if not demande:
+        return JsonResponse({"ok": False})
+    if demande.user and request.user.is_authenticated and demande.user_id != request.user.id:
+        return JsonResponse({"ok": False})
     return JsonResponse(
         {
             "ok": True,
-            "id": demande.id,
-            "status": demande.async_status,
             "progress": demande.async_progress,
-            "error": demande.async_error,
+            "status": demande.async_status,
+            "has_audio": bool(demande.audio),
             "audio_url": demande.audio.url if demande.audio else "",
-            "has_chunks": demande.chunks.filter(audio__isnull=False).exists(),
-            "statut": demande.statut,
-            "payment_required": demande.paiement_requis,
         }
     )
 
@@ -1047,7 +965,7 @@ class SignupView(FormView):
         from_email = appearance.site_email if appearance and appearance.site_email else None
         send_mail(
             "Confirmez votre compte",
-            f"Bonjour {user.first_name},\n\nMerci de confirmer votre compte en cliquant sur ce lien :\n{activation_link}\n\nEditions RecrÃ©ation",
+            f"Bonjour {user.first_name},\n\nMerci de confirmer votre compte en cliquant sur ce lien :\n{activation_link}\n\nEditions Recréation",
             from_email,
             [user.email],
             fail_silently=True,
@@ -1055,7 +973,7 @@ class SignupView(FormView):
 
         messages.success(
             self.request,
-            "Compte crÃ©Ã©. Un email de confirmation vous a Ã©tÃ© envoyÃ©. Activez votre compte pour continuer.",
+            "Compte créé. Un email de confirmation vous a été envoyé. Activez votre compte pour continuer.",
         )
         return super().form_valid(form)
 
@@ -1074,9 +992,9 @@ def activate_account(request, uidb64, token):
         user.is_active = True
         user.save(update_fields=["is_active"])
         login(request, user)
-        messages.success(request, "Votre compte est activÃ©. Vous pouvez utiliser le service.")
+        messages.success(request, "Votre compte est activé. Vous pouvez utiliser le service.")
         return redirect("catalogue:conversion-audio")
-    messages.error(request, "Lien dâ€™activation invalide ou expirÃ©.")
+    messages.error(request, "Lien d’activation invalide ou expiré.")
     return redirect("catalogue:login")
 
 
@@ -1261,6 +1179,3 @@ def livre_detail_json(request, livre_id):
         },
     }
     return JsonResponse(data)
-
-
-

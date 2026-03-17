@@ -15,24 +15,25 @@
 <!-- Barre de recherche et filtres -->
 <section class="catalogue-filters section">
     <div class="container">
-        <div class="filters-bar">
+        <form class="filters-bar" method="get">
             <!-- Recherche -->
             <div class="search-box">
-                <input type="text" 
-                       id="search-input" 
-                       placeholder="Rechercher un livre, auteur..." 
-                       value="{{ recherche }}"
-                       aria-label="Rechercher">
+                <input type="text" 
+                       id="search-input" 
+                       name="search"
+                       placeholder="Rechercher un livre, auteur..." 
+                       value="{{ recherche }}"
+                       aria-label="Rechercher">
                 <span class="search-box__icon" aria-hidden="true">
                     <i class="fas fa-search"></i>
                 </span>
-                <button type="button" id="catalogue-search-btn" class="search-box__btn" aria-label="Valider la recherche"><span class="search-box__btn-label">Rechercher</span></button>
+                <button type="submit" id="catalogue-search-btn" class="search-box__btn" aria-label="Valider la recherche"><span class="search-box__btn-label">Rechercher</span></button>
             </div>
             
             <!-- Filtres -->
             <div class="filters">
                 <!-- Catégorie -->
-                <select id="category-filter" aria-label="Filtrer par catégorie">
+                <select id="category-filter" name="categorie" aria-label="Filtrer par catégorie">
                     <option value="">Toutes les catégories</option>
                     <option value="roman" {% if categorie_actuelle == 'roman' %}selected{% endif %}>Roman</option>
                     <option value="poemes" {% if categorie_actuelle == 'poemes' %}selected{% endif %}>Poèmes</option>
@@ -45,7 +46,7 @@
                 </select>
                 
                 <!-- Version -->
-                <select id="version-filter" aria-label="Filtrer par version">
+                <select id="version-filter" name="version" aria-label="Filtrer par version">
                     <option value="">Toutes les versions</option>
                     <option value="papier" {% if version_actuelle == 'papier' %}selected{% endif %}>Papier</option>
                     <option value="numerique" {% if version_actuelle == 'numerique' %}selected{% endif %}>Numérique</option>
@@ -53,7 +54,7 @@
                 </select>
                 
                 <!-- Langue -->
-                <select id="language-filter" aria-label="Filtrer par langue">
+                <select id="language-filter" name="langue" aria-label="Filtrer par langue">
                     <option value="">Toutes les langues</option>
                     {% for code, label in langues_list %}
                     <option value="{{ code }}" {% if langue_actuelle == code %}selected{% endif %}>{{ label }}</option>
@@ -61,16 +62,16 @@
                 </select>
                 
                 <!-- Tri -->
-                <select id="sort-filter" aria-label="Trier par">
-                    <option value="-parution">Plus récents</option>
-                    <option value="parution">Plus anciens</option>
-                    <option value="titre">Titre A-Z</option>
-                    <option value="auteur">Auteur A-Z</option>
+                <select id="sort-filter" name="sort" aria-label="Trier par">
+                    <option value="-parution" {% if sort_actuel == "-parution" %}selected{% endif %}>Plus récents</option>
+                    <option value="parution" {% if sort_actuel == "parution" %}selected{% endif %}>Plus anciens</option>
+                    <option value="titre" {% if sort_actuel == "titre" %}selected{% endif %}>Titre A-Z</option>
+                    <option value="auteur" {% if sort_actuel == "auteur" %}selected{% endif %}>Auteur A-Z</option>
                 </select>
 
-                <button type="button" id="catalogue-apply-btn" class="btn btn--secondary">Appliquer</button>
+                <button type="submit" id="catalogue-apply-btn" class="btn btn--secondary">Appliquer</button>
             </div>
-        </div>
+        </form>
         
         <!-- Nombre de résultats -->
         <p class="results-count">

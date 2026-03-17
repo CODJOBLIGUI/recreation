@@ -12,7 +12,12 @@ from ckeditor.fields import RichTextField
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from unfold.admin import ModelAdmin
 
-from .utils.audio_conversion import extract_text_from_file
+from .utils.audio_conversion import (
+    extract_text_from_file,
+    run_audio_conversion_job,
+    count_pages_for_file,
+    MAX_PAGES_FOR_CONVERSION,
+)
 from .models import (
     Actualite,
     Auteur,
@@ -24,7 +29,6 @@ from .models import (
     MessageContact,
     Nationalite,
     AudioConversionRequest,
-    AudioConversionGenerated,
     Page,
     PageBlock,
     PageBlockItem,
@@ -429,7 +433,7 @@ class ActualiteAdmin(ModelAdmin):
     }
     list_display = ("titre", "date_publication", "est_publie", "est_une_a_la_une", "created_at")
     list_editable = ("est_publie", "est_une_a_la_une")
-    list_filter = ("est_publie", "est_une_a_la_une", ("date_publication", admin.DateFieldListFilter))
+    list_filter = ("est_publie", "est_une_a_la_une", "date_publication")
     search_fields = ("titre", "extrait", "contenu")
     prepopulated_fields = {"slug": ("titre",)}
     date_hierarchy = "date_publication"
@@ -645,36 +649,39 @@ class AudioConversionRequestAdmin(ModelAdmin):
         obj.statut = "delivered"
         obj.save(update_fields=["audio", "statut", "updated_at"])
 
-    def convertir_fichier_en_audio(self, request, queryset):
-        import requests
+    def _start_async_conversion(self, obj):
+        obj.statut = "processing"
+        obj.async_status = "queued"
+        obj.async_progress = 0
+        obj.async_error = ""
+        obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "updated_at"])
+        run_audio_conversion_job(obj.id)
 
-        success = 0
-        failures = 0
-        try:
-            requests.get("https://translate.google.com", timeout=5)
-        except Exception:
-            self.message_user(request, "Connexion Internet indisponible. Impossible de générer l'audio.", level="error")
-            return
+    def convertir_fichier_en_audio(self, request, queryset):
+        queued = 0
+        skipped = 0
         for obj in queryset:
             if not obj.fichier and not obj.texte:
                 self.message_user(request, f"Aucun texte/fichier pour la demande #{obj.id}.", level="warning")
+                skipped += 1
                 continue
-            try:
-                obj.statut = "processing"
-                obj.async_error = ""
-                obj.save(update_fields=["statut", "async_error", "updated_at"])
-                self._generate_audio_for_obj(obj)
-                success += 1
-            except Exception as exc:
-                failures += 1
-                obj.statut = "error"
-                obj.async_error = str(exc)
-                obj.save(update_fields=["statut", "async_error", "updated_at"])
-                self.message_user(request, f"Erreur pour la demande #{obj.id}: {exc}", level="error")
-        if success:
-            self.message_user(request, f"{success} fichier(s) converti(s) avec succès.", level="success")
-        if failures and not success:
-            self.message_user(request, "Aucune conversion n'a abouti. Vérifiez les erreurs ci-dessus.", level="error")
+            if obj.fichier:
+                pages = count_pages_for_file(obj.fichier)
+                if pages and pages > MAX_PAGES_FOR_CONVERSION:
+                    self.message_user(
+                        request,
+                        (
+                            f"Demande #{obj.id} : fichier très volumineux ({pages} pages). "
+                            f"Au-delà de {MAX_PAGES_FOR_CONVERSION} pages, la conversion peut être très longue."
+                        ),
+                        level="error",
+                    )
+            self._start_async_conversion(obj)
+            queued += 1
+        if queued:
+            self.message_user(request, f"{queued} conversion(s) lancée(s) en arrière-plan.", level="success")
+        if not queued and skipped:
+            self.message_user(request, "Aucune conversion n'a été lancée.", level="warning")
 
     convertir_fichier_en_audio.short_description = "Convertir le fichier en MP3"
 
@@ -691,15 +698,6 @@ class AudioConversionRequestAdmin(ModelAdmin):
         return "-"
 
     audio_link.short_description = "Audio"
-
-
-@admin.register(AudioConversionGenerated)
-class AudioConversionGeneratedAdmin(AudioConversionRequestAdmin):
-    """Liste dédiée des audios générés."""
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.filter(audio__isnull=False).exclude(audio="")
 
     def marquer_paye_et_envoyer(self, request, queryset):
         from django.core.mail import EmailMessage
