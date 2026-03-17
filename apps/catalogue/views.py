@@ -921,11 +921,12 @@ class AudioConversionView(LoginRequiredMixin, FormView):
                     tts.write_to_fp(audio_bytes)
                     audio_bytes.seek(0)
                     obj.audio.save(filename, audio_bytes, save=True)
-                except Exception:
+                except Exception as exc:
                     obj = AudioConversionRequest.objects.filter(pk=demande_id).first()
                     if obj:
                         obj.statut = "error"
-                        obj.save(update_fields=["statut", "updated_at"])
+                        obj.async_error = str(exc)
+                        obj.save(update_fields=["statut", "async_error", "updated_at"])
 
             if demande.paiement_requis:
                 import threading
@@ -942,9 +943,10 @@ class AudioConversionView(LoginRequiredMixin, FormView):
                         raise RuntimeError("Audio non généré.")
                     demande.statut = "free_generated"
                     demande.save(update_fields=["statut", "updated_at"])
-                except Exception:
+                except Exception as exc:
                     demande.statut = "error"
-                    demande.save(update_fields=["statut", "updated_at"])
+                    demande.async_error = str(exc)
+                    demande.save(update_fields=["statut", "async_error", "updated_at"])
                     messages.error(self.request, "La conversion a échoué. Vérifiez votre connexion et réessayez.")
                     self.request.session["audio_request_id"] = demande.id
                     return redirect(self.success_url)
