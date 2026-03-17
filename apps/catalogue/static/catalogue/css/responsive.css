@@ -1039,3 +1039,66 @@ font-size: 2rem;
   }
 }
 
+
+@media (max-width: 768px) {
+  /* FINAL mobile footer: smaller + left aligned (override) */
+  .footer-fayard,
+  .footer-fayard * {
+    text-align: left !important;
+  }
+  .footer-fayard__grid {
+    align-items: flex-start !important;
+    gap: 0.9rem !important;
+  }
+  .footer-fayard__logo {
+    font-size: 1.1rem !important;
+  }
+  .footer-fayard__slogan,
+  .footer-fayard__address,
+  .footer-fayard__address-main {
+    font-size: 0.6rem !important;
+    line-height: 1.25 !important;
+  }
+  .footer-fayard__menu-title {
+    font-size: 0.75rem !important;
+  }
+  .footer-fayard__menu-list a,
+  .footer-fayard__menu-list li {
+    font-size: 0.65rem !important;
+  }
+  .footer-fayard__action {
+    padding: 0.25rem 0.45rem !important;
+  }
+  .footer-fayard__action i {
+    font-size: 0.75rem !important;
+  }
+  .footer-fayard__action span {
+    font-size: 0.6rem !important;
+  }
+  .footer-fayard__social-title {
+    font-size: 0.6rem !important;
+  }
+  .footer-fayard__social-icons {
+    justify-content: flex-start !important;
+    gap: 0.35rem !important;
+  }
+  .footer-fayard__social-icons .social-icon {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.65rem !important;
+  }
+  .footer-fayard__menu-cta a {
+    max-width: 210px !important;
+    font-size: 0.65rem !important;
+    padding: 0.3rem 0.5rem !important;
+  }
+  .footer-fayard__btn-icon {
+    font-size: 0.7rem !important;
+  }
+  .footer-fayard__links a,
+  .footer-fayard__contact-link,
+  .footer-fayard__bottom p {
+    font-size: 0.6rem !important;
+  }
+}
+
