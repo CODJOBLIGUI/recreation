@@ -1519,6 +1519,15 @@ body.nav-drawer-open {
 
 }
 
+@media (min-width: 769px) {
+    .hero__author-photo,
+    .hero__book-cover,
+    .hero__visual img {
+        border-radius: var(--radius-media) !important;
+        overflow: hidden;
+    }
+}
+
 
 
 .hero__content {
