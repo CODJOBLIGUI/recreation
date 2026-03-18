@@ -232,7 +232,9 @@
         <div class="container">
             <!-- Logo et adresse -->
             <div class="footer-fayard__brand">
-                <h2 class="footer-fayard__logo">{{ appearance.site_name|default:"Editions Recréation" }}</h2>
+                <h2 class="footer-fayard__logo">
+                    <a href="{% url 'catalogue:index' %}">{{ appearance.site_name|default:"Editions Recréation" }}</a>
+                </h2>
                 <p class="footer-fayard__slogan">
                     <em>Avec le verbe, recréons le monde et conservons en une copie dans un livre !</em>
                 </p>
