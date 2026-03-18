@@ -927,7 +927,6 @@ class AudioConversionView(FormView):
                 demande.statut = "error"
                 demande.async_error = str(exc)
                 demande.save(update_fields=["statut", "async_error", "updated_at"])
-                messages.error(self.request, "Extraction du texte impossible. Merci de réessayer ou d’utiliser un autre fichier.")
                 self.request.session["audio_request_id"] = demande.id
                 return redirect(self.success_url)
 
