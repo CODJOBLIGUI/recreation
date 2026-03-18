@@ -246,6 +246,7 @@
                     <li><a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a></li>
                     <li><a href="{% url 'catalogue:livres-papier' %}">Livres papier</a></li>
                     <li><a href="{% url 'catalogue:livres-audio' %}">Livres audio</a></li>
+                    <li><a href="{% url 'catalogue:index' %}#nouveautes">Nouveautés</a></li>
                     <li><a href="{% url 'catalogue:index' %}#a-paraitre">Prochaines parutions</a></li>
                 </ul>
                 <p class="footer-fayard__catalogue-link footer-fayard__catalogue-link--collections">
@@ -263,6 +264,11 @@
                     {% endfor %}
                     <li class="footer-fayard__catalogue-section-title">Ressources</li>
                     <li><a href="{% url 'catalogue:actualites' %}">Actualités</a></li>
+                    <li><a href="{% url 'catalogue:a-propos' %}">A propos</a></li>
+                    <li><a href="{% url 'catalogue:a-propos' %}#equipe">Notre équipe</a></li>
+                    <li><a href="{% url 'catalogue:nos-contrats' %}">Nos contrats</a></li>
+                    <li><a href="{% url 'catalogue:conversion-audio' %}">Conversion de texte en audio</a></li>
+                    <li><a href="https://recreation.mychariow.shop/" target="_blank" rel="noopener">Notre boutique en ligne</a></li>
                 </ul>
             </div>
 
