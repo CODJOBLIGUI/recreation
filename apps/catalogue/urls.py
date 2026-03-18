@@ -28,6 +28,7 @@ urlpatterns = [
     path('actualite/<slug:slug>/', views.ActualiteDetailView.as_view(), name='actualite-detail'),
     path('conversion-texte-audio/', views.AudioConversionView.as_view(), name='conversion-audio'),
     path('conversion-texte-audio/payer/<int:demande_id>/', views.conversion_payment_redirect, name='conversion-audio-pay'),
+    path('conversion-texte-audio/statut/<int:demande_id>/', views.conversion_status, name='conversion-audio-status'),
     path('compte/connexion/', views.LoginView.as_view(), name='login'),
     path('compte/deconnexion/', auth_views.LogoutView.as_view(next_page='catalogue:conversion-audio'), name='logout'),
     path('compte/creer/', views.SignupView.as_view(), name='signup'),
