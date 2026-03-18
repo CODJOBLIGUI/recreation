@@ -939,7 +939,7 @@ class AudioConversionView(FormView):
                 self.request.session["audio_request_id"] = demande.id
                 return redirect(self.success_url)
 
-            def _generate_audio(demande_id, text, langue, voix):
+            def _generate_audio(demande_id, text, langue, voix, is_free):
                 close_old_connections()
                 import uuid
                 obj = AudioConversionRequest.objects.get(pk=demande_id)
@@ -949,6 +949,9 @@ class AudioConversionView(FormView):
                 audio_bytes = ContentFile(audio_stream.getvalue())
                 filename = f"conversion-{uuid.uuid4().hex}.mp3"
                 obj.audio.save(filename, audio_bytes, save=True)
+                if is_free:
+                    obj.statut = "free_generated"
+                    obj.save(update_fields=["statut", "updated_at"])
                 _set_async(obj, "finished", 100)
 
             if demande.paiement_requis:
@@ -956,7 +959,7 @@ class AudioConversionView(FormView):
                 def _run_thread():
                     try:
                         _set_async(demande, "started", 40)
-                        _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
+                        _generate_audio(demande.id, audio_text, demande.langue, demande.voix, False)
                     except Exception as exc:
                         obj = AudioConversionRequest.objects.filter(pk=demande.id).first()
                         if obj:
@@ -966,22 +969,20 @@ class AudioConversionView(FormView):
 
                 threading.Thread(target=_run_thread, daemon=True).start()
             else:
-                try:
-                    _set_async(demande, "started", 40)
-                    _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
-                    demande.refresh_from_db()
-                    if not demande.audio:
-                        raise RuntimeError("Audio non généré.")
-                    demande.statut = "free_generated"
-                    demande.save(update_fields=["statut", "updated_at"])
-                except Exception as exc:
-                    demande.statut = "error"
-                    demande.async_error = str(exc)
-                    _set_async(demande, "failed", 100, str(exc))
-                    demande.save(update_fields=["statut", "async_error", "updated_at"])
-                    messages.error(self.request, "La conversion a échoué. Vérifiez votre connexion et réessayez.")
-                    self.request.session["audio_request_id"] = demande.id
-                    return redirect(self.success_url)
+                import threading
+                def _run_free_thread():
+                    try:
+                        _set_async(demande, "started", 40)
+                        _generate_audio(demande.id, audio_text, demande.langue, demande.voix, True)
+                    except Exception as exc:
+                        obj = AudioConversionRequest.objects.filter(pk=demande.id).first()
+                        if obj:
+                            obj.statut = "error"
+                            obj.async_error = str(exc)
+                            _set_async(obj, "failed", 100, str(exc))
+                            obj.save(update_fields=["statut", "async_error", "updated_at"])
+
+                threading.Thread(target=_run_free_thread, daemon=True).start()
 
         self.request.session["audio_request_id"] = demande.id
 
@@ -991,7 +992,7 @@ class AudioConversionView(FormView):
 
         success_count = int(self.request.session.get("audio_success_count", 0) or 0)
         self.request.session["audio_success_count"] = success_count + 1
-        messages.success(self.request, "Votre audio est prêt. Vous pouvez le télécharger.")
+        messages.info(self.request, "Conversion en cours. La page se mettra à jour automatiquement.")
         return redirect(self.success_url)
 
 
