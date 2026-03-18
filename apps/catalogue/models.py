@@ -649,6 +649,7 @@ class AudioConversionRequest(TimeStampedModel):
     
     LANG_CHOICES = [
         ("fr", "Français"),
+        ("en", "Anglais"),
     ]
     
     user = models.ForeignKey(

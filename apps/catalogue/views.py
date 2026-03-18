@@ -26,6 +26,7 @@ from .forms import ContactForm, NewsletterForm, SoumissionManuscritForm, AudioCo
 from .utils.audio_conversion import (
     estimate_pages_from_text,
     count_pages_for_file,
+    detect_language,
     extract_text_from_file,
     generate_tts_mp3,
 )
@@ -961,6 +962,15 @@ class AudioConversionView(FormView):
                 demande.save(update_fields=["statut", "async_error", "updated_at"])
                 self.request.session["audio_request_id"] = demande.id
                 return redirect(self.success_url)
+
+        detected = detect_language(audio_text)
+        if detected in {"fr", "en"} and detected != demande.langue:
+            labels = {"fr": "français", "en": "anglais"}
+            messages.warning(
+                self.request,
+                f"Attention : votre texte semble être en {labels.get(detected, detected)}. "
+                f"Vous avez choisi la langue {labels.get(demande.langue, demande.langue)}.",
+            )
 
         if audio_text and not human_reading:
             try:
