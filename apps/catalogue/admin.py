@@ -598,9 +598,10 @@ class AudioConversionRequestAdmin(ModelAdmin):
     )
     list_filter = ("paiement_requis", "paiement_initie_at", "statut", "langue", "voix", "created_at")
     search_fields = ("email", "whatsapp", "texte")
+    list_editable = ("statut",)
     readonly_fields = ("created_at", "updated_at", "audio", "fichier", "paiement_initie_at", "pages_count", "payment_tier")
     date_hierarchy = "created_at"
-    actions = ["convertir_fichier_en_audio"]
+    actions = ["convertir_fichier_en_audio", "marquer_paye"]
     change_list_template = "admin/catalogue/audioconversionrequest/change_list.html"
     list_select_related = ("user",)
     fieldsets = (
@@ -615,6 +616,21 @@ class AudioConversionRequestAdmin(ModelAdmin):
 
     paiement_initie.boolean = True
     paiement_initie.short_description = "Paiement initié"
+
+    def marquer_paye(self, request, queryset):
+        from django.utils import timezone
+
+        updated = 0
+        for obj in queryset:
+            if not obj.paiement_initie_at:
+                obj.paiement_initie_at = timezone.now()
+            obj.statut = "paid"
+            obj.save(update_fields=["paiement_initie_at", "statut", "updated_at"])
+            updated += 1
+        if updated:
+            self.message_user(request, f"{updated} demande(s) marquée(s) comme payée(s).", level="success")
+
+    marquer_paye.short_description = "Marquer comme payée"
 
     def _generate_audio_for_obj(self, obj):
         from django.core.files.base import ContentFile
