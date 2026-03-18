@@ -144,6 +144,9 @@
                 <div class="form-group">
                     <label for="id_langue">{{ form.langue.label }}</label>
                     {{ form.langue }}
+                    {% if form.langue.errors %}
+                        <span class="form-error">{{ form.langue.errors.0 }}</span>
+                    {% endif %}
                 </div>
                 
                 <div class="form-group">

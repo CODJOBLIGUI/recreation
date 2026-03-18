@@ -914,11 +914,12 @@ class AudioConversionView(FormView):
         human_reading = (self.request.POST.get("human_reading") or "") == "1"
 
         if not human_reading and form.cleaned_data.get("langue") == "fon":
-            form.add_error(
-                "langue",
-                "La synthèse vocale en fon n'est pas disponible. "
-                "Veuillez choisir la lecture par un humain.",
+            message = (
+                "La synthèse vocale en fon n’est pas disponible pour le moment. "
+                "Choisissez ‘Lecture par un humain’."
             )
+            form.add_error("langue", message)
+            messages.error(self.request, message)
             return self.form_invalid(form)
 
 
