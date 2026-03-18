@@ -172,7 +172,7 @@ class AudioConversionForm(forms.ModelForm):
             "fichier": "Fichier",
             "langue": "Langue",
             "voix": "Vitesse",
-            "voix_humaine": "Voix souhaitée (lecture humaine)",
+            "voix_humaine": "Voix souhaitée (lecture par un humain)",
         }
 
     def _count_sentences(self, text):
@@ -193,7 +193,7 @@ class AudioConversionForm(forms.ModelForm):
         if paiement_requis and not email:
             raise forms.ValidationError("Email requis pour les demandes soumises au paiement.")
         if human_reading and not cleaned.get("voix_humaine"):
-            raise forms.ValidationError("Veuillez choisir une voix pour la lecture humaine.")
+            raise forms.ValidationError("Veuillez choisir une voix pour la lecture par un humain.")
         return cleaned
 
 

@@ -352,7 +352,7 @@
 {% if block.block_type == "home_newsletter" %}
 <section class="newsletter section {{ block.css_class }}" id="newsletter">
     <div class="container">
-        <h2 class="section__title">{{ block.titre|default:"Restez informé de nos nouveautés" }}</h2>
+        <h2 class="section__title">{{ block.titre|default:"Restez informé(e) de nos nouveautés" }}</h2>
         {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
         {% if messages %}
             {% for message in messages %}

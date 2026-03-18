@@ -672,7 +672,7 @@ class AudioConversionRequest(TimeStampedModel):
     paiement_initie_at = models.DateTimeField(blank=True, null=True, verbose_name="Paiement initié le")
     pages_count = models.PositiveIntegerField(default=0, verbose_name="Nombre de pages (estimé)")
     payment_tier = models.PositiveSmallIntegerField(default=1, verbose_name="Palier de paiement")
-    lecture_humaine = models.BooleanField(default=False, verbose_name="Lecture humaine")
+    lecture_humaine = models.BooleanField(default=False, verbose_name="Lecture par un humain")
     voix_humaine = models.CharField(
         max_length=10,
         blank=True,
@@ -681,7 +681,7 @@ class AudioConversionRequest(TimeStampedModel):
             ("male", "Voix masculine"),
             ("female", "Voix féminine"),
         ],
-        verbose_name="Voix (lecture humaine)",
+        verbose_name="Voix (lecture par un humain)",
     )
     async_status = models.CharField(
         max_length=20,

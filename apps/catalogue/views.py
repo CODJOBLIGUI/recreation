@@ -1019,7 +1019,7 @@ class AudioConversionView(FormView):
 
         if demande.paiement_requis:
             if human_reading:
-                messages.info(self.request, "Votre demande de lecture humaine est enregistrée. Procédez au paiement pour lancer la prise en charge.")
+                messages.info(self.request, "Votre demande de lecture par un humain est enregistrée. Procédez au paiement pour lancer la prise en charge.")
             else:
                 messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
             return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
@@ -1035,6 +1035,9 @@ class AudioConversionHumanView(AudioConversionView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["human_reading_page"] = True
+        form = context.get("form")
+        if form and "texte" in form.fields:
+            form.fields["texte"].widget.attrs["placeholder"] = "Collez votre texte ici."
         return context
 
 

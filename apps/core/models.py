@@ -97,9 +97,9 @@ class SiteAppearance(models.Model):
     audio_payment_url_3 = models.URLField(blank=True, verbose_name="Paiement audio (201 à 500 pages)")
     audio_payment_url_4 = models.URLField(blank=True, verbose_name="Paiement audio (501 à 1000 pages)")
     audio_payment_url_5 = models.URLField(blank=True, verbose_name="Paiement audio (1001+ pages)")
-    audio_human_payment_url = models.URLField(blank=True, verbose_name="Lien paiement (lecture humaine)")
-    audio_human_payment_url_male = models.URLField(blank=True, verbose_name="Paiement lecture humaine (voix masculine)")
-    audio_human_payment_url_female = models.URLField(blank=True, verbose_name="Paiement lecture humaine (voix féminine)")
+    audio_human_payment_url = models.URLField(blank=True, verbose_name="Lien paiement (lecture par un humain)")
+    audio_human_payment_url_male = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (voix masculine)")
+    audio_human_payment_url_female = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (voix féminine)")
 
     class Meta:
         verbose_name = "Apparence du site"
