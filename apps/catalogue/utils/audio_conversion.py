@@ -101,7 +101,7 @@ def extract_text_from_file(file_field):
         try:
             from docx import Document
         except Exception as exc:
-            raise RuntimeError("python-docx n'est pas installÃ©.") from exc
+            raise RuntimeError("python-docx n'est pas installé.") from exc
         doc = Document(local_path)
         return "\n".join(p.text for p in doc.paragraphs if p.text)
 
@@ -109,23 +109,19 @@ def extract_text_from_file(file_field):
         try:
             from PyPDF2 import PdfReader
         except Exception as exc:
-            raise RuntimeError("PyPDF2 n'est pas installÃ©.") from exc
+            raise RuntimeError("PyPDF2 n'est pas installé.") from exc
         with open(local_path, "rb") as f:
             reader = PdfReader(f)
             pages = [p.extract_text() or "" for p in reader.pages]
         text = "\n".join(pages).strip()
         if text:
             return text
-        # OCR fallback for scanned PDFs (extract embedded images)
+        # OCR fallback for scanned PDFs (pytesseract + Pillow)
         try:
-            import easyocr
+            import pytesseract
             from PIL import Image
-            import numpy as np
         except Exception as exc:
-            raise RuntimeError("OCR PDF indisponible (EasyOCR/Pillow manquant).") from exc
-        if _EASYOCR_READER is None:
-            _EASYOCR_READER = easyocr.Reader(["fr"], gpu=False)
-        reader_ocr = _EASYOCR_READER
+            raise RuntimeError("OCR PDF indisponible (pytesseract/Pillow manquant).") from exc
         texts = []
         for page in reader.pages:
             images = getattr(page, "images", []) or []
@@ -134,29 +130,25 @@ def extract_text_from_file(file_field):
                     try:
                         img_data = img.data
                         image = Image.open(io.BytesIO(img_data))
-                        img_arr = np.array(image)
-                        results = reader_ocr.readtext(img_arr, detail=0, paragraph=True)
-                        texts.extend(results)
+                        texts.append(pytesseract.image_to_string(image, lang="fra"))
                     except Exception:
                         continue
-        return "\n".join(texts)
+        return "\n".join(t for t in texts if t).strip()
 
     if ext in {".jpg", ".jpeg", ".png"}:
         try:
-            import easyocr
+            import pytesseract
+            from PIL import Image
         except Exception as exc:
-            raise RuntimeError("easyocr n'est pas installÃ©.") from exc
-        if _EASYOCR_READER is None:
-            _EASYOCR_READER = easyocr.Reader(["fr"], gpu=False)
-        reader = _EASYOCR_READER
-        results = reader.readtext(local_path, detail=0, paragraph=True)
-        return "\n".join(results)
+            raise RuntimeError("OCR image indisponible (pytesseract/Pillow manquant).") from exc
+        image = Image.open(local_path)
+        return pytesseract.image_to_string(image, lang="fra")
 
     if ext in {".pptx"}:
         try:
             from pptx import Presentation
         except Exception as exc:
-            raise RuntimeError("python-pptx n'est pas installÃ©.") from exc
+            raise RuntimeError("python-pptx n'est pas installé.") from exc
         prs = Presentation(local_path)
         texts = []
         for slide in prs.slides:
@@ -169,7 +161,7 @@ def extract_text_from_file(file_field):
         try:
             import openpyxl
         except Exception as exc:
-            raise RuntimeError("openpyxl n'est pas installÃ©.") from exc
+            raise RuntimeError("openpyxl n'est pas installé.") from exc
         wb = openpyxl.load_workbook(local_path, data_only=True)
         texts = []
         for ws in wb.worksheets:
@@ -184,7 +176,7 @@ def extract_text_from_file(file_field):
             from ebooklib import epub
             from bs4 import BeautifulSoup
         except Exception as exc:
-            raise RuntimeError("EbookLib ou beautifulsoup4 n'est pas installÃ©.") from exc
+            raise RuntimeError("EbookLib ou beautifulsoup4 n'est pas installé.") from exc
         book = epub.read_epub(local_path)
         texts = []
         for item in book.get_items():
