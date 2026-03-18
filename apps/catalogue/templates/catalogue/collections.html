@@ -1,37 +1,42 @@
-{% extends "catalogue/base.html" %}
+﻿{% extends "catalogue/base.html" %}
+
+{% load static %}
 
 {% block content %}
-<section class="page-hero page-hero--compact">
+<section class="page-header">
     <div class="container">
-        <h1 class="page-hero__title">Nos collections</h1>
-        <p class="page-hero__subtitle">Découvrez l’ensemble des collections des Editions Recréation</p>
+        <h1>Collections</h1>
+        <p>Découvrez l’ensemble des collections des Editions Recréation</p>
     </div>
 </section>
 
-<section class="section">
-    <div class="container container--narrow">
+<section class="actualites section">
+    <div class="container">
         {% if collections %}
-            <div class="collections-list">
+            <div class="actualites-grid">
                 {% for collection in collections %}
-                    <article class="collections-card">
-                        {% if collection.image %}
-                            <div class="collections-card__media">
+                    <article class="news-card">
+                        <div class="news-card__image">
+                            {% if collection.image %}
                                 <img src="{{ collection.image.url }}" alt="{{ collection.nom }}">
-                            </div>
-                        {% endif %}
-                        <div class="collections-card__content">
-                            <h2 class="collections-card__title">
-                                <a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a>
-                            </h2>
-                            {% if collection.description %}
-                                <div class="collections-card__desc">{{ collection.description|safe }}</div>
+                            {% else %}
+                                <img src="{% static 'catalogue/images/news/placeholder.jpg' %}" alt="{{ collection.nom }}">
                             {% endif %}
+                        </div>
+                        <div class="news-card__content">
+                            <h3 class="news-card__title">
+                                <a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a>
+                            </h3>
+                            {% if collection.description %}
+                                <div class="news-card__excerpt">{{ collection.description|safe }}</div>
+                            {% endif %}
+                            <a href="{{ collection.get_absolute_url }}" class="btn btn--secondary">Découvrir</a>
                         </div>
                     </article>
                 {% endfor %}
             </div>
         {% else %}
-            <p>Aucune collection disponible pour le moment.</p>
+            <p class="no-content">Aucune collection disponible pour le moment.</p>
         {% endif %}
     </div>
 </section>
