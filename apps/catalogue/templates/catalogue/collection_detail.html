@@ -7,7 +7,7 @@
     <div class="container">
         <h1>{{ collection.nom }}</h1>
         {% if collection.description %}
-        <p>{{ collection.description|striptags }}</p>
+        <div class="collection-detail__desc">{{ collection.description|safe }}</div>
         {% else %}
         <p>Découvrez les livres de cette collection.</p>
         {% endif %}

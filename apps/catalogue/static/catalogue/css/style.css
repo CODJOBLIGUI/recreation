@@ -1119,34 +1119,62 @@ body.nav-drawer-open {
 
 .collections-list {
     display: grid;
-    gap: 1.25rem;
+    gap: 1.5rem;
 }
 
-.collections-list__item {
-    padding: 1.1rem 1.2rem;
+.collections-card {
+    display: grid;
+    grid-template-columns: minmax(140px, 220px) 1fr;
+    gap: 1.2rem;
+    align-items: start;
+    padding: 1.2rem 1.3rem;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 14px;
+    border-radius: 16px;
     background: #2a2a2a;
     color: #ffffff;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
 }
 
-.collections-list__title {
-    font-size: 1.4rem;
-    margin-bottom: 0.35rem;
+.collections-card__media img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    display: block;
+    object-fit: cover;
 }
 
-.collections-list__title a {
+.collections-card__title {
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+}
+
+.collections-card__title a {
     color: #ffffff;
     text-decoration: none;
 }
 
-.collections-list__title a:hover {
+.collections-card__title a:hover {
     text-decoration: underline;
 }
 
-.collections-list__desc {
-    color: #d9d9d9;
-    font-size: 0.95rem;
+.collections-card__desc {
+    color: #e4e4e4;
+    font-size: 0.98rem;
+    line-height: 1.65;
+}
+
+.collections-card__desc p {
+    margin: 0 0 0.6rem;
+}
+
+.collection-detail__desc {
+    color: var(--color-text);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.collection-detail__desc p {
+    margin: 0 0 0.75rem;
 }
 
 .contact__address-main {

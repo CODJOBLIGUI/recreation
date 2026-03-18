@@ -4,7 +4,7 @@
 <section class="page-hero page-hero--compact">
     <div class="container">
         <h1 class="page-hero__title">Nos collections</h1>
-        <p class="page-hero__subtitle">Découvrez l’ensemble des collections des Éditions Recréation.</p>
+        <p class="page-hero__subtitle">Découvrez l’ensemble des collections des Editions Recréation</p>
     </div>
 </section>
 
@@ -13,13 +13,20 @@
         {% if collections %}
             <div class="collections-list">
                 {% for collection in collections %}
-                    <article class="collections-list__item">
-                        <h2 class="collections-list__title">
-                            <a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a>
-                        </h2>
-                        {% if collection.description %}
-                            <p class="collections-list__desc">{{ collection.description|truncatewords:30 }}</p>
+                    <article class="collections-card">
+                        {% if collection.image %}
+                            <div class="collections-card__media">
+                                <img src="{{ collection.image.url }}" alt="{{ collection.nom }}">
+                            </div>
                         {% endif %}
+                        <div class="collections-card__content">
+                            <h2 class="collections-card__title">
+                                <a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a>
+                            </h2>
+                            {% if collection.description %}
+                                <div class="collections-card__desc">{{ collection.description|safe }}</div>
+                            {% endif %}
+                        </div>
                     </article>
                 {% endfor %}
             </div>

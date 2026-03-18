@@ -61,7 +61,17 @@
                     {% endfor %}
                 </select>
                 
-                <!-- Tri -->
+                <!-- Collections -->
+                <select id="collection-filter" name="collection" aria-label="Filtrer par collection">
+                    <option value="">Toutes les collections</option>
+                    {% for collection in collections_list %}
+                    <option value="{{ collection.slug }}" {% if collection_actuelle == collection.slug %}selected{% endif %}>
+                        {{ collection.nom }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <!-- Tri -->
                 <select id="sort-filter" name="sort" aria-label="Trier par">
                     <option value="-parution" {% if sort_actuel == "-parution" %}selected{% endif %}>Plus récents</option>
                     <option value="parution" {% if sort_actuel == "parution" %}selected{% endif %}>Plus anciens</option>

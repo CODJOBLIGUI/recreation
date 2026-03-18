@@ -215,6 +215,7 @@ class CatalogueView(ListView):
         context["langue_actuelle"] = self.request.GET.get("langue", "")
         context["langues_list"] = Livre.LANGUES
         context["sort_actuel"] = self.request.GET.get("sort", "-parution")
+        context["collections_list"] = Collection.objects.filter(est_active=True).order_by("nom")
         queryset_or_list = self.get_queryset()
         if isinstance(queryset_or_list, list):
             context["total_livres"] = len(queryset_or_list)

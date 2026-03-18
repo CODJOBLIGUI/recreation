@@ -1198,3 +1198,13 @@ font-size: 2rem;
   }
 }
 
+@media (max-width: 768px) {
+  .collections-card {
+    grid-template-columns: 1fr;
+  }
+  .collections-card__media img {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+

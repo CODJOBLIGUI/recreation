@@ -285,7 +285,7 @@
 {% if block.block_type == "home_bestsellers" %}
 <section class="bestsellers section bg-light {{ block.css_class }}">
     <div class="container">
-        <h2 class="section__title">{{ block.titre|default:"Meilleures Ventes" }}</h2>
+        <h2 class="section__title">{{ block.titre|default:"Meilleures ventes" }}</h2>
         {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
         <div class="bestsellers__carousel book-grid">
             {% for livre in bestsellers %}
