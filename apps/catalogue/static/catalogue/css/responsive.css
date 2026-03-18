@@ -1156,6 +1156,13 @@ font-size: 2rem;
     font-size: 0.7rem !important;
     line-height: 1.2 !important;
   }
+  .footer-fayard__catalogue-link,
+  .footer-fayard__catalogue-list {
+    text-align: center !important;
+  }
+  .footer-fayard__catalogue-list {
+    justify-items: center !important;
+  }
 }
 
 

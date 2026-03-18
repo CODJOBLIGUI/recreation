@@ -260,6 +260,8 @@
                     {% empty %}
                         <li>Collections à venir</li>
                     {% endfor %}
+                    <li><a href="{% url 'catalogue:index' %}#a-paraitre">Prochaines parutions</a></li>
+                    <li><a href="{% url 'catalogue:actualites' %}">Actualités</a></li>
                 </ul>
             </div>
 
