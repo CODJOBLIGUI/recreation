@@ -858,7 +858,7 @@ FREE_LIMIT_MESSAGE = (
 class AudioConversionView(FormView):
     template_name = "catalogue/conversion-audio.html"
     form_class = AudioConversionForm
-    success_url = reverse_lazy("catalogue:conversion-audio")
+    success_url = reverse_lazy("catalogue:conversion-audio-synthetique")
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         page = Page.objects.filter(slug="conversion-texte-audio", is_active=True).first()
@@ -1027,6 +1027,28 @@ class AudioConversionView(FormView):
         messages.info(self.request, "Conversion en cours. La page se mettra à jour automatiquement.")
         return redirect(self.success_url)
 
+
+class AudioConversionHumanView(AudioConversionView):
+    template_name = "catalogue/conversion-audio-humain.html"
+    success_url = reverse_lazy("catalogue:conversion-audio-humain")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["human_reading_page"] = True
+        return context
+
+
+class AudioConversionChoiceView(TemplateView):
+    template_name = "catalogue/conversion-audio-choice.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page = Page.objects.filter(slug="conversion-texte-audio", is_active=True).first()
+        context["page"] = page
+        context["page_title"] = (
+            page.meta_title if page and page.meta_title else "Conversion de texte en audio - Editions Recréation"
+        )
+        return context
 
 def conversion_status(request, demande_id):
     demande = get_object_or_404(AudioConversionRequest, id=demande_id)

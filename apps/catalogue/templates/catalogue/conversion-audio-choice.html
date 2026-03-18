@@ -1,0 +1,36 @@
+{% extends "catalogue/base.html" %}
+
+{% block content %}
+<section class="page-hero page-hero--compact">
+    <div class="container">
+        <h1 class="page-hero__title">Conversion de texte en audio</h1>
+        <p class="page-hero__subtitle">
+            Choisissez le type de conversion qui vous convient : synthétique ou lecture humaine.
+        </p>
+    </div>
+</section>
+
+<section class="section conversion-audio__form-section">
+    <div class="container container--narrow">
+        <div class="cta-box conversion-audio__choice">
+            <h2 class="cta-box__title">Conversion synthétique</h2>
+            <p class="cta-box__text">
+                Conversion rapide par voix synthétique, gratuite jusqu’à 5000 caractères.
+            </p>
+            <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-synthetique' %}">
+                Continuer en synthétique
+            </a>
+        </div>
+
+        <div class="cta-box conversion-audio__choice">
+            <h2 class="cta-box__title">Lecture humaine</h2>
+            <p class="cta-box__text">
+                Confiez votre texte à un membre de notre équipe pour une lecture humaine (voix masculine ou féminine).
+            </p>
+            <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
+                Continuer en lecture humaine
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

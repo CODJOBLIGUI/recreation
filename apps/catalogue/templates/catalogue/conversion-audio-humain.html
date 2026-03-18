@@ -1,0 +1,117 @@
+{% extends "catalogue/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-hero page-hero--compact">
+    <div class="container">
+        <h1 class="page-hero__title">Lecture humaine</h1>
+        <p class="page-hero__subtitle conversion-audio__hero-note">
+            Confiez votre texte collé ou votre fichier à un membre de notre équipe pour une lecture humaine.
+            Choisissez la voix souhaitée (masculine ou féminine), puis procédez au paiement.
+        </p>
+    </div>
+</section>
+
+{% if page_blocks %}
+    {% include "catalogue/partials/page_blocks.html" %}
+{% endif %}
+
+<section class="section conversion-audio__form-section">
+    <div class="container container--narrow">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="form-feedback form-feedback--{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="contact__form-wrapper conversion-audio__form">
+            <h2>Confiez votre texte à nos professionnels</h2>
+            <form method="POST" enctype="multipart/form-data" class="contact__form">
+                {% csrf_token %}
+                <input type="hidden" name="human_reading" id="human-reading-flag" value="1">
+
+                <div class="form-group">
+                    <label for="id_texte">{{ form.texte.label }}</label>
+                    {{ form.texte }}
+                    {% if form.texte.errors %}
+                        <span class="form-error">{{ form.texte.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_fichier">{{ form.fichier.label }}</label>
+                    {{ form.fichier }}
+                    {% if form.fichier.errors %}
+                        <span class="form-error">{{ form.fichier.errors.0 }}</span>
+                    {% endif %}
+                    <small class="form-hint">Tout fichier téléversé est soumis au paiement.</small>
+                    <small class="form-hint">Formats pris en charge : txt, docx, pdf, jpg, png, pptx, xlsx, epub.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_langue">{{ form.langue.label }}</label>
+                    {{ form.langue }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_voix_humaine">{{ form.voix_humaine.label }}</label>
+                    {{ form.voix_humaine }}
+                    {% if form.voix_humaine.errors %}
+                        <span class="form-error">{{ form.voix_humaine.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-feedback form-feedback--info">
+                    La lecture humaine est un service payant. Vous serez redirigé vers le paiement.
+                </div>
+
+                <div id="contact-fields">
+                    <div class="form-group">
+                        <label for="id_email">{{ form.email.label }} *</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <span class="form-error">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_whatsapp">{{ form.whatsapp.label }}</label>
+                        {{ form.whatsapp }}
+                        {% if form.whatsapp.errors %}
+                            <span class="form-error">{{ form.whatsapp.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if form.non_field_errors %}
+                    <span class="form-error">{{ form.non_field_errors.0 }}</span>
+                {% endif %}
+
+                <button type="submit" class="btn btn--primary btn--large" id="human-submit">Lancer la lecture humaine</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function() {
+        const emailInput = document.getElementById("id_email");
+        const form = document.querySelector(".conversion-audio__form form");
+        const submitBtn = document.getElementById("human-submit");
+        if (emailInput) {
+            emailInput.required = true;
+        }
+        if (form) {
+            form.addEventListener("submit", function() {
+                if (submitBtn) submitBtn.disabled = true;
+            });
+        }
+    })();
+</script>
+{% endblock %}
