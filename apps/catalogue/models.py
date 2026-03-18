@@ -312,7 +312,7 @@ class Livre(TimeStampedModel, SEOModel):
         ("zh", "Mandarin"),
         ("ru", "Russe"),
         ("ar", "Arabe"),
-        ("fon", "Fongbé"),
+        ("fon", "Fongbe"),
         ("yo", "Yoruba"),
         ("ha", "Haoussa"),
         ("sw", "Swahili"),
