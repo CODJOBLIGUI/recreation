@@ -1110,6 +1110,45 @@ body.nav-drawer-open {
     text-decoration: underline;
 }
 
+.footer-fayard__catalogue-section-title {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+}
+
+.collections-list {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.collections-list__item {
+    padding: 1.1rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    background: #2a2a2a;
+    color: #ffffff;
+}
+
+.collections-list__title {
+    font-size: 1.4rem;
+    margin-bottom: 0.35rem;
+}
+
+.collections-list__title a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.collections-list__title a:hover {
+    text-decoration: underline;
+}
+
+.collections-list__desc {
+    color: #d9d9d9;
+    font-size: 0.95rem;
+}
+
 .contact__address-main {
     font-size: 1rem;
     font-weight: 600;

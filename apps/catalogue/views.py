@@ -476,6 +476,23 @@ class AProposView(TemplateView):
 # COLLECTIONS
 # -------------------------------------------------------------------------------
 
+class CollectionsListView(ListView):
+    """Vue liste des collections."""
+
+    model = Collection
+    template_name = "catalogue/collections.html"
+    context_object_name = "collections"
+
+    def get_queryset(self):
+        return Collection.objects.filter(est_active=True).order_by("nom")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Collections - Editions Recréation"
+        context["page_description"] = "Découvrez toutes nos collections."
+        return context
+
+
 class CollectionDetailView(DetailView):
     """Vue detail collection."""
 
@@ -830,6 +847,11 @@ class ActualiteDetailView(DetailView):
 
 FREE_TEXT_LIMIT = 5000
 FREE_CONVERSION_LIMIT = 3
+FREE_LIMIT_MESSAGE = (
+    "Vous venez de faire trois essais gratuits. Inscrivez-vous ou connectez-vous "
+    "pour continuer d'utiliser ce service gratuitement tant que votre texte ne "
+    "dépasse pas la longueur autorisée pour ce mode."
+)
 
 
 class AudioConversionView(FormView):
@@ -873,7 +895,7 @@ class AudioConversionView(FormView):
         if not request.user.is_authenticated:
             success_count = int(request.session.get("audio_success_count", 0) or 0)
             if success_count >= FREE_CONVERSION_LIMIT:
-                messages.info(request, "Veuillez vous connecter pour continuer la conversion.")
+                messages.info(request, FREE_LIMIT_MESSAGE)
                 return redirect("catalogue:login")
         return super().dispatch(request, *args, **kwargs)
 
@@ -989,14 +1011,24 @@ class AudioConversionView(FormView):
             messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
             return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
 
-        success_count = int(self.request.session.get("audio_success_count", 0) or 0)
-        self.request.session["audio_success_count"] = success_count + 1
         messages.info(self.request, "Conversion en cours. La page se mettra à jour automatiquement.")
         return redirect(self.success_url)
 
 
 def conversion_status(request, demande_id):
     demande = get_object_or_404(AudioConversionRequest, id=demande_id)
+    if (
+        not request.user.is_authenticated
+        and demande.audio
+        and not demande.paiement_requis
+        and demande.statut == "free_generated"
+    ):
+        counted = request.session.get("audio_counted_ids", [])
+        if demande.id not in counted:
+            success_count = int(request.session.get("audio_success_count", 0) or 0)
+            request.session["audio_success_count"] = success_count + 1
+            counted.append(demande.id)
+            request.session["audio_counted_ids"] = counted
     return JsonResponse(
         {
             "id": demande.id,

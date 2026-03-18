@@ -20,6 +20,7 @@ urlpatterns = [
     path('auteurs/', views.AuteursView.as_view(), name='auteurs'),
     path('auteur/<slug:slug>/', views.AuteurDetailView.as_view(), name='auteur-detail'),
     path('collection/<slug:slug>/', views.CollectionDetailView.as_view(), name='collection-detail'),
+    path('collections/', views.CollectionsListView.as_view(), name='collections'),
     path('contact/', views.ContactView.as_view(), name='contact'),
     path('a-propos/', views.AProposView.as_view(), name='a-propos'),
     path('nos-contrats/', views.NosContratsView.as_view(), name='nos-contrats'),
