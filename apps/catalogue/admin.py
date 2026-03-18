@@ -591,12 +591,14 @@ class AudioConversionRequestAdmin(ModelAdmin):
         "payment_tier",
         "fichier_link",
         "audio_link",
+        "lecture_humaine",
+        "voix_humaine",
         "paiement_requis",
         "paiement_initie",
         "statut",
         "created_at",
     )
-    list_filter = ("paiement_requis", "paiement_initie_at", "statut", "langue", "voix", "created_at")
+    list_filter = ("paiement_requis", "lecture_humaine", "paiement_initie_at", "statut", "langue", "voix", "created_at")
     search_fields = ("email", "whatsapp", "texte")
     list_editable = ("statut",)
     readonly_fields = ("created_at", "updated_at", "audio", "fichier", "paiement_initie_at", "pages_count", "payment_tier")
@@ -606,7 +608,7 @@ class AudioConversionRequestAdmin(ModelAdmin):
     list_select_related = ("user",)
     fieldsets = (
         ("Contact", {"fields": ("user", "email", "whatsapp")}),
-        ("Demande", {"fields": ("texte", "fichier", "langue", "voix")}),
+        ("Demande", {"fields": ("texte", "fichier", "langue", "voix", "lecture_humaine", "voix_humaine")}),
         ("Statut", {"fields": ("pages_count", "payment_tier", "paiement_requis", "paiement_initie_at", "statut", "audio")}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
     )

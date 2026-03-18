@@ -1052,6 +1052,16 @@ body.nav-drawer-open {
     margin-bottom: 1rem;
 }
 
+.footer-fayard__logo a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-fayard__logo a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
 .footer-fayard__address {
     color: #999;
     font-size: 0.95rem;
@@ -3125,6 +3135,24 @@ html {
 
 .conversion-audio__form textarea.form-control {
     min-height: 110px;
+}
+
+.conversion-audio__human {
+    margin: 0.9rem 0 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.conversion-audio__human h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.05rem;
+}
+
+.conversion-audio__human p {
+    margin: 0 0 0.65rem;
+    color: var(--color-text-light);
 }
 
 .conversion-audio__progress {

@@ -122,6 +122,7 @@
             <h2>Convertissez votre texte ici</h2>
             <form method="POST" enctype="multipart/form-data" class="contact__form">
                 {% csrf_token %}
+                <input type="hidden" name="human_reading" id="human-reading-flag" value="0">
                 
                 <div class="form-group">
                     <label for="id_texte">{{ form.texte.label }}</label>
@@ -177,6 +178,22 @@
                     <span class="form-error">{{ form.non_field_errors.0 }}</span>
                 {% endif %}
                 
+                <div class="conversion-audio__human">
+                    <h3>Faire lire par nos professionnels</h3>
+                    <p>
+                        Confiez le texte collé ou le fichier téléversé à un membre de notre équipe pour une lecture humaine.
+                        Choisissez la voix souhaitée (masculine ou féminine) et procédez au paiement.
+                    </p>
+                    <div class="form-group">
+                        <label for="id_voix_humaine">{{ form.voix_humaine.label }}</label>
+                        {{ form.voix_humaine }}
+                    </div>
+                    <div class="form-feedback form-feedback--info" id="human-note" style="display:none;">
+                        La lecture humaine est un service payant. Vous serez redirigé vers le paiement.
+                    </div>
+                    <button type="submit" class="btn btn--white btn--large" id="human-reading-btn">Faire lire par nos professionnels</button>
+                </div>
+
                 <button type="submit" class="btn btn--primary btn--large" id="conversion-submit">Lancer la conversion</button>
             </form>
         </div>
@@ -192,9 +209,12 @@
         const fichier = document.getElementById("id_fichier");
         const contactFields = document.getElementById("contact-fields");
         const paymentNote = document.getElementById("payment-note");
+        const humanNote = document.getElementById("human-note");
         const emailInput = document.getElementById("id_email");
         const form = document.querySelector(".conversion-audio__form form");
         const submitBtn = document.getElementById("conversion-submit");
+        const humanBtn = document.getElementById("human-reading-btn");
+        const humanFlag = document.getElementById("human-reading-flag");
         const progressBox = document.getElementById("conversion-progress");
         const progressFill = document.getElementById("conversion-progress-fill");
         const progressText = document.getElementById("conversion-progress-text");
@@ -230,6 +250,21 @@
                     if (progressFill) progressFill.style.width = "5%";
                     if (progressText) progressText.textContent = "Progression : 5%";
                 }
+            });
+        }
+
+        if (submitBtn) {
+            submitBtn.addEventListener("click", function() {
+                if (humanFlag) humanFlag.value = "0";
+                if (humanNote) humanNote.style.display = "none";
+            });
+        }
+
+        if (humanBtn) {
+            humanBtn.addEventListener("click", function() {
+                if (humanFlag) humanFlag.value = "1";
+                if (emailInput) emailInput.required = true;
+                if (humanNote) humanNote.style.display = "block";
             });
         }
 

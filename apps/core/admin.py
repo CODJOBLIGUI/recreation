@@ -21,6 +21,9 @@ class SiteAppearanceAdmin(admin.ModelAdmin):
                     "audio_payment_url_3",
                     "audio_payment_url_4",
                     "audio_payment_url_5",
+                    "audio_human_payment_url",
+                    "audio_human_payment_url_male",
+                    "audio_human_payment_url_female",
                 )
             },
         ),

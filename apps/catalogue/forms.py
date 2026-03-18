@@ -155,7 +155,7 @@ class AudioConversionForm(forms.ModelForm):
     
     class Meta:
         model = AudioConversionRequest
-        fields = ["email", "whatsapp", "texte", "fichier", "langue", "voix"]
+        fields = ["email", "whatsapp", "texte", "fichier", "langue", "voix", "voix_humaine"]
         widgets = {
             "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "votre@email.com"}),
             "whatsapp": forms.TextInput(attrs={"class": "form-control phone-input", "placeholder": "+229 XX XX XX XX"}),
@@ -163,6 +163,7 @@ class AudioConversionForm(forms.ModelForm):
             "fichier": forms.ClearableFileInput(attrs={"class": "form-control"}),
             "langue": forms.Select(attrs={"class": "form-control"}),
             "voix": forms.Select(attrs={"class": "form-control"}),
+            "voix_humaine": forms.Select(attrs={"class": "form-control"}),
         }
         labels = {
             "email": "Email",
@@ -171,6 +172,7 @@ class AudioConversionForm(forms.ModelForm):
             "fichier": "Fichier",
             "langue": "Langue",
             "voix": "Vitesse",
+            "voix_humaine": "Voix souhaitée (lecture humaine)",
         }
 
     def _count_sentences(self, text):
@@ -186,9 +188,12 @@ class AudioConversionForm(forms.ModelForm):
         if not texte and not fichier:
             raise forms.ValidationError("Veuillez coller un texte ou téléverser un fichier.")
         
-        paiement_requis = True if fichier else len(texte) > 5000
+        human_reading = (self.data.get("human_reading") or "") == "1"
+        paiement_requis = human_reading or fichier or len(texte) > 5000
         if paiement_requis and not email:
             raise forms.ValidationError("Email requis pour les demandes soumises au paiement.")
+        if human_reading and not cleaned.get("voix_humaine"):
+            raise forms.ValidationError("Veuillez choisir une voix pour la lecture humaine.")
         return cleaned
 
 

@@ -877,13 +877,19 @@ class AudioConversionView(FormView):
             appearance = SiteAppearance.objects.first()
             if appearance and context["last_request"]:
                 tier = context["last_request"].payment_tier or 1
-                context["payment_url"] = {
-                    1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
-                    2: appearance.audio_payment_url_2,
-                    3: appearance.audio_payment_url_3,
-                    4: appearance.audio_payment_url_4,
-                    5: appearance.audio_payment_url_5,
-                }.get(tier) or appearance.audio_payment_url
+                if context["last_request"].lecture_humaine:
+                    context["payment_url"] = {
+                        "male": appearance.audio_human_payment_url_male or appearance.audio_human_payment_url,
+                        "female": appearance.audio_human_payment_url_female or appearance.audio_human_payment_url,
+                    }.get(context["last_request"].voix_humaine) or appearance.audio_human_payment_url
+                else:
+                    context["payment_url"] = {
+                        1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
+                        2: appearance.audio_payment_url_2,
+                        3: appearance.audio_payment_url_3,
+                        4: appearance.audio_payment_url_4,
+                        5: appearance.audio_payment_url_5,
+                    }.get(tier) or appearance.audio_payment_url
                 context["payment_available"] = bool(context["payment_url"])
         return context
 
@@ -904,13 +910,16 @@ class AudioConversionView(FormView):
         texte = (form.cleaned_data.get("texte") or "").strip()
         fichier = form.cleaned_data.get("fichier")
         text_length = len(texte)
+        human_reading = (self.request.POST.get("human_reading") or "") == "1"
 
 
         demande = form.save(commit=False)
         if self.request.user.is_authenticated:
             demande.user = self.request.user
         demande.phrases_count = 0
-        demande.paiement_requis = True if fichier else text_length > FREE_TEXT_LIMIT
+        demande.lecture_humaine = human_reading
+        demande.voix_humaine = form.cleaned_data.get("voix_humaine") or ""
+        demande.paiement_requis = True if human_reading else (True if fichier else text_length > FREE_TEXT_LIMIT)
         demande.statut = "awaiting_payment" if demande.paiement_requis else "processing"
         demande.async_status = "queued"
         demande.async_progress = 0
@@ -953,7 +962,7 @@ class AudioConversionView(FormView):
                 self.request.session["audio_request_id"] = demande.id
                 return redirect(self.success_url)
 
-        if audio_text:
+        if audio_text and not human_reading:
             try:
                 from gtts import gTTS
             except Exception:
@@ -1009,7 +1018,10 @@ class AudioConversionView(FormView):
         self.request.session["audio_request_id"] = demande.id
 
         if demande.paiement_requis:
-            messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
+            if human_reading:
+                messages.info(self.request, "Votre demande de lecture humaine est enregistrée. Procédez au paiement pour lancer la prise en charge.")
+            else:
+                messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
             return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
 
         messages.info(self.request, "Conversion en cours. La page se mettra à jour automatiquement.")
@@ -1061,13 +1073,19 @@ def conversion_payment_redirect(request, demande_id):
     tier = demande.payment_tier or 1
     payment_url = ""
     if appearance:
-        payment_url = {
-            1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
-            2: appearance.audio_payment_url_2,
-            3: appearance.audio_payment_url_3,
-            4: appearance.audio_payment_url_4,
-            5: appearance.audio_payment_url_5,
-        }.get(tier) or appearance.audio_payment_url
+        if demande.lecture_humaine:
+            payment_url = {
+                "male": appearance.audio_human_payment_url_male or appearance.audio_human_payment_url,
+                "female": appearance.audio_human_payment_url_female or appearance.audio_human_payment_url,
+            }.get(demande.voix_humaine) or appearance.audio_human_payment_url
+        else:
+            payment_url = {
+                1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
+                2: appearance.audio_payment_url_2,
+                3: appearance.audio_payment_url_3,
+                4: appearance.audio_payment_url_4,
+                5: appearance.audio_payment_url_5,
+            }.get(tier) or appearance.audio_payment_url
 
     if request.GET.get("ajax") == "1" or request.headers.get("x-requested-with") == "XMLHttpRequest":
         return JsonResponse(
