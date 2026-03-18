@@ -1064,6 +1064,22 @@ body.nav-drawer-open {
     font-weight: 600;
 }
 
+.footer-fayard__catalogue-link {
+    margin-top: 0.35rem;
+}
+
+.footer-fayard__catalogue-link a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.footer-fayard__catalogue-link a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
 .contact__address-main {
     font-size: 1rem;
     font-weight: 600;
