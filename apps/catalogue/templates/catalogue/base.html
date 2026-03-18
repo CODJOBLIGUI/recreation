@@ -242,6 +242,25 @@
                 <p class="footer-fayard__catalogue-link">
                     <a href="{% url 'catalogue:catalogue' %}">Catalogue</a>
                 </p>
+                <ul class="footer-fayard__catalogue-list">
+                    <li><a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a></li>
+                    <li><a href="{% url 'catalogue:livres-papier' %}">Livres papier</a></li>
+                    <li><a href="{% url 'catalogue:livres-audio' %}">Livres audio</a></li>
+                </ul>
+                <p class="footer-fayard__catalogue-link footer-fayard__catalogue-link--collections">
+                    <span>Collections</span>
+                </p>
+                <ul class="footer-fayard__catalogue-list">
+                    {% for collection in collections_list|slice:":6" %}
+                        {% if collection.slug %}
+                        <li><a href="{{ collection.get_absolute_url }}">{{ collection.nom }}</a></li>
+                        {% else %}
+                        <li>{{ collection.nom }}</li>
+                        {% endif %}
+                    {% empty %}
+                        <li>Collections à venir</li>
+                    {% endfor %}
+                </ul>
             </div>
 
             <!-- Actions rapides -->
