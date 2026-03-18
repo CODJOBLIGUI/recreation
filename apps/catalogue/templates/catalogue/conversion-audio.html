@@ -298,12 +298,6 @@
                 if (paymentError) paymentError.style.display = "none";
                 if (paymentStartNote) paymentStartNote.style.display = "block";
                 const payUrl = payBtn.getAttribute("href");
-                if (payUrl && navigator.sendBeacon) {
-                    navigator.sendBeacon(payUrl + "?ajax=1");
-                } else if (payUrl) {
-                    fetch(payUrl + "?ajax=1", { headers: { "X-Requested-With": "XMLHttpRequest" }, keepalive: true })
-                        .catch(function() {});
-                }
                 if (payUrl) {
                     setTimeout(function() {
                         window.location.href = payUrl;
