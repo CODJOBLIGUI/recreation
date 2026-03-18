@@ -964,8 +964,8 @@ class AudioConversionView(FormView):
                 return redirect(self.success_url)
 
         detected = detect_language(audio_text)
-        if detected in {"fr", "en"} and detected != demande.langue:
-            labels = {"fr": "français", "en": "anglais"}
+        if detected in {"fr", "en", "es", "de"} and detected != demande.langue:
+            labels = {"fr": "français", "en": "anglais", "es": "espagnol", "de": "allemand"}
             messages.warning(
                 self.request,
                 f"Attention : votre texte semble être en {labels.get(detected, detected)}. "

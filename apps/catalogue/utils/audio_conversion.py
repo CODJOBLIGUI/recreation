@@ -21,6 +21,10 @@ def detect_language(text):
         return "fr"
     if code.startswith("en"):
         return "en"
+    if code.startswith("es"):
+        return "es"
+    if code.startswith("de"):
+        return "de"
     return code
 
 _EASYOCR_READER = None
@@ -149,7 +153,7 @@ def extract_text_from_file(file_field):
                     try:
                         img_data = img.data
                         image = Image.open(io.BytesIO(img_data))
-                        texts.append(pytesseract.image_to_string(image, lang="fra+eng"))
+                        texts.append(pytesseract.image_to_string(image, lang="fra+eng+spa+deu"))
                     except Exception:
                         continue
         return "\n".join(t for t in texts if t).strip()
@@ -161,7 +165,7 @@ def extract_text_from_file(file_field):
         except Exception as exc:
             raise RuntimeError("OCR image indisponible (pytesseract/Pillow manquant).") from exc
         image = Image.open(local_path)
-        return pytesseract.image_to_string(image, lang="fra+eng")
+        return pytesseract.image_to_string(image, lang="fra+eng+spa+deu")
 
     if ext in {".pptx"}:
         try:
