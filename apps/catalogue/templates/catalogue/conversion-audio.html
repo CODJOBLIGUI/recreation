@@ -147,6 +147,12 @@
                     {% if form.langue.errors %}
                         <span class="form-error">{{ form.langue.errors.0 }}</span>
                     {% endif %}
+                    {% if form.langue.value == "fon" %}
+                        <small class="form-hint">
+                            La synthèse vocale en fon n’est pas disponible.
+                            <a href="{% url 'catalogue:conversion-audio-humain' %}">Ouvrir la lecture par un humain</a>.
+                        </small>
+                    {% endif %}
                 </div>
                 
                 <div class="form-group">

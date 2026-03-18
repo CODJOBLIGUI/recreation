@@ -16,6 +16,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
+from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
 from django.contrib.auth.views import LoginView as DjangoLoginView, PasswordResetView as DjangoPasswordResetView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -916,10 +917,14 @@ class AudioConversionView(FormView):
         if not human_reading and form.cleaned_data.get("langue") == "fon":
             message = (
                 "La synthèse vocale en fon n’est pas disponible pour le moment. "
-                "Choisissez ‘Lecture par un humain’."
+                "Choisissez ‘Lecture par un humain’ "
+                f"(<a href=\"{reverse_lazy('catalogue:conversion-audio-humain')}\">ouvrir l’interface</a>)."
             )
-            form.add_error("langue", message)
-            messages.error(self.request, message)
+            form.add_error(
+                "langue",
+                "La synthèse vocale en fon n’est pas disponible. Choisissez ‘Lecture par un humain’.",
+            )
+            messages.error(self.request, mark_safe(message))
             return self.form_invalid(form)
 
 
