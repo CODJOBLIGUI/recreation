@@ -1080,6 +1080,36 @@ body.nav-drawer-open {
     text-decoration: underline;
 }
 
+.footer-fayard__catalogue-link--collections span {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.footer-fayard__catalogue-list {
+    list-style: none;
+    margin: 0.35rem 0 0.65rem;
+    padding: 0;
+    display: grid;
+    gap: 0.25rem;
+    text-align: center;
+}
+
+.footer-fayard__catalogue-list li {
+    color: #ffffff;
+    font-size: 0.9rem;
+}
+
+.footer-fayard__catalogue-list a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-fayard__catalogue-list a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
 .contact__address-main {
     font-size: 1rem;
     font-weight: 600;
