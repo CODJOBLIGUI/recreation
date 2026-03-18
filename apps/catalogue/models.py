@@ -807,9 +807,9 @@ class SoumissionManuscrit(TimeStampedModel):
     """Modèle Soumission de manuscrit."""
 
     CONTRACT_CHOICES = [
-        ("compte_editeur", "Contrat à Compte d'Éditeur"),
-        ("compte_auteur", "Contrat à Compte d'Auteur"),
-        ("compte_participatif", "Contrat à Compte Participatif"),
+        ("compte_editeur", "Contrat à compte d'éditeur"),
+        ("compte_auteur", "Contrat à compte d'auteur"),
+        ("compte_participatif", "Contrat à compte participatif"),
     ]
 
     nom_complet = models.CharField(max_length=200, verbose_name="Nom et prénom à l'état civil")
