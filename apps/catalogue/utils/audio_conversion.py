@@ -153,10 +153,18 @@ def extract_text_from_file(file_field):
                     try:
                         img_data = img.data
                         image = Image.open(io.BytesIO(img_data))
-                        texts.append(pytesseract.image_to_string(image, lang="fra+eng+spa+deu"))
+                        texts.append(pytesseract.image_to_string(image, lang="fra+eng"))
                     except Exception:
                         continue
-        return "\n".join(t for t in texts if t).strip()
+        ocr_text = "\n".join(t for t in texts if t).strip()
+        detected = detect_language(ocr_text)
+        if detected in {"es", "de"}:
+            raise RuntimeError(
+                "OCR espagnol/allemand indisponible sur ce serveur. "
+                "Veuillez téléverser un fichier texte (PDF non scanné, DOCX) "
+                "ou coller votre texte."
+            )
+        return ocr_text
 
     if ext in {".jpg", ".jpeg", ".png"}:
         try:
@@ -165,7 +173,15 @@ def extract_text_from_file(file_field):
         except Exception as exc:
             raise RuntimeError("OCR image indisponible (pytesseract/Pillow manquant).") from exc
         image = Image.open(local_path)
-        return pytesseract.image_to_string(image, lang="fra+eng+spa+deu")
+        ocr_text = pytesseract.image_to_string(image, lang="fra+eng")
+        detected = detect_language(ocr_text)
+        if detected in {"es", "de"}:
+            raise RuntimeError(
+                "OCR espagnol/allemand indisponible sur ce serveur. "
+                "Veuillez téléverser un fichier texte (PDF non scanné, DOCX) "
+                "ou coller votre texte."
+            )
+        return ocr_text
 
     if ext in {".pptx"}:
         try:
