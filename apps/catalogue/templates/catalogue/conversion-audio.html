@@ -73,6 +73,9 @@
                         <span class="conversion-audio__badge">Traitement en quelques minutes selon la taille du texte/fichier</span>
                     </div>
                     <p class="cta-box__text">Votre demande a été enregistrée. Veuillez procéder au paiement pour recevoir l’audio par e‑mail dans les minutes suivantes.</p>
+                    <p class="form-feedback form-feedback--info" id="payment-start-note" style="display:none;">
+                        Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.
+                    </p>
                     <p class="form-feedback form-feedback--error" id="payment-error" style="display:none;">
                         Impossible de lancer le paiement. Veuillez réessayer ou nous contacter.
                     </p>
@@ -285,18 +288,26 @@
         const paymentNo = document.getElementById("payment-no");
         const paymentYes = document.getElementById("payment-yes");
         const paymentNoActions = document.getElementById("payment-no-actions");
+        const paymentStartNote = document.getElementById("payment-start-note");
         const payBox = document.querySelector(".conversion-audio__result--pay");
         const formWrapper = document.querySelector(".conversion-audio__form");
 
         if (payBtn) {
-            payBtn.addEventListener("click", function() {
+            payBtn.addEventListener("click", function(e) {
+                if (e && e.preventDefault) e.preventDefault();
                 if (paymentError) paymentError.style.display = "none";
+                if (paymentStartNote) paymentStartNote.style.display = "block";
                 const payUrl = payBtn.getAttribute("href");
                 if (payUrl && navigator.sendBeacon) {
                     navigator.sendBeacon(payUrl + "?ajax=1");
                 } else if (payUrl) {
                     fetch(payUrl + "?ajax=1", { headers: { "X-Requested-With": "XMLHttpRequest" }, keepalive: true })
                         .catch(function() {});
+                }
+                if (payUrl) {
+                    setTimeout(function() {
+                        window.location.href = payUrl;
+                    }, 700);
                 }
             });
         }
