@@ -4,12 +4,18 @@ FICHIER : apps/catalogue/urls.py
 
 from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 from .forms import StyledLoginForm
 from . import views
 
 app_name = 'catalogue'
 
 urlpatterns = [
+    path(
+        'googlec5ebd170c7d7c0f7.html',
+        TemplateView.as_view(template_name='googlec5ebd170c7d7c0f7.html'),
+        name='google-site-verification',
+    ),
     path('robots.txt', views.robots_txt, name='robots'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap'),
     # Pages principales
