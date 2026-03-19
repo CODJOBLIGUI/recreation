@@ -136,6 +136,10 @@
                         {% if link.url == "/nos-contrats/" %}
                         <li>
                             <a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>
+                                <span class="menu-icon">
+                                    <i class="fa-solid fa-headphones"></i>
+                                    <i class="fa-solid fa-book-open"></i>
+                                </span>
                                 Conversion de texte en audio
                             </a>
                         </li>
@@ -148,7 +152,15 @@
                         <li><a href="{% url 'catalogue:auteurs' %}" {% if request.resolver_match.url_name == 'auteurs' %}class="active"{% endif %}>Auteurs</a></li>
                         <li><a href="{% url 'catalogue:catalogue' %}" {% if request.resolver_match.url_name == 'catalogue' %}class="active"{% endif %}>Catalogue</a></li>
                         <li><a href="{% url 'catalogue:nos-contrats' %}" {% if request.resolver_match.url_name == 'nos-contrats' %}class="active"{% endif %}>Nos contrats</a></li>
-                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
+                        <li>
+                            <a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>
+                                <span class="menu-icon">
+                                    <i class="fa-solid fa-headphones"></i>
+                                    <i class="fa-solid fa-book-open"></i>
+                                </span>
+                                Conversion de texte en audio
+                            </a>
+                        </li>
                         <li><a href="{% url 'catalogue:a-propos' %}" {% if request.resolver_match.url_name == 'a-propos' %}class="active"{% endif %}>A propos</a></li>
                         <li><a href="{% url 'catalogue:contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>Contacts</a></li>
                     {% endif %}
@@ -196,7 +208,13 @@
                 </div>
                 <div class="nav-drawer__section-title">Autres services</div>
                 <div class="nav-drawer__collections">
-                    <a href="{% url 'catalogue:conversion-audio' %}">Conversion de texte en audio</a>
+                    <a href="{% url 'catalogue:conversion-audio' %}">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-headphones"></i>
+                            <i class="fa-solid fa-book-open"></i>
+                        </span>
+                        Conversion de texte en audio
+                    </a>
                 </div>
             </nav>
             <div class="nav-drawer__cta">
@@ -269,8 +287,6 @@
                     <li><a href="{% url 'catalogue:a-propos' %}">A propos</a></li>
                     <li><a href="{% url 'catalogue:a-propos' %}#equipe">Notre équipe</a></li>
                     <li><a href="{% url 'catalogue:nos-contrats' %}">Nos contrats</a></li>
-                    <li><a href="{% url 'catalogue:conversion-audio' %}">Conversion de texte en audio</a></li>
-                    <li><a href="https://recreation.mychariow.shop/" target="_blank" rel="noopener">Notre boutique en ligne</a></li>
                 </ul>
             </div>
 
@@ -287,6 +303,17 @@
                 <a href="{% url 'catalogue:contact' %}" class="footer-fayard__action">
                     <i class="fas fa-envelope"></i>
                     <span>E-mail</span>
+                </a>
+                <a href="{% url 'catalogue:conversion-audio' %}" class="footer-fayard__action">
+                    <span class="icon-combo">
+                        <i class="fa-solid fa-headphones"></i>
+                        <i class="fa-solid fa-book-open"></i>
+                    </span>
+                    <span>Conversion de texte en audio</span>
+                </a>
+                <a href="https://recreation.mychariow.shop/" class="footer-fayard__action" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Recréation Shop</span>
                 </a>
             </div>
 

@@ -330,6 +330,19 @@ ul, ol {
     position: relative;
 }
 
+.menu-icon,
+.icon-combo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-right: 0.35rem;
+}
+
+.menu-icon i,
+.icon-combo i {
+    font-size: 0.95em;
+}
+
 .header__nav-list a:hover,
 .header__nav-list a.active {
     color: var(--color-accent);

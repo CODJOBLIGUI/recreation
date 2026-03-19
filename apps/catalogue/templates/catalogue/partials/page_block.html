@@ -299,7 +299,7 @@
 {% if block.block_type == "home_parutions" %}
 <section class="upcoming-releases section bg-light {{ block.css_class }}">
     <div class="container">
-        <h2 class="section__title">{{ block.titre|default:"Prochaines Parutions" }}</h2>
+        <h2 class="section__title">{{ block.titre|default:"Prochaines parutions" }}</h2>
         <p class="section__subtitle">{{ block.sous_titre|default:"Découvrez les livres qui paraîtront bientôt" }}</p>
         <div class="book-grid">
             {% for livre in prochaines_parutions %}
