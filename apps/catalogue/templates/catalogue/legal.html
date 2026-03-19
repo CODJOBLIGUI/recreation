@@ -3,19 +3,10 @@
 
 {% block content %}
 
-<section class="page-hero{% if appearance and appearance.audio_human_hero_image %} page-hero--with-media{% endif %}">
+<section class="page-hero">
     <div class="container">
-        <div class="page-hero__layout">
-            {% if appearance and appearance.audio_human_hero_image %}
-                <div class="page-hero__media">
-                    <img src="{{ appearance.audio_human_hero_image.url }}" alt="Image hero" loading="lazy">
-                </div>
-            {% endif %}
-            <div class="page-hero__content">
-                <h1 class="page-hero__title">{{ page.hero_title|default:"Mentions l?gales et conditions d'utilisation" }}</h1>
-                <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Informations l?gales, confidentialit? et cookies" }}</p>
-            </div>
-        </div>
+        <h1 class="page-hero__title">{{ page.hero_title|default:"Mentions l?gales et conditions d'utilisation" }}</h1>
+        <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Informations l?gales, confidentialit? et cookies" }}</p>
     </div>
 </section>
 

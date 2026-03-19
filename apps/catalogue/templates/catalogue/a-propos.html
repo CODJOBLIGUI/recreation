@@ -8,19 +8,10 @@
 
 
 
-<section class="page-hero page-hero--about{% if appearance and appearance.audio_human_hero_image %} page-hero--with-media{% endif %}">
+<section class="page-hero page-hero--about">
     <div class="container">
-        <div class="page-hero__layout">
-            {% if appearance and appearance.audio_human_hero_image %}
-                <div class="page-hero__media">
-                    <img src="{{ appearance.audio_human_hero_image.url }}" alt="Image hero" loading="lazy">
-                </div>
-            {% endif %}
-            <div class="page-hero__content">
-                <h1 class="page-hero__title">{{ page.hero_title|default:"A propos des Editions Recr?ation" }}</h1>
-                <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Notre histoire, notre mission, nos valeurs, les chiffres, notre ?quipe" }}</p>
-            </div>
-        </div>
+        <h1 class="page-hero__title">{{ page.hero_title|default:"A propos des Editions Recr?ation" }}</h1>
+        <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Notre histoire, notre mission, nos valeurs, les chiffres, notre ?quipe" }}</p>
     </div>
 </section>
 
