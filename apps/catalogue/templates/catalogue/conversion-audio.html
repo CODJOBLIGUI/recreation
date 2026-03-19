@@ -125,6 +125,22 @@
             Service momentanément indisponible. Veuillez réessayer plus tard ou essayez avec une version payante. Un professionnel prendra votre requette en charge.
         </div>
 
+        <div
+            class="form-feedback form-feedback--error"
+            id="conversion-error-paid"
+            {% if not last_request or last_request.statut != "error" or not last_request.paiement_requis %}style="display:none;"{% endif %}>
+            Service momentanément indisponible pour cette conversion. Vous pouvez poursuivre via le dépôt de fichiers
+            ou la lecture par un humain.
+            <div style="margin-top:0.6rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
+                <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-pay' last_request.id %}">
+                    Dépôt de fichiers
+                </a>
+                <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
+                    Lecture par un humain
+                </a>
+            </div>
+        </div>
+
         <div class="contact__form-wrapper conversion-audio__form">
             <h2>Convertissez votre texte ici</h2>
             <form method="POST" enctype="multipart/form-data" class="contact__form">
@@ -215,6 +231,7 @@
         const progressFill = document.getElementById("conversion-progress-fill");
         const progressText = document.getElementById("conversion-progress-text");
         const conversionError = document.getElementById("conversion-error");
+        const conversionErrorPaid = document.getElementById("conversion-error-paid");
 
         function togglePayment() {
             const textLength = (texte && texte.value) ? texte.value.length : 0;
@@ -357,11 +374,15 @@
                 .then((res) => res.ok ? res.json() : null)
                 .then((data) => {
                     if (!data) return;
-                    if ((data.status === "error" || data.async_status === "failed") && !data.payment_required) {
+                    if (data.status === "error" || data.async_status === "failed") {
                         if (progressBox) progressBox.style.display = "none";
-                        if (conversionError) {
-                            conversionError.style.display = "block";
-                            conversionError.textContent = "Service momentanément indisponible. Veuillez réessayer plus tard.";
+                        if (data.payment_required) {
+                            if (conversionErrorPaid) conversionErrorPaid.style.display = "block";
+                        } else {
+                            if (conversionError) {
+                                conversionError.style.display = "block";
+                                conversionError.textContent = "Service momentanément indisponible. Veuillez réessayer plus tard.";
+                            }
                         }
                         return;
                     }
