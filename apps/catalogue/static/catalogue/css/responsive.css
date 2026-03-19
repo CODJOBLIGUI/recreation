@@ -275,6 +275,23 @@ font-size: 2rem;
     gap: 1rem;
   }
 
+@media (max-width: 768px) {
+    .page-hero__layout {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .page-hero__content {
+        text-align: center;
+    }
+
+    .page-hero__media {
+        flex: 0 0 auto;
+        width: min(240px, 70vw);
+    }
+}
+
 
     border-top: 1px solid rgba(255,255,255,0.15);
     border-bottom: 1px solid rgba(255,255,255,0.15);

@@ -61,6 +61,12 @@ class SiteAppearance(models.Model):
     site_name = models.CharField(max_length=120, default="Editions Recréation", verbose_name="Nom du site")
     logo = models.ImageField(upload_to="branding/%Y/%m/", blank=True, null=True, verbose_name="Logo")
     favicon = models.ImageField(upload_to="branding/%Y/%m/", blank=True, null=True, verbose_name="Favicon")
+    audio_human_hero_image = models.ImageField(
+        upload_to="branding/%Y/%m/",
+        blank=True,
+        null=True,
+        verbose_name="Image hero bleu (gauche)",
+    )
 
     primary_color = models.CharField(max_length=20, default="#F5F1E8", verbose_name="Couleur primaire")
     accent_color = models.CharField(max_length=20, default="#0A18FF", verbose_name="Couleur accent")

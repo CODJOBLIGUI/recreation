@@ -1,179 +1,346 @@
-﻿{% extends 'catalogue/base.html' %}
-{% load static %}
-
-{% block content %}
-
-<!-- En-tête de la page -->
-<section class="page-hero">
-    <div class="container">
-        <h1 class="page-hero__title">{{ page.hero_title|default:"Nos contrats d'édition" }}</h1>
-        <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Choisissez la formule qui correspond le mieux à votre projet littéraire" }}</p>
-    </div>
-</section>
-
-<!-- Section Contrats -->
-<section class="contrats section">
-    <div class="container">
-        {% if page_blocks %}
-            {% include "catalogue/partials/page_blocks.html" %}
-        {% elif page and page.body %}
-            <div class="page-body">
-                {{ page.body|safe }}
-            </div>
-        {% else %}
-        <!-- Introduction -->
-        <div class="contrats__intro">
-            <p>Editions Recréation propose trois types de contrats adaptés aux besoins de chaque auteur. Que vous souhaitiez une prise en charge complète ou une collaboration plus flexible, nous avons la solution qui vous convient.</p>
-        </div>
-
-        <!-- Grille des contrats -->
-        <div class="contrats__grid">
-            
+﻿{% extends 'catalogue/base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+
+
+<!-- En-tête de la page -->
+
+<section class="page-hero{% if appearance and appearance.audio_human_hero_image %} page-hero--with-media{% endif %}">
+    <div class="container">
+        <div class="page-hero__layout">
+            {% if appearance and appearance.audio_human_hero_image %}
+                <div class="page-hero__media">
+                    <img src="{{ appearance.audio_human_hero_image.url }}" alt="Image hero" loading="lazy">
+                </div>
+            {% endif %}
+            <div class="page-hero__content">
+                <h1 class="page-hero__title">{{ page.hero_title|default:"Nos contrats d'?dition" }}</h1>
+                <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Choisissez la formule qui correspond le mieux ? votre projet litt?raire" }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Section Contrats -->
+
+<section class="contrats section">
+
+    <div class="container">
+
+        {% if page_blocks %}
+
+            {% include "catalogue/partials/page_blocks.html" %}
+
+        {% elif page and page.body %}
+
+            <div class="page-body">
+
+                {{ page.body|safe }}
+
+            </div>
+
+        {% else %}
+
+        <!-- Introduction -->
+
+        <div class="contrats__intro">
+
+            <p>Editions Recréation propose trois types de contrats adaptés aux besoins de chaque auteur. Que vous souhaitiez une prise en charge complète ou une collaboration plus flexible, nous avons la solution qui vous convient.</p>
+
+        </div>
+
+
+
+        <!-- Grille des contrats -->
+
+        <div class="contrats__grid">
+
+            
+
             <!-- Contrat 1 : Contrat à compte d'éditeur -->
-            <div class="contrat-card">
-                <div class="contrat-card__header">
-                    <div class="contrat-card__icon">
-                        <i class="fas fa-handshake"></i>
-                    </div>
+            <div class="contrat-card">
+
+                <div class="contrat-card__header">
+
+                    <div class="contrat-card__icon">
+
+                        <i class="fas fa-handshake"></i>
+
+                    </div>
+
                     <h3 class="contrat-card__title">Contrat à compte d'éditeur</h3>
-                </div>
-                <div class="contrat-card__body">
-                    <p class="contrat-card__description">
-                        L'éditeur prend en charge tous les frais de production, de distribution et de promotion de l'ouvrage. L'auteur reçoit des droits d'auteur sur chaque vente.
-                    </p>
-                    <ul class="contrat-card__features">
-                        <li><i class="fas fa-check"></i> Prise en charge complète des frais</li>
-                        <li><i class="fas fa-check"></i> Droits d'auteur entre 8% et 10%</li>
-                        <li><i class="fas fa-check"></i> Distribution nationale et internationale</li>
-                        <li><i class="fas fa-check"></i> Promotion et marketing assurés</li>
-                        <li><i class="fas fa-check"></i> Accompagnement éditorial professionnel</li>
-                    </ul>
-                    <div class="contrat-card__price">
-                        <span class="price-label">Investissement auteur :</span>
-                        <span class="price-value">0 FCFA en dehors d'un certain nombre de livres à précommander</span>
-                    </div>
-                </div>
-            </div>
-
+                </div>
+
+                <div class="contrat-card__body">
+
+                    <p class="contrat-card__description">
+
+                        L'éditeur prend en charge tous les frais de production, de distribution et de promotion de l'ouvrage. L'auteur reçoit des droits d'auteur sur chaque vente.
+
+                    </p>
+
+                    <ul class="contrat-card__features">
+
+                        <li><i class="fas fa-check"></i> Prise en charge complète des frais</li>
+
+                        <li><i class="fas fa-check"></i> Droits d'auteur entre 8% et 10%</li>
+
+                        <li><i class="fas fa-check"></i> Distribution nationale et internationale</li>
+
+                        <li><i class="fas fa-check"></i> Promotion et marketing assurés</li>
+
+                        <li><i class="fas fa-check"></i> Accompagnement éditorial professionnel</li>
+
+                    </ul>
+
+                    <div class="contrat-card__price">
+
+                        <span class="price-label">Investissement auteur :</span>
+
+                        <span class="price-value">0 FCFA en dehors d'un certain nombre de livres à précommander</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
             <!-- Contrat 2 : Contrat à compte d'auteur -->
-            <div class="contrat-card contrat-card--featured">
-                <div class="contrat-card__badge">POPULAIRE</div>
-                <div class="contrat-card__header">
-                    <div class="contrat-card__icon">
-                        <i class="fas fa-user-edit"></i>
-                    </div>
+            <div class="contrat-card contrat-card--featured">
+
+                <div class="contrat-card__badge">POPULAIRE</div>
+
+                <div class="contrat-card__header">
+
+                    <div class="contrat-card__icon">
+
+                        <i class="fas fa-user-edit"></i>
+
+                    </div>
+
                     <h3 class="contrat-card__title">Contrat à compte d'auteur</h3>
-                </div>
-                <div class="contrat-card__body">
-                    <p class="contrat-card__description">
-                        L'auteur finance la production de son ouvrage et conserve l'intégralité des bénéfices. Editions Recréation assure la qualité éditoriale et la distribution.
-                    </p>
-                    <ul class="contrat-card__features">
-                        <li><i class="fas fa-check"></i> Contrôle total sur le projet</li>
-                        <li><i class="fas fa-check"></i> 100% des bénéfices pour l'auteur ou 50% en cas de vente directe réalisée par l'éditeur</li>
-                        <li><i class="fas fa-check"></i> dition et correction professionnelles</li>
-                        <li><i class="fas fa-check"></i> Conception graphique de qualité</li>
-                        <li><i class="fas fa-check"></i> Distribution en librairies</li>
-                    </ul>
-                    <div class="contrat-card__price">
-                        <span class="price-label" partir de :</span>
-                        <span class="price-value">110 000 FCFA</span>
-                    </div>
-                </div>
-            </div>
-
+                </div>
+
+                <div class="contrat-card__body">
+
+                    <p class="contrat-card__description">
+
+                        L'auteur finance la production de son ouvrage et conserve l'intégralité des bénéfices. Editions Recréation assure la qualité éditoriale et la distribution.
+
+                    </p>
+
+                    <ul class="contrat-card__features">
+
+                        <li><i class="fas fa-check"></i> Contrôle total sur le projet</li>
+
+                        <li><i class="fas fa-check"></i> 100% des bénéfices pour l'auteur ou 50% en cas de vente directe réalisée par l'éditeur</li>
+
+                        <li><i class="fas fa-check"></i> dition et correction professionnelles</li>
+
+                        <li><i class="fas fa-check"></i> Conception graphique de qualité</li>
+
+                        <li><i class="fas fa-check"></i> Distribution en librairies</li>
+
+                    </ul>
+
+                    <div class="contrat-card__price">
+
+                        <span class="price-label" partir de :</span>
+
+                        <span class="price-value">110 000 FCFA</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
             <!-- Contrat 3 : Contrat à compte participatif -->
-            <div class="contrat-card">
-                <div class="contrat-card__header">
-                    <div class="contrat-card__icon">
-                        <i class="fas fa-balance-scale"></i>
-                    </div>
+            <div class="contrat-card">
+
+                <div class="contrat-card__header">
+
+                    <div class="contrat-card__icon">
+
+                        <i class="fas fa-balance-scale"></i>
+
+                    </div>
+
                     <h3 class="contrat-card__title">Contrat à compte participatif</h3>
-                </div>
-                <div class="contrat-card__body">
-                    <p class="contrat-card__description">
-                        Les frais de production sont partagés équitablement entre l'auteur et l'éditeur. Une collaboration équilibrée pour un projet commun.
-                    </p>
-                    <ul class="contrat-card__features">
-                        <li><i class="fas fa-check"></i> Partage des frais 50/50</li>
-                        <li><i class="fas fa-check"></i> 30% des bénéfices pour l'auteur</li>
-                        <li><i class="fas fa-check"></i> Décisions concertées</li>
-                        <li><i class="fas fa-check"></i> Risques partagés</li>
-                        <li><i class="fas fa-check"></i> Collaboration étroite</li>
-                    </ul>
-                    <div class="contrat-card__price">
-                        <span class="price-label">Participation auteur :</span>
-                        <span class="price-value">50% des frais de production</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Section Comparaison -->
-        <div class="comparaison">
+                </div>
+
+                <div class="contrat-card__body">
+
+                    <p class="contrat-card__description">
+
+                        Les frais de production sont partagés équitablement entre l'auteur et l'éditeur. Une collaboration équilibrée pour un projet commun.
+
+                    </p>
+
+                    <ul class="contrat-card__features">
+
+                        <li><i class="fas fa-check"></i> Partage des frais 50/50</li>
+
+                        <li><i class="fas fa-check"></i> 30% des bénéfices pour l'auteur</li>
+
+                        <li><i class="fas fa-check"></i> Décisions concertées</li>
+
+                        <li><i class="fas fa-check"></i> Risques partagés</li>
+
+                        <li><i class="fas fa-check"></i> Collaboration étroite</li>
+
+                    </ul>
+
+                    <div class="contrat-card__price">
+
+                        <span class="price-label">Participation auteur :</span>
+
+                        <span class="price-value">50% des frais de production</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <!-- Section Comparaison -->
+
+        <div class="comparaison">
+
             <h2 class="section__title">Tableau comparatif</h2>
-            <div class="table-responsive">
-                <table class="comparaison__table">
-                    <thead>
-                        <tr>
-                            <th>Critères</th>
+            <div class="table-responsive">
+
+                <table class="comparaison__table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Critères</th>
+
                             <th>Compte éditeur</th>
                             <th>Compte auteur</th>
                             <th>Compte participatif</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Frais de production</td>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>Frais de production</td>
+
                             <td><i class="fas fa-building text-accent"></i> Éditeur</td>
-                            <td><i class="fas fa-user text-accent"></i> Auteur</td>
-                            <td><i class="fas fa-users text-accent"></i> Partagés</td>
-                        </tr>
-                        <tr>
-                            <td>Bénéfices</td>
+                            <td><i class="fas fa-user text-accent"></i> Auteur</td>
+
+                            <td><i class="fas fa-users text-accent"></i> Partagés</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Bénéfices</td>
+
                             <td>8-10% droits d'auteur</td>
-                            <td>100% pour l'auteur ou<br>50% en cas de vente<br>directe par l'éditeur</td>
+                            <td>100% pour l'auteur ou<br>50% en cas de vente<br>directe par l'éditeur</td>
+
                             <td>30% pour l'auteur</td>
-                        </tr>
-                        <tr>
-                            <td>Distribution</td>
-                            <td><i class="fas fa-check text-success"></i></td>
-                            <td><i class="fas fa-check text-success"></i></td>
-                            <td><i class="fas fa-check text-success"></i></td>
-                        </tr>
-                        <tr>
-                            <td>Promotion</td>
-                            <td>Complète</td>
-                            <td>Complète</td>
-                            <td>Complète</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Call to Action -->
-        <div class="cta-section" id="soumettre-manuscrit">
-            <div class="cta-box">
-                <h2 class="cta-box__title">Vous souhaitez soumettre votre manuscrit/tapuscrit à notre Comité de lecture </h2>
-                <p class="cta-box__text">
-                    Nous serons ravis de découvrir votre projet. Envoyez-le-nous et, avec un peu de chance, vous rejoindrez de la famille Editions Recréation.
-                </p>
-                <a href="{% url 'catalogue:soumission-manuscrit' %}" class="btn btn--primary btn--large">
-                    <i class="fas fa-paper-plane"></i> Soumettez votre manuscrit/tapuscrit
-                </a>
-            </div>
-        </div>
-        {% endif %}
-
-    </div>
-</section>
-
-{% endblock %}
-
-
-
+                        </tr>
+
+                        <tr>
+
+                            <td>Distribution</td>
+
+                            <td><i class="fas fa-check text-success"></i></td>
+
+                            <td><i class="fas fa-check text-success"></i></td>
+
+                            <td><i class="fas fa-check text-success"></i></td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Promotion</td>
+
+                            <td>Complète</td>
+
+                            <td>Complète</td>
+
+                            <td>Complète</td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Call to Action -->
+
+        <div class="cta-section" id="soumettre-manuscrit">
+
+            <div class="cta-box">
+
+                <h2 class="cta-box__title">Vous souhaitez soumettre votre manuscrit/tapuscrit à notre Comité de lecture </h2>
+
+                <p class="cta-box__text">
+
+                    Nous serons ravis de découvrir votre projet. Envoyez-le-nous et, avec un peu de chance, vous rejoindrez de la famille Editions Recréation.
+
+                </p>
+
+                <a href="{% url 'catalogue:soumission-manuscrit' %}" class="btn btn--primary btn--large">
+
+                    <i class="fas fa-paper-plane"></i> Soumettez votre manuscrit/tapuscrit
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+
+    </div>
+
+</section>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
 
 
 

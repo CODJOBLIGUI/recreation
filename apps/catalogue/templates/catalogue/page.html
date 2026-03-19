@@ -1,31 +1,62 @@
-﻿{% extends 'catalogue/base.html' %}
-{% load static %}
-
-{% block content %}
-
-{% if page_blocks %}
-    {% include "catalogue/partials/page_blocks.html" %}
-{% else %}
-    <section class="page-hero">
-        <div class="container">
-            <h1 class="page-hero__title">{{ page.hero_title|default:page.title }}</h1>
-            {% if page.hero_subtitle %}
-            <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
-            {% endif %}
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container container--narrow">
-            {% if page.body %}
-                {{ page.body|safe }}
-            {% else %}
-                <p class="no-content">Aucun contenu n'a encore t ajout pour cette page.</p>
-            {% endif %}
-        </div>
-    </section>
-{% endif %}
-
-{% endblock %}
-
-
+﻿{% extends 'catalogue/base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+
+
+{% if page_blocks %}
+
+    {% include "catalogue/partials/page_blocks.html" %}
+
+{% else %}
+
+    <section class="page-hero{% if appearance and appearance.audio_human_hero_image %} page-hero--with-media{% endif %}">
+        <div class="container">
+            <div class="page-hero__layout">
+                {% if appearance and appearance.audio_human_hero_image %}
+                    <div class="page-hero__media">
+                        <img src="{{ appearance.audio_human_hero_image.url }}" alt="Image hero" loading="lazy">
+                    </div>
+                {% endif %}
+                <div class="page-hero__content">
+                    <h1 class="page-hero__title">{{ page.hero_title|default:page.title }}</h1>
+                    <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="section">
+
+        <div class="container container--narrow">
+
+            {% if page.body %}
+
+                {{ page.body|safe }}
+
+            {% else %}
+
+                <p class="no-content">Aucun contenu n'a encore t ajout pour cette page.</p>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+{% endif %}
+
+
+
+{% endblock %}
+
+
+
+
+

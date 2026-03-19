@@ -2007,6 +2007,39 @@ body.nav-drawer-open {
     padding: 3.2rem 0 2rem;
 }
 
+.page-hero__layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
+.page-hero__content {
+    max-width: 640px;
+}
+
+.page-hero--with-media .page-hero__content {
+    text-align: left;
+}
+
+.page-hero__media {
+    flex: 0 0 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-hero__media img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 26px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    background: rgba(255, 255, 255, 0.12);
+    padding: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
 .page--inner .page-hero {
     padding: 3rem 0 2rem;
 }

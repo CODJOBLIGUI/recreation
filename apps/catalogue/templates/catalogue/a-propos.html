@@ -1,150 +1,301 @@
-﻿{% extends 'catalogue/base.html' %}
-{% load static %}
-
-{% block content %}
-
-<section class="page-hero page-hero--about">
-    <div class="container">
-        <h1 class="page-hero__title">{{ page.hero_title|default:"A propos des Editions Recréation" }}</h1>
-        <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Notre histoire, notre mission, nos valeurs, les chiffres, notre équipe" }}</p>
-    </div>
-</section>
-
-<section class="about-content section">
-    <div class="container container--narrow">
-        {% if page_blocks %}
-            {% include "catalogue/partials/page_blocks.html" %}
-        {% elif page and page.body %}
-        <div class="about-section">
-            {{ page.body|safe }}
-        </div>
-        {% else %}
-        <div class="about-section about-section--history">
-            <h2>Notre histoire</h2>
-            <p>
-                Fondée en décembre 2023 par Monsieur Marius Codjo Bligui, homme de Lettres, Recréation est une maison d'édition béninoise
-                basée dans la ville d'Abomey-Calavi. L'identité de marque de Recréation se décline comme une volonté de créer de nouveau ;
-                de se positionner comme un acteur second sur la chaîne de création des uvres de l'esprit. Cette maison d'édition se distingue
-                par sa volonté de publier des ouvrages de littérature générale, avec un accent particulier sur des contenus créatifs et éducatifs.
-            </p>
-        </div>
-        
-        <div class="about-section about-section--mission">
-            <h2>Notre mission</h2>
-            <p>
+﻿{% extends 'catalogue/base.html' %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+
+
+<section class="page-hero page-hero--about{% if appearance and appearance.audio_human_hero_image %} page-hero--with-media{% endif %}">
+    <div class="container">
+        <div class="page-hero__layout">
+            {% if appearance and appearance.audio_human_hero_image %}
+                <div class="page-hero__media">
+                    <img src="{{ appearance.audio_human_hero_image.url }}" alt="Image hero" loading="lazy">
+                </div>
+            {% endif %}
+            <div class="page-hero__content">
+                <h1 class="page-hero__title">{{ page.hero_title|default:"A propos des Editions Recr?ation" }}</h1>
+                <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Notre histoire, notre mission, nos valeurs, les chiffres, notre ?quipe" }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="about-content section">
+
+    <div class="container container--narrow">
+
+        {% if page_blocks %}
+
+            {% include "catalogue/partials/page_blocks.html" %}
+
+        {% elif page and page.body %}
+
+        <div class="about-section">
+
+            {{ page.body|safe }}
+
+        </div>
+
+        {% else %}
+
+        <div class="about-section about-section--history">
+
+            <h2>Notre histoire</h2>
+
+            <p>
+
+                Fondée en décembre 2023 par Monsieur Marius Codjo Bligui, homme de Lettres, Recréation est une maison d'édition béninoise
+
+                basée dans la ville d'Abomey-Calavi. L'identité de marque de Recréation se décline comme une volonté de créer de nouveau ;
+
+                de se positionner comme un acteur second sur la chaîne de création des uvres de l'esprit. Cette maison d'édition se distingue
+
+                par sa volonté de publier des ouvrages de littérature générale, avec un accent particulier sur des contenus créatifs et éducatifs.
+
+            </p>
+
+        </div>
+
+        
+
+        <div class="about-section about-section--mission">
+
+            <h2>Notre mission</h2>
+
+            <p>
+
                 Notre mission consiste à offrir aux auteurs du monde entier une tribune digne de leurs œuvre et à faire rayonner leurs récits
-                auprès de tous les lecteurs. Nous sommes convaincus que la littérature détient le pouvoir d'éveiller les esprits, de nourrir
-                l'imaginaire et de transformer les sociétés.
-            </p>
-            <p>
-                Par le biais de nos publications, nous nous attachons à célébrer la pluralité des cultures, à encourager l'excellence créative
-                et à favoriser le dialogue universel entre les peuples, afin que le verbe, franchissant les frontières et les silences, devienne
-                une passerelle entre les consciences et une semence d'avenir pour l'humanité.
-            </p>
-        </div>
-        
-        <div class="about-section about-section--values">
-            <h2>Nos valeurs</h2>
-            <div class="values-slider" aria-label="Nos valeurs">
-                <div class="values-track">
-                    <article class="value-card">
-                        <h3><span class="value-initial">R</span>espect</h3>
+                auprès de tous les lecteurs. Nous sommes convaincus que la littérature détient le pouvoir d'éveiller les esprits, de nourrir
+
+                l'imaginaire et de transformer les sociétés.
+
+            </p>
+
+            <p>
+
+                Par le biais de nos publications, nous nous attachons à célébrer la pluralité des cultures, à encourager l'excellence créative
+
+                et à favoriser le dialogue universel entre les peuples, afin que le verbe, franchissant les frontières et les silences, devienne
+
+                une passerelle entre les consciences et une semence d'avenir pour l'humanité.
+
+            </p>
+
+        </div>
+
+        
+
+        <div class="about-section about-section--values">
+
+            <h2>Nos valeurs</h2>
+
+            <div class="values-slider" aria-label="Nos valeurs">
+
+                <div class="values-track">
+
+                    <article class="value-card">
+
+                        <h3><span class="value-initial">R</span>espect</h3>
+
                         <p>Nous plaçons le respect des auteurs, des lecteurs et de nos partenaires au cœur de toutes nos actions, et nous l'exigeons en retour.</p>
-                    </article>
-                    <article class="value-card">
-                        <h3><span class="value-initial">E</span>xcellence</h3>
-                        <p>Nous recherchons en permanence la qualité et le dépassement de soi afin d'encourager des uvres et des projets porteurs de valeur et d'impact.</p>
-                    </article>
-                    <article class="value-card">
-                        <h3><span class="value-initial">C</span>réativité</h3>
-                        <p>Nous valorisons l'imagination, l'originalité et l'expression artistique sous toutes ses formes.</p>
-                    </article>
-                    <article class="value-card">
-                        <h3><span class="value-initial">R</span>éactivité</h3>
-                        <p>Nous répondons avec efficacité et rapidité aux besoins de nos auteurs, lecteurs et partenaires.</p>
-                    </article>
-                    <article class="value-card">
-                        <h3><span class="value-initial">E</span>coute</h3>
-                        <p>Nous restons attentifs aux attentes, aux idées et aux préoccupations de notre communauté afin d'évoluer avec elle.</p>
-                    </article>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        
-        <div class="about-section">
-            <h2>Quelques chiffres</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number">{{ livres_count }}</span>
-                    <span class="stat-label">Livres publiés</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">{{ auteurs_count }}</span>
-                    <span class="stat-label">Auteurs</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">{{ annees_experience }}</span>
-                    <span class="stat-label">Années d'expérience</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">{{ pays_count }}</span>
-                    <span class="stat-label">Pays couverts</span>
-                </div>
-                {% if prix_litteraires_count and prix_litteraires_count > 0 %}
-                <div class="stat-card">
-                    <span class="stat-number">{{ prix_litteraires_count }}</span>
-                    <span class="stat-label">Prix littéraires</span>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</section>
-
+                    </article>
+
+                    <article class="value-card">
+
+                        <h3><span class="value-initial">E</span>xcellence</h3>
+
+                        <p>Nous recherchons en permanence la qualité et le dépassement de soi afin d'encourager des uvres et des projets porteurs de valeur et d'impact.</p>
+
+                    </article>
+
+                    <article class="value-card">
+
+                        <h3><span class="value-initial">C</span>réativité</h3>
+
+                        <p>Nous valorisons l'imagination, l'originalité et l'expression artistique sous toutes ses formes.</p>
+
+                    </article>
+
+                    <article class="value-card">
+
+                        <h3><span class="value-initial">R</span>éactivité</h3>
+
+                        <p>Nous répondons avec efficacité et rapidité aux besoins de nos auteurs, lecteurs et partenaires.</p>
+
+                    </article>
+
+                    <article class="value-card">
+
+                        <h3><span class="value-initial">E</span>coute</h3>
+
+                        <p>Nous restons attentifs aux attentes, aux idées et aux préoccupations de notre communauté afin d'évoluer avec elle.</p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        
+
+        <div class="about-section">
+
+            <h2>Quelques chiffres</h2>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <span class="stat-number">{{ livres_count }}</span>
+
+                    <span class="stat-label">Livres publiés</span>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <span class="stat-number">{{ auteurs_count }}</span>
+
+                    <span class="stat-label">Auteurs</span>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <span class="stat-number">{{ annees_experience }}</span>
+
+                    <span class="stat-label">Années d'expérience</span>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <span class="stat-number">{{ pays_count }}</span>
+
+                    <span class="stat-label">Pays couverts</span>
+
+                </div>
+
+                {% if prix_litteraires_count and prix_litteraires_count > 0 %}
+
+                <div class="stat-card">
+
+                    <span class="stat-number">{{ prix_litteraires_count }}</span>
+
+                    <span class="stat-label">Prix littéraires</span>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
 <!-- Section Notre Équipe -->
-<section class="team section" id="equipe">
-    <div class="container">
-        <h2 class="section__title">Equipe</h2>
-        <p class="section__subtitle">Les talents qui font vivre Editions Recréation</p>
-        
-        <div class="team-grid auteurs-list">
-            {% for membre in membres %}
-            <div class="author-card team-member">
-                <div class="author-card__photo team-member__photo">
-                    {% if membre.photo %}
-                    <img src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}">
-                    {% endif %}
-                </div>
-                <div class="author-card__info team-member__info">
-                    <h3 class="author-card__name team-member__name">{{ membre.nom_complet }}</h3>
-                    <p class="author-card__specialty team-member__role">{{ membre.poste }}</p>
-                    {% if membre.nationalites.all %}
-                    <div class="author-card__nationality">
-                        {% for nat in membre.nationalites.all %}
-                        <span class="nationality">
-                            {% if nat.drapeau %}<img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">{% endif %}
-                            {{ nat.nom }}
-                        </span>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                    {% if membre.biographie %}
-                    <p class="author-card__bio team-member__bio">{{ membre.biographie|truncatewords:30 }}</p>
-                    {% endif %}
-                    {% if membre.email %}
-                    <a href="mailto:{{ membre.email }}" class="team-member__email">
-                        <i class="fas fa-envelope"></i> Contact
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-{% endblock %}
-
-
-
+<section class="team section" id="equipe">
+
+    <div class="container">
+
+        <h2 class="section__title">Equipe</h2>
+
+        <p class="section__subtitle">Les talents qui font vivre Editions Recréation</p>
+
+        
+
+        <div class="team-grid auteurs-list">
+
+            {% for membre in membres %}
+
+            <div class="author-card team-member">
+
+                <div class="author-card__photo team-member__photo">
+
+                    {% if membre.photo %}
+
+                    <img src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}">
+
+                    {% endif %}
+
+                </div>
+
+                <div class="author-card__info team-member__info">
+
+                    <h3 class="author-card__name team-member__name">{{ membre.nom_complet }}</h3>
+
+                    <p class="author-card__specialty team-member__role">{{ membre.poste }}</p>
+
+                    {% if membre.nationalites.all %}
+
+                    <div class="author-card__nationality">
+
+                        {% for nat in membre.nationalites.all %}
+
+                        <span class="nationality">
+
+                            {% if nat.drapeau %}<img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">{% endif %}
+
+                            {{ nat.nom }}
+
+                        </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% endif %}
+
+                    {% if membre.biographie %}
+
+                    <p class="author-card__bio team-member__bio">{{ membre.biographie|truncatewords:30 }}</p>
+
+                    {% endif %}
+
+                    {% if membre.email %}
+
+                    <a href="mailto:{{ membre.email }}" class="team-member__email">
+
+                        <i class="fas fa-envelope"></i> Contact
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+

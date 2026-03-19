@@ -4,10 +4,19 @@
 
 {% block content %}
 
-<section class="page-hero">
+<section class="page-hero{% if appearance and appearance.audio_human_hero_image %} page-hero--with-media{% endif %}">
     <div class="container">
-        <h1 class="page-hero__title">Recherche</h1>
-        <p class="page-hero__subtitle">Trouvez rapidement livres, auteurs, actualités et pages</p>
+        <div class="page-hero__layout">
+            {% if appearance and appearance.audio_human_hero_image %}
+                <div class="page-hero__media">
+                    <img src="{{ appearance.audio_human_hero_image.url }}" alt="Image hero" loading="lazy">
+                </div>
+            {% endif %}
+            <div class="page-hero__content">
+                <h1 class="page-hero__title">Recherche</h1>
+                <p class="page-hero__subtitle">Trouvez rapidement livres, auteurs, actualit?s et pages</p>
+            </div>
+        </div>
     </div>
 </section>
 

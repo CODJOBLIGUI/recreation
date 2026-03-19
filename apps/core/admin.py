@@ -8,6 +8,7 @@ class SiteAppearanceAdmin(admin.ModelAdmin):
     list_display = ("site_name",)
     fieldsets = (
         ("Identite", {"fields": ("site_name", "logo", "favicon")}),
+        ("Pages", {"fields": ("audio_human_hero_image",)}),
         ("Couleurs", {"fields": ("primary_color", "accent_color", "accent_dark", "text_color", "text_light", "light_bg", "dark_bg")}),
         ("Typographie", {"fields": ("font_heading", "font_body")}),
         ("Reseaux sociaux", {"fields": ("instagram", "facebook", "x_twitter", "tiktok", "linkedin", "youtube", "whatsapp")}),

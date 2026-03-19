@@ -1,12 +1,21 @@
 {% extends "catalogue/base.html" %}
 
 {% block content %}
-<section class="page-hero page-hero--compact">
+<section class="page-hero page-hero--compact{% if appearance and appearance.audio_human_hero_image %} page-hero--with-media{% endif %}">
     <div class="container">
-        <h1 class="page-hero__title">Conversion de texte en audio</h1>
-        <p class="page-hero__subtitle">
-            Choisissez le type de conversion qui vous convient : synthétique ou lecture humaine.
-        </p>
+        <div class="page-hero__layout">
+            {% if appearance and appearance.audio_human_hero_image %}
+                <div class="page-hero__media">
+                    <img src="{{ appearance.audio_human_hero_image.url }}" alt="Image hero" loading="lazy">
+                </div>
+            {% endif %}
+            <div class="page-hero__content">
+                <h1 class="page-hero__title">Conversion de texte en audio</h1>
+                <p class="page-hero__subtitle">
+                    Choisissez le type de conversion qui vous convient : synth??tique ou lecture humaine.
+                </p>
+            </div>
+        </div>
     </div>
 </section>
 
