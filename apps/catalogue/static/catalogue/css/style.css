@@ -1317,6 +1317,20 @@ body.nav-drawer-open {
     fill: #ffffff;
 }
 
+.audio-icon--menu {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.audio-icon--menu svg {
+    width: 18px;
+    height: 18px;
+    fill: #0f172a;
+}
+
 .footer-fayard__action span {
     font-size: 0.875rem;
 }
