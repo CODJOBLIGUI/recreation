@@ -109,7 +109,7 @@
             </div>
         {% endif %}
 
-        {% if last_request and not last_request.audio %}
+        {% if last_request and not last_request.audio and not last_request.paiement_requis %}
             <div class="conversion-audio__progress" id="conversion-progress" data-request-id="{{ last_request.id }}">
                 <div class="conversion-audio__progress-bar">
                     <span class="conversion-audio__progress-fill" id="conversion-progress-fill"></span>
@@ -223,6 +223,7 @@
                     emailInput.required = false;
                 }
             }
+            return needsPayment;
         }
 
         if (texte) texte.addEventListener("input", togglePayment);
@@ -231,10 +232,11 @@
 
         if (form) {
             form.addEventListener("submit", function() {
+                const needsPayment = togglePayment();
                 if (submitBtn) {
                     submitBtn.disabled = true;
                 }
-                if (progressBox) {
+                if (progressBox && !needsPayment) {
                     progressBox.style.display = "block";
                     if (progressFill) progressFill.style.width = "5%";
                     if (progressText) progressText.textContent = "Progression : 5%";

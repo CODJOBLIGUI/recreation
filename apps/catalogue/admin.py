@@ -655,22 +655,48 @@ class AudioConversionRequestAdmin(ModelAdmin):
         obj.save(update_fields=["audio", "statut", "updated_at"])
 
     def convertir_fichier_en_audio(self, request, queryset):
-        from .tasks import convert_audio_request
+        try:
+            from .tasks import convert_audio_request
+            use_async = True
+        except Exception:
+            convert_audio_request = None
+            use_async = False
 
         queued = 0
+        success = 0
+        failures = 0
         for obj in queryset:
             if not obj.fichier and not obj.texte:
                 self.message_user(request, f"Aucun texte/fichier pour la demande #{obj.id}.", level="warning")
                 continue
             obj.statut = "processing"
-            obj.async_status = "queued"
+            obj.async_status = "queued" if use_async else ""
             obj.async_progress = 0
             obj.async_error = ""
             obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "updated_at"])
-            convert_audio_request(obj.id)
-            queued += 1
+            if use_async and convert_audio_request:
+                convert_audio_request(obj.id)
+                queued += 1
+            else:
+                try:
+                    self._generate_audio_for_obj(obj)
+                    success += 1
+                except Exception as exc:
+                    failures += 1
+                    obj.statut = "error"
+                    obj.async_error = str(exc)
+                    obj.save(update_fields=["statut", "async_error", "updated_at"])
+                    self.message_user(request, f"Erreur pour la demande #{obj.id}: {exc}", level="error")
         if queued:
-            self.message_user(request, f"{queued} demande(s) envoyée(s) en traitement.", level="success")
+            self.message_user(
+                request,
+                f"{queued} demande(s) envoyée(s) en traitement. Assurez-vous que run_huey tourne.",
+                level="success",
+            )
+        if success:
+            self.message_user(request, f"{success} fichier(s) converti(s) avec succès.", level="success")
+        if failures and not success and not queued:
+            self.message_user(request, "Aucune conversion n'a abouti. Vérifiez les erreurs ci-dessus.", level="error")
 
     convertir_fichier_en_audio.short_description = "Convertir le fichier en MP3"
 
