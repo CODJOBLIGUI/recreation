@@ -293,9 +293,13 @@
                     <span>E-mail</span>
                 </a>
                 <a href="{% url 'catalogue:conversion-audio' %}" class="footer-fayard__action">
-                    <span class="icon-combo icon-combo--audio">
-                        <i class="fa-solid fa-headphones"></i>
-                        <i class="fa-solid fa-book-open icon-book-inside"></i>
+                    <span class="audio-icon" aria-hidden="true">
+                        <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
+                            <path d="M32 8c-11 0-20 9-20 20v12a4 4 0 0 0 4 4h4V30h-4v-2c0-8.8 7.2-16 16-16s16 7.2 16 16v2h-4v14h4a4 4 0 0 0 4-4V28c0-11-9-20-20-20z"/>
+                            <path d="M14 30h10v18H14a4 4 0 0 1-4-4V34a4 4 0 0 1 4-4zm40 0H44v18h10a4 4 0 0 0 4-4V34a4 4 0 0 0-4-4z"/>
+                            <path d="M20 42l12-10 12 10-12 8-12-8z"/>
+                            <path d="M32 32v18"/>
+                        </svg>
                     </span>
                     <span>Conversion de texte en audio</span>
                 </a>
