@@ -12,7 +12,12 @@ from ckeditor.fields import RichTextField
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from unfold.admin import ModelAdmin
 
-from .utils.audio_conversion import extract_text_from_file, generate_tts_mp3
+from .utils.audio_conversion import (
+    extract_text_from_file,
+    generate_tts_mp3,
+    count_pages_for_file,
+    estimate_pages_from_text,
+)
 from .models import (
     Actualite,
     Auteur,
@@ -669,28 +674,40 @@ class AudioConversionRequestAdmin(ModelAdmin):
             if not obj.fichier and not obj.texte:
                 self.message_user(request, f"Aucun texte/fichier pour la demande #{obj.id}.", level="warning")
                 continue
+            if not obj.pages_count:
+                if obj.fichier:
+                    obj.pages_count = count_pages_for_file(obj.fichier)
+                else:
+                    obj.pages_count = estimate_pages_from_text(obj.texte or "")
+                obj.save(update_fields=["pages_count", "updated_at"])
             obj.statut = "processing"
-            obj.async_status = "queued" if use_async else ""
-            obj.async_progress = 0
+            should_queue = obj.pages_count > 200
+            obj.async_status = "queued" if (use_async and should_queue) else "started"
+            obj.async_progress = 10 if not should_queue else 0
             obj.async_error = ""
             obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "updated_at"])
-            if use_async and convert_audio_request:
+            if should_queue and use_async and convert_audio_request:
                 convert_audio_request(obj.id)
                 queued += 1
             else:
                 try:
                     self._generate_audio_for_obj(obj)
+                    obj.async_status = "finished"
+                    obj.async_progress = 100
+                    obj.save(update_fields=["async_status", "async_progress", "updated_at"])
                     success += 1
                 except Exception as exc:
                     failures += 1
                     obj.statut = "error"
                     obj.async_error = str(exc)
-                    obj.save(update_fields=["statut", "async_error", "updated_at"])
+                    obj.async_status = "failed"
+                    obj.async_progress = 100
+                    obj.save(update_fields=["statut", "async_status", "async_progress", "async_error", "updated_at"])
                     self.message_user(request, f"Erreur pour la demande #{obj.id}: {exc}", level="error")
         if queued:
             self.message_user(
                 request,
-                f"{queued} demande(s) envoyée(s) en traitement. Assurez-vous que run_huey tourne.",
+                f"{queued} demande(s) envoyée(s) en traitement (plus de 200 pages). Assurez-vous que run_huey tourne.",
                 level="success",
             )
         if success:
