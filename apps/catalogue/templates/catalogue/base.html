@@ -136,10 +136,6 @@
                         {% if link.url == "/nos-contrats/" %}
                         <li>
                             <a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>
-                                <span class="menu-icon menu-icon--audio">
-                                    <i class="fa-solid fa-headphones"></i>
-                                    <i class="fa-solid fa-book-open icon-book-inside"></i>
-                                </span>
                                 Conversion de texte en audio
                             </a>
                         </li>
@@ -152,15 +148,7 @@
                         <li><a href="{% url 'catalogue:auteurs' %}" {% if request.resolver_match.url_name == 'auteurs' %}class="active"{% endif %}>Auteurs</a></li>
                         <li><a href="{% url 'catalogue:catalogue' %}" {% if request.resolver_match.url_name == 'catalogue' %}class="active"{% endif %}>Catalogue</a></li>
                         <li><a href="{% url 'catalogue:nos-contrats' %}" {% if request.resolver_match.url_name == 'nos-contrats' %}class="active"{% endif %}>Nos contrats</a></li>
-                        <li>
-                            <a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>
-                                <span class="menu-icon menu-icon--audio">
-                                    <i class="fa-solid fa-headphones"></i>
-                                    <i class="fa-solid fa-book-open icon-book-inside"></i>
-                                </span>
-                                Conversion de texte en audio
-                            </a>
-                        </li>
+                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
                         <li><a href="{% url 'catalogue:a-propos' %}" {% if request.resolver_match.url_name == 'a-propos' %}class="active"{% endif %}>A propos</a></li>
                         <li><a href="{% url 'catalogue:contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>Contacts</a></li>
                     {% endif %}
