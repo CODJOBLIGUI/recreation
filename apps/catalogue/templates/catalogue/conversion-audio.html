@@ -121,7 +121,7 @@
         <div
             class="form-feedback form-feedback--error"
             id="conversion-error"
-            {% if not last_request or last_request.statut != "error" %}style="display:none;"{% endif %}>
+            {% if not last_request or last_request.statut != "error" or last_request.paiement_requis %}style="display:none;"{% endif %}>
             Service momentanément indisponible. Veuillez réessayer plus tard ou essayez avec une version payante. Un professionnel prendra votre requette en charge.
         </div>
 
@@ -357,7 +357,7 @@
                 .then((res) => res.ok ? res.json() : null)
                 .then((data) => {
                     if (!data) return;
-                    if (data.status === "error" || data.async_status === "failed") {
+                    if ((data.status === "error" || data.async_status === "failed") && !data.payment_required) {
                         if (progressBox) progressBox.style.display = "none";
                         if (conversionError) {
                             conversionError.style.display = "block";
