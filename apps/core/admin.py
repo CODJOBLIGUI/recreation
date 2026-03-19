@@ -27,5 +27,6 @@ class SiteAppearanceAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        ("Footer", {"fields": ("footer_copyright",)}),
         ("Contact", {"fields": ("site_email",)}),
     )

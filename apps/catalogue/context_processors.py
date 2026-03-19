@@ -1,3 +1,4 @@
+from datetime import date
 from apps.core.models import SiteAppearance
 from .models import Collection, Livre, MenuLink
 
@@ -47,6 +48,16 @@ def global_context(request):
             footer_menu_columns["Ressources"].append(link)
 
     try:
+        year = date.today().year
+        raw_copy = (
+            appearance.footer_copyright
+            if appearance and appearance.footer_copyright
+            else "© Editions Recréation - Tous droits réservés - {year}"
+        )
+        footer_copy = raw_copy.replace("{{year}}", str(year)).replace("{year}", str(year))
+        if "{year}" not in raw_copy and "{{year}}" not in raw_copy and str(year) not in footer_copy:
+            footer_copy = f"{raw_copy} - {year}"
+
         return {
             "categories_list": Livre.CATEGORIES,
             "collections_list": collections,
@@ -55,6 +66,7 @@ def global_context(request):
             "menu_header_links": menu_header_links,
             "menu_footer_links": menu_footer_links,
             "footer_menu_columns": footer_menu_columns,
+            "footer_copyright": footer_copy,
         }
     except Exception:
         return {}

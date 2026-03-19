@@ -100,6 +100,12 @@ class SiteAppearance(models.Model):
     audio_human_payment_url = models.URLField(blank=True, verbose_name="Lien paiement (lecture par un humain)")
     audio_human_payment_url_male = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (voix masculine)")
     audio_human_payment_url_female = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (voix féminine)")
+    footer_copyright = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="Mention de copyright (footer)",
+        help_text="Utilisez {year} pour l'année automatique.",
+    )
 
     class Meta:
         verbose_name = "Apparence du site"
