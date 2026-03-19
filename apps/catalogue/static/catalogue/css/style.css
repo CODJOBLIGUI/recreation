@@ -338,9 +338,26 @@ ul, ol {
     margin-right: 0.35rem;
 }
 
-.menu-icon i,
-.icon-combo i {
-    font-size: 0.95em;
+.menu-icon--audio,
+.icon-combo--audio {
+    position: relative;
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 0.5rem;
+}
+
+.menu-icon--audio i,
+.icon-combo--audio i {
+    font-size: 1em;
+}
+
+.menu-icon--audio .icon-book-inside,
+.icon-combo--audio .icon-book-inside {
+    position: absolute;
+    font-size: 0.55em;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
 }
 
 .header__nav-list a:hover,
