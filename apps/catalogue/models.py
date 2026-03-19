@@ -123,6 +123,13 @@ class Page(TimeStampedModel, SEOModel):
     slug = models.SlugField(max_length=200, unique=True, verbose_name="Slug")
     hero_title = models.CharField(max_length=200, blank=True, verbose_name="Titre d'en-tête")
     hero_subtitle = models.CharField(max_length=255, blank=True, verbose_name="Sous-titre d'en-tête")
+    hero_image = models.ImageField(
+        upload_to="pages/heroes/%Y/%m/",
+        blank=True,
+        null=True,
+        verbose_name="Image du hero",
+        help_text="Image affichée dans le hero bleu de la page.",
+    )
     body = RichTextField(verbose_name="Contenu")
     is_active = models.BooleanField(default=True, verbose_name="Actif")
     show_team = models.BooleanField(default=False, verbose_name="Afficher l'équipe")
@@ -841,3 +848,28 @@ class SoumissionManuscrit(TimeStampedModel):
 
     def __str__(self):
         return f"{self.titre_ouvrage} - {self.nom_auteur}"
+
+
+# -------------------------------------------------------------------------------
+# MODÈLE PUBLICITÉ SITE
+# -------------------------------------------------------------------------------
+
+class SiteAd(TimeStampedModel):
+    """Bannière publicitaire diffusée sur le site."""
+
+    title = models.CharField(max_length=200, blank=True, verbose_name="Titre")
+    text = models.CharField(max_length=255, blank=True, verbose_name="Texte court")
+    image = models.ImageField(upload_to="ads/%Y/%m/", verbose_name="Image")
+    link_url = models.URLField(blank=True, verbose_name="Lien de redirection")
+    weight = models.PositiveSmallIntegerField(default=1, verbose_name="Poids de diffusion")
+    is_active = models.BooleanField(default=True, verbose_name="Actif")
+    starts_at = models.DateTimeField(blank=True, null=True, verbose_name="Début de diffusion")
+    ends_at = models.DateTimeField(blank=True, null=True, verbose_name="Fin de diffusion")
+
+    class Meta:
+        verbose_name = "Publicité"
+        verbose_name_plural = "Publicités"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.title or f"Publicité #{self.pk}"

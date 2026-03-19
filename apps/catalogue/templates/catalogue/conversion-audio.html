@@ -3,16 +3,35 @@
 
 {% block content %}
 
-<section class="page-hero page-hero--compact">
+<section class="page-hero page-hero--compact{% if page and page.hero_image %} page-hero--with-media{% endif %}">
     <div class="container">
-        <h1 class="page-hero__title">{{ page.hero_title|default:"Transformez vos textes en audio en quelques clics" }}</h1>
-        <p class="page-hero__subtitle conversion-audio__hero-note">
-            Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum.
-            Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l’audio
-            et vous l’envoyons par e-mail.
-        </p>
-        {% if page.hero_subtitle %}
-        <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
+        {% if page and page.hero_image %}
+            <div class="page-hero__layout">
+                <div class="page-hero__content">
+                    <h1 class="page-hero__title">{{ page.hero_title|default:"Transformez vos textes en audio en quelques clics" }}</h1>
+                    <p class="page-hero__subtitle conversion-audio__hero-note">
+                        Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum.
+                        Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l’audio
+                        et vous l’envoyons par e-mail.
+                    </p>
+                    {% if page.hero_subtitle %}
+                    <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
+                    {% endif %}
+                </div>
+                <div class="page-hero__media">
+                    <img src="{{ page.hero_image.url }}" alt="Conversion audio" loading="lazy">
+                </div>
+            </div>
+        {% else %}
+            <h1 class="page-hero__title">{{ page.hero_title|default:"Transformez vos textes en audio en quelques clics" }}</h1>
+            <p class="page-hero__subtitle conversion-audio__hero-note">
+                Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum.
+                Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l’audio
+                et vous l’envoyons par e-mail.
+            </p>
+            {% if page.hero_subtitle %}
+            <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
+            {% endif %}
         {% endif %}
     </div>
 </section>

@@ -559,6 +559,11 @@ class SoumissionManuscritView(FormView):
     form_class = SoumissionManuscritForm
     success_url = reverse_lazy("catalogue:soumission-manuscrit")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page"] = Page.objects.filter(slug="soumission-manuscrit", is_active=True).first()
+        return context
+
     def form_valid(self, form):
         form.save()
         messages.success(
@@ -652,6 +657,7 @@ class SearchView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["page"] = Page.objects.filter(slug="recherche", is_active=True).first()
         query = self.request.GET.get("q", "").strip()
 
         livres = []
@@ -897,7 +903,10 @@ class AudioConversionView(FormView):
     success_url = reverse_lazy("catalogue:conversion-audio-synthetique")
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        page = Page.objects.filter(slug="conversion-texte-audio", is_active=True).first()
+        page = (
+            Page.objects.filter(slug="conversion-texte-audio-synthetique", is_active=True).first()
+            or Page.objects.filter(slug="conversion-texte-audio", is_active=True).first()
+        )
         context["page"] = page
         context["page_blocks"] = (
             page.blocks.filter(est_actif=True)
@@ -1102,6 +1111,11 @@ class AudioConversionHumanView(AudioConversionView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        page = (
+            Page.objects.filter(slug="conversion-texte-audio-humain", is_active=True).first()
+            or Page.objects.filter(slug="conversion-texte-audio", is_active=True).first()
+        )
+        context["page"] = page
         context["human_reading_page"] = True
         form = context.get("form")
         if form and "texte" in form.fields:
@@ -1114,7 +1128,10 @@ class AudioConversionChoiceView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        page = Page.objects.filter(slug="conversion-texte-audio", is_active=True).first()
+        page = (
+            Page.objects.filter(slug="conversion-texte-audio-choix", is_active=True).first()
+            or Page.objects.filter(slug="conversion-texte-audio", is_active=True).first()
+        )
         context["page"] = page
         context["page_title"] = (
             page.meta_title if page and page.meta_title else "Conversion de texte en audio - Editions Recréation"

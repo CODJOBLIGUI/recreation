@@ -348,6 +348,20 @@
 
     {% include "catalogue/partials/country_codes.html" %}
 
+    {% if ads %}
+        {{ ads|json_script:"ads-data" }}
+        <div class="ad-modal" id="ad-modal" aria-hidden="true">
+            <div class="ad-modal__overlay" data-ad-close></div>
+            <div class="ad-modal__content" role="dialog" aria-modal="true" aria-label="Publicité">
+                <button class="ad-modal__close" type="button" data-ad-close aria-label="Fermer">×</button>
+                <a class="ad-modal__link" href="#" target="_blank" rel="noopener" data-ad-link>
+                    <img class="ad-modal__image" src="" alt="" data-ad-image>
+                    <div class="ad-modal__text" data-ad-text></div>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
     <!-- Scripts JavaScript -->
     <!-- Exposer les URLs Django au JavaScript -->
     <script>

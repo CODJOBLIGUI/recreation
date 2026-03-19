@@ -8,10 +8,22 @@
 
 
 
-<section class="page-hero page-hero--about">
+<section class="page-hero page-hero--about{% if page and page.hero_image %} page-hero--with-media{% endif %}">
     <div class="container">
-        <h1 class="page-hero__title">{{ page.hero_title|default:"A propos des Editions Recréation" }}</h1>
-        <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Notre histoire, notre mission, nos valeurs, les chiffres, notre équipe" }}</p>
+        {% if page and page.hero_image %}
+            <div class="page-hero__layout">
+                <div class="page-hero__content">
+                    <h1 class="page-hero__title">{{ page.hero_title|default:"A propos des Editions Recréation" }}</h1>
+                    <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Notre histoire, notre mission, nos valeurs, les chiffres, notre équipe" }}</p>
+                </div>
+                <div class="page-hero__media">
+                    <img src="{{ page.hero_image.url }}" alt="A propos" loading="lazy">
+                </div>
+            </div>
+        {% else %}
+            <h1 class="page-hero__title">{{ page.hero_title|default:"A propos des Editions Recréation" }}</h1>
+            <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Notre histoire, notre mission, nos valeurs, les chiffres, notre équipe" }}</p>
+        {% endif %}
     </div>
 </section>
 

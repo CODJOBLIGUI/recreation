@@ -232,6 +232,106 @@
     }
 
     // ========================================
+    // PUBLICITÉ MODALE (ROTATION + TIMING)
+    // ========================================
+
+    const adsDataEl = document.getElementById('ads-data');
+    if (adsDataEl) {
+        let ads = [];
+        try {
+            ads = JSON.parse(adsDataEl.textContent || '[]');
+        } catch (err) {
+            ads = [];
+        }
+
+        const modal = document.getElementById('ad-modal');
+        const linkEl = modal ? modal.querySelector('[data-ad-link]') : null;
+        const imgEl = modal ? modal.querySelector('[data-ad-image]') : null;
+        const textEl = modal ? modal.querySelector('[data-ad-text]') : null;
+        const closeEls = modal ? modal.querySelectorAll('[data-ad-close]') : [];
+
+        const scheduleMinutes = [5, 15, 30];
+        const startKey = 'adSessionStart';
+        const countKey = 'adShowCount';
+        let isShowing = false;
+
+        const now = Date.now();
+        let sessionStart = parseInt(sessionStorage.getItem(startKey) || '0', 10);
+        if (!sessionStart) {
+            sessionStart = now;
+            sessionStorage.setItem(startKey, String(sessionStart));
+        }
+        let showCount = parseInt(sessionStorage.getItem(countKey) || '0', 10) || 0;
+
+        const pickAd = () => {
+            if (!ads.length) return null;
+            const total = ads.reduce((sum, ad) => sum + Math.max(1, parseInt(ad.weight || 1, 10)), 0);
+            let roll = Math.random() * total;
+            for (const ad of ads) {
+                roll -= Math.max(1, parseInt(ad.weight || 1, 10));
+                if (roll <= 0) return ad;
+            }
+            return ads[0];
+        };
+
+        const closeAd = () => {
+            if (!modal) return;
+            modal.classList.remove('is-visible');
+            modal.setAttribute('aria-hidden', 'true');
+            isShowing = false;
+            showCount += 1;
+            sessionStorage.setItem(countKey, String(showCount));
+            scheduleNext();
+        };
+
+        const renderAd = (ad) => {
+            if (!modal || !ad) return;
+            if (imgEl) {
+                imgEl.src = ad.image || '';
+                imgEl.alt = ad.title || 'Publicité';
+            }
+            if (linkEl) {
+                linkEl.href = ad.link_url || '#';
+            }
+            if (textEl) {
+                if (ad.text) {
+                    textEl.textContent = ad.text;
+                    textEl.style.display = 'block';
+                } else {
+                    textEl.textContent = '';
+                    textEl.style.display = 'none';
+                }
+            }
+        };
+
+        const showAd = () => {
+            if (!modal || !ads.length || isShowing) return;
+            const ad = pickAd();
+            if (!ad) return;
+            renderAd(ad);
+            modal.classList.add('is-visible');
+            modal.setAttribute('aria-hidden', 'false');
+            isShowing = true;
+        };
+
+        const scheduleNext = () => {
+            if (showCount >= scheduleMinutes.length) return;
+            const target = sessionStart + scheduleMinutes[showCount] * 60 * 1000;
+            const delay = Math.max(0, target - Date.now());
+            window.setTimeout(showAd, delay);
+        };
+
+        closeEls.forEach((btn) => btn.addEventListener('click', closeAd));
+        if (linkEl) {
+            linkEl.addEventListener('click', () => {
+                closeAd();
+            });
+        }
+
+        scheduleNext();
+    }
+
+    // ========================================
     // INITIALISATION AU CHARGEMENT
     // ========================================
 

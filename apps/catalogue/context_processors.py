@@ -1,6 +1,8 @@
 from datetime import date
+from django.db.models import Q
+from django.utils import timezone
 from apps.core.models import SiteAppearance
-from .models import Collection, Livre, MenuLink
+from .models import Collection, Livre, MenuLink, SiteAd
 
 def global_context(request):
     """
@@ -24,6 +26,23 @@ def global_context(request):
 
     menu_header_links = MenuLink.objects.filter(is_active=True, location="header").order_by("order", "title")
     menu_footer_links = MenuLink.objects.filter(is_active=True, location="footer").order_by("order", "title")
+
+    now = timezone.now()
+    ads_qs = SiteAd.objects.filter(is_active=True).filter(
+        Q(starts_at__isnull=True) | Q(starts_at__lte=now),
+        Q(ends_at__isnull=True) | Q(ends_at__gte=now),
+    )
+    ads = [
+        {
+            "title": ad.title,
+            "text": ad.text,
+            "image": ad.image.url if ad.image else "",
+            "link_url": ad.link_url,
+            "weight": ad.weight,
+        }
+        for ad in ads_qs
+        if ad.image
+    ]
 
     footer_menu_columns = {
         "Catalogue": [],
@@ -67,6 +86,7 @@ def global_context(request):
             "menu_footer_links": menu_footer_links,
             "footer_menu_columns": footer_menu_columns,
             "footer_copyright": footer_copy,
+            "ads": ads,
         }
     except Exception:
         return {}

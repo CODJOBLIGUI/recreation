@@ -4,10 +4,22 @@
 
 {% block content %}
 
-<section class="page-hero">
+<section class="page-hero{% if page and page.hero_image %} page-hero--with-media{% endif %}">
     <div class="container">
-        <h1 class="page-hero__title">Recherche</h1>
-        <p class="page-hero__subtitle">Trouvez rapidement livres, auteurs, actualités et pages</p>
+        {% if page and page.hero_image %}
+            <div class="page-hero__layout">
+                <div class="page-hero__content">
+                    <h1 class="page-hero__title">Recherche</h1>
+                    <p class="page-hero__subtitle">Trouvez rapidement livres, auteurs, actualités et pages</p>
+                </div>
+                <div class="page-hero__media">
+                    <img src="{{ page.hero_image.url }}" alt="Recherche" loading="lazy">
+                </div>
+            </div>
+        {% else %}
+            <h1 class="page-hero__title">Recherche</h1>
+            <p class="page-hero__subtitle">Trouvez rapidement livres, auteurs, actualités et pages</p>
+        {% endif %}
     </div>
 </section>
 

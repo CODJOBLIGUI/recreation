@@ -10,10 +10,22 @@
 
 <!-- En-tête de la page -->
 
-<section class="page-hero">
+<section class="page-hero{% if page and page.hero_image %} page-hero--with-media{% endif %}">
     <div class="container">
-        <h1 class="page-hero__title">{{ page.hero_title|default:"Nos contrats d'édition" }}</h1>
-        <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Choisissez la formule qui correspond le mieux à votre projet littéraire" }}</p>
+        {% if page and page.hero_image %}
+            <div class="page-hero__layout">
+                <div class="page-hero__content">
+                    <h1 class="page-hero__title">{{ page.hero_title|default:"Nos contrats d'édition" }}</h1>
+                    <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Choisissez la formule qui correspond le mieux à votre projet littéraire" }}</p>
+                </div>
+                <div class="page-hero__media">
+                    <img src="{{ page.hero_image.url }}" alt="Nos contrats" loading="lazy">
+                </div>
+            </div>
+        {% else %}
+            <h1 class="page-hero__title">{{ page.hero_title|default:"Nos contrats d'édition" }}</h1>
+            <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Choisissez la formule qui correspond le mieux à votre projet littéraire" }}</p>
+        {% endif %}
     </div>
 </section>
 

@@ -28,6 +28,7 @@ from .models import (
     PageBlock,
     PageBlockItem,
     PrixLitteraire,
+    SiteAd,
     SoumissionManuscrit,
     UserProfile,
 )
@@ -325,9 +326,24 @@ class PageAdmin(ModelAdmin):
         js = ("catalogue/admin/inline_sortable.js",)
 
     fieldsets = (
-        ("Contenu", {"fields": ("title", "slug", "hero_title", "hero_subtitle", "body")}),
+        ("Contenu", {"fields": ("title", "slug", "hero_title", "hero_subtitle", "hero_image", "body")}),
         ("Options", {"fields": ("is_active", "show_team")}),
         ("SEO", {"fields": ("meta_title", "meta_description"), "classes": ("collapse",)}),
+        ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
+    )
+
+
+@admin.register(SiteAd)
+class SiteAdAdmin(ModelAdmin):
+    list_display = ("title", "is_active", "weight", "starts_at", "ends_at", "created_at")
+    list_editable = ("is_active", "weight")
+    search_fields = ("title", "text", "link_url")
+    list_filter = ("is_active",)
+    readonly_fields = ("created_at", "updated_at")
+
+    fieldsets = (
+        ("Contenu", {"fields": ("title", "text", "image", "link_url")}),
+        ("Diffusion", {"fields": ("is_active", "weight", "starts_at", "ends_at")}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
     )
 
