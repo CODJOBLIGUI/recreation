@@ -106,6 +106,11 @@ class SiteAppearance(models.Model):
     audio_human_payment_url = models.URLField(blank=True, verbose_name="Lien paiement (lecture par un humain)")
     audio_human_payment_url_male = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (voix masculine)")
     audio_human_payment_url_female = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (voix féminine)")
+    audio_human_payment_url_1 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (1 à 100 pages)")
+    audio_human_payment_url_2 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (101 à 200 pages)")
+    audio_human_payment_url_3 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (201 à 500 pages)")
+    audio_human_payment_url_4 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (501 à 1000 pages)")
+    audio_human_payment_url_5 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (1001+ pages)")
     footer_copyright = models.CharField(
         max_length=255,
         blank=True,

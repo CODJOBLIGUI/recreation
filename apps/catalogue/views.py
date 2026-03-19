@@ -915,9 +915,12 @@ class AudioConversionView(FormView):
                 tier = context["last_request"].payment_tier or 1
                 if context["last_request"].lecture_humaine:
                     context["payment_url"] = {
-                        "male": appearance.audio_human_payment_url_male or appearance.audio_human_payment_url,
-                        "female": appearance.audio_human_payment_url_female or appearance.audio_human_payment_url,
-                    }.get(context["last_request"].voix_humaine) or appearance.audio_human_payment_url
+                        1: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
+                        2: appearance.audio_human_payment_url_2,
+                        3: appearance.audio_human_payment_url_3,
+                        4: appearance.audio_human_payment_url_4,
+                        5: appearance.audio_human_payment_url_5,
+                    }.get(tier) or appearance.audio_human_payment_url
                 else:
                     context["payment_url"] = {
                         1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
@@ -1166,9 +1169,12 @@ def conversion_payment_redirect(request, demande_id):
     if appearance:
         if demande.lecture_humaine:
             payment_url = {
-                "male": appearance.audio_human_payment_url_male or appearance.audio_human_payment_url,
-                "female": appearance.audio_human_payment_url_female or appearance.audio_human_payment_url,
-            }.get(demande.voix_humaine) or appearance.audio_human_payment_url
+                1: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
+                2: appearance.audio_human_payment_url_2,
+                3: appearance.audio_human_payment_url_3,
+                4: appearance.audio_human_payment_url_4,
+                5: appearance.audio_human_payment_url_5,
+            }.get(tier) or appearance.audio_human_payment_url
         else:
             payment_url = {
                 1: appearance.audio_payment_url_1 or appearance.audio_payment_url,

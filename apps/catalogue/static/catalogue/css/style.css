@@ -2027,6 +2027,8 @@ body.nav-drawer-open {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    align-self: center;
 }
 
 .page-hero__media img {
