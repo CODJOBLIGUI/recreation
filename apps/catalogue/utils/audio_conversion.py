@@ -249,16 +249,39 @@ def _chunk_text(text, chunk_size=1000):
     return chunks
 
 
-def generate_tts_mp3(text, lang="fr", slow=False, chunk_size=1000):
+def generate_tts_mp3(
+    text,
+    lang="fr",
+    slow=False,
+    chunk_size=1000,
+    max_retries=3,
+    base_delay=1.5,
+    inter_chunk_delay=0.6,
+):
     from gtts import gTTS
+    import time
     chunks = _chunk_text(text, chunk_size=chunk_size)
     if not chunks:
         raise RuntimeError("Texte vide après extraction.")
     output = io.BytesIO()
-    for part in chunks:
-        tts = gTTS(part, lang=lang, slow=slow)
-        tmp = io.BytesIO()
-        tts.write_to_fp(tmp)
-        output.write(tmp.getvalue())
+    for idx, part in enumerate(chunks, start=1):
+        attempt = 0
+        while True:
+            try:
+                tts = gTTS(part, lang=lang, slow=slow)
+                tmp = io.BytesIO()
+                tts.write_to_fp(tmp)
+                output.write(tmp.getvalue())
+                break
+            except Exception as exc:
+                attempt += 1
+                if attempt > max_retries:
+                    raise RuntimeError(f"Erreur TTS (segment {idx}/{len(chunks)}): {exc}") from exc
+                delay = base_delay * (2 ** (attempt - 1))
+                if "429" in str(exc):
+                    delay = max(delay, 5.0)
+                time.sleep(delay)
+        if inter_chunk_delay:
+            time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
