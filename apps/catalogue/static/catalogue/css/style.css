@@ -341,8 +341,8 @@ ul, ol {
 .menu-icon--audio,
 .icon-combo--audio {
     position: relative;
-    width: 1.5em;
-    height: 1.25em;
+    width: 1.35em;
+    height: 1.15em;
     margin-right: 0.55rem;
 }
 
@@ -354,7 +354,7 @@ ul, ol {
 
 .menu-icon--audio .fa-headphones,
 .icon-combo--audio .fa-headphones {
-    font-size: 1.25em;
+    font-size: 1.1em;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -55%);
@@ -363,9 +363,9 @@ ul, ol {
 
 .menu-icon--audio .icon-book-inside,
 .icon-combo--audio .icon-book-inside {
-    font-size: 0.85em;
+    font-size: 0.65em;
     left: 50%;
-    top: 55%;
+    top: 57%;
     transform: translate(-50%, -50%);
     z-index: 2;
 }
@@ -1271,6 +1271,34 @@ body.nav-drawer-open {
     align-items: center;
     justify-content: center;
     pointer-events: none;
+}
+
+.footer-fayard__action .icon-combo--audio {
+    width: 50px;
+    height: 50px;
+    background: #3A3A3A;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    pointer-events: none;
+}
+
+.footer-fayard__action .icon-combo--audio .fa-headphones {
+    font-size: 1.35rem;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -56%);
+    position: absolute;
+}
+
+.footer-fayard__action .icon-combo--audio .icon-book-inside {
+    font-size: 0.7rem;
+    left: 50%;
+    top: 58%;
+    transform: translate(-50%, -50%);
+    position: absolute;
 }
 
 .footer-fayard__action span {
