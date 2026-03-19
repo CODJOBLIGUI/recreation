@@ -132,9 +132,11 @@
             Service momentanément indisponible pour cette conversion. Vous pouvez poursuivre via le dépôt de fichiers
             ou la lecture par un humain.
             <div style="margin-top:0.6rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
-                <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-pay' last_request.id %}">
-                    Dépôt de fichiers
-                </a>
+                {% if last_request and last_request.id %}
+                    <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-pay' last_request.id %}">
+                        Dépôt de fichiers
+                    </a>
+                {% endif %}
                 <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
                     Lecture par un humain
                 </a>
