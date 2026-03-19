@@ -1286,7 +1286,7 @@ body.nav-drawer-open {
 }
 
 .footer-fayard__action .icon-combo--audio .fa-headphones {
-    font-size: 1.35rem;
+    font-size: 1.6rem;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -56%);
@@ -1294,9 +1294,9 @@ body.nav-drawer-open {
 }
 
 .footer-fayard__action .icon-combo--audio .icon-book-inside {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     left: 50%;
-    top: 58%;
+    top: 62%;
     transform: translate(-50%, -50%);
     position: absolute;
 }
