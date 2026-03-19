@@ -98,7 +98,7 @@
                     <p class="form-feedback form-feedback--error" id="payment-error" style="display:none;">
                         Impossible de lancer le paiement. Veuillez réessayer ou nous contacter.
                     </p>
-                    {% if payment_available %}
+                    {% if payment_available and last_request and last_request.id %}
                         <a
                             class="btn btn--white btn--large"
                             id="payment-start"
