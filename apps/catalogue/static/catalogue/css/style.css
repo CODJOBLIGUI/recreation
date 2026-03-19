@@ -341,23 +341,33 @@ ul, ol {
 .menu-icon--audio,
 .icon-combo--audio {
     position: relative;
-    width: 1.2em;
-    height: 1.2em;
-    margin-right: 0.5rem;
+    width: 1.5em;
+    height: 1.25em;
+    margin-right: 0.55rem;
 }
 
 .menu-icon--audio i,
 .icon-combo--audio i {
-    font-size: 1em;
+    position: absolute;
+    line-height: 1;
+}
+
+.menu-icon--audio .fa-headphones,
+.icon-combo--audio .fa-headphones {
+    font-size: 1.25em;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -55%);
+    z-index: 1;
 }
 
 .menu-icon--audio .icon-book-inside,
 .icon-combo--audio .icon-book-inside {
-    position: absolute;
-    font-size: 0.55em;
+    font-size: 0.85em;
     left: 50%;
-    top: 52%;
+    top: 55%;
     transform: translate(-50%, -50%);
+    z-index: 2;
 }
 
 .header__nav-list a:hover,
