@@ -23,19 +23,19 @@ def convert_audio_request(request_id):
 
     obj.async_started_at = timezone.now()
     obj.async_error = ""
-    _set_progress(obj, "started", 5)
+    _set_progress(obj, "started", 10)
 
     try:
         text = obj.texte or ""
         if obj.fichier and not text.strip():
-            _set_progress(obj, "started", 20)
+            _set_progress(obj, "started", 25)
             text = extract_text_from_file(obj.fichier)
 
         if not text.strip():
             _set_progress(obj, "failed", 100, "Texte vide après extraction.")
             return
 
-        _set_progress(obj, "started", 60)
+        _set_progress(obj, "started", 70)
         import uuid
 
         slow = True if obj.voix == "slow" else False

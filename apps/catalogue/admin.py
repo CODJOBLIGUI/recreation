@@ -596,6 +596,8 @@ class AudioConversionRequestAdmin(ModelAdmin):
         "paiement_requis",
         "paiement_initie",
         "statut",
+        "progress_display",
+        "progress_message",
         "created_at",
     )
     list_filter = ("paiement_requis", "lecture_humaine", "paiement_initie_at", "statut", "langue", "voix", "created_at")
@@ -644,7 +646,8 @@ class AudioConversionRequestAdmin(ModelAdmin):
             text = extract_text_from_file(obj.fichier)
         if not text.strip():
             raise RuntimeError("Texte vide après extraction.")
-        audio_stream = generate_tts_mp3(text, lang="fr", slow=False, chunk_size=1000)
+        slow = True if obj.voix == "slow" else False
+        audio_stream = generate_tts_mp3(text, lang=obj.langue, slow=slow, chunk_size=1000)
         audio_bytes = ContentFile(audio_stream.getvalue())
         filename = f"conversion-{slugify(obj.email) or obj.id}-{uuid.uuid4().hex}.mp3"
         obj.audio.save(filename, audio_bytes, save=False)
@@ -670,6 +673,30 @@ class AudioConversionRequestAdmin(ModelAdmin):
             self.message_user(request, f"{queued} demande(s) envoyée(s) en traitement.", level="success")
 
     convertir_fichier_en_audio.short_description = "Convertir le fichier en MP3"
+
+    def progress_display(self, obj):
+        if not obj.async_status:
+            return "-"
+        return f"{obj.async_progress}%"
+
+    progress_display.short_description = "Progression"
+
+    def progress_message(self, obj):
+        if obj.async_status == "queued":
+            return "En file d'attente"
+        if obj.async_status == "started":
+            if obj.async_progress < 25:
+                return "Extraction…"
+            if obj.async_progress < 70:
+                return "Synthèse…"
+            return "Finalisation…"
+        if obj.async_status == "finished":
+            return "Terminé"
+        if obj.async_status == "failed":
+            return obj.async_error or "Échec"
+        return "-"
+
+    progress_message.short_description = "Message"
 
     def fichier_link(self, obj):
         if obj.fichier:
