@@ -2016,6 +2016,7 @@ body.nav-drawer-open {
 
 .page-hero__content {
     max-width: 720px;
+    order: 1;
 }
 
 .page-hero--with-media .page-hero__content {
@@ -2027,6 +2028,7 @@ body.nav-drawer-open {
     display: flex;
     align-items: center;
     justify-content: center;
+    order: 2;
 }
 
 .page-hero__media img {
