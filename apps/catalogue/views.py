@@ -896,11 +896,6 @@ class AudioConversionView(FormView):
         return context
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser):
-            messages.info(request, "Veuillez vous connecter avec un compte client pour utiliser ce service.")
-            logout(request)
-            return redirect("catalogue:login")
-
         if not request.user.is_authenticated:
             success_count = int(request.session.get("audio_success_count", 0) or 0)
             if success_count >= FREE_CONVERSION_LIMIT:
