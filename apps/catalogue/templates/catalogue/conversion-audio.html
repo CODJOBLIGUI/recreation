@@ -118,6 +118,13 @@
             </div>
         {% endif %}
 
+        <div
+            class="form-feedback form-feedback--error"
+            id="conversion-error"
+            {% if not last_request or last_request.statut != "error" %}style="display:none;"{% endif %}>
+            Service momentanément indisponible. Veuillez réessayer plus tard.
+        </div>
+
         <div class="contact__form-wrapper conversion-audio__form">
             <h2>Convertissez votre texte ici</h2>
             <form method="POST" enctype="multipart/form-data" class="contact__form">
@@ -207,6 +214,7 @@
         const progressBox = document.getElementById("conversion-progress");
         const progressFill = document.getElementById("conversion-progress-fill");
         const progressText = document.getElementById("conversion-progress-text");
+        const conversionError = document.getElementById("conversion-error");
 
         function togglePayment() {
             const textLength = (texte && texte.value) ? texte.value.length : 0;
@@ -349,6 +357,14 @@
                 .then((res) => res.ok ? res.json() : null)
                 .then((data) => {
                     if (!data) return;
+                    if (data.status === "error" || data.async_status === "failed") {
+                        if (progressBox) progressBox.style.display = "none";
+                        if (conversionError) {
+                            conversionError.style.display = "block";
+                            conversionError.textContent = "Service momentanément indisponible. Veuillez réessayer plus tard.";
+                        }
+                        return;
+                    }
                     const pct = Math.max(0, Math.min(100, parseInt(data.progress || 0, 10)));
                     if (progressFill) progressFill.style.width = `${pct}%`;
                     if (progressText) progressText.textContent = `Progression : ${pct}%`;
