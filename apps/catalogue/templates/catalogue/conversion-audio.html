@@ -123,6 +123,14 @@
             id="conversion-error"
             {% if not last_request or last_request.statut != "error" or last_request.paiement_requis %}style="display:none;"{% endif %}>
             Service momentanément indisponible. Veuillez réessayer plus tard ou essayez avec une version payante. Un professionnel prendra votre requette en charge.
+            <div style="margin-top:0.6rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
+                <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-synthetique' %}">
+                    Téléverser un texte
+                </a>
+                <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
+                    Lecture par un humain
+                </a>
+            </div>
         </div>
 
         <div
@@ -142,6 +150,21 @@
                 </a>
             </div>
         </div>
+
+        {% if free_limit_blocked %}
+            <div class="form-feedback form-feedback--error" id="free-limit-block" data-remaining="{{ free_limit_remaining }}">
+                Vous avez atteint la limite de conversion gratuite quotidienne.
+                Vous pourrez réessayer dans <strong id="free-limit-timer">00:00:00</strong>.
+                <div style="margin-top:0.6rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
+                    <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-synthetique' %}">
+                        Téléverser un texte
+                    </a>
+                    <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
+                        Lecture par un humain
+                    </a>
+                </div>
+            </div>
+        {% endif %}
 
         <div class="contact__form-wrapper conversion-audio__form">
             <h2>Convertissez votre texte ici</h2>
@@ -234,6 +257,8 @@
         const progressText = document.getElementById("conversion-progress-text");
         const conversionError = document.getElementById("conversion-error");
         const conversionErrorPaid = document.getElementById("conversion-error-paid");
+        const freeLimitBlock = document.getElementById("free-limit-block");
+        const freeLimitTimer = document.getElementById("free-limit-timer");
 
         function togglePayment() {
             const textLength = (texte && texte.value) ? texte.value.length : 0;
@@ -381,10 +406,7 @@
                         if (data.payment_required) {
                             if (conversionErrorPaid) conversionErrorPaid.style.display = "block";
                         } else {
-                            if (conversionError) {
-                                conversionError.style.display = "block";
-                                conversionError.textContent = "Service momentanément indisponible. Veuillez réessayer plus tard.";
-                            }
+                            if (conversionError) conversionError.style.display = "block";
                         }
                         return;
                     }
@@ -401,6 +423,19 @@
         if (progressBox) {
             pollConversionProgress();
             setInterval(pollConversionProgress, 2500);
+        }
+
+        if (freeLimitBlock && freeLimitTimer) {
+            let remaining = parseInt(freeLimitBlock.dataset.remaining || "0", 10);
+            const tick = () => {
+                const hours = Math.floor(remaining / 3600);
+                const minutes = Math.floor((remaining % 3600) / 60);
+                const seconds = remaining % 60;
+                freeLimitTimer.textContent = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+                if (remaining > 0) remaining -= 1;
+            };
+            tick();
+            setInterval(tick, 1000);
         }
 
     })();

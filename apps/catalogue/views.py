@@ -18,6 +18,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
+from django.core.cache import cache
 from django.contrib.auth.views import LoginView as DjangoLoginView, PasswordResetView as DjangoPasswordResetView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import date
@@ -855,6 +856,39 @@ FREE_LIMIT_MESSAGE = (
     "pour continuer d'utiliser ce service gratuitement tant que votre texte ne "
     "dépasse pas la longueur autorisée pour ce mode."
 )
+FREE_IP_LIMIT = 10
+FREE_IP_WINDOW_SECONDS = 7 * 60 * 60
+
+
+def _get_client_ip(request):
+    xff = request.META.get("HTTP_X_FORWARDED_FOR")
+    if xff:
+        return xff.split(",")[0].strip()
+    return request.META.get("REMOTE_ADDR") or "unknown"
+
+
+def _get_free_ip_state(ip):
+    key = f"free_audio_ip:{ip}"
+    data = cache.get(key)
+    now = timezone.now().timestamp()
+    if not data or data.get("reset_at", 0) <= now:
+        data = {"count": 0, "reset_at": now + FREE_IP_WINDOW_SECONDS}
+        cache.set(key, data, timeout=FREE_IP_WINDOW_SECONDS)
+    return data, key
+
+
+def _is_free_ip_blocked(request):
+    ip = _get_client_ip(request)
+    data, _ = _get_free_ip_state(ip)
+    remaining = max(0, int(data["reset_at"] - timezone.now().timestamp()))
+    return data["count"] >= FREE_IP_LIMIT, remaining
+
+
+def _record_free_ip_success(request):
+    ip = _get_client_ip(request)
+    data, key = _get_free_ip_state(ip)
+    data["count"] = min(FREE_IP_LIMIT, data.get("count", 0) + 1)
+    cache.set(key, data, timeout=FREE_IP_WINDOW_SECONDS)
 
 
 class AudioConversionView(FormView):
@@ -893,6 +927,8 @@ class AudioConversionView(FormView):
                         5: appearance.audio_payment_url_5,
                     }.get(tier) or appearance.audio_payment_url
                 context["payment_available"] = bool(context["payment_url"])
+        context["free_limit_blocked"] = getattr(self, "free_limit_blocked", False)
+        context["free_limit_remaining"] = getattr(self, "free_limit_remaining", 0)
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -933,6 +969,16 @@ class AudioConversionView(FormView):
         demande.statut = "awaiting_payment" if demande.paiement_requis else "processing"
         demande.async_status = "queued"
         demande.async_progress = 0
+        if not demande.paiement_requis and not human_reading:
+            blocked, remaining = _is_free_ip_blocked(self.request)
+            if blocked:
+                self.free_limit_blocked = True
+                self.free_limit_remaining = remaining
+                messages.error(
+                    self.request,
+                    "Vous avez atteint la limite de conversion gratuite quotidienne.",
+                )
+                return self.form_invalid(form)
         if fichier:
             pages_count = count_pages_for_file(fichier)
         else:
@@ -1086,6 +1132,7 @@ def conversion_status(request, demande_id):
             request.session["audio_success_count"] = success_count + 1
             counted.append(demande.id)
             request.session["audio_counted_ids"] = counted
+        _record_free_ip_success(request)
     return JsonResponse(
         {
             "id": demande.id,
