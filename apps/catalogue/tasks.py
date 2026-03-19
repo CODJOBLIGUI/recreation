@@ -1,7 +1,6 @@
 ﻿from django.utils import timezone
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
-from huey.contrib.djhuey import db_task
 
 from .models import AudioConversionRequest
 from .utils.audio_conversion import extract_text_from_file, generate_tts_mp3
@@ -15,7 +14,6 @@ def _set_progress(obj, status, progress, error=""):
     obj.save(update_fields=["async_status", "async_progress", "async_error", "updated_at"])
 
 
-@db_task()
 def convert_audio_request(request_id):
     obj = AudioConversionRequest.objects.filter(id=request_id).first()
     if not obj:

@@ -20,7 +20,6 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'unfold',
-    'huey.contrib.djhuey',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -154,17 +153,6 @@ LOGOUT_REDIRECT_URL = "/"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Huey (tâches en arrière-plan)
-HUEY = {
-    "huey_class": "huey.SqliteHuey",
-    "name": "recreation-huey",
-    "filename": str(BASE_DIR / "huey.db"),
-    "immediate": False,
-    "consumer": {
-        "workers": 2,
-        "worker_type": "thread",
-    },
-}
 
 
 UNFOLD = {
@@ -341,4 +329,3 @@ UNFOLD = {
         lambda request: "catalogue/css/admin-custom.css",
     ],
 }
-
