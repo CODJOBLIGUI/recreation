@@ -288,7 +288,7 @@ font-size: 2rem;
 
     .page-hero__media {
         flex: 0 0 auto;
-        width: min(180px, 60vw);
+        width: min(150px, 60vw);
     }
 }
 
