@@ -10,6 +10,8 @@ from . import views
 app_name = 'catalogue'
 
 urlpatterns = [
+    path('robots.txt', views.robots_txt, name='robots'),
+    path('sitemap.xml', views.sitemap_xml, name='sitemap'),
     # Pages principales
     path('', views.IndexView.as_view(), name='index'),
     path('catalogue/', views.CatalogueView.as_view(), name='catalogue'),

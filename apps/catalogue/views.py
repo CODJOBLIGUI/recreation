@@ -5,11 +5,11 @@ FICHIER : apps/catalogue/views.py
 from django.contrib import messages
 from django.db.models import Q
 from django.db import close_old_connections
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core.files.base import ContentFile
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, FormView, ListView, TemplateView
 from django.contrib.auth import login, logout
 from django.contrib.auth import authenticate
@@ -1214,6 +1214,111 @@ def conversion_payment_redirect(request, demande_id):
         return redirect(payment_url)
     messages.error(request, "Le lien de paiement n’est pas encore disponible.")
     return redirect("catalogue:conversion-audio")
+
+
+def robots_txt(request):
+    sitemap_url = request.build_absolute_uri(reverse("catalogue:sitemap"))
+    lines = [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /admin/",
+        "Disallow: /ckeditor/",
+        f"Sitemap: {sitemap_url}",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
+def sitemap_xml(request):
+    def _abs(url):
+        return request.build_absolute_uri(url)
+
+    def _lastmod(value):
+        if not value:
+            return ""
+        try:
+            return value.date().isoformat()
+        except Exception:
+            try:
+                return value.isoformat()[:10]
+            except Exception:
+                return ""
+
+    url_items = []
+
+    # Pages principales
+    static_names = [
+        "index",
+        "catalogue",
+        "livres-numeriques",
+        "livres-papier",
+        "livres-audio",
+        "auteurs",
+        "collections",
+        "contact",
+        "a-propos",
+        "nos-contrats",
+        "soumission-manuscrit",
+        "actualites",
+        "conversion-audio",
+        "conversion-audio-synthetique",
+        "conversion-audio-humain",
+        "search",
+        "mentions-legales",
+        "confidentialite",
+        "cookies",
+    ]
+
+    for name in static_names:
+        try:
+            url_items.append((_abs(reverse(f"catalogue:{name}")), ""))
+        except Exception:
+            continue
+
+    # Pages dynamiques
+    for livre in Livre.objects.filter(est_publie=True):
+        url_items.append((_abs(livre.get_absolute_url()), _lastmod(livre.updated_at)))
+
+    for auteur in Auteur.objects.all():
+        url_items.append((_abs(auteur.get_absolute_url()), _lastmod(auteur.updated_at)))
+
+    for actualite in Actualite.objects.filter(est_publie=True):
+        url_items.append((_abs(actualite.get_absolute_url()), _lastmod(actualite.updated_at)))
+
+    for collection in Collection.objects.filter(est_active=True):
+        url_items.append((_abs(collection.get_absolute_url()), _lastmod(collection.updated_at)))
+
+    reserved_slugs = {
+        "accueil",
+        "contact",
+        "a-propos",
+        "nos-contrats",
+        "soumission-manuscrit",
+        "conversion-texte-audio",
+        "conversion-texte-audio-synthetique",
+        "conversion-texte-audio-humain",
+        "conversion-texte-audio-choix",
+        "mentions-legales",
+        "confidentialite",
+        "cookies",
+        "recherche",
+    }
+
+    for page in Page.objects.filter(is_active=True).exclude(slug__in=reserved_slugs):
+        try:
+            url_items.append((_abs(page.get_absolute_url()), _lastmod(page.updated_at)))
+        except Exception:
+            continue
+
+    # Build XML
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, lastmod in url_items:
+        lines.append("  <url>")
+        lines.append(f"    <loc>{loc}</loc>")
+        if lastmod:
+            lines.append(f"    <lastmod>{lastmod}</lastmod>")
+        lines.append("  </url>")
+    lines.append("</urlset>")
+    return HttpResponse("\n".join(lines), content_type="application/xml")
 
 
 class SignupView(FormView):
