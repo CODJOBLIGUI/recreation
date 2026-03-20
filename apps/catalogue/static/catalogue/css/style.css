@@ -1372,10 +1372,11 @@ body.nav-drawer-open {
 }
 
 .footer-fayard__btn-icon--audio .audio-icon-svg {
-    width: 1.4rem;
-    height: 1.4rem;
+    width: 1.6rem;
+    height: 1.6rem;
     display: block;
     color: currentColor;
+    fill: currentColor;
 }
 
 .social-icon {
