@@ -1128,6 +1128,13 @@ class AudioConversionHumanView(AudioConversionView):
     template_name = "catalogue/conversion-audio-humain.html"
     success_url = reverse_lazy("catalogue:conversion-audio-humain")
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # Remove synthetic voice field for human reading to avoid required validation.
+        if "voix" in form.fields:
+            form.fields.pop("voix")
+        return form
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         page = (

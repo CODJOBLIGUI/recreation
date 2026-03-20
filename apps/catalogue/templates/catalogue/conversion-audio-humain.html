@@ -42,6 +42,22 @@
             {% endfor %}
         {% endif %}
 
+        {% if form.errors %}
+            <div class="form-feedback form-feedback--error">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <div>
+                            {% if field != "__all__" %}
+                                {{ form.fields[field].label }} : {{ error }}
+                            {% else %}
+                                {{ error }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
         {% if last_request and last_request.paiement_requis %}
             <div class="cta-box conversion-audio__result conversion-audio__result--pay">
                 <div id="payment-required" {% if last_request.paiement_initie_at %}style="display:none;"{% endif %}>
@@ -95,6 +111,9 @@
                 <div class="form-group">
                     <label for="id_langue">{{ form.langue.label }}</label>
                     {{ form.langue }}
+                    {% if form.langue.errors %}
+                        <span class="form-error">{{ form.langue.errors.0 }}</span>
+                    {% endif %}
                 </div>
 
                 <div class="form-group">
