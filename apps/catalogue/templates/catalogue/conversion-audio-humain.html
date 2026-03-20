@@ -42,18 +42,6 @@
             {% endfor %}
         {% endif %}
 
-        {% if form.errors %}
-            <div class="form-feedback form-feedback--error">
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <div>{{ field.label }} : {{ error }}</div>
-                    {% endfor %}
-                {% endfor %}
-                {% for error in form.non_field_errors %}
-                    <div>{{ error }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
 
         {% if last_request and last_request.paiement_requis %}
             <div class="cta-box conversion-audio__result conversion-audio__result--pay">

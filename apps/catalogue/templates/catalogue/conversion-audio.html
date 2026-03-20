@@ -258,7 +258,6 @@
         const progressFill = document.getElementById("conversion-progress-fill");
         const progressText = document.getElementById("conversion-progress-text");
         const conversionError = document.getElementById("conversion-error");
-        const conversionErrorPaid = document.getElementById("conversion-error-paid");
         const freeLimitBlock = document.getElementById("free-limit-block");
         const freeLimitTimer = document.getElementById("free-limit-timer");
 
@@ -405,11 +404,7 @@
                     if (!data) return;
                     if (data.status === "error" || data.async_status === "failed") {
                         if (progressBox) progressBox.style.display = "none";
-                        if (data.payment_required) {
-                            if (conversionErrorPaid) conversionErrorPaid.style.display = "block";
-                        } else {
-                            if (conversionError) conversionError.style.display = "block";
-                        }
+                        if (conversionError) conversionError.style.display = "block";
                         return;
                     }
                     const pct = Math.max(0, Math.min(100, parseInt(data.progress || 0, 10)));

@@ -16,11 +16,13 @@ class SiteAppearanceAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "audio_payment_url",
+                    "audio_payment_url_0",
                     "audio_payment_url_1",
                     "audio_payment_url_2",
                     "audio_payment_url_3",
                     "audio_payment_url_4",
                     "audio_payment_url_5",
+                    "audio_human_payment_url_0",
                     "audio_human_payment_url_1",
                     "audio_human_payment_url_2",
                     "audio_human_payment_url_3",
