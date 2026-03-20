@@ -1115,10 +1115,11 @@ class AudioConversionView(FormView):
         if form.non_field_errors():
             messages.error(self.request, form.non_field_errors()[0])
         else:
-            # Pick the first field error
-            for field_errors in form.errors.values():
+            # Pick the first field error with label
+            for field_name, field_errors in form.errors.items():
                 if field_errors:
-                    messages.error(self.request, field_errors[0])
+                    label = form.fields.get(field_name).label if field_name in form.fields else field_name
+                    messages.error(self.request, f"{label} : {field_errors[0]}")
                     break
         return super().form_invalid(form)
 

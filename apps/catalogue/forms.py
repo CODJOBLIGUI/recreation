@@ -151,6 +151,9 @@ class AudioConversionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["email"].required = False
+        # "Voix" (vitesse synthétique) ne doit pas bloquer la lecture humaine
+        if "voix" in self.fields:
+            self.fields["voix"].required = False
 
     
     class Meta:
@@ -194,6 +197,10 @@ class AudioConversionForm(forms.ModelForm):
             raise forms.ValidationError("Email requis pour les demandes soumises au paiement.")
         if human_reading and not cleaned.get("voix_humaine"):
             raise forms.ValidationError("Veuillez choisir une voix pour la lecture par un humain.")
+        if not human_reading and not cleaned.get("voix"):
+            raise forms.ValidationError("Veuillez choisir une vitesse de lecture.")
+        if human_reading and not cleaned.get("voix"):
+            cleaned["voix"] = "standard"
         return cleaned
 
 
