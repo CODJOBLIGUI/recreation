@@ -8,6 +8,7 @@ from django.db import close_old_connections
 from django.http import JsonResponse, HttpResponse
 from django.core.files.base import ContentFile
 from django.utils import timezone
+from django import forms
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, FormView, ListView, TemplateView
@@ -929,19 +930,21 @@ class AudioConversionView(FormView):
                 tier = context["last_request"].payment_tier or 1
                 if context["last_request"].lecture_humaine:
                     context["payment_url"] = {
-                        1: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
-                        2: appearance.audio_human_payment_url_2,
-                        3: appearance.audio_human_payment_url_3,
-                        4: appearance.audio_human_payment_url_4,
-                        5: appearance.audio_human_payment_url_5,
+                        1: appearance.audio_human_payment_url_0 or appearance.audio_human_payment_url,
+                        2: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
+                        3: appearance.audio_human_payment_url_2,
+                        4: appearance.audio_human_payment_url_3,
+                        5: appearance.audio_human_payment_url_4,
+                        6: appearance.audio_human_payment_url_5,
                     }.get(tier) or appearance.audio_human_payment_url
                 else:
                     context["payment_url"] = {
-                        1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
-                        2: appearance.audio_payment_url_2,
-                        3: appearance.audio_payment_url_3,
-                        4: appearance.audio_payment_url_4,
-                        5: appearance.audio_payment_url_5,
+                        1: appearance.audio_payment_url_0 or appearance.audio_payment_url,
+                        2: appearance.audio_payment_url_1 or appearance.audio_payment_url,
+                        3: appearance.audio_payment_url_2,
+                        4: appearance.audio_payment_url_3,
+                        5: appearance.audio_payment_url_4,
+                        6: appearance.audio_payment_url_5,
                     }.get(tier) or appearance.audio_payment_url
                 context["payment_available"] = bool(context["payment_url"])
         context["free_limit_blocked"] = getattr(self, "free_limit_blocked", False)
@@ -1001,16 +1004,18 @@ class AudioConversionView(FormView):
         else:
             pages_count = estimate_pages_from_text(texte)
         demande.pages_count = pages_count
-        if pages_count <= 100:
+        if pages_count <= 50:
             demande.payment_tier = 1
-        elif pages_count <= 200:
+        elif pages_count <= 100:
             demande.payment_tier = 2
-        elif pages_count <= 500:
+        elif pages_count <= 200:
             demande.payment_tier = 3
-        elif pages_count <= 1000:
+        elif pages_count <= 500:
             demande.payment_tier = 4
-        else:
+        elif pages_count <= 1000:
             demande.payment_tier = 5
+        else:
+            demande.payment_tier = 6
         demande.save()
 
         def _set_async(obj, status, progress, error=""):
@@ -1130,9 +1135,11 @@ class AudioConversionHumanView(AudioConversionView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        # Remove synthetic voice field for human reading to avoid required validation.
+        # Hide synthetic voice field for human reading but keep it to satisfy ModelForm.
         if "voix" in form.fields:
-            form.fields.pop("voix")
+            form.fields["voix"].required = False
+            form.fields["voix"].widget = forms.HiddenInput()
+            form.fields["voix"].initial = "standard"
         return form
 
     def get_context_data(self, **kwargs):
@@ -1212,19 +1219,21 @@ def conversion_payment_redirect(request, demande_id):
     if appearance:
         if demande.lecture_humaine:
             payment_url = {
-                1: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
-                2: appearance.audio_human_payment_url_2,
-                3: appearance.audio_human_payment_url_3,
-                4: appearance.audio_human_payment_url_4,
-                5: appearance.audio_human_payment_url_5,
+                1: appearance.audio_human_payment_url_0 or appearance.audio_human_payment_url,
+                2: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
+                3: appearance.audio_human_payment_url_2,
+                4: appearance.audio_human_payment_url_3,
+                5: appearance.audio_human_payment_url_4,
+                6: appearance.audio_human_payment_url_5,
             }.get(tier) or appearance.audio_human_payment_url
         else:
             payment_url = {
-                1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
-                2: appearance.audio_payment_url_2,
-                3: appearance.audio_payment_url_3,
-                4: appearance.audio_payment_url_4,
-                5: appearance.audio_payment_url_5,
+                1: appearance.audio_payment_url_0 or appearance.audio_payment_url,
+                2: appearance.audio_payment_url_1 or appearance.audio_payment_url,
+                3: appearance.audio_payment_url_2,
+                4: appearance.audio_payment_url_3,
+                5: appearance.audio_payment_url_4,
+                6: appearance.audio_payment_url_5,
             }.get(tier) or appearance.audio_payment_url
 
     if request.GET.get("ajax") == "1" or request.headers.get("x-requested-with") == "XMLHttpRequest":
