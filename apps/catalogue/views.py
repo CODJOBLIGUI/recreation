@@ -1099,7 +1099,8 @@ class AudioConversionView(FormView):
                 messages.info(self.request, "Votre demande de lecture par un humain est enregistrée. Procédez au paiement pour lancer la prise en charge.")
             else:
                 messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
-            return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
+            # Rester sur la page de conversion pour afficher le bouton "Payer maintenant"
+            return redirect(self.success_url)
 
         messages.info(self.request, "Conversion en cours. La page se mettra à jour automatiquement.")
         return redirect(self.success_url)
