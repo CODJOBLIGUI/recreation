@@ -930,21 +930,21 @@ class AudioConversionView(FormView):
                 tier = context["last_request"].payment_tier or 1
                 if context["last_request"].lecture_humaine:
                     context["payment_url"] = {
-                        1: appearance.audio_human_payment_url_0 or appearance.audio_human_payment_url,
-                        2: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
-                        3: appearance.audio_human_payment_url_2,
-                        4: appearance.audio_human_payment_url_3,
-                        5: appearance.audio_human_payment_url_4,
-                        6: appearance.audio_human_payment_url_5,
+                        1: getattr(appearance, "audio_human_payment_url_0", "") or appearance.audio_human_payment_url,
+                        2: getattr(appearance, "audio_human_payment_url_1", "") or appearance.audio_human_payment_url,
+                        3: getattr(appearance, "audio_human_payment_url_2", ""),
+                        4: getattr(appearance, "audio_human_payment_url_3", ""),
+                        5: getattr(appearance, "audio_human_payment_url_4", ""),
+                        6: getattr(appearance, "audio_human_payment_url_5", ""),
                     }.get(tier) or appearance.audio_human_payment_url
                 else:
                     context["payment_url"] = {
-                        1: appearance.audio_payment_url_0 or appearance.audio_payment_url,
-                        2: appearance.audio_payment_url_1 or appearance.audio_payment_url,
-                        3: appearance.audio_payment_url_2,
-                        4: appearance.audio_payment_url_3,
-                        5: appearance.audio_payment_url_4,
-                        6: appearance.audio_payment_url_5,
+                        1: getattr(appearance, "audio_payment_url_0", "") or appearance.audio_payment_url,
+                        2: getattr(appearance, "audio_payment_url_1", "") or appearance.audio_payment_url,
+                        3: getattr(appearance, "audio_payment_url_2", ""),
+                        4: getattr(appearance, "audio_payment_url_3", ""),
+                        5: getattr(appearance, "audio_payment_url_4", ""),
+                        6: getattr(appearance, "audio_payment_url_5", ""),
                     }.get(tier) or appearance.audio_payment_url
                 context["payment_available"] = bool(context["payment_url"])
         context["free_limit_blocked"] = getattr(self, "free_limit_blocked", False)
@@ -1219,21 +1219,21 @@ def conversion_payment_redirect(request, demande_id):
     if appearance:
         if demande.lecture_humaine:
             payment_url = {
-                1: appearance.audio_human_payment_url_0 or appearance.audio_human_payment_url,
-                2: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
-                3: appearance.audio_human_payment_url_2,
-                4: appearance.audio_human_payment_url_3,
-                5: appearance.audio_human_payment_url_4,
-                6: appearance.audio_human_payment_url_5,
+                1: getattr(appearance, "audio_human_payment_url_0", "") or appearance.audio_human_payment_url,
+                2: getattr(appearance, "audio_human_payment_url_1", "") or appearance.audio_human_payment_url,
+                3: getattr(appearance, "audio_human_payment_url_2", ""),
+                4: getattr(appearance, "audio_human_payment_url_3", ""),
+                5: getattr(appearance, "audio_human_payment_url_4", ""),
+                6: getattr(appearance, "audio_human_payment_url_5", ""),
             }.get(tier) or appearance.audio_human_payment_url
         else:
             payment_url = {
-                1: appearance.audio_payment_url_0 or appearance.audio_payment_url,
-                2: appearance.audio_payment_url_1 or appearance.audio_payment_url,
-                3: appearance.audio_payment_url_2,
-                4: appearance.audio_payment_url_3,
-                5: appearance.audio_payment_url_4,
-                6: appearance.audio_payment_url_5,
+                1: getattr(appearance, "audio_payment_url_0", "") or appearance.audio_payment_url,
+                2: getattr(appearance, "audio_payment_url_1", "") or appearance.audio_payment_url,
+                3: getattr(appearance, "audio_payment_url_2", ""),
+                4: getattr(appearance, "audio_payment_url_3", ""),
+                5: getattr(appearance, "audio_payment_url_4", ""),
+                6: getattr(appearance, "audio_payment_url_5", ""),
             }.get(tier) or appearance.audio_payment_url
 
     if request.GET.get("ajax") == "1" or request.headers.get("x-requested-with") == "XMLHttpRequest":
