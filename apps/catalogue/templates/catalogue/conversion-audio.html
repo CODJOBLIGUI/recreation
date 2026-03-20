@@ -152,23 +152,6 @@
             </div>
         </div>
 
-        <div
-            class="form-feedback form-feedback--error"
-            id="conversion-error-paid"
-            {% if not last_request or last_request.statut != "error" or not last_request.paiement_requis %}style="display:none;"{% endif %}>
-            Service momentanément indisponible pour cette conversion. Vous pouvez poursuivre via le dépôt de fichiers
-            ou la lecture par un humain.
-            <div style="margin-top:0.6rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
-                {% if last_request and last_request.id %}
-                    <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-pay' last_request.id %}">
-                        Dépôt de fichiers
-                    </a>
-                {% endif %}
-                <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
-                    Lecture par un humain
-                </a>
-            </div>
-        </div>
 
         {% if free_limit_blocked %}
             <div class="form-feedback form-feedback--error" id="free-limit-block" data-remaining="{{ free_limit_remaining }}">
