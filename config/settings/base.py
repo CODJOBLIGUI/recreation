@@ -164,8 +164,8 @@ UNFOLD = {
     "SITE_URL": "/",
     
     "SITE_LOGO": {
-        "light": "catalogue/images/logo.jpg",
-        "dark": "catalogue/images/logo.jpg",
+        "light": "/static/catalogue/images/logo.jpg",
+        "dark": "/static/catalogue/images/logo.jpg",
     },
     
     "SITE_SYMBOL": "📚",
