@@ -1365,6 +1365,12 @@ body.nav-drawer-open {
     gap: 1.5rem;
 }
 
+.footer-fayard__btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
 .social-icon {
     width: 45px;
     height: 45px;
