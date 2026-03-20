@@ -224,6 +224,14 @@ ul, ol {
     transition: var(--transition-smooth);
 }
 
+.header::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--color-accent);
+}
+
 .header.sticky {
     box-shadow: var(--shadow-md);
 }
