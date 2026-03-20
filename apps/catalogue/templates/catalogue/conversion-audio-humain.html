@@ -48,7 +48,7 @@
                     {% for error in errors %}
                         <div>
                             {% if field != "__all__" %}
-                                {{ form.fields[field].label }} : {{ error }}
+                                {{ form[field].label }} : {{ error }}
                             {% else %}
                                 {{ error }}
                             {% endif %}
