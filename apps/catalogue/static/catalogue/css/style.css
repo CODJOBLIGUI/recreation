@@ -3076,7 +3076,8 @@ html {
 }
 
 .auteur-detail__photo img {
-    width: 100%;
+    display: block;
+    width: auto;
     max-width: 320px;
     max-height: 60vh;
     height: auto;
