@@ -33,7 +33,7 @@
                 <div class="hero__content">
                     <h1 class="hero__title">{{ livre.titre }}</h1>
                     <p class="hero__author">{{ livre.auteurs_noms }}</p>
-                    <p class="hero__tagline">{{ livre.resume|striptags|unescape_html|truncatewords:30 }}</p>
+                    <p class="hero__tagline">{{ livre.resume|striptags|unescape_html_twice|truncatewords:30 }}</p>
                     <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Découvrir</a>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                         {% if livre.meta_description %}
                         <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
                         {% elif livre.resume %}
-                        <p class="book-card__meta-desc">{{ livre.resume|striptags|unescape_html|truncatewords:16 }}</p>
+                        <p class="book-card__meta-desc">{{ livre.resume|striptags|unescape_html_twice|truncatewords:16 }}</p>
                         {% endif %}
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                         {% if livre.meta_description %}
                         <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
                         {% elif livre.resume %}
-                        <p class="book-card__meta-desc">{{ livre.resume|striptags|unescape_html|truncatewords:16 }}</p>
+                        <p class="book-card__meta-desc">{{ livre.resume|striptags|unescape_html_twice|truncatewords:16 }}</p>
                         {% endif %}
                     </div>
                 </div>

@@ -37,7 +37,7 @@
                 
                 <div class="livre-detail__description">
                     <h2>Résumé</h2>
-                    {{ livre.resume|unescape_html|safe|linebreaksbr }}
+                    {{ livre.resume|unescape_html_twice|safe|linebreaksbr }}
                 </div>
 
                 
