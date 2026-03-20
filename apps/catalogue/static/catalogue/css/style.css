@@ -2033,7 +2033,7 @@ body.nav-drawer-open {
 }
 
 .page-hero__media {
-    flex: 0 0 130px;
+    flex: 0 0 160px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2043,15 +2043,22 @@ body.nav-drawer-open {
     margin-right: auto;
 }
 
+.page-hero__media-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
 .page-hero__media img {
     width: 100%;
-    max-width: 130px;
+    max-width: 160px;
     height: auto;
     border-radius: 16px;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    background: transparent;
+    padding: 0;
+    border: none;
     display: block;
     margin: 0 auto;
 }

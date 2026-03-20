@@ -23,7 +23,9 @@
                         <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
                     </div>
                     <div class="page-hero__media">
-                        <img src="{{ page.hero_image.url }}" alt="{{ page.title }}" loading="lazy">
+                        <a class="page-hero__media-link" href="{{ page.hero_image.url }}" target="_blank" rel="noopener">
+                            <img src="{{ page.hero_image.url }}" alt="{{ page.title }}" loading="lazy">
+                        </a>
                     </div>
                 </div>
             {% else %}

@@ -13,7 +13,9 @@
                     <p class="page-hero__subtitle">Trouvez rapidement livres, auteurs, actualités et pages</p>
                 </div>
                 <div class="page-hero__media">
-                    <img src="{{ page.hero_image.url }}" alt="Recherche" loading="lazy">
+                    <a class="page-hero__media-link" href="{{ page.hero_image.url }}" target="_blank" rel="noopener">
+                        <img src="{{ page.hero_image.url }}" alt="Recherche" loading="lazy">
+                    </a>
                 </div>
             </div>
         {% else %}

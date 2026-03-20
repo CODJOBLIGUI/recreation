@@ -17,7 +17,9 @@
                     <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Notre histoire, notre mission, nos valeurs, les chiffres, notre équipe" }}</p>
                 </div>
                 <div class="page-hero__media">
-                    <img src="{{ page.hero_image.url }}" alt="A propos" loading="lazy">
+                    <a class="page-hero__media-link" href="{{ page.hero_image.url }}" target="_blank" rel="noopener">
+                        <img src="{{ page.hero_image.url }}" alt="A propos" loading="lazy">
+                    </a>
                 </div>
             </div>
         {% else %}
