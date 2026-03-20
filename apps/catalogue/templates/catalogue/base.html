@@ -215,9 +215,12 @@
                 <div class="nav-drawer__section-title">Autres services</div>
                 <div class="nav-drawer__collections">
                     <a href="{% url 'catalogue:conversion-audio' %}">
-                        <span class="footer-fayard__btn-icon" aria-hidden="true">
-                            <i class="fas fa-headphones"></i>
-                            <i class="fas fa-book"></i>
+                        <span class="footer-fayard__btn-icon footer-fayard__btn-icon--audio" aria-hidden="true">
+                            <svg class="audio-icon-svg" viewBox="0 0 128 128" role="img" aria-hidden="true" focusable="false">
+                                <path d="M64 16c-24.3 0-44 19.7-44 44v20c0 6.6 5.4 12 12 12h10V64H32v-4c0-17.7 14.3-32 32-32s32 14.3 32 32v4H86v28h10c6.6 0 12-5.4 12-12V60c0-24.3-19.7-44-44-44z"/>
+                                <rect x="50" y="46" width="28" height="36" rx="4" ry="4"/>
+                                <path d="M58 54h12M58 60h12M58 66h12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                            </svg>
                         </span>
                         Conversion de texte en audio
                     </a>
@@ -311,9 +314,12 @@
                     <span>E-mail</span>
                 </a>
                 <a href="{% url 'catalogue:conversion-audio' %}" class="footer-fayard__action">
-                    <span class="footer-fayard__btn-icon" aria-hidden="true">
-                        <i class="fas fa-headphones"></i>
-                        <i class="fas fa-book"></i>
+                    <span class="footer-fayard__btn-icon footer-fayard__btn-icon--audio" aria-hidden="true">
+                        <svg class="audio-icon-svg" viewBox="0 0 128 128" role="img" aria-hidden="true" focusable="false">
+                            <path d="M64 16c-24.3 0-44 19.7-44 44v20c0 6.6 5.4 12 12 12h10V64H32v-4c0-17.7 14.3-32 32-32s32 14.3 32 32v4H86v28h10c6.6 0 12-5.4 12-12V60c0-24.3-19.7-44-44-44z"/>
+                            <rect x="50" y="46" width="28" height="36" rx="4" ry="4"/>
+                            <path d="M58 54h12M58 60h12M58 66h12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
                     </span>
                     <span>Conversion de texte en audio</span>
                 </a>
