@@ -1,5 +1,5 @@
 ﻿{% extends 'catalogue/base.html' %}
-{% load static %}
+{% load static text_extras %}
 
 {% block content %}
 
@@ -37,7 +37,7 @@
                 
                 <div class="livre-detail__description">
                     <h2>Résumé</h2>
-                    {{ livre.resume|safe|linebreaksbr }}
+                    {{ livre.resume|unescape_html|safe|linebreaksbr }}
                 </div>
 
                 
