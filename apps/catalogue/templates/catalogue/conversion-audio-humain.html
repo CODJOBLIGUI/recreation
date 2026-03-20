@@ -42,6 +42,32 @@
             {% endfor %}
         {% endif %}
 
+        {% if last_request and last_request.paiement_requis %}
+            <div class="cta-box conversion-audio__result conversion-audio__result--pay">
+                <div id="payment-required" {% if last_request.paiement_initie_at %}style="display:none;"{% endif %}>
+                    <div class="conversion-audio__result-header">
+                        <h2 class="cta-box__title">Paiement requis</h2>
+                        <span class="conversion-audio__badge">Lecture par un humain – paiement obligatoire</span>
+                    </div>
+                    <p class="cta-box__text">Votre demande a été enregistrée. Veuillez procéder au paiement pour lancer la prise en charge.</p>
+                    {% if payment_available and last_request.id %}
+                        <a
+                            class="btn btn--white btn--large"
+                            id="payment-start"
+                            href="{% url 'catalogue:conversion-audio-pay' last_request.id %}">
+                            Payer maintenant
+                        </a>
+                    {% else %}
+                        <p class="form-feedback form-feedback--error">Le lien de paiement n’est pas encore disponible.</p>
+                    {% endif %}
+                </div>
+                <div id="payment-followup" {% if not last_request.paiement_initie_at %}style="display:none;"{% endif %}>
+                    <h2 class="cta-box__title">Votre demande est en cours de traitement</h2>
+                    <p class="cta-box__text">Nos équipes vérifieront l’effectivité du paiement et vous feront un retour.</p>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="contact__form-wrapper conversion-audio__form">
             <h2>Confiez votre texte à nos professionnels</h2>
             <form method="POST" enctype="multipart/form-data" class="contact__form">
