@@ -44,16 +44,13 @@
 
         {% if form.errors %}
             <div class="form-feedback form-feedback--error">
-                {% for field, errors in form.errors.items %}
-                    {% for error in errors %}
-                        <div>
-                            {% if field != "__all__" %}
-                                {{ form[field].label }} : {{ error }}
-                            {% else %}
-                                {{ error }}
-                            {% endif %}
-                        </div>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div>{{ field.label }} : {{ error }}</div>
                     {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div>{{ error }}</div>
                 {% endfor %}
             </div>
         {% endif %}
