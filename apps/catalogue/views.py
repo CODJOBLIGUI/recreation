@@ -917,6 +917,11 @@ class AudioConversionView(FormView):
         )
         context["page_title"] = page.meta_title if page and page.meta_title else "Conversion de texte en audio - Editions Recr\u00e9ation"
         last_id = self.request.session.get("audio_request_id")
+        if not last_id:
+            req_id = self.request.GET.get("req")
+            if req_id and req_id.isdigit():
+                last_id = int(req_id)
+                self.request.session["audio_request_id"] = last_id
         if last_id:
             context["last_request"] = AudioConversionRequest.objects.filter(id=last_id).first()
             appearance = SiteAppearance.objects.first()
@@ -1100,10 +1105,22 @@ class AudioConversionView(FormView):
             else:
                 messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
             # Rester sur la page de conversion pour afficher le bouton "Payer maintenant"
-            return redirect(self.success_url)
+            return redirect(f"{self.success_url}?req={demande.id}")
 
         messages.info(self.request, "Conversion en cours. La page se mettra à jour automatiquement.")
         return redirect(self.success_url)
+
+    def form_invalid(self, form):
+        # Surface first error clearly for users (especially for human-reading)
+        if form.non_field_errors():
+            messages.error(self.request, form.non_field_errors()[0])
+        else:
+            # Pick the first field error
+            for field_errors in form.errors.values():
+                if field_errors:
+                    messages.error(self.request, field_errors[0])
+                    break
+        return super().form_invalid(form)
 
 
 class AudioConversionHumanView(AudioConversionView):
