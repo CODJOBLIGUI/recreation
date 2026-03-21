@@ -189,13 +189,13 @@ UNFOLD = {
     },
     
     # -------------------------------------------------------------------------
-    # THÈME
+    # THÃˆME
     # -------------------------------------------------------------------------
     "THEME": "dark",
     "SHOW_THEMES": True, 
     
     # -------------------------------------------------------------------------
-    # MENU LATÉRAL
+    # MENU LATÃ‰RAL
     # -------------------------------------------------------------------------
     "SIDEBAR": {
         "show_search": True,
@@ -228,7 +228,7 @@ UNFOLD = {
                         "link": "/edrecreation/catalogue/auteur/",
                     },
                     {
-                        "title": "Membres de l'équipe",
+                        "title": "Membres de l'Ã©quipe",
                         "icon": "group",
                         "link": "/edrecreation/catalogue/membre/",
                     },
@@ -272,7 +272,7 @@ UNFOLD = {
                 "collapsible": True,
                 "items": [
                     {
-                        "title": "Actualités",
+                        "title": "ActualitÃ©s",
                         "icon": "newspaper",
                         "link": "/edrecreation/catalogue/actualite/",
                     },
@@ -323,7 +323,7 @@ UNFOLD = {
     },
     
     # -------------------------------------------------------------------------
-    # CSS PERSONNALISÉ (optionnel)
+    # CSS PERSONNALISÃ‰ (optionnel)
     # -------------------------------------------------------------------------
     "STYLES": [
         lambda request: "catalogue/css/admin-custom.css",
