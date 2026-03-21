@@ -122,9 +122,10 @@ class IndexView(TemplateView):
             )
         if "page_description" not in context:
             context["page_description"] = (
-                "Editions Recr\u00e9ation (Recreation) - maison d'\u00e9dition / book publisher. "
+                "Editions Recr\u00e9ation (Recr\u00e9ation) - maison d'\u00e9dition / book publisher. "
                 "Livres papier, num\u00e9riques et audio. Meilleure maison d'\u00e9dition africaine - "
-                "Maison d'\u00e9dition au B\u00e9nin - Maison d'\u00e9dition internationale"
+                "Maison d'\u00e9dition au B\u00e9nin - Maison d'\u00e9dition internationale - "
+                "RECREATION - Recr\u00e9ation"
             )
         last_id = self.request.session.pop("audio_request_id", None)
         if last_id:
