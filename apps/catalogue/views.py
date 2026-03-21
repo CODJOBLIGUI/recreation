@@ -124,7 +124,7 @@ class IndexView(TemplateView):
             context["page_description"] = (
                 "Editions Recr\u00e9ation (Recreation) - maison d'\u00e9dition / book publisher. "
                 "Livres papier, num\u00e9riques et audio. Meilleure maison d'\u00e9dition africaine - "
-                "Maison d'\u00e9dition b\u00e9nisoise - Maison d'\u00e9dition internationale"
+                "Maison d'\u00e9dition b\u00e9ninoise - Maison d'\u00e9dition internationale"
             )
         last_id = self.request.session.pop("audio_request_id", None)
         if last_id:
