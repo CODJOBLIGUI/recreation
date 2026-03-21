@@ -98,6 +98,7 @@ class SiteAppearance(models.Model):
     whatsapp = models.URLField(blank=True, verbose_name="WhatsApp")
     audio_payment_url = models.URLField(blank=True, verbose_name="Lien de paiement (conversion texte en audio)")
     site_email = models.EmailField(blank=True, verbose_name="Email de la maison d'édition")
+    site_address = models.TextField(blank=True, verbose_name="Adresse (footer/contact)")
     audio_payment_url_0 = models.URLField(blank=True, verbose_name="Paiement audio (1 à 50 pages)")
     audio_payment_url_1 = models.URLField(blank=True, verbose_name="Paiement audio (51 à 100 pages)")
     audio_payment_url_2 = models.URLField(blank=True, verbose_name="Paiement audio (101 à 200 pages)")

@@ -461,7 +461,7 @@ class AProposView(TemplateView):
         context["auteurs_count"] = auteurs_publies.count()
         context["pays_count"] = Nationalite.objects.filter(auteurs__in=auteurs_publies).distinct().count()
         context["prix_litteraires_count"] = PrixLitteraire.objects.filter(est_actif=True).count()
-        context["annees_experience"] = max(1, date.today().year - 2023 + 1)
+        context["annees_experience"] = max(1, date.today().year - 2023)
         page = Page.objects.filter(slug="a-propos", is_active=True).first()
         context["page"] = page
         context["page_blocks"] = (

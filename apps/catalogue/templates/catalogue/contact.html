@@ -22,7 +22,11 @@
                             <i class="fas fa-map-marker-alt"></i>
                             <div>
                                 <h3>Adresse</h3>
-                                <p><span class="contact__address-main">Nous sommes au Bénin, Abomey-Calavi et nous avons des représentants éditoriaux en France, Marseille et dans 7 autres pays en Afrique.</span></p>
+                                <p>
+                                    <span class="contact__address-main">
+                                        {{ appearance.site_address|default:"Nous sommes au Bénin, Abomey-Calavi et nous avons des représentants éditoriaux en France, Marseille et dans 7 autres pays en Afrique." }}
+                                    </span>
+                                </p>
                             </div>
                         </div>
                         

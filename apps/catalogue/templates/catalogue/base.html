@@ -266,7 +266,9 @@
                     <em>Avec le verbe, recréons le monde et conservons en une copie dans un livre !</em>
                 </p>
                 <p class="footer-fayard__address">
-                    <span class="footer-fayard__address-main">Nous sommes au Bénin, Abomey-Calavi et nous avons des représentants éditoriaux en France, Marseille et dans 7 autres pays en Afrique.</span>
+                    <span class="footer-fayard__address-main">
+                        {{ appearance.site_address|default:"Nous sommes au Bénin, Abomey-Calavi et nous avons des représentants éditoriaux en France, Marseille et dans 7 autres pays en Afrique." }}
+                    </span>
                 </p>
                 <p class="footer-fayard__catalogue-link">
                     <a href="{% url 'catalogue:catalogue' %}">Catalogue</a>
