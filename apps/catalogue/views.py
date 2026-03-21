@@ -116,11 +116,15 @@ class IndexView(TemplateView):
 
         context["form"] = NewsletterForm()
         if "page_title" not in context:
-            context["page_title"] = "Editions Recr\u00e9ation | Maison d'\u00e9dition - Recreation book publisher"
+            context["page_title"] = (
+                "Editions Recr\u00e9ation | Maison d'\u00e9dition g\u00e9n\u00e9raliste - "
+                "Recreation book publisher - African book publisher"
+            )
         if "page_description" not in context:
             context["page_description"] = (
                 "Editions Recr\u00e9ation (Recreation) - maison d'\u00e9dition / book publisher. "
-                "Livres papier, num\u00e9riques et audio."
+                "Livres papier, num\u00e9riques et audio. Meilleure maison d'\u00e9dition africaine - "
+                "Maison d'\u00e9dition b\u00e9nisoise - Maison d'\u00e9dition internationale"
             )
         last_id = self.request.session.pop("audio_request_id", None)
         if last_id:
