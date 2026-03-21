@@ -235,6 +235,12 @@ class CatalogueView(ListView):
         else:
             context["total_livres"] = queryset_or_list.count()
         context["page_title"] = "Catalogue - Editions Recr\u00e9ation"
+        if "page_description" not in context:
+            context["page_description"] = (
+                "Editions Recr\u00e9ation (Recreation) - maison d'\u00e9dition / book publisher. "
+                "Livres papier, num\u00e9riques et audio. Meilleure maison d'\u00e9dition africaine - "
+                "Maison d'\u00e9dition au B\u00e9nin - Maison d'\u00e9dition internationale"
+            )
         
         livres_page = context.get("livres")
         if livres_page:
@@ -483,6 +489,12 @@ class AProposView(TemplateView):
         context["page_title"] = page.meta_title if page and page.meta_title else "\u00c0 Propos - Editions Recr\u00e9ation"
         if page and page.meta_description:
             context["page_description"] = page.meta_description
+        else:
+            context["page_description"] = (
+                "Editions Recr\u00e9ation (Recreation) - maison d'\u00e9dition / book publisher. "
+                "Livres papier, num\u00e9riques et audio. Meilleure maison d'\u00e9dition africaine - "
+                "Maison d'\u00e9dition au B\u00e9nin - Maison d'\u00e9dition internationale"
+            )
         return context
 
 
