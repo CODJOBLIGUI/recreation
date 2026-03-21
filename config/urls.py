@@ -39,7 +39,7 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     # Interface d'administration Django
-    path('admin/', admin.site.urls),
+    path('rec/', admin.site.urls),
     # CKEditor upload endpoints
     path('ckeditor/', include('ckeditor_uploader.urls')),
     
