@@ -117,8 +117,8 @@ class IndexView(TemplateView):
         context["form"] = NewsletterForm()
         if "page_title" not in context:
             context["page_title"] = (
-                "Editions Recr\u00e9ation | Maison d'\u00e9dition g\u00e9n\u00e9raliste - "
-                "Recreation book publisher - African book publisher"
+                "Editions Recr\u00e9ation | Maison d'\u00e9dition g\u00e9n\u00e9raliste | "
+                "Recr\u00e9ation | Recreation international book publisher - African book publisher"
             )
         if "page_description" not in context:
             context["page_description"] = (
