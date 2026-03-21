@@ -209,7 +209,7 @@
                         <p>${livre.resume}</p>
                     </div>
                     <div class="purchase-links">
-                        <a href="${livre.liens.chariow}" target="_blank" class="btn btn--primary">Acheter sur Chariow</a>
+                        <a href="${livre.liens.chariow}" target="_blank" class="btn btn--primary">Acheter sur Recréation shop</a>
                         <a href="${livre.liens.amazon}" target="_blank" class="btn btn--primary">Acheter sur Amazon</a>
                         <a href="${livre.liens.whatsapp}" target="_blank" class="btn btn--primary">Commander WhatsApp</a>
                     </div>
