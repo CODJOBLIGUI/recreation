@@ -32,5 +32,5 @@ class SiteAppearanceAdmin(admin.ModelAdmin):
             },
         ),
         ("Footer", {"fields": ("footer_copyright",)}),
-        ("Contact", {"fields": ("site_email", "site_address")}),
+        ("Contact", {"fields": ("site_email", "site_address", "site_legal_label")}),
     )
