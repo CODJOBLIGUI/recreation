@@ -1,4 +1,4 @@
-ï»¿
+
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -168,7 +168,7 @@ UNFOLD = {
         "dark": "/static/catalogue/images/logo.jpg",
     },
     
-    "SITE_SYMBOL": "ðŸ“š",
+    "SITE_SYMBOL": "??",
     
     # -------------------------------------------------------------------------
     # COULEURS
@@ -189,13 +189,13 @@ UNFOLD = {
     },
     
     # -------------------------------------------------------------------------
-    # THÃˆME
+    # THÈME
     # -------------------------------------------------------------------------
     "THEME": "dark",
     "SHOW_THEMES": True, 
     
     # -------------------------------------------------------------------------
-    # MENU LATÃ‰RAL
+    # MENU LATÉRAL
     # -------------------------------------------------------------------------
     "SIDEBAR": {
         "show_search": True,
@@ -208,7 +208,7 @@ UNFOLD = {
                     {
                         "title": "Accueil",
                         "icon": "home",
-                        "link": "/admin/",
+                        "link": "/edrecreation/",
                     },
                 ],
             },
@@ -220,17 +220,17 @@ UNFOLD = {
                     {
                         "title": "Livres",
                         "icon": "menu_book",
-                        "link": "/admin/catalogue/livre/",
+                        "link": "/edrecreation/catalogue/livre/",
                     },
                     {
                         "title": "Auteurs",
                         "icon": "person",
-                        "link": "/admin/catalogue/auteur/",
+                        "link": "/edrecreation/catalogue/auteur/",
                     },
                     {
-                        "title": "Membres de l'Ã©quipe",
+                        "title": "Membres de l'équipe",
                         "icon": "group",
-                        "link": "/admin/catalogue/membre/",
+                        "link": "/edrecreation/catalogue/membre/",
                     },
                 ],
             },
@@ -242,12 +242,12 @@ UNFOLD = {
                     {
                         "title": "Pages",
                         "icon": "edit_document",
-                        "link": "/admin/catalogue/page/",
+                        "link": "/edrecreation/catalogue/page/",
                     },
                     {
                         "title": "Liens de menu",
                         "icon": "link",
-                        "link": "/admin/catalogue/menulink/",
+                        "link": "/edrecreation/catalogue/menulink/",
                     },
                     {
                         "title": "A propos (site)",
@@ -272,20 +272,20 @@ UNFOLD = {
                 "collapsible": True,
                 "items": [
                     {
-                        "title": "ActualitÃ©s",
+                        "title": "Actualités",
                         "icon": "newspaper",
-                        "link": "/admin/catalogue/actualite/",
+                        "link": "/edrecreation/catalogue/actualite/",
                     },
                     {
                         "title": "Inscriptions Newsletter",
                         "icon": "mail",
-                        "link": "/admin/catalogue/inscriptionnewsletter/",
+                        "link": "/edrecreation/catalogue/inscriptionnewsletter/",
                         "badge": "new",
                     },
                     {
                         "title": "Messages de contact",
                         "icon": "inbox",
-                        "link": "/admin/catalogue/messagecontact/",
+                        "link": "/edrecreation/catalogue/messagecontact/",
                         "badge": "new",
                     },
                 ],
@@ -298,12 +298,12 @@ UNFOLD = {
                     {
                         "title": "Utilisateurs",
                         "icon": "manage_accounts",
-                        "link": "/admin/auth/user/",
+                        "link": "/edrecreation/auth/user/",
                     },
                     {
                         "title": "Groupes",
                         "icon": "verified_user",
-                        "link": "/admin/auth/group/",
+                        "link": "/edrecreation/auth/group/",
                     },
                 ],
             },
@@ -315,7 +315,7 @@ UNFOLD = {
                     {
                         "title": "Apparence du site",
                         "icon": "palette",
-                        "link": "/admin/core/siteappearance/",
+                        "link": "/edrecreation/core/siteappearance/",
                     },
                 ],
             },
@@ -323,7 +323,7 @@ UNFOLD = {
     },
     
     # -------------------------------------------------------------------------
-    # CSS PERSONNALISÃ‰ (optionnel)
+    # CSS PERSONNALISÉ (optionnel)
     # -------------------------------------------------------------------------
     "STYLES": [
         lambda request: "catalogue/css/admin-custom.css",
