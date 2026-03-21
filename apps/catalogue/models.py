@@ -387,12 +387,12 @@ class Livre(TimeStampedModel, SEOModel):
         null=True,
     )
     
-    lien_chariow = models.URLField(max_length=500, verbose_name="Lien Chariow (papier)", blank=True, null=True)
+    lien_chariow = models.URLField(max_length=500, verbose_name="Lien Recréation shop (papier)", blank=True, null=True)
     lien_amazon = models.URLField(max_length=500, verbose_name="Lien Amazon (papier)", blank=True, null=True)
     lien_whatsapp = models.URLField(max_length=500, verbose_name="Lien WhatsApp (papier)", blank=True, null=True)
     lien_chariow_numerique = models.URLField(
         max_length=500,
-        verbose_name="Lien Chariow (numérique)",
+        verbose_name="Lien Recréation shop (numérique)",
         blank=True,
         null=True,
     )
@@ -410,7 +410,7 @@ class Livre(TimeStampedModel, SEOModel):
     )
     lien_chariow_audio = models.URLField(
         max_length=500,
-        verbose_name="Lien Chariow (audio)",
+        verbose_name="Lien Recréation shop (audio)",
         blank=True,
         null=True,
     )
