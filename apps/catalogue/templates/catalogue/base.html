@@ -44,6 +44,53 @@
         <meta name="twitter:image" content="{{ site_url }}{{ social_image }}">
     {% endif %}
     {% endwith %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "{{ appearance.site_name|default:'Editions Recréation'|escapejs }}",
+      "url": "{{ request.scheme }}://{{ request.get_host }}",
+      {% if appearance and appearance.logo %}
+      "logo": "{{ request.scheme }}://{{ request.get_host }}{{ appearance.logo.url }}",
+      {% endif %}
+      "sameAs": [
+        {% for social in social_links %}
+          "{{ social.url }}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "{{ request.scheme }}://{{ request.get_host }}",
+      "name": "{{ appearance.site_name|default:'Editions Recréation'|escapejs }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ request.scheme }}://{{ request.get_host }}{% url 'catalogue:search' %}?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    {% if breadcrumbs %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {% for crumb in breadcrumbs %}
+        {
+          "@type": "ListItem",
+          "position": {{ forloop.counter }},
+          "name": "{{ crumb.title|escapejs }}",
+          "item": "{{ request.scheme }}://{{ request.get_host }}{{ crumb.url }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
+    }
+    </script>
+    {% endif %}
     <link rel="icon" href="/favicon.ico">
     <link rel="shortcut icon" href="/favicon.ico">
     {% if appearance and appearance.favicon %}

@@ -1,6 +1,7 @@
 from datetime import date
 from django.db.models import Q
 from django.utils import timezone
+from django.urls import reverse
 from apps.core.models import SiteAppearance
 from .models import Collection, Livre, MenuLink, SiteAd
 
@@ -67,6 +68,37 @@ def global_context(request):
             footer_menu_columns["Ressources"].append(link)
 
     try:
+        breadcrumbs = []
+        url_name = request.resolver_match.url_name if request.resolver_match else ""
+        home = {"title": "Accueil", "url": reverse("catalogue:index")}
+        if url_name:
+            breadcrumbs.append(home)
+
+        labels = {
+            "catalogue": "Catalogue",
+            "livres-numeriques": "Livres numériques",
+            "livres-audio": "Livres audio",
+            "livres-papier": "Livres papier",
+            "auteurs": "Auteurs",
+            "actualites": "Actualités",
+            "collections": "Collections",
+            "contact": "Contacts",
+            "a-propos": "A propos",
+            "nos-contrats": "Nos contrats",
+            "soumission-manuscrit": "Soumettre un manuscrit",
+            "conversion-audio": "Conversion de texte en audio",
+            "conversion-audio-synthetique": "Conversion de texte en audio",
+            "conversion-audio-humain": "Lecture par un humain",
+            "conversion-audio-choice": "Conversion de texte en audio",
+            "search": "Recherche",
+            "mentions-legales": "Mentions légales",
+            "confidentialite": "Confidentialité",
+            "cookies": "Cookies",
+        }
+        if url_name in labels:
+            breadcrumbs.append({"title": labels[url_name], "url": reverse(f"catalogue:{url_name}")})
+        if url_name == "index":
+            breadcrumbs = [home]
         year = date.today().year
         raw_copy = (
             appearance.footer_copyright
@@ -87,6 +119,7 @@ def global_context(request):
             "footer_menu_columns": footer_menu_columns,
             "footer_copyright": footer_copy,
             "ads": ads,
+            "breadcrumbs": breadcrumbs,
         }
     except Exception:
         return {}
