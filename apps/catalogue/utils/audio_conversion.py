@@ -1,5 +1,6 @@
-ï»¿import io
+import io
 import os
+import re
 from pathlib import Path
 
 from django.conf import settings
@@ -124,7 +125,7 @@ def extract_text_from_file(file_field):
         try:
             from docx import Document
         except Exception as exc:
-            raise RuntimeError("python-docx n'est pas installÃ©.") from exc
+            raise RuntimeError("python-docx n'est pas installé.") from exc
         doc = Document(local_path)
         return "\n".join(p.text for p in doc.paragraphs if p.text)
 
@@ -132,7 +133,7 @@ def extract_text_from_file(file_field):
         try:
             from PyPDF2 import PdfReader
         except Exception as exc:
-            raise RuntimeError("PyPDF2 n'est pas installÃ©.") from exc
+            raise RuntimeError("PyPDF2 n'est pas installé.") from exc
         with open(local_path, "rb") as f:
             reader = PdfReader(f)
             pages = [p.extract_text() or "" for p in reader.pages]
@@ -161,7 +162,7 @@ def extract_text_from_file(file_field):
         if detected in {"es", "de"}:
             raise RuntimeError(
                 "OCR espagnol/allemand indisponible sur ce serveur. "
-                "Veuillez tÃ©lÃ©verser un fichier texte (PDF non scannÃ©, DOCX) "
+                "Veuillez téléverser un fichier texte (PDF non scanné, DOCX) "
                 "ou coller votre texte."
             )
         return ocr_text
@@ -178,7 +179,7 @@ def extract_text_from_file(file_field):
         if detected in {"es", "de"}:
             raise RuntimeError(
                 "OCR espagnol/allemand indisponible sur ce serveur. "
-                "Veuillez tÃ©lÃ©verser un fichier texte (PDF non scannÃ©, DOCX) "
+                "Veuillez téléverser un fichier texte (PDF non scanné, DOCX) "
                 "ou coller votre texte."
             )
         return ocr_text
@@ -187,7 +188,7 @@ def extract_text_from_file(file_field):
         try:
             from pptx import Presentation
         except Exception as exc:
-            raise RuntimeError("python-pptx n'est pas installÃ©.") from exc
+            raise RuntimeError("python-pptx n'est pas installé.") from exc
         prs = Presentation(local_path)
         texts = []
         for slide in prs.slides:
@@ -200,7 +201,7 @@ def extract_text_from_file(file_field):
         try:
             import openpyxl
         except Exception as exc:
-            raise RuntimeError("openpyxl n'est pas installÃ©.") from exc
+            raise RuntimeError("openpyxl n'est pas installé.") from exc
         wb = openpyxl.load_workbook(local_path, data_only=True)
         texts = []
         for ws in wb.worksheets:
@@ -215,7 +216,7 @@ def extract_text_from_file(file_field):
             from ebooklib import epub
             from bs4 import BeautifulSoup
         except Exception as exc:
-            raise RuntimeError("EbookLib ou beautifulsoup4 n'est pas installÃ©.") from exc
+            raise RuntimeError("EbookLib ou beautifulsoup4 n'est pas installé.") from exc
         book = epub.read_epub(local_path)
         texts = []
         for item in book.get_items():
@@ -249,6 +250,42 @@ def _chunk_text(text, chunk_size=1000):
     return chunks
 
 
+def _normalize_uppercase_names(text):
+    """Convert full-uppercase words (likely names) to title case for better TTS."""
+    if not text:
+        return text
+    preserve_acronyms = {
+        "USA",
+        "ONU",
+        "UE",
+        "UA",
+        "CEDEAO",
+        "UNESCO",
+        "UNICEF",
+        "OIF",
+        "FMI",
+        "BCEAO",
+        "NASA",
+        "AFD",
+    }
+    force_titlecase = {
+        "ADA",
+    }
+
+    def _convert(match):
+        word = match.group(0)
+        if word.isupper() and word in preserve_acronyms:
+            return word
+        if word.isupper() and word in force_titlecase:
+            return word.title()
+        if word.isupper() and len(word) >= 4:
+            return word.title()
+        return word
+
+    # Only touch pure alphabetic words (keeps acronyms like USA, U.R.S.S, A.B.C)
+    return re.sub(r"\b[^\W\d_]+\b", _convert, text, flags=re.UNICODE)
+
+
 def generate_tts_mp3(
     text,
     lang="fr",
@@ -260,9 +297,10 @@ def generate_tts_mp3(
 ):
     from gtts import gTTS
     import time
-    chunks = _chunk_text(text, chunk_size=chunk_size)
+    cleaned_text = _normalize_uppercase_names(text)
+    chunks = _chunk_text(cleaned_text, chunk_size=chunk_size)
     if not chunks:
-        raise RuntimeError("Texte vide aprÃ¨s extraction.")
+        raise RuntimeError("Texte vide après extraction.")
     output = io.BytesIO()
     for idx, part in enumerate(chunks, start=1):
         attempt = 0
@@ -285,3 +323,9 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
+
+
+
+
+
+
