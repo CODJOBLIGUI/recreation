@@ -141,7 +141,10 @@ def _ocr_space_pdf(local_path):
     parsed = (parsed or "").strip()
     if not parsed:
         raise RuntimeError("Aucun texte exploitable dans ce fichier. Veuillez essayer un autre fichier.")
-    return parsed\n\n\ndef extract_text_from_file(file_field):
+    return parsed
+
+
+def extract_text_from_file(file_field):
     global _EASYOCR_READER
     if not file_field:
         return ""
@@ -340,6 +343,10 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
+
+
+
+
 
 
 
