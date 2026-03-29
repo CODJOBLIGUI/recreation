@@ -5,7 +5,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("core", "0009_remove_siteappearance_chariow_widget_code_1_and_more"),
+        ("core", "0019_siteappearance_tts_acronyms"),
     ]
 
     operations = [
@@ -119,4 +119,3 @@ class Migration(migrations.Migration):
             },
         ),
     ]
-
