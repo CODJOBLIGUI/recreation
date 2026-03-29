@@ -122,11 +122,11 @@ def _ocr_space_pdf(local_path):
             timeout=120,
         )
     if resp.status_code != 200:
-        raise RuntimeError("OCR indisponible pour le moment. Veuillez réessayer plus tard.")
+        raise RuntimeError("OCR indisponible pour le moment. Veuillez reessayer plus tard.")
     try:
         data = resp.json()
     except Exception:
-        raise RuntimeError("Réponse OCR invalide. Veuillez réessayer plus tard.")
+        raise RuntimeError("Reponse OCR invalide. Veuillez reessayer plus tard.")
     if data.get("IsErroredOnProcessing"):
         msg = data.get("ErrorMessage") or data.get("ErrorDetails") or ""
         raise RuntimeError(f"OCR indisponible: {msg}")
@@ -333,6 +333,8 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
+
+
 
 
 
