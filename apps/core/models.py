@@ -1,11 +1,11 @@
-ï»¿# ===============================================================================
-# SECTION 1 : MODÃˆLES DE BASE (CORE)
+# ===============================================================================
+# SECTION 1 : MODÈLES DE BASE (CORE)
 # Emplacement : apps/core/models.py
 # ===============================================================================
 
 """
-ModÃ¨les abstraits rÃ©utilisables pour tout le projet.
-Ces modÃ¨les de base permettent d'Ã©viter la rÃ©pÃ©tition de code.
+Modèles abstraits réutilisables pour tout le projet.
+Ces modèles de base permettent d'éviter la répétition de code.
 """
 
 from django.db import models
@@ -13,14 +13,14 @@ from django.utils.text import slugify
 
 class TimeStampedModel(models.Model):
     """
-    ModÃ¨le abstrait qui ajoute des timestamps automatiques.
-    Ã€ utiliser comme classe de base pour tous les modÃ¨les qui ont besoin
-    de savoir quand ils ont Ã©tÃ© crÃ©Ã©s et modifiÃ©s.
+    Modèle abstrait qui ajoute des timestamps automatiques.
+    À utiliser comme classe de base pour tous les modèles qui ont besoin
+    de savoir quand ils ont été créés et modifiés.
     """
     created_at = models.DateTimeField(
         auto_now_add=True,
-        verbose_name="Date de crÃ©ation",
-        db_index=True  # Index pour amÃ©liorer les performances des requÃªtes
+        verbose_name="Date de création",
+        db_index=True  # Index pour améliorer les performances des requêtes
     )
     updated_at = models.DateTimeField(
         auto_now=True,
@@ -28,25 +28,25 @@ class TimeStampedModel(models.Model):
     )
     
     class Meta:
-        abstract = True  # Ce modÃ¨le ne crÃ©era pas de table en BDD
+        abstract = True  # Ce modèle ne créera pas de table en BDD
 
 
 class SEOModel(models.Model):
     """
-    ModÃ¨le abstrait pour les champs SEO (rÃ©fÃ©rencement).
-    Ajoute des mÃ©ta-donnÃ©es pour optimiser le rÃ©fÃ©rencement des pages.
+    Modèle abstrait pour les champs SEO (référencement).
+    Ajoute des méta-données pour optimiser le référencement des pages.
     """
     meta_title = models.CharField(
         max_length=60,
         blank=True,
         verbose_name="Titre SEO",
-        help_text="Titre optimisÃ© pour les moteurs de recherche (max 60 caractÃ¨res)"
+        help_text="Titre optimisé pour les moteurs de recherche (max 60 caractères)"
     )
     meta_description = models.TextField(
         max_length=160,
         blank=True,
         verbose_name="Description SEO",
-        help_text="Description pour les moteurs de recherche (max 160 caractÃ¨res)"
+        help_text="Description pour les moteurs de recherche (max 160 caractères)"
     )
     
     class Meta:
@@ -58,7 +58,7 @@ class SiteAppearance(models.Model):
     Apparence globale du site.
     """
 
-    site_name = models.CharField(max_length=120, default="Editions RecrÃ©ation", verbose_name="Nom du site")
+    site_name = models.CharField(max_length=120, default="Editions Recréation", verbose_name="Nom du site")
     logo = models.ImageField(upload_to="branding/%Y/%m/", blank=True, null=True, verbose_name="Logo")
     favicon = models.ImageField(upload_to="branding/%Y/%m/", blank=True, null=True, verbose_name="Favicon")
     audio_human_hero_image = models.ImageField(
@@ -70,11 +70,11 @@ class SiteAppearance(models.Model):
 
     primary_color = models.CharField(max_length=20, default="#F5F1E8", verbose_name="Couleur primaire")
     accent_color = models.CharField(max_length=20, default="#0A18FF", verbose_name="Couleur accent")
-    accent_dark = models.CharField(max_length=20, default="#001FD8", verbose_name="Couleur accent foncÃ©e")
+    accent_dark = models.CharField(max_length=20, default="#001FD8", verbose_name="Couleur accent foncée")
     text_color = models.CharField(max_length=20, default="#2C2C2C", verbose_name="Couleur texte")
     text_light = models.CharField(max_length=20, default="#4A4A4A", verbose_name="Couleur texte secondaire")
     light_bg = models.CharField(max_length=20, default="#F9F7F3", verbose_name="Fond clair")
-    dark_bg = models.CharField(max_length=20, default="#2C2C2C", verbose_name="Fond foncÃ©")
+    dark_bg = models.CharField(max_length=20, default="#2C2C2C", verbose_name="Fond foncé")
 
     font_heading = models.CharField(
         max_length=120,
@@ -97,35 +97,29 @@ class SiteAppearance(models.Model):
     youtube = models.URLField(blank=True, verbose_name="YouTube")
     whatsapp = models.URLField(blank=True, verbose_name="WhatsApp")
     audio_payment_url = models.URLField(blank=True, verbose_name="Lien de paiement (conversion texte en audio)")
-    site_email = models.EmailField(blank=True, verbose_name="Email de la maison d'Ã©dition")
+    site_email = models.EmailField(blank=True, verbose_name="Email de la maison d'édition")
     site_address = models.TextField(blank=True, verbose_name="Adresse (footer/contact)")
-    site_legal_label = models.CharField(blank=True, max_length=120, verbose_name="LibellÃ© siÃ¨ge social (mentions lÃ©gales)")
-    audio_payment_url_0 = models.URLField(blank=True, verbose_name="Paiement audio (1 Ã  50 pages)")
-    audio_payment_url_1 = models.URLField(blank=True, verbose_name="Paiement audio (51 Ã  100 pages)")
-    audio_payment_url_2 = models.URLField(blank=True, verbose_name="Paiement audio (101 Ã  200 pages)")
-    audio_payment_url_3 = models.URLField(blank=True, verbose_name="Paiement audio (201 Ã  500 pages)")
-    audio_payment_url_4 = models.URLField(blank=True, verbose_name="Paiement audio (501 Ã  1000 pages)")
+    site_legal_label = models.CharField(blank=True, max_length=120, verbose_name="Libellé siège social (mentions légales)")
+    audio_payment_url_0 = models.URLField(blank=True, verbose_name="Paiement audio (1 à 50 pages)")
+    audio_payment_url_1 = models.URLField(blank=True, verbose_name="Paiement audio (51 à 100 pages)")
+    audio_payment_url_2 = models.URLField(blank=True, verbose_name="Paiement audio (101 à 200 pages)")
+    audio_payment_url_3 = models.URLField(blank=True, verbose_name="Paiement audio (201 à 500 pages)")
+    audio_payment_url_4 = models.URLField(blank=True, verbose_name="Paiement audio (501 à 1000 pages)")
     audio_payment_url_5 = models.URLField(blank=True, verbose_name="Paiement audio (1001+ pages)")
     audio_human_payment_url = models.URLField(blank=True, verbose_name="Lien paiement (lecture par un humain)")
     audio_human_payment_url_male = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (voix masculine)")
-    audio_human_payment_url_female = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (voix fÃ©minine)")
-    audio_human_payment_url_0 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (1 Ã  50 pages)")
-    audio_human_payment_url_1 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (51 Ã  100 pages)")
-    audio_human_payment_url_2 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (101 Ã  200 pages)")
-    audio_human_payment_url_3 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (201 Ã  500 pages)")
-    audio_human_payment_url_4 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (501 Ã  1000 pages)")
+    audio_human_payment_url_female = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (voix féminine)")
+    audio_human_payment_url_0 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (1 à 50 pages)")
+    audio_human_payment_url_1 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (51 à 100 pages)")
+    audio_human_payment_url_2 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (101 à 200 pages)")
+    audio_human_payment_url_3 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (201 à 500 pages)")
+    audio_human_payment_url_4 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (501 à 1000 pages)")
     audio_human_payment_url_5 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (1001+ pages)")
-    ocr_space_api_key = models.CharField(
-        max_length=120,
-        blank=True,
-        verbose_name="ClÃ© OCR.space",
-        help_text="ClÃ© API OCR.space pour l'OCR des PDF scannÃ©s.",
-    )
     footer_copyright = models.CharField(
         max_length=255,
         blank=True,
         verbose_name="Mention de copyright (footer)",
-        help_text="Utilisez {year} pour l'annÃ©e automatique.",
+        help_text="Utilisez {year} pour l'année automatique.",
     )
 
     class Meta:

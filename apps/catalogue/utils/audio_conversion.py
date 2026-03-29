@@ -108,42 +108,6 @@ def _ensure_local_path(file_field):
     return str(tmp_path)
 
 
-
-def _ocr_space_pdf(local_path):
-    api_key = os.getenv("OCR_SPACE_API_KEY", "").strip()
-    if not api_key:
-        try:
-            from apps.core.models import SiteAppearance
-            appearance = SiteAppearance.objects.first()
-            api_key = (appearance.ocr_space_api_key or "").strip() if appearance else ""
-        except Exception:
-            api_key = ""
-    if not api_key:
-        raise RuntimeError("Cle OCR.space manquante. Contactez l'administrateur.")
-    import requests
-    with open(local_path, "rb") as f:
-        resp = requests.post(
-            "https://api.ocr.space/parse/image",
-            files={"filename": f},
-            data={"apikey": api_key, "language": "fre", "isOverlayRequired": False, "OCREngine": 2},
-            timeout=120,
-        )
-    if resp.status_code != 200:
-        raise RuntimeError("OCR indisponible pour le moment. Veuillez reessayer plus tard.")
-    try:
-        data = resp.json()
-    except Exception:
-        raise RuntimeError("Reponse OCR invalide. Veuillez reessayer plus tard.")
-    if data.get("IsErroredOnProcessing"):
-        msg = data.get("ErrorMessage") or data.get("ErrorDetails") or ""
-        raise RuntimeError(f"OCR indisponible: {msg}")
-    parsed = data.get("ParsedResults", [{}])[0].get("ParsedText", "")
-    parsed = (parsed or "").strip()
-    if not parsed:
-        raise RuntimeError("Aucun texte exploitable dans ce fichier. Veuillez essayer un autre fichier.")
-    return parsed
-
-
 def extract_text_from_file(file_field):
     global _EASYOCR_READER
     if not file_field:
@@ -161,7 +125,7 @@ def extract_text_from_file(file_field):
         try:
             from docx import Document
         except Exception as exc:
-            raise RuntimeError("python-docx n'est pas installe.") from exc
+            raise RuntimeError("python-docx n'est pas install?.") from exc
         doc = Document(local_path)
         return "\n".join(p.text for p in doc.paragraphs if p.text)
 
@@ -169,20 +133,23 @@ def extract_text_from_file(file_field):
         try:
             from PyPDF2 import PdfReader
         except Exception as exc:
-            raise RuntimeError("PyPDF2 n'est pas installe.") from exc
+            raise RuntimeError("PyPDF2 n'est pas install?.") from exc
         with open(local_path, "rb") as f:
             reader = PdfReader(f)
             pages = [p.extract_text() or "" for p in reader.pages]
         text = "\n".join(pages).strip()
         if text:
             return text
-        # OCR fallback for scanned PDFs via OCR.space API
-        ocr_text = _ocr_space_pdf(local_path)
+        # PDF scann? (image) : OCR indisponible sur ce serveur
+        raise RuntimeError(
+            "PDF scann? d?tect?. Conversion automatique indisponible. "
+            "Veuillez t?l?verser un PDF non scann?/DOCX/TXT ou choisir la lecture par un humain."
+        )
         detected = detect_language(ocr_text)
         if detected in {"es", "de"}:
             raise RuntimeError(
                 "OCR espagnol/allemand indisponible sur ce serveur. "
-                "Veuillez téléverser un fichier texte (PDF non scanné, DOCX) "
+                "Veuillez t?l?verser un fichier texte (PDF non scann?, DOCX) "
                 "ou coller votre texte."
             )
         return ocr_text
@@ -199,7 +166,7 @@ def extract_text_from_file(file_field):
         if detected in {"es", "de"}:
             raise RuntimeError(
                 "OCR espagnol/allemand indisponible sur ce serveur. "
-                "Veuillez téléverser un fichier texte (PDF non scanné, DOCX) "
+                "Veuillez t?l?verser un fichier texte (PDF non scann?, DOCX) "
                 "ou coller votre texte."
             )
         return ocr_text
@@ -208,7 +175,7 @@ def extract_text_from_file(file_field):
         try:
             from pptx import Presentation
         except Exception as exc:
-            raise RuntimeError("python-pptx n'est pas installe.") from exc
+            raise RuntimeError("python-pptx n'est pas install?.") from exc
         prs = Presentation(local_path)
         texts = []
         for slide in prs.slides:
@@ -221,7 +188,7 @@ def extract_text_from_file(file_field):
         try:
             import openpyxl
         except Exception as exc:
-            raise RuntimeError("openpyxl n'est pas installe.") from exc
+            raise RuntimeError("openpyxl n'est pas install?.") from exc
         wb = openpyxl.load_workbook(local_path, data_only=True)
         texts = []
         for ws in wb.worksheets:
@@ -236,7 +203,7 @@ def extract_text_from_file(file_field):
             from ebooklib import epub
             from bs4 import BeautifulSoup
         except Exception as exc:
-            raise RuntimeError("EbookLib ou beautifulsoup4 n'est pas installe.") from exc
+            raise RuntimeError("EbookLib ou beautifulsoup4 n'est pas install?.") from exc
         book = epub.read_epub(local_path)
         texts = []
         for item in book.get_items():
@@ -343,19 +310,6 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
