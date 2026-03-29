@@ -40,7 +40,7 @@ class _ApostropheHTMLParser(HTMLParser):
         if self._stack and self._stack[-1] in {'script', 'style'}:
             self._out.append(data)
             return
-        self._out.append(data.replace("'", "’"))
+        self._out.append(data.replace("'", "\u2019"))
 
     def handle_entityref(self, name):
         self._out.append(f'&{name};')
