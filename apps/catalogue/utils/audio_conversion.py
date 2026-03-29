@@ -238,9 +238,10 @@ def _chunk_text(text, chunk_size=1000):
 
 
 def _normalize_uppercase_names(text):
-    """Convert full-uppercase words (likely names) to title case for better TTS."""
+    """Heuristic to keep acronyms while normalizing full uppercase names."""
     if not text:
         return text
+
     preserve_acronyms = {
         "USA",
         "ONU",
@@ -254,22 +255,63 @@ def _normalize_uppercase_names(text):
         "BCEAO",
         "NASA",
         "AFD",
+        "ISBN",
+        "ISSN",
+        "CEO",
+        "CTO",
+        "TV",
+        "USB",
+        "SMS",
+        "PDF",
+        "PNG",
+        "JPG",
+        "AI",
+        "API",
+        "HTML",
+        "CSS",
+        "XML",
+        "HTTP",
+        "HTTPS",
     }
-    force_titlecase = {
-        "ADA",
-    }
+
+    def _sentence_capitalize(s):
+        parts = re.split(r"([.!?])", s)
+        out = []
+        for i in range(0, len(parts), 2):
+            chunk = parts[i].strip()
+            if not chunk:
+                out.append(chunk)
+                continue
+            first = chunk[0].upper()
+            out.append(first + chunk[1:])
+            if i + 1 < len(parts):
+                out.append(parts[i + 1] + " ")
+        return "".join(out).strip()
+
+    # If most letters are uppercase, downcase then re-capitalize sentences.
+    letters = [c for c in text if c.isalpha()]
+    if letters:
+        upper_ratio = sum(1 for c in letters if c.isupper()) / max(1, len(letters))
+        if upper_ratio >= 0.85:
+            text = _sentence_capitalize(text.lower())
 
     def _convert(match):
         word = match.group(0)
-        if word.isupper() and word in preserve_acronyms:
+        # Keep dotted acronyms like U.S.A.
+        if re.fullmatch(r"(?:[A-Z]\.){2,}[A-Z]?", word):
             return word
-        if word.isupper() and word in force_titlecase:
-            return word.title()
-        if word.isupper() and len(word) >= 4:
+        if word.isupper():
+            if word in preserve_acronyms:
+                return word
+            # Short uppercase tokens are likely acronyms
+            if len(word) <= 3:
+                return word
+            # No vowels: likely acronym
+            if not re.search(r"[AEIOUY]", word):
+                return word
             return word.title()
         return word
 
-    # Only touch pure alphabetic words (keeps acronyms like USA, U.R.S.S, A.B.C)
     return re.sub(r"\b[^\W\d_]+\b", _convert, text, flags=re.UNICODE)
 
 
