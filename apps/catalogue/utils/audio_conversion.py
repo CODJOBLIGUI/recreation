@@ -108,7 +108,33 @@ def _ensure_local_path(file_field):
     return str(tmp_path)
 
 
-def extract_text_from_file(file_field):
+
+def _ocr_space_pdf(local_path):
+    api_key = os.getenv("OCR_SPACE_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("Clé OCR.space manquante. Contactez l'administrateur.")
+    import requests
+    with open(local_path, "rb") as f:
+        resp = requests.post(
+            "https://api.ocr.space/parse/image",
+            files={"filename": f},
+            data={"apikey": api_key, "language": "fre", "isOverlayRequired": False, "OCREngine": 2},
+            timeout=120,
+        )
+    if resp.status_code != 200:
+        raise RuntimeError("OCR indisponible pour le moment. Veuillez réessayer plus tard.")
+    try:
+        data = resp.json()
+    except Exception:
+        raise RuntimeError("Réponse OCR invalide. Veuillez réessayer plus tard.")
+    if data.get("IsErroredOnProcessing"):
+        msg = data.get("ErrorMessage") or data.get("ErrorDetails") or ""
+        raise RuntimeError(f"OCR indisponible: {msg}")
+    parsed = data.get("ParsedResults", [{}])[0].get("ParsedText", "")
+    parsed = (parsed or "").strip()
+    if not parsed:
+        raise RuntimeError("Aucun texte exploitable dans ce fichier. Veuillez essayer un autre fichier.")
+    return parseddef extract_text_from_file(file_field):
     global _EASYOCR_READER
     if not file_field:
         return ""
@@ -140,11 +166,8 @@ def extract_text_from_file(file_field):
         text = "\n".join(pages).strip()
         if text:
             return text
-        # PDF scanné (image) : OCR indisponible sur ce serveur
-        raise RuntimeError(
-            "PDF scanné détecté. Conversion automatique indisponible. "
-            "Veuillez téléverser un PDF non scanné/DOCX/TXT ou choisir la lecture par un humain."
-        )
+        # OCR fallback for scanned PDFs via OCR.space API
+        ocr_text = _ocr_space_pdf(local_path)
         detected = detect_language(ocr_text)
         if detected in {"es", "de"}:
             raise RuntimeError(
@@ -310,6 +333,7 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
+
 
 
 
