@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?catalogue?, ?0029_audioconversionrequest_pages_count_and_more?),
+        ('catalogue', '0029_audioconversionrequest_pages_count_and_more'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name=?audioconversionrequest?,
-            name=?voix?,
-            field=models.CharField(choices=[(?slow?, ?Lent?), (?standard?, ?Normal?), (?fast?, ?Rapide?)], default=?standard?, max_length=20, verbose_name=?Voix?),
+            model_name='audioconversionrequest',
+            name='voix',
+            field=models.CharField(choices=[('slow', 'Lent'), ('standard', 'Normal'), ('fast', 'Rapide')], default='standard', max_length=20, verbose_name='Voix'),
         ),
     ]

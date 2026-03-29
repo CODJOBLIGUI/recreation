@@ -1,4 +1,4 @@
-﻿{% extends "admin/base_site.html" %}
+{% extends "admin/base_site.html" %}
 {% block content %}
 <div style="margin-bottom: 16px;">
     <h1>Suivi des conversions audio</h1>
@@ -14,7 +14,6 @@
                 <th>Email</th>
                 <th>Statut</th>
                 <th>Progression</th>
-                <th>Message</th>
                 <th>Erreur</th>
                 <th>Créée</th>
             </tr>
@@ -26,30 +25,11 @@
                 <td>{{ c.email|default:"-" }}</td>
                 <td>{{ c.async_status|default:"-" }}</td>
                 <td>{{ c.async_progress }}%</td>
-                <td>
-                    {% if c.async_status == "queued" %}
-                        En file d?attente
-                    {% elif c.async_status == "started" %}
-                        {% if c.async_progress < 25 %}
-                            Extraction…
-                        {% elif c.async_progress < 70 %}
-                            Synthèse…
-                        {% else %}
-                            Finalisation…
-                        {% endif %}
-                    {% elif c.async_status == "finished" %}
-                        Terminé
-                    {% elif c.async_status == "failed" %}
-                        {{ c.async_error|default:"Échec" }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
                 <td>{{ c.async_error|default:"-" }}</td>
                 <td>{{ c.created_at }}</td>
             </tr>
         {% empty %}
-            <tr><td colspan="7">Aucune conversion</td></tr>
+            <tr><td colspan="6">Aucune conversion</td></tr>
         {% endfor %}
         </tbody>
     </table>

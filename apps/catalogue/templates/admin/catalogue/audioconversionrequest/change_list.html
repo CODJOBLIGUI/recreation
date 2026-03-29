@@ -1,4 +1,4 @@
-﻿{% extends "admin/change_list.html" %}
+{% extends "admin/change_list.html" %}
 
 {% block object-tools %}
     <div class="object-tools">
@@ -25,7 +25,7 @@
             var btn = document.getElementById("select-all-visible");
             if (!btn) return;
             btn.addEventListener("click", function() {
-                var checkboxes = document.querySelectorAll(?input.action-select[type="checkbox"]?);
+                var checkboxes = document.querySelectorAll('input.action-select[type="checkbox"]');
                 checkboxes.forEach(function(cb) { cb.checked = true; });
                 var master = document.getElementById("action-toggle");
                 if (master) master.checked = true;

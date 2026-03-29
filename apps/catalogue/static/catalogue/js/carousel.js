@@ -4,19 +4,19 @@
  */
 
 (function() {
-    ?use strict?;
+    'use strict';
     
     // ========================================
     // VARIABLES
     // ========================================
     
-    const carousel = document.querySelector(?.hero__carousel?);
+    const carousel = document.querySelector('.hero__carousel');
     
     if (!carousel) return; // Sortir si pas de carrousel
     
-    const slides = carousel.querySelectorAll(?.hero__slide?);
-    const prevBtn = document.getElementById(?hero-prev?);
-    const nextBtn = document.getElementById(?hero-next?);
+    const slides = carousel.querySelectorAll('.hero__slide');
+    const prevBtn = document.getElementById('hero-prev');
+    const nextBtn = document.getElementById('hero-next');
     
     let currentSlide = 0;
     let autoplayInterval;
@@ -42,11 +42,11 @@
         
         // Retirer la classe active de tous les slides
         slides.forEach(slide => {
-            slide.classList.remove(?active?);
+            slide.classList.remove('active');
         });
         
         // Ajouter la classe active au slide actuel
-        slides[currentSlide].classList.add(?active?);
+        slides[currentSlide].classList.add('active');
     }
     
     /**
@@ -83,7 +83,7 @@
     
     // Boutons navigation
     if (prevBtn) {
-        prevBtn.addEventListener(?click?, function() {
+        prevBtn.addEventListener('click', function() {
             prevSlide();
             stopAutoplay();
             startAutoplay(); // Redémarrer après interaction
@@ -91,7 +91,7 @@
     }
     
     if (nextBtn) {
-        nextBtn.addEventListener(?click?, function() {
+        nextBtn.addEventListener('click', function() {
             nextSlide();
             stopAutoplay();
             startAutoplay();
@@ -102,11 +102,11 @@
     let touchStartX = 0;
     let touchEndX = 0;
     
-    carousel.addEventListener(?touchstart?, function(e) {
+    carousel.addEventListener('touchstart', function(e) {
         touchStartX = e.changedTouches[0].screenX;
     });
     
-    carousel.addEventListener(?touchend?, function(e) {
+    carousel.addEventListener('touchend', function(e) {
         touchEndX = e.changedTouches[0].screenX;
         handleSwipe();
     });
@@ -129,14 +129,14 @@
     }
     
     // Pause au survol
-    carousel.addEventListener(?mouseenter?, stopAutoplay);
-    carousel.addEventListener(?mouseleave?, startAutoplay);
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
     
     // ========================================
     // INITIALISATION
     // ========================================
     
-    // Démarrer l?autoplay si plusieurs slides
+    // Démarrer l'autoplay si plusieurs slides
     if (slides.length > 1) {
         startAutoplay();
     }

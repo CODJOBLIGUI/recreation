@@ -8,19 +8,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?catalogue?, ?0025_audioconversionrequest_paiement_initie_at?),
+        ('catalogue', '0025_audioconversionrequest_paiement_initie_at'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name=?audioconversionrequest?,
-            name=?user?,
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name=?audio_conversions?, to=settings.AUTH_USER_MODEL, verbose_name=?Utilisateur?),
+            model_name='audioconversionrequest',
+            name='user',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='audio_conversions', to=settings.AUTH_USER_MODEL, verbose_name='Utilisateur'),
         ),
         migrations.AlterField(
-            model_name=?audioconversionrequest?,
-            name=?langue?,
-            field=models.CharField(choices=[(?fr?, ?Français?)], default=?fr?, max_length=10, verbose_name=?Langue?),
+            model_name='audioconversionrequest',
+            name='langue',
+            field=models.CharField(choices=[('fr', 'Français')], default='fr', max_length=10, verbose_name='Langue'),
         ),
     ]

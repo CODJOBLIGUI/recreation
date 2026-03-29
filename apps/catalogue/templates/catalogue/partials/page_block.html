@@ -1,4 +1,4 @@
-﻿{% load static %}
+{% load static %}
 
 {% if block.block_type == "rich_text" %}
 <section class="page-block page-block--text {{ block.css_class }}">
@@ -16,7 +16,7 @@
         {% if block.titre %}<h2 class="section__title">{{ block.titre }}</h2>{% endif %}
         {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
         {% if block.image %}
-        <img src="{{ block.image.url }}" alt="{{ block.titre|default:?Image? }}" class="page-block__image">
+        <img src="{{ block.image.url }}" alt="{{ block.titre|default:'Image' }}" class="page-block__image">
         {% endif %}
         {% if block.contenu %}<div class="page-block__text">{{ block.contenu|safe }}</div>{% endif %}
     </div>
@@ -45,9 +45,9 @@
         <div class="page-block__grid">
             {% for item in block.items.all %}
             {% if item.est_actif %}
-            <article class="page-block__card{% if item.image %} page-block__card--media{% endif %}">
+            <article class="page-block__card">
                 {% if item.icone %}<i class="{{ item.icone }}"></i>{% endif %}
-                {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.titre|default:?Image? }}">{% endif %}
+                {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.titre|default:'Image' }}">{% endif %}
                 {% if item.titre %}<h3>{{ item.titre }}</h3>{% endif %}
                 {% if item.sous_titre %}<p class="page-block__card-subtitle">{{ item.sous_titre }}</p>{% endif %}
                 {% if item.contenu %}<div class="page-block__card-text">{{ item.contenu|safe }}</div>{% endif %}
@@ -70,8 +70,8 @@
         <div class="page-block__carousel">
             {% for item in block.items.all %}
             {% if item.est_actif %}
-            <article class="page-block__slide{% if item.image %} page-block__slide--media{% endif %}">
-                {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.titre|default:?Slide? }}">{% endif %}
+            <article class="page-block__slide">
+                {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.titre|default:'Slide' }}">{% endif %}
                 {% if item.titre %}<h3>{{ item.titre }}</h3>{% endif %}
                 {% if item.contenu %}<div class="page-block__card-text">{{ item.contenu|safe }}</div>{% endif %}
             </article>
@@ -97,7 +97,7 @@
             </div>
             <div class="stat-card">
                 <span class="stat-number">{{ annees_experience }}</span>
-                <span class="stat-label">Années d?expérience</span>
+                <span class="stat-label">Années d'expérience</span>
             </div>
             <div class="stat-card">
                 <span class="stat-number">{{ pays_count }}</span>
@@ -171,7 +171,7 @@
                 {% endfor %}
             {% endif %}
             
-            <form method="POST" action="{% url ?catalogue:contact? %}" class="contact__form">
+            <form method="POST" action="{% url 'catalogue:contact' %}" class="contact__form">
                 {% csrf_token %}
                 
                 <div class="form-group">
@@ -243,7 +243,7 @@
                     <h1 class="hero__title">{{ livre.titre }}</h1>
                     <p class="hero__author">{{ livre.auteurs_noms }}</p>
                     <p class="hero__tagline">{{ livre.resume|truncatewords:30 }}</p>
-                    <a href="{% url ?catalogue:livre-detail? livre.slug %}" class="btn btn--primary">Découvrir</a>
+                    <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Découvrir</a>
                 </div>
             </div>
         </div>
@@ -271,11 +271,25 @@
             <button class="tabs__btn" data-category="theatres" aria-pressed="false">Théâtres</button>
             <button class="tabs__btn" data-category="nouvelles" aria-pressed="false">Nouvelles</button>
         </div>
-        <div class="book-grid book-grid--editorial">
+        <div class="book-grid">
             {% for livre in nouveautes %}
-                <div class="book-grid__item" data-category="{{ livre.categorie }}">
-                    {% include ?catalogue/partials/book_card.html? with livre=livre %}
+            <div class="book-card" data-category="{{ livre.categorie }}">
+                <div class="book-card__cover">
+                    {% if livre.image_par_defaut %}
+                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                    {% endif %}
+                    <div class="book-card__overlay">
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
+                    </div>
                 </div>
+                <div class="book-card__info">
+                    <h3 class="book-card__title">{{ livre.titre }}</h3>
+                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    {% if livre.meta_description %}
+                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                    {% endif %}
+                </div>
+            </div>
             {% endfor %}
         </div>
     </div>
@@ -285,11 +299,28 @@
 {% if block.block_type == "home_bestsellers" %}
 <section class="bestsellers section bg-light {{ block.css_class }}">
     <div class="container">
-        <h2 class="section__title">{{ block.titre|default:"Meilleures ventes" }}</h2>
+        <h2 class="section__title">{{ block.titre|default:"Meilleures Ventes" }}</h2>
         {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
         <div class="bestsellers__carousel book-grid">
             {% for livre in bestsellers %}
-                {% include ?catalogue/partials/book_card.html? with livre=livre %}
+            <div class="book-card">
+                <div class="book-card__cover">
+                    <div class="bestsellers__rank">#{{ forloop.counter }}</div>
+                    {% if livre.image_par_defaut %}
+                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                    {% endif %}
+                    <div class="book-card__overlay">
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
+                    </div>
+                </div>
+                <div class="book-card__info">
+                    <h3 class="book-card__title">{{ livre.titre }}</h3>
+                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    {% if livre.meta_description %}
+                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                    {% endif %}
+                </div>
+            </div>
             {% endfor %}
         </div>
     </div>
@@ -299,14 +330,32 @@
 {% if block.block_type == "home_parutions" %}
 <section class="upcoming-releases section bg-light {{ block.css_class }}">
     <div class="container">
-        <h2 class="section__title">{{ block.titre|default:"Prochaines parutions" }}</h2>
+        <h2 class="section__title">{{ block.titre|default:"Prochaines Parutions" }}</h2>
         <p class="section__subtitle">{{ block.sous_titre|default:"Découvrez les livres qui paraîtront bientôt" }}</p>
         <div class="book-grid">
             {% for livre in prochaines_parutions %}
-                <div class="upcoming-book">
-                    {% include ?catalogue/partials/book_card.html? with livre=livre %}
+            <div class="book-card upcoming-book">
+                <div class="book-card__cover">
+                    {% if livre.image_par_defaut %}
+                    <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
+                    {% endif %}
+                    <div class="upcoming-badge">
+                        <i class="fas fa-calendar-alt"></i>
+                        {{ livre.parution|date:"d/m/Y" }}
+                    </div>
+                    <div class="book-card__overlay">
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Découvrir</a>
+                    </div>
+                </div>
+                <div class="book-card__info">
+                    <h3 class="book-card__title">{{ livre.titre }}</h3>
+                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
+                    {% if livre.meta_description %}
+                    <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:16 }}</p>
+                    {% endif %}
                     <p class="book-card__date">Parution : {{ livre.parution|date:"F Y" }}</p>
                 </div>
+            </div>
             {% empty %}
             <p class="no-content">Aucune prochaine parution pour le moment.</p>
             {% endfor %}
@@ -319,31 +368,31 @@
 <section class="news-ticker section {{ block.css_class }}">
     <div class="container">
         <div class="news-ticker__header">
-            <h2 class="section__title">{{ block.titre|default:"Suivez l?actualité" }}</h2>
+            <h2 class="section__title">{{ block.titre|default:"Suivez l’actualité" }}</h2>
+            <div class="news-ticker__controls">
+                <button class="news-ticker__btn" type="button" data-news-action="prev" aria-label="Actualité précédente">&lt;</button>
+                <button class="news-ticker__btn" type="button" data-news-action="next" aria-label="Actualité suivante">&gt;</button>
+            </div>
         </div>
-        <div class="book-grid">
-            {% for actualite in actualites_ticker %}
-            <article class="book-card">
-                <a href="{% url ?catalogue:actualite-detail? actualite.slug %}" class="book-card__cover-link">
-                    <div class="book-card__cover">
+        <div class="news-ticker__viewport" data-news-ticker>
+            <div class="news-ticker__track">
+                {% for actualite in actualites_ticker %}
+                <article class="news-ticker__item">
+                    <a href="{% url 'catalogue:actualite-detail' actualite.slug %}">
                         {% if actualite.image %}
-                        <img src="{{ actualite.image.url }}" alt="{{ actualite.titre }}" loading="lazy">
-                        {% endif %}
-                        <div class="book-card__overlay">
-                            <span class="btn btn--secondary">Voir les détails</span>
+                        <div class="news-ticker__media">
+                            <img src="{{ actualite.image.url }}" alt="{{ actualite.titre }}" loading="lazy">
                         </div>
-                    </div>
-                </a>
-                <div class="book-card__info">
-                    <h3 class="book-card__title">{{ actualite.titre|safe }}</h3>
-                    <p class="book-card__author">{{ actualite.date_publication|date:"d/m/Y" }}</p>
-                    <p class="book-card__meta-desc">{{ actualite.extrait|striptags|truncatewords:18|safe }}</p>
-                    <a href="{% url ?catalogue:actualite-detail? actualite.slug %}" class="btn btn--primary">D&eacute;couvrir</a>
-                </div>
-            </article>
-            {% empty %}
-            <p class="no-content">Aucune actualité pour le moment.</p>
-            {% endfor %}
+                        {% endif %}
+                        <span class="news-ticker__date">{{ actualite.date_publication|date:"d/m/Y" }}</span>
+                        <h3 class="news-ticker__title">{{ actualite.titre|safe }}</h3>
+                        <p class="news-ticker__excerpt">{{ actualite.extrait|striptags|truncatewords:18|safe }}</p>
+                    </a>
+                </article>
+                {% empty %}
+                <p class="no-content">Aucune actualité pour le moment.</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </section>
@@ -352,7 +401,7 @@
 {% if block.block_type == "home_newsletter" %}
 <section class="newsletter section {{ block.css_class }}" id="newsletter">
     <div class="container">
-        <h2 class="section__title">{{ block.titre|default:"Restez informé(e) de nos nouveautés" }}</h2>
+        <h2 class="section__title">{{ block.titre|default:"Restez informé de nos nouveautés" }}</h2>
         {% if block.sous_titre %}<p class="section__subtitle">{{ block.sous_titre }}</p>{% endif %}
         {% if messages %}
             {% for message in messages %}
@@ -369,12 +418,8 @@
                     {{ form.email.errors.0 }}
                 </span>
             {% endif %}
-            <button type="submit" class="btn btn--primary">S?abonner</button>
+            <button type="submit" class="btn btn--primary">S'abonner</button>
         </form>
     </div>
 </section>
 {% endif %}
-
-
-
-

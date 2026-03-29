@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?core?, ?0003_siteappearance_audio_payment_url?),
+        ('core', '0003_siteappearance_audio_payment_url'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name=?siteappearance?,
-            name=?site_email?,
-            field=models.EmailField(blank=True, max_length=254, verbose_name="Email de la maison d?édition"),
+            model_name='siteappearance',
+            name='site_email',
+            field=models.EmailField(blank=True, max_length=254, verbose_name="Email de la maison d'édition"),
         ),
     ]

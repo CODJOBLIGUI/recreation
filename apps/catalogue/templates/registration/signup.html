@@ -1,4 +1,4 @@
-﻿{% extends "catalogue/base.html" %}
+{% extends "catalogue/base.html" %}
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
@@ -33,7 +33,7 @@
                     {% if form.phone.errors %}<span class="form-error">{{ form.phone.errors.0 }}</span>{% endif %}
                 </div>
                 <div class="form-group">
-                    <label for="id_username">Nom d?utilisateur</label>
+                    <label for="id_username">Nom d’utilisateur</label>
                     {{ form.username }}
                     {% if form.username.errors %}<span class="form-error">{{ form.username.errors.0 }}</span>{% endif %}
                 </div>
@@ -49,17 +49,16 @@
                 </div>
                 <div class="form-group">
                     <label>
-                        {{ form.newsletter_opt_in }} S?inscrire à la newsletter
+                        {{ form.newsletter_opt_in }} S’inscrire à la newsletter
                     </label>
                     {% if form.newsletter_opt_in.errors %}<span class="form-error">{{ form.newsletter_opt_in.errors.0 }}</span>{% endif %}
                 </div>
                 <button type="submit" class="btn btn--primary btn--large">Créer le compte</button>
             </form>
             <p style="margin-top: 0.8rem; text-align:center;">
-                Déjà un compte  <a href="{% url ?catalogue:login? %}">Se connecter</a>
+                Déjà un compte ? <a href="{% url 'catalogue:login' %}">Se connecter</a>
             </p>
         </div>
     </div>
 </section>
 {% endblock %}
-

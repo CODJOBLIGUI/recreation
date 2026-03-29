@@ -1,4 +1,4 @@
-﻿{% extends ?catalogue/base.html? %}
+{% extends 'catalogue/base.html' %}
 {% load static %}
 
 {% block content %}
@@ -7,7 +7,7 @@
     <div class="container">
         <h1>{{ collection.nom }}</h1>
         {% if collection.description %}
-        <div class="collection-detail__desc">{{ collection.description|safe }}</div>
+        <p>{{ collection.description|striptags }}</p>
         {% else %}
         <p>Découvrez les livres de cette collection.</p>
         {% endif %}
@@ -32,21 +32,15 @@
                     <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
                     {% endif %}
                     <div class="book-card__overlay">
-                        <a href="{% url ?catalogue:livre-detail? livre.slug %}" class="btn btn--primary">Voir détails</a>
+                        <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--primary">Voir détails</a>
                     </div>
                 </div>
                 <div class="book-card__info">
                     <span class="book-card__category">{{ livre.get_categorie_display }}</span>
                     <h3 class="book-card__title">{{ livre.titre }}</h3>
-                    <p class="book-card__author">
-                        {% for auteur in livre.auteurs.all %}
-                            <a href="{{ auteur.get_absolute_url }}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
-                        {% endfor %}
-                    </p>
+                    <p class="book-card__author">{{ livre.auteurs_noms }}</p>
                     {% if livre.meta_description %}
                     <p class="book-card__meta-desc">{{ livre.meta_description|truncatewords:18 }}</p>
-                    {% elif livre.resume %}
-                    <p class="book-card__meta-desc">{{ livre.resume|truncatewords:18 }}</p>
                     {% endif %}
                 </div>
             </div>
@@ -80,7 +74,7 @@
                     </div>
                     {% endif %}
                     <p class="author-card__bio">{{ auteur.biographie_texte|truncatewords:30 }}</p>
-                    <a href="{% url ?catalogue:auteur-detail? auteur.slug %}" class="btn btn--secondary">Lire la biographie</a>
+                    <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">Voir la bibliographie</a>
                 </div>
             </div>
             {% endfor %}
@@ -90,5 +84,3 @@
 {% endif %}
 
 {% endblock %}
-
-

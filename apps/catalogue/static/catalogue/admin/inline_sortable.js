@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return !row.classList.contains("empty-form");
             });
             orderedRows.forEach(function (row, idx) {
-                var input = row.querySelector(?input[name$="-ordre"]?);
+                var input = row.querySelector('input[name$="-ordre"]');
                 if (input) {
                     input.value = idx + 1;
                 }
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!targetRow || targetRow === dragSrc || targetRow.classList.contains("empty-form")) return;
             var rect = targetRow.getBoundingClientRect();
             var next = (e.clientY - rect.top) > (rect.height / 2);
-            tbody.insertBefore(dragSrc, next  targetRow.nextSibling : targetRow);
+            tbody.insertBefore(dragSrc, next ? targetRow.nextSibling : targetRow);
         });
 
         tbody.addEventListener("dragend", function () {

@@ -1,25 +1,17 @@
-from datetime import date
-from django.db.models import Q
-from django.utils import timezone
-from django.urls import reverse
-from apps.core.models import SiteAppearance, SiteContent
-from .models import Collection, Livre, MenuLink, SiteAd
+from apps.core.models import SiteAppearance
+from .models import Collection, Livre, MenuLink
 
 def global_context(request):
     """
     Contexte global pour tous les templates.
     """
-    if request.path.startswith("/admin/"):
-        return {}
-
     appearance = SiteAppearance.objects.first()
-    site_content = SiteContent.objects.first()
     collections = Collection.objects.filter(est_active=True).order_by("ordre_affichage", "nom")
 
     social_links = [
         {"label": "Instagram", "icon": "fab fa-instagram", "url": appearance.instagram if appearance and appearance.instagram else "https://www.instagram.com/editionsrecreation"},
-        {"label": "Facebook", "icon": "fab fa-facebook-f", "url": appearance.facebook if appearance and appearance.facebook else "https://www.facebook.com/profile.phpid=100063943957824"},
-        {"label": "X", "icon": "fab fa-x-twitter", "url": appearance.x_twitter if appearance and appearance.x_twitter else "https://x.com/Edi_Recreations=09"},
+        {"label": "Facebook", "icon": "fab fa-facebook-f", "url": appearance.facebook if appearance and appearance.facebook else "https://www.facebook.com/profile.php?id=100063943957824"},
+        {"label": "X", "icon": "fab fa-x-twitter", "url": appearance.x_twitter if appearance and appearance.x_twitter else "https://x.com/Edi_Recreation?s=09"},
         {"label": "TikTok", "icon": "fab fa-tiktok", "url": appearance.tiktok if appearance and appearance.tiktok else "https://www.tiktok.com/@editionsrecreation"},
         {"label": "LinkedIn", "icon": "fab fa-linkedin-in", "url": appearance.linkedin if appearance and appearance.linkedin else "https://www.linkedin.com/company/editionsrecreation"},
         {"label": "YouTube", "icon": "fab fa-youtube", "url": appearance.youtube if appearance and appearance.youtube else "https://youtube.com/@editionsrecreation"},
@@ -28,23 +20,6 @@ def global_context(request):
 
     menu_header_links = MenuLink.objects.filter(is_active=True, location="header").order_by("order", "title")
     menu_footer_links = MenuLink.objects.filter(is_active=True, location="footer").order_by("order", "title")
-
-    now = timezone.now()
-    ads_qs = SiteAd.objects.filter(is_active=True).filter(
-        Q(starts_at__isnull=True) | Q(starts_at__lte=now),
-        Q(ends_at__isnull=True) | Q(ends_at__gte=now),
-    )
-    ads = [
-        {
-            "title": ad.title,
-            "text": ad.text,
-            "image": ad.image.url if ad.image else "",
-            "link_url": ad.link_url,
-            "weight": ad.weight,
-        }
-        for ad in ads_qs
-        if ad.image
-    ]
 
     footer_menu_columns = {
         "Catalogue": [],
@@ -68,62 +43,12 @@ def global_context(request):
         else:
             footer_menu_columns["Ressources"].append(link)
 
-    try:
-        breadcrumbs = []
-        url_name = request.resolver_match.url_name if request.resolver_match else ""
-        home = {"title": "Accueil", "url": reverse("catalogue:index")}
-        if url_name:
-            breadcrumbs.append(home)
-
-        labels = {
-            "catalogue": "Catalogue",
-            "livres-numeriques": "Livres numériques",
-            "livres-audio": "Livres audio",
-            "livres-papier": "Livres papier",
-            "auteurs": "Auteurs",
-            "actualites": "Actualités",
-            "collections": "Collections",
-            "contact": "Contacts",
-            "a-propos": "A propos",
-            "nos-contrats": "Nos contrats",
-            "soumission-manuscrit": "Soumettre un manuscrit",
-            "conversion-audio": "Conversion de texte en audio",
-            "conversion-audio-synthetique": "Conversion de texte en audio",
-            "conversion-audio-humain": "Lecture par un humain",
-            "conversion-audio-choice": "Conversion de texte en audio",
-            "search": "Recherche",
-            "mentions-legales": "Mentions légales",
-            "confidentialite": "Confidentialité",
-            "cookies": "Cookies",
-        }
-        if url_name in labels:
-            breadcrumbs.append({"title": labels[url_name], "url": reverse(f"catalogue:{url_name}")})
-        if url_name == "index":
-            breadcrumbs = [home]
-        year = date.today().year
-        raw_copy = ""
-        if site_content and site_content.footer_copyright:
-            raw_copy = site_content.footer_copyright
-        elif appearance and appearance.footer_copyright:
-            raw_copy = appearance.footer_copyright
-        else:
-            raw_copy = "Editions Recreation - Tous droits reserves - {year}"
-        footer_copy = raw_copy.replace("{{year}}", str(year)).replace("{year}", str(year))
-        if "{year}" not in raw_copy and "{{year}}" not in raw_copy and str(year) not in footer_copy:
-            footer_copy = f"{raw_copy} - {year}"
-
-        return {
-            "categories_list": Livre.CATEGORIES,
-            "collections_list": collections,
-            "appearance": appearance,
-            "site_content": site_content,
-            "social_links": social_links,
-            "menu_header_links": menu_header_links,
-            "menu_footer_links": menu_footer_links,
-            "footer_menu_columns": footer_menu_columns,
-            "footer_copyright": footer_copy,
-            "ads": ads,
-            "breadcrumbs": breadcrumbs,
-        }
-    except Exception:
-        return {}
+    return {
+        "categories_list": Livre.CATEGORIES,
+        "collections_list": collections,
+        "appearance": appearance,
+        "social_links": social_links,
+        "menu_header_links": menu_header_links,
+        "menu_footer_links": menu_footer_links,
+        "footer_menu_columns": footer_menu_columns,
+    }

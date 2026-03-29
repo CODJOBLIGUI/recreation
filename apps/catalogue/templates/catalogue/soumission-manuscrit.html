@@ -1,26 +1,12 @@
-﻿{% extends ?catalogue/base.html? %}
+{% extends 'catalogue/base.html' %}
 {% load static %}
 
 {% block content %}
 
-<section class="page-hero{% if page and page.hero_image %} page-hero--with-media{% endif %}">
+<section class="page-hero">
     <div class="container">
-        {% if page and page.hero_image %}
-            <div class="page-hero__layout">
-                <div class="page-hero__content">
-                    <h1 class="page-hero__title">Soumettez votre manuscrit/tapuscrit</h1>
-                    <p class="page-hero__subtitle">Partagez votre projet avec Editions Recréation</p>
-                </div>
-                <div class="page-hero__media">
-                    <a class="page-hero__media-link" href="{{ page.hero_image.url }}" target="_blank" rel="noopener">
-                        <img src="{{ page.hero_image.url }}" alt="Soumission manuscrit" loading="lazy">
-                    </a>
-                </div>
-            </div>
-        {% else %}
-            <h1 class="page-hero__title">Soumettez votre manuscrit/tapuscrit</h1>
-            <p class="page-hero__subtitle">Partagez votre projet avec Editions Recréation</p>
-        {% endif %}
+        <h1 class="page-hero__title">Soumettre votre manuscrit</h1>
+        <p class="page-hero__subtitle">Partagez votre projet avec Editions Recréation</p>
     </div>
 </section>
 
@@ -40,7 +26,7 @@
             {% endfor %}
         {% endif %}
 
-        <form method="POST" action="{% url ?catalogue:soumission-manuscrit? %}" enctype="multipart/form-data" class="manuscrit__form">
+        <form method="POST" action="{% url 'catalogue:soumission-manuscrit' %}" enctype="multipart/form-data" class="manuscrit__form">
             {% csrf_token %}
 
             <div class="form-group">
@@ -139,6 +125,3 @@
 </section>
 
 {% endblock %}
-
-
-

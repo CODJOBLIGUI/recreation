@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?catalogue?, ?0031_remove_soumissionmanuscrit_contacts_and_more?),
+        ('catalogue', '0031_remove_soumissionmanuscrit_contacts_and_more'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name=?soumissionmanuscrit?,
-            name=?nationalite?,
-            field=models.CharField(default=??, max_length=120, verbose_name=?Nationalité?),
+            model_name='soumissionmanuscrit',
+            name='nationalite',
+            field=models.CharField(default='', max_length=120, verbose_name='Nationalité'),
         ),
         migrations.AddField(
-            model_name=?soumissionmanuscrit?,
-            name=?pays_residence?,
-            field=models.CharField(default=??, max_length=120, verbose_name=?Pays de résidence?),
+            model_name='soumissionmanuscrit',
+            name='pays_residence',
+            field=models.CharField(default='', max_length=120, verbose_name='Pays de résidence'),
         ),
     ]

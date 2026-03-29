@@ -1,32 +1,8 @@
 import io
 import os
-import re
 from pathlib import Path
 
 from django.conf import settings
-
-
-def detect_language(text):
-    text = (text or "").strip()
-    if len(text) < 20:
-        return ""
-    try:
-        from langdetect import detect
-    except Exception:
-        return ""
-    try:
-        code = detect(text)
-    except Exception:
-        return ""
-    if code.startswith("fr"):
-        return "fr"
-    if code.startswith("en"):
-        return "en"
-    if code.startswith("es"):
-        return "es"
-    if code.startswith("de"):
-        return "de"
-    return code
 
 _EASYOCR_READER = None
 
@@ -86,7 +62,6 @@ def count_pages_for_file(file_field):
         text = ""
     return estimate_pages_from_text(text)
 
-
 def _ensure_local_path(file_field):
     if hasattr(file_field, "path") and os.path.exists(file_field.path):
         return file_field.path
@@ -125,7 +100,7 @@ def extract_text_from_file(file_field):
         try:
             from docx import Document
         except Exception as exc:
-            raise RuntimeError("python-docx n?est pas install?.") from exc
+            raise RuntimeError("python-docx n'est pas installé.") from exc
         doc = Document(local_path)
         return "\n".join(p.text for p in doc.paragraphs if p.text)
 
@@ -133,49 +108,54 @@ def extract_text_from_file(file_field):
         try:
             from PyPDF2 import PdfReader
         except Exception as exc:
-            raise RuntimeError("PyPDF2 n?est pas install?.") from exc
+            raise RuntimeError("PyPDF2 n'est pas installé.") from exc
         with open(local_path, "rb") as f:
             reader = PdfReader(f)
             pages = [p.extract_text() or "" for p in reader.pages]
         text = "\n".join(pages).strip()
         if text:
             return text
-        # PDF scann (image) : OCR indisponible sur ce serveur
-        raise RuntimeError(
-            "PDF scann d?tect?. Conversion automatique indisponible. "
-            "Veuillez t?l?verser un PDF non scann?/DOCX/TXT ou choisir la lecture par un humain."
-        )
-        detected = detect_language(ocr_text)
-        if detected in {"es", "de"}:
-            raise RuntimeError(
-                "OCR espagnol/allemand indisponible sur ce serveur. "
-                "Veuillez t?l?verser un fichier texte (PDF non scann?, DOCX) "
-                "ou coller votre texte."
-            )
-        return ocr_text
+        # OCR fallback for scanned PDFs (extract embedded images)
+        try:
+            import easyocr
+            from PIL import Image
+            import numpy as np
+        except Exception as exc:
+            raise RuntimeError("OCR PDF indisponible (EasyOCR/Pillow manquant).") from exc
+        if _EASYOCR_READER is None:
+            _EASYOCR_READER = easyocr.Reader(["fr"], gpu=False)
+        reader_ocr = _EASYOCR_READER
+        texts = []
+        for page in reader.pages:
+            images = getattr(page, "images", []) or []
+            if images:
+                for img in images:
+                    try:
+                        img_data = img.data
+                        image = Image.open(io.BytesIO(img_data))
+                        img_arr = np.array(image)
+                        results = reader_ocr.readtext(img_arr, detail=0, paragraph=True)
+                        texts.extend(results)
+                    except Exception:
+                        continue
+        return "\n".join(texts)
 
     if ext in {".jpg", ".jpeg", ".png"}:
         try:
-            import pytesseract
-            from PIL import Image
+            import easyocr
         except Exception as exc:
-            raise RuntimeError("OCR image indisponible (pytesseract/Pillow manquant).") from exc
-        image = Image.open(local_path)
-        ocr_text = pytesseract.image_to_string(image, lang="fra+eng")
-        detected = detect_language(ocr_text)
-        if detected in {"es", "de"}:
-            raise RuntimeError(
-                "OCR espagnol/allemand indisponible sur ce serveur. "
-                "Veuillez t?l?verser un fichier texte (PDF non scann?, DOCX) "
-                "ou coller votre texte."
-            )
-        return ocr_text
+            raise RuntimeError("easyocr n'est pas installé.") from exc
+        if _EASYOCR_READER is None:
+            _EASYOCR_READER = easyocr.Reader(["fr"], gpu=False)
+        reader = _EASYOCR_READER
+        results = reader.readtext(local_path, detail=0, paragraph=True)
+        return "\n".join(results)
 
     if ext in {".pptx"}:
         try:
             from pptx import Presentation
         except Exception as exc:
-            raise RuntimeError("python-pptx n?est pas install?.") from exc
+            raise RuntimeError("python-pptx n'est pas installé.") from exc
         prs = Presentation(local_path)
         texts = []
         for slide in prs.slides:
@@ -188,7 +168,7 @@ def extract_text_from_file(file_field):
         try:
             import openpyxl
         except Exception as exc:
-            raise RuntimeError("openpyxl n?est pas install?.") from exc
+            raise RuntimeError("openpyxl n'est pas installé.") from exc
         wb = openpyxl.load_workbook(local_path, data_only=True)
         texts = []
         for ws in wb.worksheets:
@@ -203,7 +183,7 @@ def extract_text_from_file(file_field):
             from ebooklib import epub
             from bs4 import BeautifulSoup
         except Exception as exc:
-            raise RuntimeError("EbookLib ou beautifulsoup4 n?est pas install?.") from exc
+            raise RuntimeError("EbookLib ou beautifulsoup4 n'est pas installé.") from exc
         book = epub.read_epub(local_path)
         texts = []
         for item in book.get_items():
@@ -213,164 +193,3 @@ def extract_text_from_file(file_field):
         return "\n".join(texts)
 
     raise RuntimeError("Type de fichier non pris en charge.")
-
-
-def _chunk_text(text, chunk_size=1000):
-    text = (text or "").strip()
-    if not text:
-        return []
-    chunks = []
-    start = 0
-    length = len(text)
-    while start < length:
-        end = min(start + chunk_size, length)
-        if end < length:
-            split_at = text.rfind(" ", start, end)
-            if split_at <= start:
-                split_at = end
-        else:
-            split_at = end
-        chunk = text[start:split_at].strip()
-        if chunk:
-            chunks.append(chunk)
-        start = split_at
-    return chunks
-
-
-def _normalize_uppercase_names(text):
-    """Heuristic to keep acronyms while normalizing full uppercase names."""
-    if not text:
-        return text
-
-    preserve_acronyms = {
-        "USA",
-        "ONU",
-        "UE",
-        "UA",
-        "CEDEAO",
-        "UNESCO",
-        "UNICEF",
-        "OIF",
-        "FMI",
-        "BCEAO",
-        "NASA",
-        "AFD",
-        "ISBN",
-        "ISSN",
-        "CEO",
-        "CTO",
-        "TV",
-        "USB",
-        "SMS",
-        "PDF",
-        "PNG",
-        "JPG",
-        "AI",
-        "API",
-        "HTML",
-        "CSS",
-        "XML",
-        "HTTP",
-        "HTTPS",
-    }
-    try:
-        from apps.core.models import SiteAppearance
-        appearance = SiteAppearance.objects.first()
-        if appearance and appearance.tts_acronyms:
-            custom = {
-                item.strip().upper()
-                for item in appearance.tts_acronyms.split(",")
-                if item.strip()
-            }
-            preserve_acronyms.update(custom)
-    except Exception:
-        pass
-
-    def _sentence_capitalize(s):
-        parts = re.split(r"([.!?])", s)
-        out = []
-        for i in range(0, len(parts), 2):
-            chunk = parts[i].strip()
-            if not chunk:
-                out.append(chunk)
-                continue
-            first = chunk[0].upper()
-            out.append(first + chunk[1:])
-            if i + 1 < len(parts):
-                out.append(parts[i + 1] + " ")
-        return "".join(out).strip()
-
-    # If most letters are uppercase, downcase then re-capitalize sentences.
-    letters = [c for c in text if c.isalpha()]
-    if letters:
-        upper_ratio = sum(1 for c in letters if c.isupper()) / max(1, len(letters))
-        if upper_ratio >= 0.85:
-            text = _sentence_capitalize(text.lower())
-
-    def _convert(match):
-        word = match.group(0)
-        # Keep dotted acronyms like U.S.A.
-        if re.fullmatch(r"(?:[A-Z]\.){2,}[A-Z]?", word):
-            return word
-        if word.isupper():
-            if word in preserve_acronyms:
-                return word
-            # Short uppercase tokens are likely acronyms
-            if len(word) <= 3:
-                return word
-            # No vowels: likely acronym
-            if not re.search(r"[AEIOUY]", word):
-                return word
-            return word.title()
-        return word
-
-    return re.sub(r"\b[^\W\d_]+\b", _convert, text, flags=re.UNICODE)
-
-
-def generate_tts_mp3(
-    text,
-    lang="fr",
-    slow=False,
-    chunk_size=1000,
-    max_retries=3,
-    base_delay=1.5,
-    inter_chunk_delay=0.6,
-):
-    from gtts import gTTS
-    import time
-    cleaned_text = _normalize_uppercase_names(text)
-    chunks = _chunk_text(cleaned_text, chunk_size=chunk_size)
-    if not chunks:
-        raise RuntimeError("Aucun texte exploitable dans ce fichier. Veuillez essayer un autre fichier.")
-    output = io.BytesIO()
-    for idx, part in enumerate(chunks, start=1):
-        attempt = 0
-        while True:
-            try:
-                tts = gTTS(part, lang=lang, slow=slow)
-                tmp = io.BytesIO()
-                tts.write_to_fp(tmp)
-                output.write(tmp.getvalue())
-                break
-            except Exception as exc:
-                attempt += 1
-                if attempt > max_retries:
-                    raise RuntimeError(f"Erreur TTS (segment {idx}/{len(chunks)}): {exc}") from exc
-                delay = base_delay * (2 ** (attempt - 1))
-                if "429" in str(exc):
-                    delay = max(delay, 5.0)
-                time.sleep(delay)
-        if inter_chunk_delay:
-            time.sleep(inter_chunk_delay)
-    output.seek(0)
-    return output
-
-
-
-
-
-
-
-
-
-

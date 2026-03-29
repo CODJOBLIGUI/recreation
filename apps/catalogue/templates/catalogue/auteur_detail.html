@@ -1,4 +1,4 @@
-﻿{% extends ?catalogue/base.html? %}
+﻿{% extends 'catalogue/base.html' %}
 {% load static %}
 
 {% block content %}
@@ -37,7 +37,7 @@
                         <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}" loading="lazy">
                         {% endif %}
                         <div class="book-card__overlay">
-                            <a href="{% url ?catalogue:livre-detail? livre.slug %}" class="btn btn--secondary">Voir détails</a>
+                            <a href="{% url 'catalogue:livre-detail' livre.slug %}" class="btn btn--secondary">Voir détails</a>
                         </div>
                     </div>
                     <div class="book-card__info">

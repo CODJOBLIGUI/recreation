@@ -1,4 +1,4 @@
-﻿{% extends ?catalogue/base.html? %}
+{% extends 'catalogue/base.html' %}
 
 {% block content %}
 <section class="section conversion-payment">
@@ -6,7 +6,7 @@
         <div class="cta-box conversion-payment__box">
             <h1 class="cta-box__title">Paiement - Conversion audio</h1>
             <p class="cta-box__text">
-                Votre demande a Ã©tÃ© enregistrÃ©e. Finalisez le paiement pour recevoir lâ€™audio par eâ€‘mail en moins de 24 heures.
+                Votre demande a été enregistrée. Finalisez le paiement pour recevoir l’audio par e‑mail en moins de 24 heures.
             </p>
             {% if widget_code %}
                 <div class="conversion-payment__widget">
@@ -25,20 +25,20 @@
 {% block extra_js %}
 <script>
     (function() {
-        var script = document.createElement(?script?);
-        script.src = ?https://js.chariow.com/v1/widget.min.js?;
+        var script = document.createElement('script');
+        script.src = 'https://js.chariow.com/v1/widget.min.js';
         script.async = true;
         document.head.appendChild(script);
 
-        var link = document.createElement(?link?);
-        link.rel = ?stylesheet?;
-        link.href = ?https://js.chariow.com/v1/widget.min.css?;
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://js.chariow.com/v1/widget.min.css';
         document.head.appendChild(link);
 
         function tryOpenWidget() {
-            var root = document.getElementById(?chariow-widget?);
+            var root = document.getElementById('chariow-widget');
             if (!root) return false;
-            var btn = root.querySelector(?button, a, [role="button"]?);
+            var btn = root.querySelector('button, a, [role="button"]');
             if (btn) {
                 btn.click();
                 return true;

@@ -6,33 +6,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?core?, ?0006_siteappearance_chariow_audio_product_id_1_and_more?),
+        ('core', '0006_siteappearance_chariow_audio_product_id_1_and_more'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name=?siteappearance?,
-            name=?chariow_widget_code_1?,
-            field=models.TextField(blank=True, verbose_name=?Chariow widget (1 à 100 pages)?),
+            model_name='siteappearance',
+            name='chariow_widget_code_1',
+            field=models.TextField(blank=True, verbose_name='Chariow widget (1 à 100 pages)'),
         ),
         migrations.AddField(
-            model_name=?siteappearance?,
-            name=?chariow_widget_code_2?,
-            field=models.TextField(blank=True, verbose_name=?Chariow widget (101 à 200 pages)?),
+            model_name='siteappearance',
+            name='chariow_widget_code_2',
+            field=models.TextField(blank=True, verbose_name='Chariow widget (101 à 200 pages)'),
         ),
         migrations.AddField(
-            model_name=?siteappearance?,
-            name=?chariow_widget_code_3?,
-            field=models.TextField(blank=True, verbose_name=?Chariow widget (201 à 500 pages)?),
+            model_name='siteappearance',
+            name='chariow_widget_code_3',
+            field=models.TextField(blank=True, verbose_name='Chariow widget (201 à 500 pages)'),
         ),
         migrations.AddField(
-            model_name=?siteappearance?,
-            name=?chariow_widget_code_4?,
-            field=models.TextField(blank=True, verbose_name=?Chariow widget (501 à 1000 pages)?),
+            model_name='siteappearance',
+            name='chariow_widget_code_4',
+            field=models.TextField(blank=True, verbose_name='Chariow widget (501 à 1000 pages)'),
         ),
         migrations.AddField(
-            model_name=?siteappearance?,
-            name=?chariow_widget_code_5?,
-            field=models.TextField(blank=True, verbose_name=?Chariow widget (1001+ pages)?),
+            model_name='siteappearance',
+            name='chariow_widget_code_5',
+            field=models.TextField(blank=True, verbose_name='Chariow widget (1001+ pages)'),
         ),
     ]

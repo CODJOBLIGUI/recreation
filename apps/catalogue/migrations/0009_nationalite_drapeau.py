@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?catalogue?, ?0008_nationalite?),
+        ('catalogue', '0008_nationalite'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name=?nationalite?,
-            name=?drapeau?,
-            field=models.ImageField(blank=True, null=True, upload_to=?flags/%Y/%m/?, verbose_name=?Drapeau (image)?),
+            model_name='nationalite',
+            name='drapeau',
+            field=models.ImageField(blank=True, null=True, upload_to='flags/%Y/%m/', verbose_name='Drapeau (image)'),
         ),
     ]

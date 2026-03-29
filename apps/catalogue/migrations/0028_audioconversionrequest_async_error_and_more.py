@@ -6,33 +6,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?catalogue?, ?0027_userprofile?),
+        ('catalogue', '0027_userprofile'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name=?audioconversionrequest?,
-            name=?async_error?,
-            field=models.TextField(blank=True, verbose_name=?Erreur conversion?),
+            model_name='audioconversionrequest',
+            name='async_error',
+            field=models.TextField(blank=True, verbose_name='Erreur conversion'),
         ),
         migrations.AddField(
-            model_name=?audioconversionrequest?,
-            name=?async_finished_at?,
-            field=models.DateTimeField(blank=True, null=True, verbose_name=?Fin conversion?),
+            model_name='audioconversionrequest',
+            name='async_finished_at',
+            field=models.DateTimeField(blank=True, null=True, verbose_name='Fin conversion'),
         ),
         migrations.AddField(
-            model_name=?audioconversionrequest?,
-            name=?async_progress?,
-            field=models.PositiveIntegerField(default=0, verbose_name=?Progression (%)?),
+            model_name='audioconversionrequest',
+            name='async_progress',
+            field=models.PositiveIntegerField(default=0, verbose_name='Progression (%)'),
         ),
         migrations.AddField(
-            model_name=?audioconversionrequest?,
-            name=?async_started_at?,
-            field=models.DateTimeField(blank=True, null=True, verbose_name=?Début conversion?),
+            model_name='audioconversionrequest',
+            name='async_started_at',
+            field=models.DateTimeField(blank=True, null=True, verbose_name='Début conversion'),
         ),
         migrations.AddField(
-            model_name=?audioconversionrequest?,
-            name=?async_status?,
-            field=models.CharField(blank=True, choices=[(?queued?, "En file d?attente"), (?started?, ?En cours?), (?finished?, ?Terminé?), (?failed?, ?Échec?)], default=??, max_length=20, verbose_name=?Statut de conversion?),
+            model_name='audioconversionrequest',
+            name='async_status',
+            field=models.CharField(blank=True, choices=[('queued', "En file d'attente"), ('started', 'En cours'), ('finished', 'Terminé'), ('failed', 'Échec')], default='', max_length=20, verbose_name='Statut de conversion'),
         ),
     ]

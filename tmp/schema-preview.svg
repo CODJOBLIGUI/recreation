@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+  <style>
+    .bg { fill: #0b0b10; }
+    .title { fill: #ffffff; font-family: Arial, sans-serif; font-size: 22px; font-weight: 700; }
+    .text { fill: #d7d7e0; font-family: Consolas, monospace; font-size: 16px; }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="700" />
+  <text class="title" x="30" y="40">Schema JSON-LD (résolu)</text>
+  <text class="text" x="30" y="80">{</text>
+  <text class="text" x="50" y="105">"@context": "https://schema.org",</text>
+  <text class="text" x="50" y="130">"@type": "Organization",</text>
+  <text class="text" x="50" y="155">"name": "Editions Recréation",</text>
+  <text class="text" x="50" y="180">"url": "https://mariuscb.pythonanywhere.com",</text>
+  <text class="text" x="50" y="205">"logo": "https://mariuscb.pythonanywhere.com/media/branding/...",</text>
+  <text class="text" x="50" y="230">"sameAs": [</text>
+  <text class="text" x="70" y="255">"https://www.instagram.com/editionsrecreation",</text>
+  <text class="text" x="70" y="280">"https://www.facebook.com/profile.phpid=100063943957824",</text>
+  <text class="text" x="70" y="305">"https://x.com/Edi_Recreations=09",</text>
+  <text class="text" x="70" y="330">"https://www.tiktok.com/@editionsrecreation",</text>
+  <text class="text" x="70" y="355">"https://www.linkedin.com/company/editionsrecreation",</text>
+  <text class="text" x="70" y="380">"https://youtube.com/@editionsrecreation",</text>
+  <text class="text" x="70" y="405">"https://wa.me/c/22968809777"</text>
+  <text class="text" x="50" y="430">]</text>
+  <text class="text" x="30" y="455">}</text>
+  <text class="text" x="30" y="490">{</text>
+  <text class="text" x="50" y="515">"@context": "https://schema.org",</text>
+  <text class="text" x="50" y="540">"@type": "WebSite",</text>
+  <text class="text" x="50" y="565">"url": "https://mariuscb.pythonanywhere.com",</text>
+  <text class="text" x="50" y="590">"name": "Editions Recréation",</text>
+  <text class="text" x="50" y="615">"potentialAction": {</text>
+  <text class="text" x="70" y="640">"@type": "SearchAction",</text>
+  <text class="text" x="70" y="665">"target": "https://mariuscb.pythonanywhere.com/recherche/?q={search_term_string}"</text>
+  <text class="text" x="50" y="690">}</text>
+</svg>

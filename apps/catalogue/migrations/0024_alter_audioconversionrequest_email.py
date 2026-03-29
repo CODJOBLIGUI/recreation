@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?catalogue?, ?0023_audioconversionrequest?),
+        ('catalogue', '0023_audioconversionrequest'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name=?audioconversionrequest?,
-            name=?email?,
-            field=models.EmailField(blank=True, max_length=254, verbose_name=?Email?),
+            model_name='audioconversionrequest',
+            name='email',
+            field=models.EmailField(blank=True, max_length=254, verbose_name='Email'),
         ),
     ]

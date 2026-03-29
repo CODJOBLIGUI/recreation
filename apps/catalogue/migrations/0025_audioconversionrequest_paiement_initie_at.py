@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?catalogue?, ?0024_alter_audioconversionrequest_email?),
+        ('catalogue', '0024_alter_audioconversionrequest_email'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name=?audioconversionrequest?,
-            name=?paiement_initie_at?,
-            field=models.DateTimeField(blank=True, null=True, verbose_name=?Paiement initié le?),
+            model_name='audioconversionrequest',
+            name='paiement_initie_at',
+            field=models.DateTimeField(blank=True, null=True, verbose_name='Paiement initié le'),
         ),
     ]

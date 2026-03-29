@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?catalogue?, ?0028_audioconversionrequest_async_error_and_more?),
+        ('catalogue', '0028_audioconversionrequest_async_error_and_more'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name=?audioconversionrequest?,
-            name=?pages_count?,
-            field=models.PositiveIntegerField(default=0, verbose_name=?Nombre de pages (estimé)?),
+            model_name='audioconversionrequest',
+            name='pages_count',
+            field=models.PositiveIntegerField(default=0, verbose_name='Nombre de pages (estimé)'),
         ),
         migrations.AddField(
-            model_name=?audioconversionrequest?,
-            name=?payment_tier?,
-            field=models.PositiveSmallIntegerField(default=1, verbose_name=?Palier de paiement?),
+            model_name='audioconversionrequest',
+            name='payment_tier',
+            field=models.PositiveSmallIntegerField(default=1, verbose_name='Palier de paiement'),
         ),
     ]

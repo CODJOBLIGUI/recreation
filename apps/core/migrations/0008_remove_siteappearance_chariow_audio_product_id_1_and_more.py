@@ -6,60 +6,60 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        (?core?, ?0007_siteappearance_chariow_widget_code_1_and_more?),
+        ('core', '0007_siteappearance_chariow_widget_code_1_and_more'),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_audio_product_id_1?,
+            model_name='siteappearance',
+            name='chariow_audio_product_id_1',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_audio_product_id_2?,
+            model_name='siteappearance',
+            name='chariow_audio_product_id_2',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_audio_product_id_3?,
+            model_name='siteappearance',
+            name='chariow_audio_product_id_3',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_audio_product_id_4?,
+            model_name='siteappearance',
+            name='chariow_audio_product_id_4',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_audio_product_id_5?,
+            model_name='siteappearance',
+            name='chariow_audio_product_id_5',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_background_color?,
+            model_name='siteappearance',
+            name='chariow_background_color',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_border_style?,
+            model_name='siteappearance',
+            name='chariow_border_style',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_cta_animation?,
+            model_name='siteappearance',
+            name='chariow_cta_animation',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_cta_width?,
+            model_name='siteappearance',
+            name='chariow_cta_width',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_locale?,
+            model_name='siteappearance',
+            name='chariow_locale',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_primary_color?,
+            model_name='siteappearance',
+            name='chariow_primary_color',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_store_domain?,
+            model_name='siteappearance',
+            name='chariow_store_domain',
         ),
         migrations.RemoveField(
-            model_name=?siteappearance?,
-            name=?chariow_style?,
+            model_name='siteappearance',
+            name='chariow_style',
         ),
     ]

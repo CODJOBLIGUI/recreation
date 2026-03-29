@@ -1,5 +1,5 @@
-﻿{% extends ?catalogue/base.html? %}
-{% load static text_extras %}
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -20,7 +20,7 @@
                     <p class="livre-detail__author">
                         par
                         {% for auteur in livre.auteurs.all %}
-                            <a href="{% url ?catalogue:auteur-detail? auteur.slug %}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
+                            <a href="{% url 'catalogue:auteur-detail' auteur.slug %}">{{ auteur.nom }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} et {% else %}, {% endif %}{% endif %}
                         {% endfor %}
                     </p>
                 
@@ -37,11 +37,11 @@
                 
                 <div class="livre-detail__description">
                     <h2>Résumé</h2>
-                    {{ livre.resume|unescape_html_twice|safe|linebreaksbr }}
+                    <p>{{ livre.resume }}</p>
                 </div>
 
                 
-                <!-- Boutons d?achat -->
+                <!-- Boutons d'achat -->
                 <div class="purchase-buttons">
                     <h3>Où acheter ce livre ?</h3>
                     {% if livre.version_papier %}
@@ -50,7 +50,7 @@
                         {% if livre.lien_chariow %}
                         <a href="{{ livre.lien_chariow }}" target="_blank" class="purchase-btn purchase-btn--chariow">
                             <i class="fas fa-shopping-cart"></i>
-                            Acheter sur Recréation shop
+                            Acheter sur Chariow
                         </a>
                         {% endif %}
                         {% if livre.lien_amazon %}
@@ -73,7 +73,7 @@
                         {% if livre.lien_chariow_numerique %}
                         <a href="{{ livre.lien_chariow_numerique }}" target="_blank" class="purchase-btn purchase-btn--chariow">
                             <i class="fas fa-shopping-cart"></i>
-                            Acheter sur Recréation shop
+                            Acheter sur Chariow
                         </a>
                         {% endif %}
                         {% if livre.lien_amazon_numerique %}
@@ -96,7 +96,7 @@
                         {% if livre.lien_chariow_audio %}
                         <a href="{{ livre.lien_chariow_audio }}" target="_blank" class="purchase-btn purchase-btn--chariow">
                             <i class="fas fa-shopping-cart"></i>
-                            Acheter sur Recréation shop
+                            Acheter sur Chariow
                         </a>
                         {% endif %}
                         {% if livre.lien_amazon_audio %}
@@ -129,7 +129,7 @@
                         <img src="{{ livre_suggere.image_par_defaut.url }}" alt="{{ livre_suggere.titre }}" loading="lazy">
                         {% endif %}
                         <div class="book-card__overlay">
-                            <a href="{% url ?catalogue:livre-detail? livre_suggere.slug %}" class="btn btn--secondary">Voir détails</a>
+                            <a href="{% url 'catalogue:livre-detail' livre_suggere.slug %}" class="btn btn--secondary">Voir détails</a>
                         </div>
                     </div>
                     <div class="book-card__info">

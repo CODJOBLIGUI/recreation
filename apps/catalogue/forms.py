@@ -13,75 +13,75 @@ class ContactForm(forms.ModelForm):
     
     class Meta:
         model = MessageContact
-        fields = [?nom?, ?email?, ?telephone?, ?sujet?, ?message?]
+        fields = ['nom', 'email', 'telephone', 'sujet', 'message']
         widgets = {
-            ?nom?: forms.TextInput(attrs={
-                ?class?: ?form-control?,
-                ?placeholder?: ?Votre nom complet?,
-                ?id?: ?name?
+            'nom': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Votre nom complet',
+                'id': 'name'
             }),
-            ?email?: forms.EmailInput(attrs={
-                ?class?: ?form-control?,
-                ?placeholder?: ?votre@email.com?,
-                ?id?: ?email?
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'votre@email.com',
+                'id': 'email'
             }),
-            ?telephone?: forms.TextInput(attrs={
-                ?class?: ?form-control phone-input?,
-                ?placeholder?: ?+229 XX XX XX XX?,
-                ?id?: ?phone?
+            'telephone': forms.TextInput(attrs={
+                'class': 'form-control phone-input',
+                'placeholder': '+229 XX XX XX XX',
+                'id': 'phone'
             }),
-            ?sujet?: forms.TextInput(attrs={
-                ?class?: ?form-control?,
-                ?placeholder?: ?Objet de votre message?,
-                ?id?: ?subject?
+            'sujet': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Objet de votre message',
+                'id': 'subject'
             }),
-            ?message?: forms.Textarea(attrs={
-                ?class?: ?form-control?,
-                ?placeholder?: ?Votre message...?,
-                ?rows?: 6,
-                ?id?: ?message?
+            'message': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Votre message...',
+                'rows': 6,
+                'id': 'message'
             }),
         }
         labels = {
-            ?nom?: ?Nom complet?,
-            ?email?: ?Email?,
-            ?telephone?: ?Téléphone?,
-            ?sujet?: ?Sujet?,
-            ?message?: ?Message?,
+            'nom': 'Nom complet',
+            'email': 'Email',
+            'telephone': 'Téléphone',
+            'sujet': 'Sujet',
+            'message': 'Message',
         }
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Marquer les champs obligatoires
-        self.fields[?nom?].required = True
-        self.fields[?email?].required = True
-        self.fields[?sujet?].required = True
-        self.fields[?message?].required = True
-        self.fields[?telephone?].required = False
+        self.fields['nom'].required = True
+        self.fields['email'].required = True
+        self.fields['sujet'].required = True
+        self.fields['message'].required = True
+        self.fields['telephone'].required = False
 
 
 class NewsletterForm(forms.ModelForm):
-    """Formulaire d?inscription à la newsletter."""
+    """Formulaire d'inscription à la newsletter."""
     
     class Meta:
         model = InscriptionNewsletter
-        fields = [?email?]
+        fields = ['email']
         widgets = {
-            ?email?: forms.EmailInput(attrs={
-                ?class?: ?newsletter__input?,
-                ?placeholder?: ?Votre adresse email?,
-                ?aria-label?: ?Email pour newsletter?
+            'email': forms.EmailInput(attrs={
+                'class': 'newsletter__input',
+                'placeholder': 'Votre adresse email',
+                'aria-label': 'Email pour newsletter'
             }),
         }
         labels = {
-            ?email?: ??,
+            'email': '',
         }
     
     def clean_email(self):
-        """Validation de l?email."""
-        email = self.cleaned_data.get(?email?)
+        """Validation de l'email."""
+        email = self.cleaned_data.get('email')
         
-        # Vérifier si l?email existe déjà
+        # Vérifier si l'email existe déjà
         if InscriptionNewsletter.objects.filter(email=email).exists():
             raise forms.ValidationError("Cet email est déjà inscrit à notre newsletter.")
         
@@ -94,55 +94,55 @@ class SoumissionManuscritForm(forms.ModelForm):
     class Meta:
         model = SoumissionManuscrit
         fields = [
-            ?nom_complet?,
-            ?nom_auteur?,
-            ?whatsapp?,
-            ?autre_numero?,
-            ?nationalite?,
-            ?pays_residence?,
-            ?titre_ouvrage?,
-            ?genre_litteraire?,
-            ?type_contrat?,
-            ?synopsis?,
-            ?avantages?,
-            ?inconvenients?,
-            ?fichier_ouvrage?,
-            ?photo_auteur?,
-            ?carte_identite?,
+            'nom_complet',
+            'nom_auteur',
+            'whatsapp',
+            'autre_numero',
+            'nationalite',
+            'pays_residence',
+            'titre_ouvrage',
+            'genre_litteraire',
+            'type_contrat',
+            'synopsis',
+            'avantages',
+            'inconvenients',
+            'fichier_ouvrage',
+            'photo_auteur',
+            'carte_identite',
         ]
         widgets = {
-            ?nom_complet?: forms.TextInput(attrs={?class?: ?form-control?, ?placeholder?: ?Nom et prénom à l’état civil?}),
-            ?nom_auteur?: forms.TextInput(attrs={?class?: ?form-control?, ?placeholder?: ?Nom ou pseudonyme d’auteur?}),
-            ?whatsapp?: forms.TextInput(attrs={?class?: ?form-control phone-input?, ?placeholder?: ?+229 XX XX XX XX?}),
-            ?autre_numero?: forms.TextInput(attrs={?class?: ?form-control phone-input?, ?placeholder?: ?Autre numéro?}),
-            ?nationalite?: forms.TextInput(attrs={?class?: ?form-control?, ?placeholder?: ?Votre nationalité?}),
-            ?pays_residence?: forms.TextInput(attrs={?class?: ?form-control?, ?placeholder?: ?Pays de résidence?}),
-            ?titre_ouvrage?: forms.TextInput(attrs={?class?: ?form-control?, ?placeholder?: ?Titre de l’ouvrage?}),
-            ?genre_litteraire?: forms.TextInput(attrs={?class?: ?form-control?, ?placeholder?: ?Genre littéraire?}),
-            ?type_contrat?: forms.Select(attrs={?class?: ?form-control?}),
-            ?synopsis?: forms.Textarea(attrs={?class?: ?form-control?, ?rows?: 6, ?placeholder?: ?Synopsis ou résumé?}),
-            ?avantages?: forms.Textarea(attrs={?class?: ?form-control?, ?rows?: 4, ?placeholder?: ?Avantages pour les lecteurs?}),
-            ?inconvenients?: forms.Textarea(attrs={?class?: ?form-control?, ?rows?: 4, ?placeholder?: ?Inconvénients pour les lecteurs?}),
-            ?fichier_ouvrage?: forms.ClearableFileInput(attrs={?class?: ?form-control?}),
-            ?photo_auteur?: forms.ClearableFileInput(attrs={?class?: ?form-control?}),
-            ?carte_identite?: forms.ClearableFileInput(attrs={?class?: ?form-control?}),
+            'nom_complet': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom et prénom à l’état civil'}),
+            'nom_auteur': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom ou pseudonyme d’auteur'}),
+            'whatsapp': forms.TextInput(attrs={'class': 'form-control phone-input', 'placeholder': '+229 XX XX XX XX'}),
+            'autre_numero': forms.TextInput(attrs={'class': 'form-control phone-input', 'placeholder': 'Autre numéro'}),
+            'nationalite': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Votre nationalité'}),
+            'pays_residence': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Pays de résidence'}),
+            'titre_ouvrage': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Titre de l’ouvrage'}),
+            'genre_litteraire': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Genre littéraire'}),
+            'type_contrat': forms.Select(attrs={'class': 'form-control'}),
+            'synopsis': forms.Textarea(attrs={'class': 'form-control', 'rows': 6, 'placeholder': 'Synopsis ou résumé'}),
+            'avantages': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Avantages pour les lecteurs'}),
+            'inconvenients': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Inconvénients pour les lecteurs'}),
+            'fichier_ouvrage': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'photo_auteur': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'carte_identite': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
         labels = {
-            ?nom_complet?: ?Nom et prénom à l’état civil?,
-            ?nom_auteur?: ?Nom ou pseudonyme d’auteur?,
-            ?whatsapp?: ?Numéro de téléphone WhatsApp?,
-            ?autre_numero?: "Autre numéro de l?auteur",
-            ?nationalite?: ?Nationalité?,
-            ?pays_residence?: ?Pays de résidence?,
-            ?titre_ouvrage?: ?Titre de l’ouvrage?,
-            ?genre_litteraire?: ?Genre littéraire?,
-            ?type_contrat?: ?Type de contrat souhaité?,
-            ?synopsis?: ?Synopsis ou résumé?,
-            ?avantages?: ?Avantages pour les lecteurs?,
-            ?inconvenients?: ?Inconvénients pour les lecteurs?,
-            ?fichier_ouvrage?: ?Fichier de l’ouvrage?,
-            ?photo_auteur?: ?Photo HD de l’auteur sans monde autour?,
-            ?carte_identite?: ?Carte d’identité en cours de validité?,
+            'nom_complet': 'Nom et prénom à l’état civil',
+            'nom_auteur': 'Nom ou pseudonyme d’auteur',
+            'whatsapp': 'Numéro de téléphone WhatsApp',
+            'autre_numero': "Autre numéro de l'auteur",
+            'nationalite': 'Nationalité',
+            'pays_residence': 'Pays de résidence',
+            'titre_ouvrage': 'Titre de l’ouvrage',
+            'genre_litteraire': 'Genre littéraire',
+            'type_contrat': 'Type de contrat souhaité',
+            'synopsis': 'Synopsis ou résumé',
+            'avantages': 'Avantages pour les lecteurs',
+            'inconvenients': 'Inconvénients pour les lecteurs',
+            'fichier_ouvrage': 'Fichier de l’ouvrage',
+            'photo_auteur': 'Photo HD de l’auteur sans monde autour',
+            'carte_identite': 'Carte d’identité en cours de validité',
         }
 
 
@@ -151,14 +151,11 @@ class AudioConversionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["email"].required = False
-        # "Voix" (vitesse synthétique) ne doit pas bloquer la lecture humaine
-        if "voix" in self.fields:
-            self.fields["voix"].required = False
 
     
     class Meta:
         model = AudioConversionRequest
-        fields = ["email", "whatsapp", "texte", "fichier", "langue", "voix", "voix_humaine"]
+        fields = ["email", "whatsapp", "texte", "fichier", "langue", "voix"]
         widgets = {
             "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "votre@email.com"}),
             "whatsapp": forms.TextInput(attrs={"class": "form-control phone-input", "placeholder": "+229 XX XX XX XX"}),
@@ -166,7 +163,6 @@ class AudioConversionForm(forms.ModelForm):
             "fichier": forms.ClearableFileInput(attrs={"class": "form-control"}),
             "langue": forms.Select(attrs={"class": "form-control"}),
             "voix": forms.Select(attrs={"class": "form-control"}),
-            "voix_humaine": forms.Select(attrs={"class": "form-control"}),
         }
         labels = {
             "email": "Email",
@@ -175,7 +171,6 @@ class AudioConversionForm(forms.ModelForm):
             "fichier": "Fichier",
             "langue": "Langue",
             "voix": "Vitesse",
-            "voix_humaine": "Voix souhaitée (lecture par un humain)",
         }
 
     def _count_sentences(self, text):
@@ -191,16 +186,9 @@ class AudioConversionForm(forms.ModelForm):
         if not texte and not fichier:
             raise forms.ValidationError("Veuillez coller un texte ou téléverser un fichier.")
         
-        human_reading = (self.data.get("human_reading") or "") == "1"
-        paiement_requis = human_reading or fichier or len(texte) > 5000
+        paiement_requis = True if fichier else len(texte) > 5000
         if paiement_requis and not email:
             raise forms.ValidationError("Email requis pour les demandes soumises au paiement.")
-        if human_reading and not cleaned.get("voix_humaine"):
-            raise forms.ValidationError("Veuillez choisir une voix pour la lecture par un humain.")
-        if not human_reading and not cleaned.get("voix"):
-            raise forms.ValidationError("Veuillez choisir une vitesse de lecture.")
-        if human_reading and not cleaned.get("voix"):
-            cleaned["voix"] = "standard"
         return cleaned
 
 
@@ -250,4 +238,3 @@ class StyledSignupForm(UserCreationForm):
             if profile.newsletter_opt_in:
                 InscriptionNewsletter.objects.get_or_create(email=user.email, defaults={"est_actif": True})
         return user
-
