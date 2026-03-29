@@ -273,6 +273,18 @@ def _normalize_uppercase_names(text):
         "HTTP",
         "HTTPS",
     }
+    try:
+        from apps.core.models import SiteAppearance
+        appearance = SiteAppearance.objects.first()
+        if appearance and appearance.tts_acronyms:
+            custom = {
+                item.strip().upper()
+                for item in appearance.tts_acronyms.split(",")
+                if item.strip()
+            }
+            preserve_acronyms.update(custom)
+    except Exception:
+        pass
 
     def _sentence_capitalize(s):
         parts = re.split(r"([.!?])", s)

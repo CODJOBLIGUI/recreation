@@ -121,6 +121,11 @@ class SiteAppearance(models.Model):
         verbose_name="Mention de copyright (footer)",
         help_text="Utilisez {year} pour l'anne automatique.",
     )
+    tts_acronyms = models.TextField(
+        blank=True,
+        verbose_name="Sigles TTS (separes par des virgules)",
+        help_text="Ex: ONU, UE, USA, BTP",
+    )
 
     class Meta:
         verbose_name = "Apparence du site"

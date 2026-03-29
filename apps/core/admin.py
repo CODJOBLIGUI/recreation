@@ -31,6 +31,7 @@ class SiteAppearanceAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        ("TTS", {"fields": ("tts_acronyms",)}),
         ("Footer", {"fields": ("footer_copyright",)}),
         ("Contact", {"fields": ("site_email", "site_address", "site_legal_label")}),
     )
