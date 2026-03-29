@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import SiteAppearance
+from .models import SiteAppearance, SiteContent
 
 
 @admin.register(SiteAppearance)
@@ -34,4 +34,43 @@ class SiteAppearanceAdmin(admin.ModelAdmin):
         ("TTS", {"fields": ("tts_acronyms",)}),
         ("Footer", {"fields": ("footer_copyright",)}),
         ("Contact", {"fields": ("site_email", "site_address", "site_legal_label")}),
+    )
+
+
+@admin.register(SiteContent)
+class SiteContentAdmin(admin.ModelAdmin):
+    list_display = ("id",)
+    fieldsets = (
+        (
+            "SEO global",
+            {
+                "fields": (
+                    "default_meta_title",
+                    "default_meta_description",
+                    "default_canonical",
+                    "og_image",
+                )
+            },
+        ),
+        (
+            "Newsletter",
+            {
+                "fields": (
+                    "newsletter_title",
+                    "newsletter_subtitle",
+                    "newsletter_placeholder",
+                    "newsletter_button_label",
+                )
+            },
+        ),
+        (
+            "Pied de page",
+            {
+                "fields": (
+                    "footer_slogan",
+                    "footer_address",
+                    "footer_copyright",
+                )
+            },
+        ),
     )

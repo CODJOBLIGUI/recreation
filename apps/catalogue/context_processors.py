@@ -2,7 +2,7 @@ from datetime import date
 from django.db.models import Q
 from django.utils import timezone
 from django.urls import reverse
-from apps.core.models import SiteAppearance
+from apps.core.models import SiteAppearance, SiteContent
 from .models import Collection, Livre, MenuLink, SiteAd
 
 def global_context(request):
@@ -13,6 +13,7 @@ def global_context(request):
         return {}
 
     appearance = SiteAppearance.objects.first()
+    site_content = SiteContent.objects.first()
     collections = Collection.objects.filter(est_active=True).order_by("ordre_affichage", "nom")
 
     social_links = [
@@ -100,11 +101,13 @@ def global_context(request):
         if url_name == "index":
             breadcrumbs = [home]
         year = date.today().year
-        raw_copy = (
-            appearance.footer_copyright
-            if appearance and appearance.footer_copyright
-            else "© Editions Recréation - Tous droits réservés - {year}"
-        )
+        raw_copy = ""
+        if site_content and site_content.footer_copyright:
+            raw_copy = site_content.footer_copyright
+        elif appearance and appearance.footer_copyright:
+            raw_copy = appearance.footer_copyright
+        else:
+            raw_copy = "Editions Recreation - Tous droits reserves - {year}"
         footer_copy = raw_copy.replace("{{year}}", str(year)).replace("{year}", str(year))
         if "{year}" not in raw_copy and "{{year}}" not in raw_copy and str(year) not in footer_copy:
             footer_copy = f"{raw_copy} - {year}"
@@ -113,6 +116,7 @@ def global_context(request):
             "categories_list": Livre.CATEGORIES,
             "collections_list": collections,
             "appearance": appearance,
+            "site_content": site_content,
             "social_links": social_links,
             "menu_header_links": menu_header_links,
             "menu_footer_links": menu_footer_links,

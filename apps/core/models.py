@@ -133,3 +133,85 @@ class SiteAppearance(models.Model):
 
     def __str__(self):
         return self.site_name
+
+
+class SiteContent(models.Model):
+    """
+    Contenus globaux modifiables depuis l'admin.
+    """
+
+    default_meta_title = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="Titre SEO par defaut",
+        help_text="Titre SEO utilise si une page ne definit pas son propre titre.",
+    )
+    default_meta_description = models.TextField(
+        max_length=200,
+        blank=True,
+        verbose_name="Description SEO par defaut",
+        help_text="Description SEO utilisee si une page ne definit pas sa propre description.",
+    )
+    default_canonical = models.URLField(
+        blank=True,
+        verbose_name="Canonical par defaut",
+        help_text="URL canonical globale si une page ne definit pas la sienne.",
+    )
+    og_image = models.ImageField(
+        upload_to="branding/%Y/%m/",
+        blank=True,
+        null=True,
+        verbose_name="Image OpenGraph",
+    )
+
+    newsletter_title = models.CharField(
+        max_length=160,
+        blank=True,
+        default="Abonnez-vous a la newsletter",
+        verbose_name="Titre newsletter",
+    )
+    newsletter_subtitle = models.CharField(
+        max_length=240,
+        blank=True,
+        default="Recevez nos actualites et nouveautes.",
+        verbose_name="Sous-titre newsletter",
+    )
+    newsletter_placeholder = models.CharField(
+        max_length=120,
+        blank=True,
+        default="Votre email",
+        verbose_name="Placeholder newsletter",
+    )
+    newsletter_button_label = models.CharField(
+        max_length=80,
+        blank=True,
+        default="Newsletter",
+        verbose_name="Libelle bouton newsletter",
+    )
+
+    footer_slogan = models.TextField(
+        blank=True,
+        default="Avec le verbe, recreons le monde et conservons en une copie dans un livre !",
+        verbose_name="Slogan pied de page",
+    )
+    footer_address = models.TextField(
+        blank=True,
+        default=(
+            "Nous sommes au Benin, Abomey-Calavi et nous avons des representants "
+            "editoriaux en France, Marseille et dans 7 autres pays en Afrique."
+        ),
+        verbose_name="Adresse pied de page",
+    )
+    footer_copyright = models.CharField(
+        max_length=200,
+        blank=True,
+        default="Editions Recreation - Tous droits reserves",
+        verbose_name="Mention copyright",
+    )
+
+    class Meta:
+        verbose_name = "Contenu du site"
+        verbose_name_plural = "Contenus du site"
+
+    def __str__(self):
+        return "Contenus globaux"
