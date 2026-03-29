@@ -190,8 +190,8 @@
                     <form class="header-search" action="{% url 'catalogue:search' %}" method="get" role="search">
                         <label class="sr-only" for="header-search-input">Rechercher sur le site</label>
                         <i class="fas fa-search header-search__icon" aria-hidden="true"></i>
-                        <input id="header-search-input" name="q" type="search" placeholder="Rechercher livres, auteurs, actualités..." autocomplete="off">
-                        <button type="submit" class="header-search__btn">Rechercher</button>
+                        <input id="header-search-input" name="q" type="search" placeholder="{{ site_content.header_search_placeholder|default:'Rechercher livres, auteurs, actualités...' }}" autocomplete="off">
+                        <button type="submit" class="header-search__btn">{{ site_content.header_search_button|default:"Rechercher" }}</button>
                     </form>
                     <button id="hamburger-menu" class="header__action-btn header__hamburger" aria-label="Menu" aria-expanded="false">
                         <span></span>
@@ -225,7 +225,7 @@
                         {% if link.url == "/nos-contrats/" %}
                         <li>
                             <a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>
-                                Conversion de texte en audio
+                                {{ site_content.footer_action_conversion_label|default:"Conversion de texte en audio" }}
                             </a>
                         </li>
                         {% endif %}
@@ -237,7 +237,7 @@
                         <li><a href="{% url 'catalogue:auteurs' %}" {% if request.resolver_match.url_name == 'auteurs' %}class="active"{% endif %}>Auteurs</a></li>
                         <li><a href="{% url 'catalogue:catalogue' %}" {% if request.resolver_match.url_name == 'catalogue' %}class="active"{% endif %}>Catalogue</a></li>
                         <li><a href="{% url 'catalogue:nos-contrats' %}" {% if request.resolver_match.url_name == 'nos-contrats' %}class="active"{% endif %}>Nos contrats</a></li>
-                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
+                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>{{ site_content.footer_action_conversion_label|default:"Conversion de texte en audio" }}</a></li>
                         <li><a href="{% url 'catalogue:a-propos' %}" {% if request.resolver_match.url_name == 'a-propos' %}class="active"{% endif %}>A propos</a></li>
                         <li><a href="{% url 'catalogue:contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>Contacts</a></li>
                     {% endif %}
@@ -248,7 +248,7 @@
                                 <span></span>
                                 <span></span>
                             </span>
-                            <span class="nav-menu-btn__label">Menu</span>
+                            <span class="nav-menu-btn__label">{{ site_content.nav_menu_label|default:"Menu" }}</span>
                         </button>
                     </li>
                 </ul>
@@ -262,11 +262,11 @@
                 <button id="nav-drawer-close" class="nav-drawer__close" type="button" aria-label="Fermer le menu">
                     &times;
                 </button>
-                <span class="nav-drawer__title">Menu</span>
+                <span class="nav-drawer__title">{{ site_content.nav_menu_label|default:"Menu" }}</span>
             </div>
             <nav class="nav-drawer__nav">
                 {% if collections_list %}
-                <div class="nav-drawer__section-title">Collections</div>
+                <div class="nav-drawer__section-title">{{ site_content.nav_title_collections|default:"Collections" }}</div>
                 <div class="nav-drawer__collections">
                     {% for collection in collections_list %}
                     {% if collection.slug %}
@@ -277,13 +277,13 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-                <div class="nav-drawer__section-title">Autres versions de livres</div>
+                <div class="nav-drawer__section-title">{{ site_content.nav_title_formats|default:"Autres versions de livres" }}</div>
                 <div class="nav-drawer__collections">
                     <a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a>
                     <a href="{% url 'catalogue:livres-papier' %}">Livres papier</a>
                     <a href="{% url 'catalogue:livres-audio' %}">Livres audio</a>
                 </div>
-                <div class="nav-drawer__section-title">Autres services</div>
+                <div class="nav-drawer__section-title">{{ site_content.nav_title_services|default:"Autres services" }}</div>
                 <div class="nav-drawer__collections">
                     <a href="{% url 'catalogue:conversion-audio' %}">
                         <span class="footer-fayard__btn-icon footer-fayard__btn-icon--audio" aria-hidden="true">
@@ -293,22 +293,17 @@
                                 <path d="M58 54h12M58 60h12M58 66h12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
                             </svg>
                         </span>
-                        Conversion de texte en audio
+                        {{ site_content.footer_action_conversion_label|default:"Conversion de texte en audio" }}
                     </a>
                 </div>
             </nav>
             <div class="nav-drawer__cta">
-                {% if site_content %}
-                <h3>{{ site_content.newsletter_title|default:"Abonnez-vous à la newsletter" }}</h3>
-                <p>{{ site_content.newsletter_subtitle|default:"Recevez nos actualités et nouveautés." }}</p>
-                {% else %}
-                <h3>Abonnez-vous à la newsletter</h3>
-                <p>Recevez nos actualités et nouveautés.</p>
-                {% endif %}
-                <a href="{% url 'catalogue:index' %}#newsletter" class="btn btn--primary">S'abonner</a>
+                <h3>{{ site_content.nav_cta_title|default:"Abonnez-vous à la newsletter" }}</h3>
+                <p>{{ site_content.nav_cta_text|default:"Recevez nos actualités et nouveautés." }}</p>
+                <a href="{% url 'catalogue:index' %}#newsletter" class="btn btn--primary">{{ site_content.nav_cta_button|default:"S'abonner" }}</a>
             </div>
             <div class="nav-drawer__social">
-                <h4>Suivez Recréation sur les réseaux sociaux</h4>
+                <h4>{{ site_content.footer_social_title|default:"Nous suivre les réseaux sociaux" }}</h4>
                 <div class="nav-drawer__social-icons">
                     {% for social in social_links %}
                     <a href="{{ social.url }}" aria-label="{{ social.label }}"><i class="{{ social.icon }}"></i></a>
@@ -318,7 +313,7 @@
             <div class="nav-drawer__shop">
                 <a href="https://recreation.mychariow.shop/" class="nav-drawer__shop-link" target="_blank" rel="noopener">
                     <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-                    <span>Recréation Shop</span>
+                    <span>{{ site_content.footer_action_shop_label|default:"Recréation Shop" }}</span>
                 </a>
             </div>
         </div>
@@ -355,17 +350,17 @@
                     </span>
                 </p>
                 <p class="footer-fayard__catalogue-link">
-                    <a href="{% url 'catalogue:catalogue' %}">Catalogue</a>
+                    <a href="{% url 'catalogue:catalogue' %}">{{ site_content.footer_catalogue_label|default:"Catalogue" }}</a>
                 </p>
                 <ul class="footer-fayard__catalogue-list">
                     <li><a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a></li>
                     <li><a href="{% url 'catalogue:livres-papier' %}">Livres papier</a></li>
                     <li><a href="{% url 'catalogue:livres-audio' %}">Livres audio</a></li>
-                    <li><a href="{% url 'catalogue:index' %}#nouveautes">Nouveautés</a></li>
-                    <li><a href="{% url 'catalogue:index' %}#a-paraitre">Prochaines parutions</a></li>
+                    <li><a href="{% url 'catalogue:index' %}#nouveautes">{{ site_content.footer_catalogue_news_label|default:"Nouveautés" }}</a></li>
+                    <li><a href="{% url 'catalogue:index' %}#a-paraitre">{{ site_content.footer_catalogue_upcoming_label|default:"Prochaines parutions" }}</a></li>
                 </ul>
                 <p class="footer-fayard__catalogue-link footer-fayard__catalogue-link--collections">
-                    <a href="{% url 'catalogue:collections' %}">Collections</a>
+                    <a href="{% url 'catalogue:collections' %}">{{ site_content.footer_title_collections|default:"Collections" }}</a>
                 </p>
                 <ul class="footer-fayard__catalogue-list">
                     {% for collection in collections_list|slice:":6" %}
@@ -377,7 +372,7 @@
                     {% empty %}
                         <li>Collections à venir</li>
                     {% endfor %}
-                    <li class="footer-fayard__catalogue-section-title">Ressources</li>
+                    <li class="footer-fayard__catalogue-section-title">{{ site_content.footer_title_resources|default:"Ressources" }}</li>
                     <li><a href="{% url 'catalogue:actualites' %}">Actualités</a></li>
                     <li><a href="{% url 'catalogue:a-propos' %}">A propos</a></li>
                     <li><a href="{% url 'catalogue:a-propos' %}#equipe">Notre équipe</a></li>
@@ -389,15 +384,15 @@
             <div class="footer-fayard__actions">
                 <a href="tel:+22901688097777" class="footer-fayard__action">
                     <i class="fas fa-phone"></i>
-                    <span>Téléphone</span>
+                    <span>{{ site_content.footer_action_phone_label|default:"Téléphone" }}</span>
                 </a>
                 <a href="{% url 'catalogue:soumission-manuscrit' %}" class="footer-fayard__action">
                     <i class="fas fa-file-alt"></i>
-                    <span>Soumettez votre manuscrit/tapuscrit</span>
+                    <span>{{ site_content.footer_action_submit_label|default:"Soumettez votre manuscrit/tapuscrit" }}</span>
                 </a>
                 <a href="{% url 'catalogue:contact' %}" class="footer-fayard__action">
                     <i class="fas fa-envelope"></i>
-                    <span>E-mail</span>
+                    <span>{{ site_content.footer_action_email_label|default:"E-mail" }}</span>
                 </a>
                 <a href="{% url 'catalogue:conversion-audio' %}" class="footer-fayard__action">
                     <span class="footer-fayard__btn-icon footer-fayard__btn-icon--audio" aria-hidden="true">
@@ -407,17 +402,17 @@
                             <path d="M58 54h12M58 60h12M58 66h12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
                         </svg>
                     </span>
-                    <span>Conversion de texte en audio</span>
+                    <span>{{ site_content.footer_action_conversion_label|default:"Conversion de texte en audio" }}</span>
                 </a>
                 <a href="https://recreation.mychariow.shop/" class="footer-fayard__action" target="_blank" rel="noopener">
                     <i class="fa-solid fa-cart-shopping"></i>
-                    <span>Recréation Shop</span>
+                    <span>{{ site_content.footer_action_shop_label|default:"Recréation Shop" }}</span>
                 </a>
             </div>
 
             <!-- Réseaux sociaux -->
             <div class="footer-fayard__social">
-                <h3 class="footer-fayard__social-title">Nous suivre les réseaux sociaux</h3>
+                <h3 class="footer-fayard__social-title">{{ site_content.footer_social_title|default:"Nous suivre les réseaux sociaux" }}</h3>
                 <div class="footer-fayard__social-icons">
                     {% for social in social_links %}
                     <a href="{{ social.url }}" aria-label="{{ social.label }}" class="social-icon">

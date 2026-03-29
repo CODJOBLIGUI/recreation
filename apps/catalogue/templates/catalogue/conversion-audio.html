@@ -10,9 +10,7 @@
                 <div class="page-hero__content">
                     <h1 class="page-hero__title">{{ page.hero_title|default:"Transformez vos textes en audio en quelques clics" }}</h1>
                     <p class="page-hero__subtitle conversion-audio__hero-note">
-                        Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum.
-                        Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l’audio
-                        et vous l’envoyons par e-mail.
+                        {{ site_content.conversion_hero_note|default:"Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum. Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l’audio et vous l’envoyons par e-mail." }}
                     </p>
                     {% if page.hero_subtitle %}
                     <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
@@ -27,9 +25,7 @@
         {% else %}
             <h1 class="page-hero__title">{{ page.hero_title|default:"Transformez vos textes en audio en quelques clics" }}</h1>
             <p class="page-hero__subtitle conversion-audio__hero-note">
-                Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum.
-                Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l’audio
-                et vous l’envoyons par e-mail.
+                {{ site_content.conversion_hero_note|default:"Collez votre texte ou téléversez un fichier. Le service est gratuit pour les textes de 5000 caractères maximum. Les fichiers téléversés sont systématiquement soumis au paiement. Après paiement, nous produisons l’audio et vous l’envoyons par e-mail." }}
             </p>
             {% if page.hero_subtitle %}
             <p class="page-hero__subtitle">{{ page.hero_subtitle }}</p>
@@ -55,33 +51,33 @@
 
         {% if last_request and last_request.audio and not last_request.paiement_requis %}
             <div class="cta-box conversion-audio__result">
-                <h2 class="cta-box__title">Votre audio est prêt</h2>
+                <h2 class="cta-box__title">{{ site_content.conversion_audio_ready_title|default:"Votre audio est prêt" }}</h2>
                 <audio controls class="conversion-audio__player">
                     <source src="{{ last_request.audio.url }}" type="audio/mpeg">
                 </audio>
-                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>{{ site_content.conversion_audio_download_label|default:"Télécharger l’audio (MP3)" }}</a>
                 {% if last_request.texte %}
                 <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
                 {% endif %}
             </div>
         {% elif last_request and last_request.audio and last_request.statut == "paid" %}
             <div class="cta-box conversion-audio__result">
-                <h2 class="cta-box__title">Votre audio est prêt</h2>
+                <h2 class="cta-box__title">{{ site_content.conversion_audio_ready_title|default:"Votre audio est prêt" }}</h2>
                 <audio controls class="conversion-audio__player">
                     <source src="{{ last_request.audio.url }}" type="audio/mpeg">
                 </audio>
-                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>{{ site_content.conversion_audio_download_label|default:"Télécharger l’audio (MP3)" }}</a>
                 {% if last_request.texte %}
                 <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
                 {% endif %}
             </div>
         {% elif last_request and last_request.audio and last_request.statut == "delivered" %}
             <div class="cta-box conversion-audio__result">
-                <h2 class="cta-box__title">Votre audio est prêt</h2>
+                <h2 class="cta-box__title">{{ site_content.conversion_audio_ready_title|default:"Votre audio est prêt" }}</h2>
                 <audio controls class="conversion-audio__player">
                     <source src="{{ last_request.audio.url }}" type="audio/mpeg">
                 </audio>
-                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>Télécharger l’audio (MP3)</a>
+                <a class="btn btn--primary btn--large" href="{{ last_request.audio.url }}" download>{{ site_content.conversion_audio_download_label|default:"Télécharger l’audio (MP3)" }}</a>
                 {% if last_request.texte %}
                 <div class="conversion-audio__text" data-audio-text="{{ last_request.texte|escape }}"></div>
                 {% endif %}
@@ -90,15 +86,15 @@
             <div class="cta-box conversion-audio__result conversion-audio__result--pay">
                 <div id="payment-required" {% if last_request.paiement_initie_at %}style="display:none;"{% endif %}>
                     <div class="conversion-audio__result-header">
-                        <h2 class="cta-box__title">Paiement requis</h2>
+                        <h2 class="cta-box__title">{{ site_content.conversion_payment_required_title|default:"Paiement requis" }}</h2>
                         <span class="conversion-audio__badge">Traitement en quelques minutes selon la taille du texte/fichier</span>
                     </div>
-                    <p class="cta-box__text">Votre demande a été enregistrée. Veuillez procéder au paiement pour recevoir l’audio par e‑mail dans les minutes suivantes.</p>
+                    <p class="cta-box__text">{{ site_content.conversion_payment_required_text|default:"Votre demande a été enregistrée. Veuillez procéder au paiement pour recevoir l’audio par e‑mail dans les minutes suivantes." }}</p>
                     <p class="form-feedback form-feedback--info" id="payment-start-note" style="display:none;">
-                        Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.
+                        {{ site_content.conversion_free_limit_text|default:"Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio." }}
                     </p>
                     <p class="form-feedback form-feedback--error" id="payment-error" style="display:none;">
-                        Impossible de lancer le paiement. Veuillez réessayer ou nous contacter.
+                        {{ site_content.conversion_payment_error_text|default:"Impossible de lancer le paiement. Veuillez réessayer ou nous contacter." }}
                     </p>
                     {% if payment_available and last_request and last_request.id %}
                         <a
@@ -112,8 +108,8 @@
                     {% endif %}
                 </div>
                 <div id="payment-followup" {% if not last_request.paiement_initie_at %}style="display:none;"{% endif %}>
-                    <h2 class="cta-box__title">Votre demande est en cours de traitement</h2>
-                    <p class="cta-box__text">Nos équipes vérifieront l’effectivité du paiement et vous feront un retour.</p>
+                    <h2 class="cta-box__title">{{ site_content.conversion_processing_title|default:"Votre demande est en cours de traitement" }}</h2>
+                    <p class="cta-box__text">{{ site_content.conversion_processing_text|default:"Nos équipes vérifieront l’effectivité du paiement et vous feront un retour." }}</p>
                     <p class="cta-box__text">Souhaitez-vous convertir un autre texte ou document ?</p>
                     <div class="cta-box__actions">
                         <button type="button" class="btn btn--primary btn--large" id="payment-yes">Oui</button>
@@ -135,7 +131,7 @@
                 <div class="conversion-audio__progress-bar">
                     <span class="conversion-audio__progress-fill" id="conversion-progress-fill"></span>
                 </div>
-                <div class="conversion-audio__progress-text" id="conversion-progress-text">Conversion en cours – Progression : 0%</div>
+                <div class="conversion-audio__progress-text" id="conversion-progress-text">{{ site_content.conversion_progress_title|default:"Conversion en cours" }} – Progression : 0%</div>
             </div>
         {% endif %}
 
@@ -143,13 +139,13 @@
             class="form-feedback form-feedback--error"
             id="conversion-error"
             {% if not last_request or last_request.statut != "error" or last_request.paiement_requis %}style="display:none;"{% endif %}>
-            Service momentanément indisponible. Veuillez réessayer plus tard ou essayez avec une version payante. Un professionnel prendra votre requette en charge.
+            {{ site_content.conversion_unavailable_free_text|default:"Service momentanément indisponible. Veuillez réessayer plus tard ou essayez avec une version payante. Un professionnel prendra votre requette en charge." }}
             <div style="margin-top:0.6rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
                 <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-synthetique' %}">
-                    Téléverser un texte
+                    {{ site_content.conversion_limit_cta_paid_label|default:"Téléverser un texte" }}
                 </a>
                 <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
-                    Lecture par un humain
+                    {{ site_content.conversion_limit_cta_human_label|default:"Lecture par un humain" }}
                 </a>
             </div>
         </div>
@@ -157,21 +153,21 @@
 
         {% if free_limit_blocked %}
             <div class="form-feedback form-feedback--error" id="free-limit-block" data-remaining="{{ free_limit_remaining }}">
-                Vous avez atteint la limite de conversion gratuite quotidienne.
+                {{ site_content.conversion_free_limit_reached_text|default:"Vous avez atteint la limite de conversion gratuite quotidienne." }}
                 Vous pourrez réessayer dans <strong id="free-limit-timer">00:00:00</strong>.
                 <div style="margin-top:0.6rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
                     <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-synthetique' %}">
-                        Téléverser un texte
+                        {{ site_content.conversion_limit_cta_paid_label|default:"Téléverser un texte" }}
                     </a>
                     <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
-                        Lecture par un humain
+                        {{ site_content.conversion_limit_cta_human_label|default:"Lecture par un humain" }}
                     </a>
                 </div>
             </div>
         {% endif %}
 
         <div class="contact__form-wrapper conversion-audio__form">
-            <h2>Convertissez votre texte ici</h2>
+            <h2>{{ site_content.conversion_form_title|default:"Convertissez votre texte ici" }}</h2>
             <form method="POST" enctype="multipart/form-data" class="contact__form">
                 {% csrf_token %}
                 
@@ -189,8 +185,8 @@
                     {% if form.fichier.errors %}
                         <span class="form-error">{{ form.fichier.errors.0 }}</span>
                     {% endif %}
-                    <small class="form-hint">Tout fichier téléversé est soumis au paiement.</small>
-                    <small class="form-hint">Formats pris en charge : txt, docx, pdf, jpg, png, pptx, xlsx, epub.</small>
+                    <small class="form-hint">{{ site_content.conversion_file_payment_text|default:"Tout fichier téléversé est soumis au paiement." }}</small>
+                    <small class="form-hint">{{ site_content.conversion_formats_text|default:"Formats pris en charge : txt, docx, pdf, jpg, png, pptx, xlsx, epub." }}</small>
                 </div>
                 
                 <div class="form-group">
@@ -213,7 +209,7 @@
                 </div>
 
                 <div class="form-feedback form-feedback--info" id="payment-note" style="display:none;">
-                    Le texte dépasse la longueur autorisée en mode gratuit : payez un montant forfaitaire pour ce service.
+                    {{ site_content.conversion_payment_note_text|default:"Le texte dépasse la longueur autorisée en mode gratuit : payez un montant forfaitaire pour ce service." }}
                 </div>
                 
                 <div id="contact-fields">

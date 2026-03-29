@@ -48,7 +48,7 @@ from .models import (
     AudioConversionRequest,
     SoumissionManuscrit,
 )
-from apps.core.models import SiteAppearance
+from apps.core.models import SiteAppearance, SiteContent
 
 
 # -------------------------------------------------------------------------------
@@ -1393,10 +1393,26 @@ class SignupView(FormView):
             reverse_lazy("catalogue:activate", kwargs={"uidb64": uid, "token": token})
         )
         appearance = SiteAppearance.objects.first()
+        site_content = SiteContent.objects.first()
         from_email = appearance.site_email if appearance and appearance.site_email else None
+        subject = (
+            site_content.activation_email_subject
+            if site_content and site_content.activation_email_subject
+            else "Confirmez votre compte"
+        )
+        body_template = (
+            site_content.activation_email_body
+            if site_content and site_content.activation_email_body
+            else "Bonjour {first_name},\n\nMerci de confirmer votre compte en cliquant sur ce lien :\n{activation_link}\n\nEditions Recreation"
+        )
+        body = body_template.format(
+            first_name=user.first_name or user.username or "",
+            activation_link=activation_link,
+            site_name=appearance.site_name if appearance else "Editions Recreation",
+        )
         send_mail(
-            "Confirmez votre compte",
-            f"Bonjour {user.first_name},\n\nMerci de confirmer votre compte en cliquant sur ce lien :\n{activation_link}\n\nEditions Recréation",
+            subject,
+            body,
             from_email,
             [user.email],
             fail_silently=True,
@@ -1404,7 +1420,9 @@ class SignupView(FormView):
 
         messages.success(
             self.request,
-            "Compte créé. Un email de confirmation vous a été envoyé. Activez votre compte pour continuer.",
+            site_content.signup_success_message
+            if site_content and site_content.signup_success_message
+            else "Compte créé. Un email de confirmation vous a été envoyé. Activez votre compte pour continuer.",
         )
         return super().form_valid(form)
 
@@ -1423,9 +1441,21 @@ def activate_account(request, uidb64, token):
         user.is_active = True
         user.save(update_fields=["is_active"])
         login(request, user)
-        messages.success(request, "Votre compte est activé. Vous pouvez utiliser le service.")
+        site_content = SiteContent.objects.first()
+        messages.success(
+            request,
+            site_content.activation_success_message
+            if site_content and site_content.activation_success_message
+            else "Votre compte est activé. Vous pouvez utiliser le service.",
+        )
         return redirect("catalogue:conversion-audio")
-    messages.error(request, "Lien d’activation invalide ou expiré.")
+    site_content = SiteContent.objects.first()
+    messages.error(
+        request,
+        site_content.activation_invalid_message
+        if site_content and site_content.activation_invalid_message
+        else "Lien d’activation invalide ou expiré.",
+    )
     return redirect("catalogue:login")
 
 

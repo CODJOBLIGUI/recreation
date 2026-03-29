@@ -1,0 +1,15 @@
+{% extends "catalogue/base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container container--narrow">
+        <div class="cta-box">
+            <h1 class="cta-box__title">{{ site_content.error_500_title|default:"Une erreur est survenue" }}</h1>
+            <p class="cta-box__text">{{ site_content.error_500_text|default:"Une erreur interne est survenue. Veuillez réessayer plus tard." }}</p>
+            <div class="cta-box__actions">
+                <a class="btn btn--primary btn--large" href="{% url 'catalogue:index' %}">Retour à l'accueil</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
