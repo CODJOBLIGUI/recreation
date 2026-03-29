@@ -4,9 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if site_content %}
     <meta name="description" content="{{ page_description|default:site_content.default_meta_description|default:'Editions Recréation, maison d\'édition africaine. Livres papier, numériques et audio.' }}">
     <title>{{ page_title|default:site_content.default_meta_title|default:'Editions Recréation | Maison d\'édition' }}</title>
     <link rel="canonical" href="{{ page_canonical|default:site_content.default_canonical|default:request.build_absolute_uri }}">
+    {% else %}
+    <meta name="description" content="{{ page_description|default:'Editions Recréation, maison d\'édition africaine. Livres papier, numériques et audio.' }}">
+    <title>{{ page_title|default:'Editions Recréation | Maison d\'édition' }}</title>
+    <link rel="canonical" href="{{ page_canonical|default:request.build_absolute_uri }}">
+    {% endif %}
     {% with site_url=request.scheme|add:"://"|add:request.get_host %}
     {% if page and page.hero_image %}
         {% with social_image=page.hero_image.url %}
@@ -169,8 +175,13 @@
                     <form class="header__newsletter-form" action="{% url 'catalogue:index' %}#newsletter" method="post">
                         {% csrf_token %}
                         <label class="sr-only" for="header-newsletter-email">S'inscrire à la newsletter</label>
+                        {% if site_content %}
                         <input id="header-newsletter-email" name="email" type="email" placeholder="{{ site_content.newsletter_placeholder|default:'Votre email' }}" required>
                         <button type="submit">{{ site_content.newsletter_button_label|default:"Newsletter" }}</button>
+                        {% else %}
+                        <input id="header-newsletter-email" name="email" type="email" placeholder="Votre email" required>
+                        <button type="submit">Newsletter</button>
+                        {% endif %}
                     </form>
                 </div>
 
@@ -287,8 +298,13 @@
                 </div>
             </nav>
             <div class="nav-drawer__cta">
+                {% if site_content %}
                 <h3>{{ site_content.newsletter_title|default:"Abonnez-vous à la newsletter" }}</h3>
                 <p>{{ site_content.newsletter_subtitle|default:"Recevez nos actualités et nouveautés." }}</p>
+                {% else %}
+                <h3>Abonnez-vous à la newsletter</h3>
+                <p>Recevez nos actualités et nouveautés.</p>
+                {% endif %}
                 <a href="{% url 'catalogue:index' %}#newsletter" class="btn btn--primary">S'abonner</a>
             </div>
             <div class="nav-drawer__social">
@@ -323,11 +339,19 @@
                     <a href="{% url 'catalogue:index' %}">{{ appearance.site_name|default:"Editions Recréation" }}</a>
                 </h2>
                 <p class="footer-fayard__slogan">
+                    {% if site_content %}
                     <em>{{ site_content.footer_slogan|default:"Avec le verbe, recréons le monde et conservons en une copie dans un livre !" }}</em>
+                    {% else %}
+                    <em>Avec le verbe, recréons le monde et conservons en une copie dans un livre !</em>
+                    {% endif %}
                 </p>
                 <p class="footer-fayard__address">
                     <span class="footer-fayard__address-main">
+                        {% if site_content %}
                         {{ site_content.footer_address|default:appearance.site_address|default:"Nous sommes au Bénin, Abomey-Calavi et nous avons des représentants éditoriaux en France, Marseille et dans 7 autres pays en Afrique." }}
+                        {% else %}
+                        {{ appearance.site_address|default:"Nous sommes au Bénin, Abomey-Calavi et nous avons des représentants éditoriaux en France, Marseille et dans 7 autres pays en Afrique." }}
+                        {% endif %}
                     </span>
                 </p>
                 <p class="footer-fayard__catalogue-link">
