@@ -1,16 +1,43 @@
-﻿from django.contrib import admin
+from django.contrib import admin
+from django import forms
 
 from .models import SiteAppearance
 
 
+class SiteAppearanceAdminForm(forms.ModelForm):
+    class Meta:
+        model = SiteAppearance
+        fields = "__all__"
+        widgets = {
+            "ocr_space_api_key": forms.PasswordInput(render_value=True),
+        }
+
+
 @admin.register(SiteAppearance)
 class SiteAppearanceAdmin(admin.ModelAdmin):
+    form = SiteAppearanceAdminForm
     list_display = ("site_name",)
     fieldsets = (
         ("Identite", {"fields": ("site_name", "logo", "favicon")}),
-        ("Couleurs", {"fields": ("primary_color", "accent_color", "accent_dark", "text_color", "text_light", "light_bg", "dark_bg")}),
+        (
+            "Couleurs",
+            {
+                "fields": (
+                    "primary_color",
+                    "accent_color",
+                    "accent_dark",
+                    "text_color",
+                    "text_light",
+                    "light_bg",
+                    "dark_bg",
+                )
+            },
+        ),
         ("Typographie", {"fields": ("font_heading", "font_body")}),
-        ("Reseaux sociaux", {"fields": ("instagram", "facebook", "x_twitter", "tiktok", "linkedin", "youtube", "whatsapp")}),
+        (
+            "Reseaux sociaux",
+            {"fields": ("instagram", "facebook", "x_twitter", "tiktok", "linkedin", "youtube", "whatsapp")},
+        ),
         (
             "Paiements",
             {
@@ -31,6 +58,7 @@ class SiteAppearanceAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        ("OCR", {"fields": ("ocr_space_api_key",)}),
         ("Footer", {"fields": ("footer_copyright",)}),
         ("Contact", {"fields": ("site_email", "site_address", "site_legal_label")}),
     )

@@ -115,6 +115,12 @@ class SiteAppearance(models.Model):
     audio_human_payment_url_3 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (201 à 500 pages)")
     audio_human_payment_url_4 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (501 à 1000 pages)")
     audio_human_payment_url_5 = models.URLField(blank=True, verbose_name="Paiement lecture par un humain (1001+ pages)")
+    ocr_space_api_key = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="Clé OCR.space",
+        help_text="Clé API OCR.space pour l'OCR des PDF scannés.",
+    )
     footer_copyright = models.CharField(
         max_length=255,
         blank=True,
