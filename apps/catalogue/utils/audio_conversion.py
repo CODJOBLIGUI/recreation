@@ -112,7 +112,7 @@ def _ensure_local_path(file_field):
 def _ocr_space_pdf(local_path):
     api_key = os.getenv("OCR_SPACE_API_KEY", "").strip()
     if not api_key:
-        raise RuntimeError("Clé OCR.space manquante. Contactez l'administrateur.")
+        raise RuntimeError("Cle OCR.space manquante. Contactez l'administrateur.")
     import requests
     with open(local_path, "rb") as f:
         resp = requests.post(
@@ -333,6 +333,7 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
+
 
 
 
