@@ -112,6 +112,13 @@ def _ensure_local_path(file_field):
 def _ocr_space_pdf(local_path):
     api_key = os.getenv("OCR_SPACE_API_KEY", "").strip()
     if not api_key:
+        try:
+            from apps.core.models import SiteAppearance
+            appearance = SiteAppearance.objects.first()
+            api_key = (appearance.ocr_space_api_key or "").strip() if appearance else ""
+        except Exception:
+            api_key = ""
+    if not api_key:
         raise RuntimeError("Cle OCR.space manquante. Contactez l'administrateur.")
     import requests
     with open(local_path, "rb") as f:
@@ -134,7 +141,7 @@ def _ocr_space_pdf(local_path):
     parsed = (parsed or "").strip()
     if not parsed:
         raise RuntimeError("Aucun texte exploitable dans ce fichier. Veuillez essayer un autre fichier.")
-    return parseddef extract_text_from_file(file_field):
+    return parsed\n\n\ndef extract_text_from_file(file_field):
     global _EASYOCR_READER
     if not file_field:
         return ""
@@ -333,6 +340,8 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
+
+
 
 
 
