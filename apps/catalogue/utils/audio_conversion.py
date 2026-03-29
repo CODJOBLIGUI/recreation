@@ -140,31 +140,11 @@ def extract_text_from_file(file_field):
         text = "\n".join(pages).strip()
         if text:
             return text
-        # OCR fallback for scanned PDFs (pytesseract + PyMuPDF)
-        try:
-            import fitz
-            import pytesseract
-            from PIL import Image
-        except Exception as exc:
-            raise RuntimeError("OCR PDF indisponible (PyMuPDF/pytesseract manquant).") from exc
-        texts = []
-        doc = None
-        try:
-            doc = fitz.open(local_path)
-            for page in doc:
-                pix = page.get_pixmap(dpi=200)
-                mode = "RGBA" if pix.alpha else "RGB"
-                image = Image.frombytes(mode, [pix.width, pix.height], pix.samples)
-                if mode == "RGBA":
-                    image = image.convert("RGB")
-                texts.append(pytesseract.image_to_string(image, lang="fra+eng"))
-        finally:
-            try:
-                if doc:
-                    doc.close()
-            except Exception:
-                pass
-        ocr_text = "\n".join(t for t in texts if t).strip()
+        # PDF scanné (image) : OCR indisponible sur ce serveur
+        raise RuntimeError(
+            "PDF scanné détecté. Conversion automatique indisponible. "
+            "Veuillez téléverser un PDF non scanné/DOCX/TXT ou choisir la lecture par un humain."
+        )
         detected = detect_language(ocr_text)
         if detected in {"es", "de"}:
             raise RuntimeError(
@@ -330,6 +310,7 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
+
 
 
 
