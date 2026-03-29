@@ -30,7 +30,7 @@ def convert_audio_request(request_id):
             text = extract_text_from_file(obj.fichier)
 
         if not text.strip():
-            _set_progress(obj, "failed", 100, "Texte vide après extraction.")
+            _set_progress(obj, "failed", 100, "Aucun texte exploitable dans ce fichier. Veuillez essayer un autre fichier.")
             return
 
         _set_progress(obj, "started", 70)

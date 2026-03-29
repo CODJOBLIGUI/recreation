@@ -300,7 +300,7 @@ def generate_tts_mp3(
     cleaned_text = _normalize_uppercase_names(text)
     chunks = _chunk_text(cleaned_text, chunk_size=chunk_size)
     if not chunks:
-        raise RuntimeError("Texte vide après extraction.")
+        raise RuntimeError("Aucun texte exploitable dans ce fichier. Veuillez essayer un autre fichier.")
     output = io.BytesIO()
     for idx, part in enumerate(chunks, start=1):
         attempt = 0
@@ -323,6 +323,7 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
+
 
 
 

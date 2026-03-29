@@ -661,7 +661,7 @@ class AudioConversionRequestAdmin(ModelAdmin):
         if obj.fichier and not text.strip():
             text = extract_text_from_file(obj.fichier)
         if not text.strip():
-            raise RuntimeError("Texte vide après extraction.")
+            raise RuntimeError("Aucun texte exploitable dans ce fichier. Veuillez essayer un autre fichier.")
         slow = True if obj.voix == "slow" else False
         audio_stream = generate_tts_mp3(text, lang=obj.langue, slow=slow, chunk_size=1000)
         audio_bytes = ContentFile(audio_stream.getvalue())
