@@ -147,6 +147,11 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@editions-recreati
 LOGIN_REDIRECT_URL = "/conversion-texte-audio/"
 LOGOUT_REDIRECT_URL = "/"
 
+# Sessions: auto logout after 12 hours of inactivity (admin included)
+SESSION_COOKIE_AGE = 60 * 60 * 12
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
