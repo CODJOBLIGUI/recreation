@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
             name="footer_copyright",
             field=models.CharField(
                 blank=True,
-                help_text="Utilisez {year} pour l'année automatique.",
+                help_text="Utilisez {year} pour l?année automatique.",
                 max_length=255,
                 verbose_name="Mention de copyright (footer)",
             ),

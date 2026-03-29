@@ -6,27 +6,27 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalogue', '0030_alter_audioconversionrequest_voix'),
+        (?catalogue?, ?0030_alter_audioconversionrequest_voix?),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='soumissionmanuscrit',
-            name='contacts',
+            model_name=?soumissionmanuscrit?,
+            name=?contacts?,
         ),
         migrations.AddField(
-            model_name='soumissionmanuscrit',
-            name='autre_numero',
-            field=models.CharField(blank=True, max_length=40, verbose_name="Autre numéro de l'auteur"),
+            model_name=?soumissionmanuscrit?,
+            name=?autre_numero?,
+            field=models.CharField(blank=True, max_length=40, verbose_name="Autre numéro de l?auteur"),
         ),
         migrations.AddField(
-            model_name='soumissionmanuscrit',
-            name='type_contrat',
-            field=models.CharField(choices=[('compte_editeur', "Contrat à Compte d'Éditeur"), ('compte_auteur', "Contrat à Compte d'Auteur"), ('compte_participatif', 'Contrat à Compte Participatif')], default='compte_auteur', max_length=40, verbose_name='Type de contrat souhaité'),
+            model_name=?soumissionmanuscrit?,
+            name=?type_contrat?,
+            field=models.CharField(choices=[(?compte_editeur?, "Contrat à Compte d?Éditeur"), (?compte_auteur?, "Contrat à Compte d?Auteur"), (?compte_participatif?, ?Contrat à Compte Participatif?)], default=?compte_auteur?, max_length=40, verbose_name=?Type de contrat souhaité?),
         ),
         migrations.AddField(
-            model_name='soumissionmanuscrit',
-            name='whatsapp',
-            field=models.CharField(default='', max_length=40, verbose_name='Numéro de téléphone WhatsApp'),
+            model_name=?soumissionmanuscrit?,
+            name=?whatsapp?,
+            field=models.CharField(default=??, max_length=40, verbose_name=?Numéro de téléphone WhatsApp?),
         ),
     ]

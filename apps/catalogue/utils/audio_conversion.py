@@ -125,7 +125,7 @@ def extract_text_from_file(file_field):
         try:
             from docx import Document
         except Exception as exc:
-            raise RuntimeError("python-docx n'est pas install?.") from exc
+            raise RuntimeError("python-docx n?est pas install?.") from exc
         doc = Document(local_path)
         return "\n".join(p.text for p in doc.paragraphs if p.text)
 
@@ -133,16 +133,16 @@ def extract_text_from_file(file_field):
         try:
             from PyPDF2 import PdfReader
         except Exception as exc:
-            raise RuntimeError("PyPDF2 n'est pas install?.") from exc
+            raise RuntimeError("PyPDF2 n?est pas install?.") from exc
         with open(local_path, "rb") as f:
             reader = PdfReader(f)
             pages = [p.extract_text() or "" for p in reader.pages]
         text = "\n".join(pages).strip()
         if text:
             return text
-        # PDF scann? (image) : OCR indisponible sur ce serveur
+        # PDF scann (image) : OCR indisponible sur ce serveur
         raise RuntimeError(
-            "PDF scann? d?tect?. Conversion automatique indisponible. "
+            "PDF scann d?tect?. Conversion automatique indisponible. "
             "Veuillez t?l?verser un PDF non scann?/DOCX/TXT ou choisir la lecture par un humain."
         )
         detected = detect_language(ocr_text)
@@ -175,7 +175,7 @@ def extract_text_from_file(file_field):
         try:
             from pptx import Presentation
         except Exception as exc:
-            raise RuntimeError("python-pptx n'est pas install?.") from exc
+            raise RuntimeError("python-pptx n?est pas install?.") from exc
         prs = Presentation(local_path)
         texts = []
         for slide in prs.slides:
@@ -188,7 +188,7 @@ def extract_text_from_file(file_field):
         try:
             import openpyxl
         except Exception as exc:
-            raise RuntimeError("openpyxl n'est pas install?.") from exc
+            raise RuntimeError("openpyxl n?est pas install?.") from exc
         wb = openpyxl.load_workbook(local_path, data_only=True)
         texts = []
         for ws in wb.worksheets:
@@ -203,7 +203,7 @@ def extract_text_from_file(file_field):
             from ebooklib import epub
             from bs4 import BeautifulSoup
         except Exception as exc:
-            raise RuntimeError("EbookLib ou beautifulsoup4 n'est pas install?.") from exc
+            raise RuntimeError("EbookLib ou beautifulsoup4 n?est pas install?.") from exc
         book = epub.read_epub(local_path)
         texts = []
         for item in book.get_items():

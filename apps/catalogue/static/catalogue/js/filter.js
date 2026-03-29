@@ -4,18 +4,18 @@
  */
 
 (function() {
-    'use strict';
+    ?use strict?;
 
     // ========================================
     // VARIABLES
     // ========================================
 
-    const searchInput = document.getElementById('search-input');
-    const searchButton = document.getElementById('catalogue-search-btn');
-    const categoryFilter = document.getElementById('category-filter');
-    const versionFilter = document.getElementById('version-filter');
-    const languageFilter = document.getElementById('language-filter');
-    const sortFilter = document.getElementById('sort-filter');
+    const searchInput = document.getElementById(?search-input?);
+    const searchButton = document.getElementById(?catalogue-search-btn?);
+    const categoryFilter = document.getElementById(?category-filter?);
+    const versionFilter = document.getElementById(?version-filter?);
+    const languageFilter = document.getElementById(?language-filter?);
+    const sortFilter = document.getElementById(?sort-filter?);
 
     // ========================================
     // RECHERCHE
@@ -23,8 +23,8 @@
 
     if (searchInput) {
         // Declencher la recherche uniquement apres validation (Entree).
-        searchInput.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
+        searchInput.addEventListener(?keydown?, function(event) {
+            if (event.key === ?Enter?) {
                 event.preventDefault();
                 const searchTerm = this.value.trim();
                 performSearch(searchTerm);
@@ -33,46 +33,46 @@
     }
 
     if (searchButton) {
-        searchButton.addEventListener('click', function() {
-            const searchTerm = searchInput ? searchInput.value.trim() : '';
+        searchButton.addEventListener(?click?, function() {
+            const searchTerm = searchInput  searchInput.value.trim() : ??;
             performSearch(searchTerm);
         });
     }
 
-    const applyButton = document.getElementById('catalogue-apply-btn');
+    const applyButton = document.getElementById(?catalogue-apply-btn?);
 
     function applyAllFilters() {
         const params = new URLSearchParams(window.location.search);
 
-        const term = searchInput ? searchInput.value.trim() : '';
+        const term = searchInput  searchInput.value.trim() : ??;
         if (term) {
-            params.set('search', term);
+            params.set(?search?, term);
         } else {
-            params.delete('search');
+            params.delete(?search?);
         }
 
         if (categoryFilter && categoryFilter.value) {
-            params.set('categorie', categoryFilter.value);
+            params.set(?categorie?, categoryFilter.value);
         } else {
-            params.delete('categorie');
+            params.delete(?categorie?);
         }
 
         if (versionFilter && versionFilter.value) {
-            params.set('version', versionFilter.value);
+            params.set(?version?, versionFilter.value);
         } else {
-            params.delete('version');
+            params.delete(?version?);
         }
 
         if (languageFilter && languageFilter.value) {
-            params.set('langue', languageFilter.value);
+            params.set(?langue?, languageFilter.value);
         } else {
-            params.delete('langue');
+            params.delete(?langue?);
         }
 
         if (sortFilter && sortFilter.value) {
-            params.set('sort', sortFilter.value);
+            params.set(?sort?, sortFilter.value);
         } else {
-            params.delete('sort');
+            params.delete(?sort?);
         }
 
         window.location.search = params.toString();
@@ -83,13 +83,13 @@
      * @param {string} term - Terme de recherche
      */
     function performSearch(term) {
-        // Construire l'URL avec les parametres
+        // Construire l?URL avec les parametres
         const params = new URLSearchParams(window.location.search);
 
         if (term) {
-            params.set('search', term);
+            params.set(?search?, term);
         } else {
-            params.delete('search');
+            params.delete(?search?);
         }
 
         // Recharger la page avec les nouveaux parametres
@@ -101,15 +101,15 @@
     // ========================================
 
     if (categoryFilter) {
-        categoryFilter.addEventListener('change', applyAllFilters);
+        categoryFilter.addEventListener(?change?, applyAllFilters);
     }
     
     if (versionFilter) {
-        versionFilter.addEventListener('change', applyAllFilters);
+        versionFilter.addEventListener(?change?, applyAllFilters);
     }
     
     if (languageFilter) {
-        languageFilter.addEventListener('change', applyAllFilters);
+        languageFilter.addEventListener(?change?, applyAllFilters);
     }
 
     // ========================================
@@ -117,11 +117,11 @@
     // ========================================
 
     if (sortFilter) {
-        sortFilter.addEventListener('change', applyAllFilters);
+        sortFilter.addEventListener(?change?, applyAllFilters);
     }
 
     if (applyButton) {
-        applyButton.addEventListener('click', function() {
+        applyButton.addEventListener(?click?, function() {
             applyAllFilters();
         });
     }
@@ -130,22 +130,22 @@
     // MODAL DETAILS LIVRE
     // ========================================
 
-    const modal = document.getElementById('book-modal');
-    const modalBody = document.getElementById('modal-body');
-    const modalClose = document.querySelector('.modal__close');
-    const modalOverlay = document.querySelector('.modal__overlay');
+    const modal = document.getElementById(?book-modal?);
+    const modalBody = document.getElementById(?modal-body?);
+    const modalClose = document.querySelector(?.modal__close?);
+    const modalOverlay = document.querySelector(?.modal__overlay?);
 
     // Ouvrir le modal au clic sur un livre
-    document.querySelectorAll('[data-book-id]').forEach(button => {
-        button.addEventListener('click', function() {
-            const bookId = this.getAttribute('data-book-id');
+    document.querySelectorAll(?[data-book-id]?).forEach(button => {
+        button.addEventListener(?click?, function() {
+            const bookId = this.getAttribute(?data-book-id?);
             loadBookDetails(bookId);
         });
     });
 
     function formatAuteurs(auteursList) {
         if (!auteursList || auteursList.length === 0) {
-            return '';
+            return ??;
         }
         if (auteursList.length === 1) {
             return auteursList[0].nom;
@@ -154,11 +154,11 @@
             return `${auteursList[0].nom} et ${auteursList[1].nom}`;
         }
         const noms = auteursList.map(a => a.nom);
-        return `${noms.slice(0, -1).join(', ')} et ${noms[noms.length - 1]}`;
+        return `${noms.slice(0, -1).join(?, ?)} et ${noms[noms.length - 1]}`;
     }
 
     /**
-     * Charge les details d'un livre via AJAX
+     * Charge les details d?un livre via AJAX
      * @param {number} bookId - ID du livre
      */
     function loadBookDetails(bookId) {
@@ -167,21 +167,21 @@
         }
 
         // Afficher le modal
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        modal.classList.add(?active?);
+        document.body.style.overflow = ?hidden?;
 
         // Loader
-        modalBody.innerHTML = '<div class="loader">Chargement...</div>';
+        modalBody.innerHTML = ?<div class="loader">Chargement...</div>?;
 
-        // Recuperer les details via l'API Django
+        // Recuperer les details via l?API Django
         fetch(window.DJANGO_URLS.livreDetailJson(bookId))
             .then(response => response.json())
             .then(data => {
                 displayBookDetails(data);
             })
             .catch(error => {
-                console.error('Erreur:', error);
-                modalBody.innerHTML = '<p>Erreur lors du chargement des details.</p>';
+                console.error(?Erreur:?, error);
+                modalBody.innerHTML = ?<p>Erreur lors du chargement des details.</p>?;
             });
     }
 
@@ -224,21 +224,21 @@
             return;
         }
 
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
+        modal.classList.remove(?active?);
+        document.body.style.overflow = ??;
     }
 
     if (modalClose) {
-        modalClose.addEventListener('click', closeModal);
+        modalClose.addEventListener(?click?, closeModal);
     }
 
     if (modalOverlay) {
-        modalOverlay.addEventListener('click', closeModal);
+        modalOverlay.addEventListener(?click?, closeModal);
     }
 
     // Fermer avec Escape
-    document.addEventListener('keydown', function(e) {
-        if (modal && e.key === 'Escape' && modal.classList.contains('active')) {
+    document.addEventListener(?keydown?, function(e) {
+        if (modal && e.key === ?Escape? && modal.classList.contains(?active?)) {
             closeModal();
         }
     });

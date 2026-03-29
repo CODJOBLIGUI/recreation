@@ -23,8 +23,8 @@ class AuteurManager(models.Manager):
     
     def populaires(self):
         return self.annotate(
-            nombre_livres=models.Count('livres')
-        ).filter(nombre_livres__gt=0).order_by('-nombre_livres')
+            nombre_livres=models.Count(?livres?)
+        ).filter(nombre_livres__gt=0).order_by(?-nombre_livres?)
 
 
 class LivreManager(models.Manager):
@@ -34,19 +34,19 @@ class LivreManager(models.Manager):
         return self.filter(
             est_nouveau=True,
             est_publie=True
-        ).prefetch_related('auteurs').order_by('-parution')[:limit]
+        ).prefetch_related(?auteurs?).order_by(?-parution?)[:limit]
     
     def bestsellers(self, limit=5):
         return self.filter(
             est_bestseller=True,
             est_publie=True
-        ).prefetch_related('auteurs').order_by('-parution')[:limit]
+        ).prefetch_related(?auteurs?).order_by(?-parution?)[:limit]
     
     def prochaines_parutions(self, limit=6):
         return self.filter(
             est_prochaine_parution=True,
             est_publie=True
-        ).prefetch_related('auteurs').order_by('parution')[:limit]
+        ).prefetch_related(?auteurs?).order_by(?parution?)[:limit]
     
     def publies(self):
         return self.filter(est_publie=True)
@@ -121,8 +121,8 @@ class Page(TimeStampedModel, SEOModel):
 
     title = models.CharField(max_length=200, verbose_name="Titre")
     slug = models.SlugField(max_length=200, unique=True, verbose_name="Slug")
-    hero_title = models.CharField(max_length=200, blank=True, verbose_name="Titre d'en-tête")
-    hero_subtitle = models.CharField(max_length=255, blank=True, verbose_name="Sous-titre d'en-tête")
+    hero_title = models.CharField(max_length=200, blank=True, verbose_name="Titre d?en-tête")
+    hero_subtitle = models.CharField(max_length=255, blank=True, verbose_name="Sous-titre d?en-tête")
     hero_image = models.ImageField(
         upload_to="pages/heroes/%Y/%m/",
         blank=True,
@@ -132,7 +132,7 @@ class Page(TimeStampedModel, SEOModel):
     )
     body = RichTextField(verbose_name="Contenu")
     is_active = models.BooleanField(default=True, verbose_name="Actif")
-    show_team = models.BooleanField(default=False, verbose_name="Afficher l'équipe")
+    show_team = models.BooleanField(default=False, verbose_name="Afficher l?équipe")
 
     class Meta:
         verbose_name = "Page"
@@ -149,7 +149,7 @@ class PageBlock(TimeStampedModel):
     BLOCK_TYPES = [
         ("rich_text", "Texte libre"),
         ("image", "Image"),
-        ("cta", "Appel à l'action"),
+        ("cta", "Appel à l?action"),
         ("grid", "Grille"),
         ("carousel", "Carrousel"),
         ("stats", "Statistiques"),
@@ -170,7 +170,7 @@ class PageBlock(TimeStampedModel):
         verbose_name="Page",
     )
     block_type = models.CharField(max_length=40, choices=BLOCK_TYPES, verbose_name="Type de bloc")
-    ordre = models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")
+    ordre = models.PositiveIntegerField(default=0, verbose_name="Ordre d?affichage")
     titre = models.CharField(max_length=200, blank=True, verbose_name="Titre")
     sous_titre = models.CharField(max_length=255, blank=True, verbose_name="Sous-titre")
     contenu = RichTextField(blank=True, verbose_name="Contenu")
@@ -190,7 +190,7 @@ class PageBlock(TimeStampedModel):
 
 
 class PageBlockItem(TimeStampedModel):
-    """Élément d'un bloc (grille/carrousel)."""
+    """Élément d?un bloc (grille/carrousel)."""
     
     block = models.ForeignKey(
         PageBlock,
@@ -203,7 +203,7 @@ class PageBlockItem(TimeStampedModel):
     sous_titre = models.CharField(max_length=255, blank=True, verbose_name="Sous-titre")
     contenu = RichTextField(blank=True, verbose_name="Contenu")
     image = models.ImageField(upload_to="pages/items/%Y/%m/", blank=True, null=True, verbose_name="Image")
-    icone = models.CharField(max_length=80, blank=True, verbose_name="Classe d'icône (Font Awesome)")
+    icone = models.CharField(max_length=80, blank=True, verbose_name="Classe d?icône (Font Awesome)")
     lien_texte = models.CharField(max_length=120, blank=True, verbose_name="Texte du lien")
     lien_url = models.CharField(max_length=300, blank=True, verbose_name="URL du lien")
     est_actif = models.BooleanField(default=True, verbose_name="Actif")
@@ -224,7 +224,7 @@ class Collection(TimeStampedModel, SEOModel):
     slug = models.SlugField(max_length=200, unique=True, blank=True, verbose_name="Slug")
     description = RichTextField(blank=True, verbose_name="Description")
     image = models.ImageField(upload_to="collections/%Y/%m/", blank=True, null=True, verbose_name="Image")
-    ordre_affichage = models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")
+    ordre_affichage = models.PositiveIntegerField(default=0, verbose_name="Ordre d?affichage")
     est_active = models.BooleanField(default=True, verbose_name="Est active")
 
     class Meta:
@@ -256,7 +256,7 @@ class Auteur(TimeStampedModel, SEOModel):
     nom = models.CharField(max_length=200, verbose_name="Nom complet", db_index=True)
     specialite = models.CharField(max_length=100, verbose_name="Spécialité")
     biographie = RichTextField(verbose_name="Biographie")
-    photo = models.ImageField(upload_to='authors/%Y/%m/', verbose_name="Photo")
+    photo = models.ImageField(upload_to=?authors/%Y/%m/?, verbose_name="Photo")
     slug = models.SlugField(max_length=250, unique=True, blank=True, verbose_name="Slug")
     nationalites = models.ManyToManyField(
         Nationalite,
@@ -271,8 +271,8 @@ class Auteur(TimeStampedModel, SEOModel):
     class Meta:
         verbose_name = "Auteur"
         verbose_name_plural = "Auteurs"
-        ordering = ['nom']
-        indexes = [models.Index(fields=['nom'])]
+        ordering = [?nom?]
+        indexes = [models.Index(fields=[?nom?])]
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -289,7 +289,7 @@ class Auteur(TimeStampedModel, SEOModel):
         return self.nom
     
     def get_absolute_url(self):
-        return reverse('catalogue:auteur-detail', kwargs={'slug': self.slug})
+        return reverse(?catalogue:auteur-detail?, kwargs={?slug?: self.slug})
     
     def nombre_livres(self):
         return self.livres.count()
@@ -328,18 +328,18 @@ class Livre(TimeStampedModel, SEOModel):
     ]
     
     CATEGORIES = [
-        ('roman', 'Roman'),
-        ('poemes', 'Poèmes'),
-        ('essai', 'Essai'),
-        ('policiers', 'Polars/Thrillers'),
-        ('bd', 'BD'),
-        ('theatres', 'Théâtres'),
-        ('nouvelles', 'Nouvelles'),
-        ('litterature-fr', 'Littérature française'),
-        ('litterature-etr', 'Littérature étrangère'),
-        ('beaux-livres', 'Beaux livres'),
-        ('jeunesse', 'Jeunesse'),
-        ('sh', 'Sciences humaines'),
+        (?roman?, ?Roman?),
+        (?poemes?, ?Poèmes?),
+        (?essai?, ?Essai?),
+        (?policiers?, ?Polars/Thrillers?),
+        (?bd?, ?BD?),
+        (?theatres?, ?Théâtres?),
+        (?nouvelles?, ?Nouvelles?),
+        (?litterature-fr?, ?Littérature française?),
+        (?litterature-etr?, ?Littérature étrangère?),
+        (?beaux-livres?, ?Beaux livres?),
+        (?jeunesse?, ?Jeunesse?),
+        (?sh?, ?Sciences humaines?),
     ]
     
     titre = models.CharField(max_length=300, verbose_name="Titre", db_index=True)
@@ -373,15 +373,15 @@ class Livre(TimeStampedModel, SEOModel):
     version_numerique = models.BooleanField(default=False, verbose_name="Version numérique disponible", db_index=True)
     version_audio = models.BooleanField(default=False, verbose_name="Version audio disponible", db_index=True)
     
-    image = models.ImageField(upload_to='books/%Y/%m/', verbose_name="Couverture version papier")
+    image = models.ImageField(upload_to=?books/%Y/%m/?, verbose_name="Couverture version papier")
     image_numerique = models.ImageField(
-        upload_to='books/numerique/%Y/%m/',
+        upload_to=?books/numerique/%Y/%m/?,
         verbose_name="Couverture version numérique",
         blank=True,
         null=True,
     )
     image_audio = models.ImageField(
-        upload_to='books/audio/%Y/%m/',
+        upload_to=?books/audio/%Y/%m/?,
         verbose_name="Couverture version audio",
         blank=True,
         null=True,
@@ -439,11 +439,11 @@ class Livre(TimeStampedModel, SEOModel):
     class Meta:
         verbose_name = "Livre"
         verbose_name_plural = "Livres"
-        ordering = ['-parution', '-created_at']
+        ordering = [?-parution?, ?-created_at?]
         indexes = [
-            models.Index(fields=['titre']),
-            models.Index(fields=['-parution', 'categorie']),
-            models.Index(fields=['est_publie']),
+            models.Index(fields=[?titre?]),
+            models.Index(fields=[?-parution?, ?categorie?]),
+            models.Index(fields=[?est_publie?]),
         ]
     
     def save(self, *args, **kwargs):
@@ -469,10 +469,10 @@ class Livre(TimeStampedModel, SEOModel):
             return noms[0]
         if len(noms) == 2:
             return f"{noms[0]} et {noms[1]}"
-        return f"{', '.join(noms[:-1])} et {noms[-1]}"
+        return f"{?, ?.join(noms[:-1])} et {noms[-1]}"
     
     def get_absolute_url(self):
-        return reverse('catalogue:livre-detail', kwargs={'slug': self.slug})
+        return reverse(?catalogue:livre-detail?, kwargs={?slug?: self.slug})
 
     def image_par_defaut(self):
         return self.image or self.image_numerique or self.image_audio
@@ -503,14 +503,14 @@ class Livre(TimeStampedModel, SEOModel):
 # -------------------------------------------------------------------------------
 
 class Membre(TimeStampedModel):
-    """Modèle Membre de l'équipe."""
+    """Modèle Membre de l?équipe."""
     
     nom_complet = models.CharField(max_length=200, verbose_name="Nom complet")
     poste = models.CharField(max_length=150, verbose_name="Poste/Rôle")
-    photo = models.ImageField(upload_to='team/%Y/%m/', verbose_name="Photo")
+    photo = models.ImageField(upload_to=?team/%Y/%m/?, verbose_name="Photo")
     biographie = RichTextField(blank=True, verbose_name="Biographie courte")
     email = models.EmailField(blank=True, verbose_name="Email professionnel")
-    ordre_affichage = models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")
+    ordre_affichage = models.PositiveIntegerField(default=0, verbose_name="Ordre d?affichage")
     est_actif = models.BooleanField(default=True, verbose_name="Est actif")
     nationalites = models.ManyToManyField(
         Nationalite,
@@ -521,9 +521,9 @@ class Membre(TimeStampedModel):
     )
     
     class Meta:
-        verbose_name = "Membre de l'équipe"
-        verbose_name_plural = "Membres de l'équipe"
-        ordering = ['ordre_affichage', 'nom_complet']
+        verbose_name = "Membre de l?équipe"
+        verbose_name_plural = "Membres de l?équipe"
+        ordering = [?ordre_affichage?, ?nom_complet?]
     
     def __str__(self):
         return f"{self.nom_complet} - {self.poste}"
@@ -575,7 +575,7 @@ class Actualite(TimeStampedModel, SEOModel):
     
     titre = models.CharField(max_length=250, verbose_name="Titre")
     slug = models.SlugField(max_length=300, unique=True, blank=True, verbose_name="Slug")
-    image = models.ImageField(upload_to='news/%Y/%m/', verbose_name="Image")
+    image = models.ImageField(upload_to=?news/%Y/%m/?, verbose_name="Image")
     extrait = RichTextField(max_length=300, verbose_name="Extrait")
     contenu = RichTextField(verbose_name="Contenu")
     date_publication = models.DateField(verbose_name="Date de publication")
@@ -585,7 +585,7 @@ class Actualite(TimeStampedModel, SEOModel):
     class Meta:
         verbose_name = "Actualité"
         verbose_name_plural = "Actualités"
-        ordering = ['-date_publication', '-created_at']
+        ordering = [?-date_publication?, ?-created_at?]
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -602,7 +602,7 @@ class Actualite(TimeStampedModel, SEOModel):
         return self.titre
     
     def get_absolute_url(self):
-        return reverse('catalogue:actualite-detail', kwargs={'slug': self.slug})
+        return reverse(?catalogue:actualite-detail?, kwargs={?slug?: self.slug})
 
 
 # -------------------------------------------------------------------------------
@@ -614,12 +614,12 @@ class InscriptionNewsletter(TimeStampedModel):
     
     email = models.EmailField(unique=True, verbose_name="Adresse email")
     est_actif = models.BooleanField(default=True, verbose_name="Inscription active")
-    date_inscription = models.DateTimeField(auto_now_add=True, verbose_name="Date d'inscription")
+    date_inscription = models.DateTimeField(auto_now_add=True, verbose_name="Date d?inscription")
     
     class Meta:
         verbose_name = "Inscription Newsletter"
         verbose_name_plural = "Inscriptions Newsletter"
-        ordering = ['-date_inscription']
+        ordering = [?-date_inscription?]
     
     def __str__(self):
         return self.email
@@ -642,7 +642,7 @@ class AudioConversionRequest(TimeStampedModel):
     ]
 
     ASYNC_STATUS_CHOICES = [
-        ("queued", "En file d'attente"),
+        ("queued", "En file d?attente"),
         ("started", "En cours"),
         ("finished", "Terminé"),
         ("failed", "Échec"),
@@ -781,10 +781,10 @@ class MessageContact(TimeStampedModel):
     """Modèle Message Contact."""
     
     STATUT_CHOICES = [
-        ('nouveau', 'Nouveau'),
-        ('en_cours', 'En cours'),
-        ('traite', 'Traité'),
-        ('archive', 'Archivé'),
+        (?nouveau?, ?Nouveau?),
+        (?en_cours?, ?En cours?),
+        (?traite?, ?Traité?),
+        (?archive?, ?Archivé?),
     ]
     
     nom = models.CharField(max_length=200, verbose_name="Nom complet")
@@ -792,7 +792,7 @@ class MessageContact(TimeStampedModel):
     telephone = models.CharField(max_length=20, blank=True, verbose_name="Téléphone")
     sujet = models.CharField(max_length=250, verbose_name="Sujet")
     message = RichTextField(verbose_name="Message")
-    statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='nouveau', verbose_name="Statut")
+    statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default=?nouveau?, verbose_name="Statut")
     date_reception = models.DateTimeField(auto_now_add=True, verbose_name="Date réception")
     lu = models.BooleanField(default=False, verbose_name="Lu")
     notes_admin = RichTextField(blank=True, verbose_name="Notes admin")
@@ -800,7 +800,7 @@ class MessageContact(TimeStampedModel):
     class Meta:
         verbose_name = "Message de contact"
         verbose_name_plural = "Messages de contact"
-        ordering = ['-date_reception']
+        ordering = [?-date_reception?]
     
     def __str__(self):
         return f"{self.nom} - {self.sujet}"
@@ -814,18 +814,18 @@ class SoumissionManuscrit(TimeStampedModel):
     """Modèle Soumission de manuscrit."""
 
     CONTRACT_CHOICES = [
-        ("compte_editeur", "Contrat à compte d'éditeur"),
-        ("compte_auteur", "Contrat à compte d'auteur"),
+        ("compte_editeur", "Contrat à compte d?éditeur"),
+        ("compte_auteur", "Contrat à compte d?auteur"),
         ("compte_participatif", "Contrat à compte participatif"),
     ]
 
-    nom_complet = models.CharField(max_length=200, verbose_name="Nom et prénom à l'état civil")
-    nom_auteur = models.CharField(max_length=200, verbose_name="Nom ou pseudonyme d'auteur")
+    nom_complet = models.CharField(max_length=200, verbose_name="Nom et prénom à l?état civil")
+    nom_auteur = models.CharField(max_length=200, verbose_name="Nom ou pseudonyme d?auteur")
     whatsapp = models.CharField(max_length=40, verbose_name="Numéro de téléphone WhatsApp", default="")
-    autre_numero = models.CharField(max_length=40, blank=True, verbose_name="Autre numéro de l'auteur")
+    autre_numero = models.CharField(max_length=40, blank=True, verbose_name="Autre numéro de l?auteur")
     nationalite = models.CharField(max_length=120, verbose_name="Nationalité", default="")
     pays_residence = models.CharField(max_length=120, verbose_name="Pays de résidence", default="")
-    titre_ouvrage = models.CharField(max_length=300, verbose_name="Titre de l'ouvrage")
+    titre_ouvrage = models.CharField(max_length=300, verbose_name="Titre de l?ouvrage")
     genre_litteraire = models.CharField(max_length=150, verbose_name="Genre littéraire")
     type_contrat = models.CharField(
         max_length=40,
@@ -837,14 +837,14 @@ class SoumissionManuscrit(TimeStampedModel):
     avantages = RichTextField(verbose_name="Avantages pour les lecteurs")
     inconvenients = models.TextField(verbose_name="Inconvénients pour les lecteurs")
 
-    fichier_ouvrage = models.FileField(upload_to='soumissions/manuscrits/%Y/%m/', verbose_name="Fichier de l'ouvrage")
-    photo_auteur = models.ImageField(upload_to='soumissions/auteurs/%Y/%m/', verbose_name="Photo de l'auteur")
-    carte_identite = models.FileField(upload_to='soumissions/cartes/%Y/%m/', verbose_name="Carte d'identité")
+    fichier_ouvrage = models.FileField(upload_to=?soumissions/manuscrits/%Y/%m/?, verbose_name="Fichier de l?ouvrage")
+    photo_auteur = models.ImageField(upload_to=?soumissions/auteurs/%Y/%m/?, verbose_name="Photo de l?auteur")
+    carte_identite = models.FileField(upload_to=?soumissions/cartes/%Y/%m/?, verbose_name="Carte d?identité")
 
     class Meta:
         verbose_name = "Soumission de manuscrit"
         verbose_name_plural = "Soumissions de manuscrits"
-        ordering = ['-created_at']
+        ordering = [?-created_at?]
 
     def __str__(self):
         return f"{self.titre_ouvrage} - {self.nom_auteur}"

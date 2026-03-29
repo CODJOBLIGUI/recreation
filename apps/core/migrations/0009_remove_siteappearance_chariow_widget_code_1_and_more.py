@@ -6,28 +6,28 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0008_remove_siteappearance_chariow_audio_product_id_1_and_more'),
+        (?core?, ?0008_remove_siteappearance_chariow_audio_product_id_1_and_more?),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='siteappearance',
-            name='chariow_widget_code_1',
+            model_name=?siteappearance?,
+            name=?chariow_widget_code_1?,
         ),
         migrations.RemoveField(
-            model_name='siteappearance',
-            name='chariow_widget_code_2',
+            model_name=?siteappearance?,
+            name=?chariow_widget_code_2?,
         ),
         migrations.RemoveField(
-            model_name='siteappearance',
-            name='chariow_widget_code_3',
+            model_name=?siteappearance?,
+            name=?chariow_widget_code_3?,
         ),
         migrations.RemoveField(
-            model_name='siteappearance',
-            name='chariow_widget_code_4',
+            model_name=?siteappearance?,
+            name=?chariow_widget_code_4?,
         ),
         migrations.RemoveField(
-            model_name='siteappearance',
-            name='chariow_widget_code_5',
+            model_name=?siteappearance?,
+            name=?chariow_widget_code_5?,
         ),
     ]

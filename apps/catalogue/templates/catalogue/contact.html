@@ -1,5 +1,5 @@
 ﻿
-{% extends 'catalogue/base.html' %}
+{% extends ?catalogue/base.html? %}
 {% load static %}
 
 {% block content %}
@@ -15,7 +15,7 @@
                     {{ page.body|safe }}
                 {% else %}
                     <h1>Contactez-nous</h1>
-                    <p>Une question  Un projet  N'hésitez pas à nous contacter.</p>
+                    <p>Une question  Un projet  N?hésitez pas à nous contacter.</p>
                     
                     <div class="contact__details">
                         <div class="contact__item">
@@ -63,7 +63,7 @@
                 {% endif %}
                 
                 <!-- CORRECTION : Ajouter action pour soumettre à ContactView -->
-                <form method="POST" action="{% url 'catalogue:contact' %}" class="contact__form">
+                <form method="POST" action="{% url ?catalogue:contact? %}" class="contact__form">
                     {% csrf_token %}
                     
                     <div class="form-group">

@@ -1,4 +1,4 @@
-﻿{% extends 'catalogue/base.html' %}
+﻿{% extends ?catalogue/base.html? %}
 
 {% load static %}
 
@@ -15,7 +15,7 @@
         {% if page and page.hero_image %}
             <div class="page-hero__layout">
                 <div class="page-hero__content">
-                    <h1 class="page-hero__title">{{ page.hero_title|default:"Nos contrats d'édition" }}</h1>
+                    <h1 class="page-hero__title">{{ page.hero_title|default:"Nos contrats d?édition" }}</h1>
                     <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Choisissez la formule qui correspond le mieux à votre projet littéraire" }}</p>
                 </div>
                 <div class="page-hero__media">
@@ -25,7 +25,7 @@
                 </div>
             </div>
         {% else %}
-            <h1 class="page-hero__title">{{ page.hero_title|default:"Nos contrats d'édition" }}</h1>
+            <h1 class="page-hero__title">{{ page.hero_title|default:"Nos contrats d?édition" }}</h1>
             <p class="page-hero__subtitle">{{ page.hero_subtitle|default:"Choisissez la formule qui correspond le mieux à votre projet littéraire" }}</p>
         {% endif %}
     </div>
@@ -69,7 +69,7 @@
 
             
 
-            <!-- Contrat 1 : Contrat à compte d'éditeur -->
+            <!-- Contrat 1 : Contrat à compte d?éditeur -->
             <div class="contrat-card">
 
                 <div class="contrat-card__header">
@@ -80,14 +80,14 @@
 
                     </div>
 
-                    <h3 class="contrat-card__title">Contrat à compte d'éditeur</h3>
+                    <h3 class="contrat-card__title">Contrat à compte d?éditeur</h3>
                 </div>
 
                 <div class="contrat-card__body">
 
                     <p class="contrat-card__description">
 
-                        L'éditeur prend en charge tous les frais de production, de distribution et de promotion de l'ouvrage. L'auteur reçoit des droits d'auteur sur chaque vente.
+                        L?éditeur prend en charge tous les frais de production, de distribution et de promotion de l?ouvrage. L?auteur reçoit des droits d?auteur sur chaque vente.
 
                     </p>
 
@@ -95,7 +95,7 @@
 
                         <li><i class="fas fa-check"></i> Prise en charge complète des frais</li>
 
-                        <li><i class="fas fa-check"></i> Droits d'auteur entre 8% et 10%</li>
+                        <li><i class="fas fa-check"></i> Droits d?auteur entre 8% et 10%</li>
 
                         <li><i class="fas fa-check"></i> Distribution nationale et internationale</li>
 
@@ -109,7 +109,7 @@
 
                         <span class="price-label">Investissement auteur :</span>
 
-                        <span class="price-value">0 FCFA en dehors d'un certain nombre de livres à précommander</span>
+                        <span class="price-value">0 FCFA en dehors d?un certain nombre de livres à précommander</span>
 
                     </div>
 
@@ -119,7 +119,7 @@
 
 
 
-            <!-- Contrat 2 : Contrat à compte d'auteur -->
+            <!-- Contrat 2 : Contrat à compte d?auteur -->
             <div class="contrat-card contrat-card--featured">
 
                 <div class="contrat-card__badge">POPULAIRE</div>
@@ -132,14 +132,14 @@
 
                     </div>
 
-                    <h3 class="contrat-card__title">Contrat à compte d'auteur</h3>
+                    <h3 class="contrat-card__title">Contrat à compte d?auteur</h3>
                 </div>
 
                 <div class="contrat-card__body">
 
                     <p class="contrat-card__description">
 
-                        L'auteur finance la production de son ouvrage et conserve l'intégralité des bénéfices. Editions Recréation assure la qualité éditoriale et la distribution.
+                        L?auteur finance la production de son ouvrage et conserve l?intégralité des bénéfices. Editions Recréation assure la qualité éditoriale et la distribution.
 
                     </p>
 
@@ -147,7 +147,7 @@
 
                         <li><i class="fas fa-check"></i> Contrôle total sur le projet</li>
 
-                        <li><i class="fas fa-check"></i> 100% des bénéfices pour l'auteur ou 50% en cas de vente directe réalisée par l'éditeur</li>
+                        <li><i class="fas fa-check"></i> 100% des bénéfices pour l?auteur ou 50% en cas de vente directe réalisée par l?éditeur</li>
 
                         <li><i class="fas fa-check"></i> dition et correction professionnelles</li>
 
@@ -189,7 +189,7 @@
 
                     <p class="contrat-card__description">
 
-                        Les frais de production sont partagés équitablement entre l'auteur et l'éditeur. Une collaboration équilibrée pour un projet commun.
+                        Les frais de production sont partagés équitablement entre l?auteur et l?éditeur. Une collaboration équilibrée pour un projet commun.
 
                     </p>
 
@@ -197,7 +197,7 @@
 
                         <li><i class="fas fa-check"></i> Partage des frais 50/50</li>
 
-                        <li><i class="fas fa-check"></i> 30% des bénéfices pour l'auteur</li>
+                        <li><i class="fas fa-check"></i> 30% des bénéfices pour l?auteur</li>
 
                         <li><i class="fas fa-check"></i> Décisions concertées</li>
 
@@ -264,10 +264,10 @@
 
                             <td>Bénéfices</td>
 
-                            <td>8-10% droits d'auteur</td>
-                            <td>100% pour l'auteur ou<br>50% en cas de vente<br>directe par l'éditeur</td>
+                            <td>8-10% droits d?auteur</td>
+                            <td>100% pour l?auteur ou<br>50% en cas de vente<br>directe par l?éditeur</td>
 
-                            <td>30% pour l'auteur</td>
+                            <td>30% pour l?auteur</td>
                         </tr>
 
                         <tr>
@@ -318,7 +318,7 @@
 
                 </p>
 
-                <a href="{% url 'catalogue:soumission-manuscrit' %}" class="btn btn--primary btn--large">
+                <a href="{% url ?catalogue:soumission-manuscrit? %}" class="btn btn--primary btn--large">
 
                     <i class="fas fa-paper-plane"></i> Soumettez votre manuscrit/tapuscrit
 

@@ -5,7 +5,7 @@
 
 """
 Modles abstraits rutilisables pour tout le projet.
-Ces modles de base permettent d'viter la rptition de code.
+Ces modles de base permettent d?viter la rptition de code.
 """
 
 from django.db import models
@@ -80,13 +80,13 @@ class SiteAppearance(models.Model):
         max_length=120,
         blank=True,
         verbose_name="Police titres",
-        help_text="Ex: 'Cormorant Garamond', serif",
+        help_text="Ex: ?Cormorant Garamond?, serif",
     )
     font_body = models.CharField(
         max_length=120,
         blank=True,
         verbose_name="Police texte",
-        help_text="Ex: 'Source Serif 4', serif",
+        help_text="Ex: ?Source Serif 4?, serif",
     )
 
     instagram = models.URLField(blank=True, verbose_name="Instagram")
@@ -97,7 +97,7 @@ class SiteAppearance(models.Model):
     youtube = models.URLField(blank=True, verbose_name="YouTube")
     whatsapp = models.URLField(blank=True, verbose_name="WhatsApp")
     audio_payment_url = models.URLField(blank=True, verbose_name="Lien de paiement (conversion texte en audio)")
-    site_email = models.EmailField(blank=True, verbose_name="Email de la maison d'dition")
+    site_email = models.EmailField(blank=True, verbose_name="Email de la maison d?dition")
     site_address = models.TextField(blank=True, verbose_name="Adresse (footer/contact)")
     site_legal_label = models.CharField(blank=True, max_length=120, verbose_name="Libell sige social (mentions lgales)")
     audio_payment_url_0 = models.URLField(blank=True, verbose_name="Paiement audio (1  50 pages)")
@@ -119,7 +119,7 @@ class SiteAppearance(models.Model):
         max_length=255,
         blank=True,
         verbose_name="Mention de copyright (footer)",
-        help_text="Utilisez {year} pour l'anne automatique.",
+        help_text="Utilisez {year} pour l?anne automatique.",
     )
     tts_acronyms = models.TextField(
         blank=True,
@@ -137,7 +137,7 @@ class SiteAppearance(models.Model):
 
 class SiteContent(models.Model):
     """
-    Contenus globaux modifiables depuis l'admin.
+    Contenus globaux modifiables depuis l?admin.
     """
 
     default_meta_title = models.CharField(
@@ -248,7 +248,7 @@ class SiteContent(models.Model):
     nav_cta_button = models.CharField(
         max_length=80,
         blank=True,
-        default="S'abonner",
+        default="S?abonner",
         verbose_name="Navigation - Bouton newsletter",
     )
     header_search_placeholder = models.CharField(
@@ -349,9 +349,9 @@ class SiteContent(models.Model):
             "Collez votre texte ou televersez un fichier. Le service est gratuit "
             "pour les textes de 5000 caracteres maximum. Les fichiers televerses "
             "sont systematiquement soumis au paiement. Apres paiement, nous produisons "
-            "l'audio et vous l'envoyons par e-mail."
+            "l?audio et vous l?envoyons par e-mail."
         ),
-        verbose_name="Conversion - Texte d'introduction",
+        verbose_name="Conversion - Texte d?introduction",
     )
     conversion_free_limit_text = models.CharField(
         max_length=200,
@@ -392,7 +392,7 @@ class SiteContent(models.Model):
     conversion_payment_required_text = models.CharField(
         max_length=240,
         blank=True,
-        default="Votre demande a ete enregistree. Veuillez proceder au paiement pour recevoir l'audio par e-mail.",
+        default="Votre demande a ete enregistree. Veuillez proceder au paiement pour recevoir l?audio par e-mail.",
         verbose_name="Conversion - Texte paiement requis",
     )
     conversion_payment_error_text = models.CharField(
@@ -410,7 +410,7 @@ class SiteContent(models.Model):
     conversion_processing_text = models.CharField(
         max_length=200,
         blank=True,
-        default="Nos equipes verifieront l'effectivite du paiement et vous feront un retour.",
+        default="Nos equipes verifieront l?effectivite du paiement et vous feront un retour.",
         verbose_name="Conversion - Texte traitement",
     )
     conversion_progress_title = models.CharField(
@@ -434,7 +434,7 @@ class SiteContent(models.Model):
     conversion_audio_download_label = models.CharField(
         max_length=160,
         blank=True,
-        default="Telecharger l'audio (MP3)",
+        default="Telecharger l?audio (MP3)",
         verbose_name="Conversion - Bouton telechargement",
     )
     conversion_unavailable_free_text = models.CharField(
@@ -489,7 +489,7 @@ class SiteContent(models.Model):
     conversion_choice_synth_text = models.CharField(
         max_length=240,
         blank=True,
-        default="Conversion rapide par voix synthetique, gratuite jusqu'a 5000 caracteres.",
+        default="Conversion rapide par voix synthetique, gratuite jusqu?a 5000 caracteres.",
         verbose_name="Choix conversion - Texte synthetique",
     )
     conversion_choice_synth_button = models.CharField(
@@ -542,7 +542,7 @@ class SiteContent(models.Model):
     activation_invalid_message = models.CharField(
         max_length=200,
         blank=True,
-        default="Lien d'activation invalide ou expire.",
+        default="Lien d?activation invalide ou expire.",
         verbose_name="Message - Activation invalide",
     )
     signup_success_message = models.CharField(
@@ -560,7 +560,7 @@ class SiteContent(models.Model):
     )
     error_404_text = models.TextField(
         blank=True,
-        default="La page demandee est introuvable. Revenez a l'accueil ou utilisez la recherche.",
+        default="La page demandee est introuvable. Revenez a l?accueil ou utilisez la recherche.",
         verbose_name="Erreur 404 - Texte",
     )
     error_500_title = models.CharField(

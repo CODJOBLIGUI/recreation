@@ -1,6 +1,6 @@
 ﻿"""
 URLs principales du projet Django.
-Inclut les URLs de l'application catalogue et gÃ¨re les mÃ©dias.
+Inclut les URLs de l?application catalogue et gÃ¨re les mÃ©dias.
 """
 
 from django.contrib import admin
@@ -12,7 +12,7 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     # Favicon pour les navigateurs qui requièrent /favicon.ico à la racine
-    path('favicon.ico', RedirectView.as_view(url='/static/catalogue/images/favicon.ico?v=2', permanent=False)),
+    path(?favicon.ico?, RedirectView.as_view(url=?/static/catalogue/images/favicon.ico?v=2?, permanent=False)),
     # Mot de passe oublié Admin
     path(
         "admin/password_reset/",
@@ -38,13 +38,13 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(template_name="registration/password_reset_complete.html"),
         name="password_reset_complete",
     ),
-    # Interface d'administration Django
-    path('edrecreation/', admin.site.urls),
+    # Interface d?administration Django
+    path(?edrecreation/?, admin.site.urls),
     # CKEditor upload endpoints
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path(?ckeditor/?, include(?ckeditor_uploader.urls?)),
     
-    # URLs de l'application catalogue (toutes les pages du site)
-    path('', include('apps.catalogue.urls', namespace='catalogue')),
+    # URLs de l?application catalogue (toutes les pages du site)
+    path(??, include(?apps.catalogue.urls?, namespace=?catalogue?)),
 ]
 
 # En mode dÃ©veloppement, servir les fichiers mÃ©dia et statiques

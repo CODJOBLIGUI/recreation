@@ -6,19 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalogue', '0001_initial'),
+        (?catalogue?, ?0001_initial?),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='livre',
-            name='collection',
-            field=models.CharField(blank=True, help_text='Nom de la collection Ã©ditoriale', max_length=100, null=True, verbose_name='Collection'),
+            model_name=?livre?,
+            name=?collection?,
+            field=models.CharField(blank=True, help_text=?Nom de la collection Ã©ditoriale?, max_length=100, null=True, verbose_name=?Collection?),
         ),
         migrations.AlterField(
-            model_name='livre',
-            name='lien_amazon',
-            field=models.URLField(blank=True, help_text="URL d'achat sur Amazon", max_length=500, null=True, verbose_name='Lien Amazon'),
+            model_name=?livre?,
+            name=?lien_amazon?,
+            field=models.URLField(blank=True, help_text="URL d?achat sur Amazon", max_length=500, null=True, verbose_name=?Lien Amazon?),
         ),
     ]
 

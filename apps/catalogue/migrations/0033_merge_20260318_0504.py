@@ -6,8 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalogue', '0032_audioconversionchunk'),
-        ('catalogue', '0032_soumissionmanuscrit_nationalite_and_more'),
+        (?catalogue?, ?0032_audioconversionchunk?),
+        (?catalogue?, ?0032_soumissionmanuscrit_nationalite_and_more?),
     ]
 
     operations = [

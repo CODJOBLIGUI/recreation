@@ -5,61 +5,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if site_content %}
-    <meta name="description" content="{{ page_description|default:site_content.default_meta_description|default:'Editions Recréation, maison d\'édition africaine. Livres papier, numériques et audio.' }}">
-    <title>{{ page_title|default:site_content.default_meta_title|default:'Editions Recréation | Maison d\'édition' }}</title>
+    <meta name="description" content="{{ page_description|default:site_content.default_meta_description|default:?Editions Recréation, maison d\?édition africaine. Livres papier, numériques et audio.? }}">
+    <title>{{ page_title|default:site_content.default_meta_title|default:?Editions Recréation | Maison d\?édition? }}</title>
     <link rel="canonical" href="{{ page_canonical|default:site_content.default_canonical|default:request.build_absolute_uri }}">
     {% else %}
-    <meta name="description" content="{{ page_description|default:'Editions Recréation, maison d\'édition africaine. Livres papier, numériques et audio.' }}">
-    <title>{{ page_title|default:'Editions Recréation | Maison d\'édition' }}</title>
+    <meta name="description" content="{{ page_description|default:?Editions Recréation, maison d\?édition africaine. Livres papier, numériques et audio.? }}">
+    <title>{{ page_title|default:?Editions Recréation | Maison d\?édition? }}</title>
     <link rel="canonical" href="{{ page_canonical|default:request.build_absolute_uri }}">
     {% endif %}
     {% with site_url=request.scheme|add:"://"|add:request.get_host %}
     {% if page and page.hero_image %}
         {% with social_image=page.hero_image.url %}
-        <meta property="og:title" content="{{ page_title|default:'Editions Recréation' }}">
-        <meta property="og:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta property="og:title" content="{{ page_title|default:?Editions Recréation? }}">
+        <meta property="og:description" content="{{ page_description|default:?Editions Recréation - Maison d\?édition africaine? }}">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ request.build_absolute_uri }}">
         <meta property="og:image" content="{{ site_url }}{{ social_image }}">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{ page_title|default:'Editions Recréation' }}">
-        <meta name="twitter:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta name="twitter:title" content="{{ page_title|default:?Editions Recréation? }}">
+        <meta name="twitter:description" content="{{ page_description|default:?Editions Recréation - Maison d\?édition africaine? }}">
         <meta name="twitter:image" content="{{ site_url }}{{ social_image }}">
         {% endwith %}
     {% elif site_content and site_content.og_image %}
         {% with social_image=site_content.og_image.url %}
-        <meta property="og:title" content="{{ page_title|default:'Editions Recréation' }}">
-        <meta property="og:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta property="og:title" content="{{ page_title|default:?Editions Recréation? }}">
+        <meta property="og:description" content="{{ page_description|default:?Editions Recréation - Maison d\?édition africaine? }}">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ request.build_absolute_uri }}">
         <meta property="og:image" content="{{ site_url }}{{ social_image }}">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{ page_title|default:'Editions Recréation' }}">
-        <meta name="twitter:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta name="twitter:title" content="{{ page_title|default:?Editions Recréation? }}">
+        <meta name="twitter:description" content="{{ page_description|default:?Editions Recréation - Maison d\?édition africaine? }}">
         <meta name="twitter:image" content="{{ site_url }}{{ social_image }}">
         {% endwith %}
     {% elif appearance and appearance.logo %}
         {% with social_image=appearance.logo.url %}
-        <meta property="og:title" content="{{ page_title|default:'Editions Recréation' }}">
-        <meta property="og:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta property="og:title" content="{{ page_title|default:?Editions Recréation? }}">
+        <meta property="og:description" content="{{ page_description|default:?Editions Recréation - Maison d\?édition africaine? }}">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ request.build_absolute_uri }}">
         <meta property="og:image" content="{{ site_url }}{{ social_image }}">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{ page_title|default:'Editions Recréation' }}">
-        <meta name="twitter:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta name="twitter:title" content="{{ page_title|default:?Editions Recréation? }}">
+        <meta name="twitter:description" content="{{ page_description|default:?Editions Recréation - Maison d\?édition africaine? }}">
         <meta name="twitter:image" content="{{ site_url }}{{ social_image }}">
         {% endwith %}
     {% else %}
-        {% static 'catalogue/images/logo.jpg' as social_image %}
-        <meta property="og:title" content="{{ page_title|default:'Editions Recréation' }}">
-        <meta property="og:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        {% static ?catalogue/images/logo.jpg? as social_image %}
+        <meta property="og:title" content="{{ page_title|default:?Editions Recréation? }}">
+        <meta property="og:description" content="{{ page_description|default:?Editions Recréation - Maison d\?édition africaine? }}">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ request.build_absolute_uri }}">
         <meta property="og:image" content="{{ site_url }}{{ social_image }}">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{ page_title|default:'Editions Recréation' }}">
-        <meta name="twitter:description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+        <meta name="twitter:title" content="{{ page_title|default:?Editions Recréation? }}">
+        <meta name="twitter:description" content="{{ page_description|default:?Editions Recréation - Maison d\?édition africaine? }}">
         <meta name="twitter:image" content="{{ site_url }}{{ social_image }}">
     {% endif %}
     {% endwith %}
@@ -67,7 +67,7 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "{{ appearance.site_name|default:'Editions Recréation'|escapejs }}",
+      "name": "{{ appearance.site_name|default:?Editions Recréation?|escapejs }}",
       "url": "{{ request.scheme }}://{{ request.get_host }}",
       {% if appearance and appearance.logo %}
       "logo": "{{ request.scheme }}://{{ request.get_host }}{{ appearance.logo.url }}",
@@ -84,10 +84,10 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "url": "{{ request.scheme }}://{{ request.get_host }}",
-      "name": "{{ appearance.site_name|default:'Editions Recréation'|escapejs }}",
+      "name": "{{ appearance.site_name|default:?Editions Recréation?|escapejs }}",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "{{ request.scheme }}://{{ request.get_host }}{% url 'catalogue:search' %}?q={search_term_string}",
+        "target": "{{ request.scheme }}://{{ request.get_host }}{% url ?catalogue:search? %}?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
@@ -118,10 +118,10 @@
     <link rel="icon" type="image/png" sizes="192x192" href="{{ appearance.favicon.url }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ appearance.favicon.url }}">
     {% else %}
-    <link rel="icon" type="image/x-icon" href="{% static 'catalogue/images/favicon.ico' %}?v=3">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'catalogue/images/favicon-32x32.png' %}?v=3">
-    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'catalogue/images/favicon-32x32.png' %}?v=3">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'catalogue/images/apple-touch-icon.png' %}?v=3">
+    <link rel="icon" type="image/x-icon" href="{% static ?catalogue/images/favicon.ico? %}?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static ?catalogue/images/favicon-32x32.png? %}?v=3">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static ?catalogue/images/favicon-32x32.png? %}?v=3">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static ?catalogue/images/apple-touch-icon.png? %}?v=3">
     {% endif %}
     
     <!-- Polices Google Fonts -->
@@ -133,13 +133,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- CSS Principal -->
-    <link rel="stylesheet" href="{% static 'catalogue/css/style.css' %}?v=16">
-    <link rel="stylesheet" href="{% static 'catalogue/css/responsive.css' %}?v=16">
+    <link rel="stylesheet" href="{% static ?catalogue/css/style.css? %}?v=16">
+    <link rel="stylesheet" href="{% static ?catalogue/css/responsive.css? %}?v=16">
     
     <!-- CSS supplémentaire spécifique à chaque page -->
     {% block extra_css %}{% endblock %}
 </head>
-<body class="{% if request.resolver_match.url_name != 'index' %}page--inner{% endif %}">
+<body class="{% if request.resolver_match.url_name != ?index? %}page--inner{% endif %}">
     {% if appearance %}
     <style>
         :root {
@@ -164,19 +164,19 @@
                 <!-- Logo + Newsletter -->
                 <div class="header__brand">
                     <div class="header__logo">
-                        <a href="{% url 'catalogue:index' %}">
+                        <a href="{% url ?catalogue:index? %}">
                             {% if appearance and appearance.logo %}
                             <img src="{{ appearance.logo.url }}" alt="Logo Editions Recréation" width="180" height="60">
                             {% else %}
-                            <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Logo Editions Recréation" width="180" height="60">
+                            <img src="{% static ?catalogue/images/logo.jpg? %}" alt="Logo Editions Recréation" width="180" height="60">
                             {% endif %}
                         </a>
                     </div>
-                    <form class="header__newsletter-form" action="{% url 'catalogue:index' %}#newsletter" method="post">
+                    <form class="header__newsletter-form" action="{% url ?catalogue:index? %}#newsletter" method="post">
                         {% csrf_token %}
-                        <label class="sr-only" for="header-newsletter-email">S'inscrire à la newsletter</label>
+                        <label class="sr-only" for="header-newsletter-email">S?inscrire à la newsletter</label>
                         {% if site_content %}
-                        <input id="header-newsletter-email" name="email" type="email" placeholder="{{ site_content.newsletter_placeholder|default:'Votre email' }}" required>
+                        <input id="header-newsletter-email" name="email" type="email" placeholder="{{ site_content.newsletter_placeholder|default:?Votre email? }}" required>
                         <button type="submit">{{ site_content.newsletter_button_label|default:"Newsletter" }}</button>
                         {% else %}
                         <input id="header-newsletter-email" name="email" type="email" placeholder="Votre email" required>
@@ -187,10 +187,10 @@
 
                 <!-- Actions header (recherche, menu mobile) -->
                 <div class="header__actions">
-                    <form class="header-search" action="{% url 'catalogue:search' %}" method="get" role="search">
+                    <form class="header-search" action="{% url ?catalogue:search? %}" method="get" role="search">
                         <label class="sr-only" for="header-search-input">Rechercher sur le site</label>
                         <i class="fas fa-search header-search__icon" aria-hidden="true"></i>
-                        <input id="header-search-input" name="q" type="search" placeholder="{{ site_content.header_search_placeholder|default:'Rechercher livres, auteurs, actualités...' }}" autocomplete="off">
+                        <input id="header-search-input" name="q" type="search" placeholder="{{ site_content.header_search_placeholder|default:?Rechercher livres, auteurs, actualités...? }}" autocomplete="off">
                         <button type="submit" class="header-search__btn">{{ site_content.header_search_button|default:"Rechercher" }}</button>
                     </form>
                     <button id="hamburger-menu" class="header__action-btn header__hamburger" aria-label="Menu" aria-expanded="false">
@@ -200,7 +200,7 @@
                     </button>
                 </div>
 
-                <!-- Réseaux sociaux (barre d'accueil) -->
+                <!-- Réseaux sociaux (barre d?accueil) -->
                 <div class="header__social">
                     {% for social in social_links %}
                     <a href="{{ social.url }}" aria-label="{{ social.label }}" class="header-social__icon">
@@ -212,7 +212,7 @@
 
             <!-- Navigation principale -->
             <nav class="header__nav">
-                <div class="header__nav-brand"><a href="{% url 'catalogue:index' %}">Recréation</a></div>
+                <div class="header__nav-brand"><a href="{% url ?catalogue:index? %}">Recréation</a></div>
                 <ul class="header__nav-list">
                     {% if menu_header_links %}
                         {% for link in menu_header_links %}
@@ -224,7 +224,7 @@
                         </li>
                         {% if link.url == "/nos-contrats/" %}
                         <li>
-                            <a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>
+                            <a href="{% url ?catalogue:conversion-audio? %}" {% if request.resolver_match.url_name == ?conversion-audio? %}class="active"{% endif %}>
                                 {{ site_content.footer_action_conversion_label|default:"Conversion de texte en audio" }}
                             </a>
                         </li>
@@ -232,14 +232,14 @@
                         {% endif %}
                         {% endfor %}
                     {% else %}
-                        <li><a href="{% url 'catalogue:index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Accueil</a></li>
-                        <li><a href="{% url 'catalogue:actualites' %}" {% if request.resolver_match.url_name == 'actualites' %}class="active"{% endif %}>Actualités</a></li>
-                        <li><a href="{% url 'catalogue:auteurs' %}" {% if request.resolver_match.url_name == 'auteurs' %}class="active"{% endif %}>Auteurs</a></li>
-                        <li><a href="{% url 'catalogue:catalogue' %}" {% if request.resolver_match.url_name == 'catalogue' %}class="active"{% endif %}>Catalogue</a></li>
-                        <li><a href="{% url 'catalogue:nos-contrats' %}" {% if request.resolver_match.url_name == 'nos-contrats' %}class="active"{% endif %}>Nos contrats</a></li>
-                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>{{ site_content.footer_action_conversion_label|default:"Conversion de texte en audio" }}</a></li>
-                        <li><a href="{% url 'catalogue:a-propos' %}" {% if request.resolver_match.url_name == 'a-propos' %}class="active"{% endif %}>A propos</a></li>
-                        <li><a href="{% url 'catalogue:contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>Contacts</a></li>
+                        <li><a href="{% url ?catalogue:index? %}" {% if request.resolver_match.url_name == ?index? %}class="active"{% endif %}>Accueil</a></li>
+                        <li><a href="{% url ?catalogue:actualites? %}" {% if request.resolver_match.url_name == ?actualites? %}class="active"{% endif %}>Actualités</a></li>
+                        <li><a href="{% url ?catalogue:auteurs? %}" {% if request.resolver_match.url_name == ?auteurs? %}class="active"{% endif %}>Auteurs</a></li>
+                        <li><a href="{% url ?catalogue:catalogue? %}" {% if request.resolver_match.url_name == ?catalogue? %}class="active"{% endif %}>Catalogue</a></li>
+                        <li><a href="{% url ?catalogue:nos-contrats? %}" {% if request.resolver_match.url_name == ?nos-contrats? %}class="active"{% endif %}>Nos contrats</a></li>
+                        <li><a href="{% url ?catalogue:conversion-audio? %}" {% if request.resolver_match.url_name == ?conversion-audio? %}class="active"{% endif %}>{{ site_content.footer_action_conversion_label|default:"Conversion de texte en audio" }}</a></li>
+                        <li><a href="{% url ?catalogue:a-propos? %}" {% if request.resolver_match.url_name == ?a-propos? %}class="active"{% endif %}>A propos</a></li>
+                        <li><a href="{% url ?catalogue:contact? %}" {% if request.resolver_match.url_name == ?contact? %}class="active"{% endif %}>Contacts</a></li>
                     {% endif %}
                     <li>
                         <button id="nav-menu-btn" class="nav-menu-btn" type="button" aria-expanded="false" aria-controls="nav-drawer">
@@ -279,13 +279,13 @@
                 {% endif %}
                 <div class="nav-drawer__section-title">{{ site_content.nav_title_formats|default:"Autres versions de livres" }}</div>
                 <div class="nav-drawer__collections">
-                    <a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a>
-                    <a href="{% url 'catalogue:livres-papier' %}">Livres papier</a>
-                    <a href="{% url 'catalogue:livres-audio' %}">Livres audio</a>
+                    <a href="{% url ?catalogue:livres-numeriques? %}">Livres numériques</a>
+                    <a href="{% url ?catalogue:livres-papier? %}">Livres papier</a>
+                    <a href="{% url ?catalogue:livres-audio? %}">Livres audio</a>
                 </div>
                 <div class="nav-drawer__section-title">{{ site_content.nav_title_services|default:"Autres services" }}</div>
                 <div class="nav-drawer__collections">
-                    <a href="{% url 'catalogue:conversion-audio' %}">
+                    <a href="{% url ?catalogue:conversion-audio? %}">
                         <span class="footer-fayard__btn-icon footer-fayard__btn-icon--audio" aria-hidden="true">
                             <svg class="audio-icon-svg" viewBox="0 0 128 128" role="img" aria-hidden="true" focusable="false">
                                 <path d="M64 16c-24.3 0-44 19.7-44 44v20c0 6.6 5.4 12 12 12h10V64H32v-4c0-17.7 14.3-32 32-32s32 14.3 32 32v4H86v28h10c6.6 0 12-5.4 12-12V60c0-24.3-19.7-44-44-44z" fill="currentColor"/>
@@ -300,7 +300,7 @@
             <div class="nav-drawer__cta">
                 <h3>{{ site_content.nav_cta_title|default:"Abonnez-vous à la newsletter" }}</h3>
                 <p>{{ site_content.nav_cta_text|default:"Recevez nos actualités et nouveautés." }}</p>
-                <a href="{% url 'catalogue:index' %}#newsletter" class="btn btn--primary">{{ site_content.nav_cta_button|default:"S'abonner" }}</a>
+                <a href="{% url ?catalogue:index? %}#newsletter" class="btn btn--primary">{{ site_content.nav_cta_button|default:"S?abonner" }}</a>
             </div>
             <div class="nav-drawer__social">
                 <h4>{{ site_content.footer_social_title|default:"Nous suivre les réseaux sociaux" }}</h4>
@@ -331,7 +331,7 @@
             <!-- Logo et adresse -->
             <div class="footer-fayard__brand">
                 <h2 class="footer-fayard__logo">
-                    <a href="{% url 'catalogue:index' %}">{{ appearance.site_name|default:"Editions Recréation" }}</a>
+                    <a href="{% url ?catalogue:index? %}">{{ appearance.site_name|default:"Editions Recréation" }}</a>
                 </h2>
                 <p class="footer-fayard__slogan">
                     {% if site_content %}
@@ -350,17 +350,17 @@
                     </span>
                 </p>
                 <p class="footer-fayard__catalogue-link">
-                    <a href="{% url 'catalogue:catalogue' %}">{{ site_content.footer_catalogue_label|default:"Catalogue" }}</a>
+                    <a href="{% url ?catalogue:catalogue? %}">{{ site_content.footer_catalogue_label|default:"Catalogue" }}</a>
                 </p>
                 <ul class="footer-fayard__catalogue-list">
-                    <li><a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a></li>
-                    <li><a href="{% url 'catalogue:livres-papier' %}">Livres papier</a></li>
-                    <li><a href="{% url 'catalogue:livres-audio' %}">Livres audio</a></li>
-                    <li><a href="{% url 'catalogue:index' %}#nouveautes">{{ site_content.footer_catalogue_news_label|default:"Nouveautés" }}</a></li>
-                    <li><a href="{% url 'catalogue:index' %}#a-paraitre">{{ site_content.footer_catalogue_upcoming_label|default:"Prochaines parutions" }}</a></li>
+                    <li><a href="{% url ?catalogue:livres-numeriques? %}">Livres numériques</a></li>
+                    <li><a href="{% url ?catalogue:livres-papier? %}">Livres papier</a></li>
+                    <li><a href="{% url ?catalogue:livres-audio? %}">Livres audio</a></li>
+                    <li><a href="{% url ?catalogue:index? %}#nouveautes">{{ site_content.footer_catalogue_news_label|default:"Nouveautés" }}</a></li>
+                    <li><a href="{% url ?catalogue:index? %}#a-paraitre">{{ site_content.footer_catalogue_upcoming_label|default:"Prochaines parutions" }}</a></li>
                 </ul>
                 <p class="footer-fayard__catalogue-link footer-fayard__catalogue-link--collections">
-                    <a href="{% url 'catalogue:collections' %}">{{ site_content.footer_title_collections|default:"Collections" }}</a>
+                    <a href="{% url ?catalogue:collections? %}">{{ site_content.footer_title_collections|default:"Collections" }}</a>
                 </p>
                 <ul class="footer-fayard__catalogue-list">
                     {% for collection in collections_list|slice:":6" %}
@@ -373,10 +373,10 @@
                         <li>Collections à venir</li>
                     {% endfor %}
                     <li class="footer-fayard__catalogue-section-title">{{ site_content.footer_title_resources|default:"Ressources" }}</li>
-                    <li><a href="{% url 'catalogue:actualites' %}">Actualités</a></li>
-                    <li><a href="{% url 'catalogue:a-propos' %}">A propos</a></li>
-                    <li><a href="{% url 'catalogue:a-propos' %}#equipe">Notre équipe</a></li>
-                    <li><a href="{% url 'catalogue:nos-contrats' %}">Nos contrats</a></li>
+                    <li><a href="{% url ?catalogue:actualites? %}">Actualités</a></li>
+                    <li><a href="{% url ?catalogue:a-propos? %}">A propos</a></li>
+                    <li><a href="{% url ?catalogue:a-propos? %}#equipe">Notre équipe</a></li>
+                    <li><a href="{% url ?catalogue:nos-contrats? %}">Nos contrats</a></li>
                 </ul>
             </div>
 
@@ -386,15 +386,15 @@
                     <i class="fas fa-phone"></i>
                     <span>{{ site_content.footer_action_phone_label|default:"Téléphone" }}</span>
                 </a>
-                <a href="{% url 'catalogue:soumission-manuscrit' %}" class="footer-fayard__action">
+                <a href="{% url ?catalogue:soumission-manuscrit? %}" class="footer-fayard__action">
                     <i class="fas fa-file-alt"></i>
                     <span>{{ site_content.footer_action_submit_label|default:"Soumettez votre manuscrit/tapuscrit" }}</span>
                 </a>
-                <a href="{% url 'catalogue:contact' %}" class="footer-fayard__action">
+                <a href="{% url ?catalogue:contact? %}" class="footer-fayard__action">
                     <i class="fas fa-envelope"></i>
                     <span>{{ site_content.footer_action_email_label|default:"E-mail" }}</span>
                 </a>
-                <a href="{% url 'catalogue:conversion-audio' %}" class="footer-fayard__action">
+                <a href="{% url ?catalogue:conversion-audio? %}" class="footer-fayard__action">
                     <span class="footer-fayard__btn-icon footer-fayard__btn-icon--audio" aria-hidden="true">
                         <svg class="audio-icon-svg" viewBox="0 0 128 128" role="img" aria-hidden="true" focusable="false">
                             <path d="M64 16c-24.3 0-44 19.7-44 44v20c0 6.6 5.4 12 12 12h10V64H32v-4c0-17.7 14.3-32 32-32s32 14.3 32 32v4H86v28h10c6.6 0 12-5.4 12-12V60c0-24.3-19.7-44-44-44z" fill="currentColor"/>
@@ -426,16 +426,16 @@
             <div class="footer-fayard__bottom">
                 <p>{{ footer_copyright }}</p>
                 <div class="footer-fayard__links">
-                    <a href="{% url 'catalogue:mentions-legales' %}">Mentions légales</a>
-                    <a href="{% url 'catalogue:confidentialite' %}">Confidentialité</a>
-                    <a href="{% url 'catalogue:cookies' %}">Cookies</a>
+                    <a href="{% url ?catalogue:mentions-legales? %}">Mentions légales</a>
+                    <a href="{% url ?catalogue:confidentialite? %}">Confidentialité</a>
+                    <a href="{% url ?catalogue:cookies? %}">Cookies</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <a
-        href="{{ appearance.whatsapp|default:'https://wa.me/c/22968809777' }}"
+        href="{{ appearance.whatsapp|default:?https://wa.me/c/22968809777? }}"
         class="whatsapp-float"
         aria-label="WhatsApp"
         target="_blank"
@@ -464,23 +464,23 @@
     <script>
         // URLs Django accessibles depuis JavaScript
         window.DJANGO_URLS = {
-            livresJson: "{% url 'catalogue:livres-json' %}",
-            auteursJson: "{% url 'catalogue:auteurs-json' %}",
+            livresJson: "{% url ?catalogue:livres-json? %}",
+            auteursJson: "{% url ?catalogue:auteurs-json? %}",
             livreDetailJson: function(id) {
-                return "{% url 'catalogue:livre-detail-json' 0 %}".replace('0', id);
+                return "{% url ?catalogue:livre-detail-json? 0 %}".replace(?0?, id);
             }
         };
     </script>
     
     <!-- Scripts principaux -->
-    <script src="{% static 'catalogue/js/main.js' %}?v=8"></script>
+    <script src="{% static ?catalogue/js/main.js? %}?v=8"></script>
     <script>
         (function() {
-            const inputs = document.querySelectorAll('input.phone-input');
+            const inputs = document.querySelectorAll(?input.phone-input?);
             inputs.forEach((input) => {
-                input.setAttribute('list', 'country-codes');
+                input.setAttribute(?list?, ?country-codes?);
                 if (!input.placeholder) {
-                    input.placeholder = '+229 XX XX XX XX';
+                    input.placeholder = ?+229 XX XX XX XX?;
                 }
             });
         })();

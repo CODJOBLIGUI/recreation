@@ -4,7 +4,7 @@ Django==5.0.1
 # Gestion des images
 Pillow==11.3.0
 
-# Gestion des variables d'environnement
+# Gestion des variables d?environnement
 python-dotenv==1.0.1
 
 # Admin UI

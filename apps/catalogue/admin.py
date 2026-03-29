@@ -75,7 +75,7 @@ class AuteurAdmin(ModelAdmin):
         """Afficher un apercu de la photo."""
         if obj.photo:
             return format_html(
-                '<img src="{}" style="max-height: 200px; max-width: 300px; border-radius: 8px;">',
+                ?<img src="{}" style="max-height: 200px; max-width: 300px; border-radius: 8px;">?,
                 obj.photo.url,
             )
         return "Aucune photo"
@@ -135,9 +135,9 @@ class LivreAdmin(ModelAdmin):
         ("D\u00e9tails publication", {"fields": ("isbn", "prix", "parution")}),
         ("Versions disponibles", {"fields": ("version_papier", "version_numerique", "version_audio")}),
         ("Couvertures par version", {"fields": ("image", "image_numerique", "image_audio")}),
-        ("Liens d'achat (papier)", {"fields": ("lien_chariow", "lien_amazon", "lien_whatsapp")}),
-        ("Liens d'achat (num\u00e9rique)", {"fields": ("lien_chariow_numerique", "lien_amazon_numerique", "lien_whatsapp_numerique")}),
-        ("Liens d'achat (audio)", {"fields": ("lien_chariow_audio", "lien_amazon_audio", "lien_whatsapp_audio")}),
+        ("Liens d?achat (papier)", {"fields": ("lien_chariow", "lien_amazon", "lien_whatsapp")}),
+        ("Liens d?achat (num\u00e9rique)", {"fields": ("lien_chariow_numerique", "lien_amazon_numerique", "lien_whatsapp_numerique")}),
+        ("Liens d?achat (audio)", {"fields": ("lien_chariow_audio", "lien_amazon_audio", "lien_whatsapp_audio")}),
         ("Mise en avant", {"fields": ("est_nouveau", "est_bestseller", "est_prochaine_parution", "est_publie")}),
         ("SEO", {"fields": ("slug", "meta_title", "meta_description"), "classes": ("collapse",)}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
@@ -188,7 +188,7 @@ class LivreAdmin(ModelAdmin):
         """Grande previsualisation de la couverture."""
         if obj.image:
             return format_html(
-                '<img src="{}" style="max-height: 400px; max-width: 300px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">',
+                ?<img src="{}" style="max-height: 400px; max-width: 300px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">?,
                 obj.image.url,
             )
         return "Aucune image"
@@ -197,28 +197,28 @@ class LivreAdmin(ModelAdmin):
 
     def apercu_couverture_mini(self, obj):
         if obj.image:
-            return format_html('<img src="{}" style="height: 60px; width: auto; border-radius: 4px;">', obj.image.url)
+            return format_html(?<img src="{}" style="height: 60px; width: auto; border-radius: 4px;">?, obj.image.url)
         return "\u274c"
 
     apercu_couverture_mini.short_description = "\U0001f4f7"
 
     def badge_nouveau(self, obj):
         if obj.est_nouveau:
-            return format_html('<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">\u2728 Nouveau</span>')
+            return format_html(?<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">\u2728 Nouveau</span>?)
         return ""
 
     badge_nouveau.short_description = "Nouveau"
 
     def badge_bestseller(self, obj):
         if obj.est_bestseller:
-            return format_html('<span style="background: #f59e0b; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">\U0001f525 Best</span>')
+            return format_html(?<span style="background: #f59e0b; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">\U0001f525 Best</span>?)
         return ""
 
     badge_bestseller.short_description = "Best"
 
     def badge_prochaine_parution(self, obj):
         if obj.est_prochaine_parution:
-            return format_html('<span style="background: #3b82f6; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">\U0001f4c5 Bient\u00f4t</span>')
+            return format_html(?<span style="background: #3b82f6; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">\U0001f4c5 Bient\u00f4t</span>?)
         return ""
 
     badge_prochaine_parution.short_description = "Bient\u00f4t"
@@ -246,7 +246,7 @@ class MembreAdmin(ModelAdmin):
     def apercu_photo(self, obj):
         if obj.photo:
             return format_html(
-                '<img src="{}" style="max-height: 200px; max-width: 200px; border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">',
+                ?<img src="{}" style="max-height: 200px; max-width: 200px; border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">?,
                 obj.photo.url,
             )
         return "Aucune photo"
@@ -255,7 +255,7 @@ class MembreAdmin(ModelAdmin):
 
     def apercu_photo_mini(self, obj):
         if obj.photo:
-            return format_html('<img src="{}" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover;">', obj.photo.url)
+            return format_html(?<img src="{}" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover;">?, obj.photo.url)
         return "\U0001f464"
 
     apercu_photo_mini.short_description = "\U0001f4f7"
@@ -275,7 +275,7 @@ class NationaliteAdmin(ModelAdmin):
     def apercu_drapeau(self, obj):
         if obj.drapeau:
             return format_html(
-                '<img src="{}" style="height: 28px; width: auto; border-radius: 6px;">',
+                ?<img src="{}" style="height: 28px; width: auto; border-radius: 6px;">?,
                 obj.drapeau.url,
             )
         return "\u274c"
@@ -309,11 +309,11 @@ class PageAdmin(ModelAdmin):
                 return ""
             if obj.image:
                 return format_html(
-                    '<img src="{}" style="height:36px;width:36px;object-fit:cover;border-radius:6px;">',
+                    ?<img src="{}" style="height:36px;width:36px;object-fit:cover;border-radius:6px;">?,
                     obj.image.url,
                 )
             return format_html(
-                '<span style="color:#6b7280;">{}</span>',
+                ?<span style="color:#6b7280;">{}</span>?,
                 obj.titre or obj.get_block_type_display(),
             )
         
@@ -478,28 +478,28 @@ class ActualiteAdmin(ModelAdmin):
 
     def apercu_image(self, obj):
         if obj.image:
-            return format_html('<img src="{}" style="max-height: 300px; max-width: 100%; border-radius: 8px;">', obj.image.url)
+            return format_html(?<img src="{}" style="max-height: 300px; max-width: 100%; border-radius: 8px;">?, obj.image.url)
         return "Aucune image"
 
     apercu_image.short_description = "Aper\u00e7u"
 
     def apercu_image_mini(self, obj):
         if obj.image:
-            return format_html('<img src="{}" style="height: 50px; width: auto; border-radius: 4px;">', obj.image.url)
+            return format_html(?<img src="{}" style="height: 50px; width: auto; border-radius: 4px;">?, obj.image.url)
         return "\U0001f5bc\ufe0f"
 
     apercu_image_mini.short_description = "\U0001f4f7"
 
     def badge_publie(self, obj):
         if obj.est_publie:
-            return format_html('<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px;">\u2705 Publi\u00e9</span>')
-        return format_html('<span style="background: #6b7280; color: white; padding: 4px 8px; border-radius: 4px;">\u274c Brouillon</span>')
+            return format_html(?<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px;">\u2705 Publi\u00e9</span>?)
+        return format_html(?<span style="background: #6b7280; color: white; padding: 4px 8px; border-radius: 4px;">\u274c Brouillon</span>?)
 
     badge_publie.short_description = "Statut"
 
     def badge_une(self, obj):
         if obj.est_une_a_la_une:
-            return format_html('<span style="background: #f59e0b; color: white; padding: 4px 8px; border-radius: 4px;">\u2b50 \u00c0 la une</span>')
+            return format_html(?<span style="background: #f59e0b; color: white; padding: 4px 8px; border-radius: 4px;">\u2b50 \u00c0 la une</span>?)
         return ""
 
     badge_une.short_description = "Une"
@@ -556,14 +556,14 @@ class PageBlockAdmin(ModelAdmin):
     def apercu(self, obj):
         if obj.image:
             return format_html(
-                '<div style="display:flex;align-items:center;gap:8px;">'
-                '<img src="{}" style="height:40px;width:40px;object-fit:cover;border-radius:6px;">'
-                '<span>{}</span></div>',
+                ?<div style="display:flex;align-items:center;gap:8px;">?
+                ?<img src="{}" style="height:40px;width:40px;object-fit:cover;border-radius:6px;">?
+                ?<span>{}</span></div>?,
                 obj.image.url,
                 obj.titre or obj.get_block_type_display(),
             )
         return format_html(
-            '<span style="color:#6b7280;">{}</span>',
+            ?<span style="color:#6b7280;">{}</span>?,
             obj.titre or obj.get_block_type_display(),
         )
     
@@ -593,8 +593,8 @@ class InscriptionNewsletterAdmin(ModelAdmin):
 
     def badge_actif(self, obj):
         if obj.est_actif:
-            return format_html('<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px;">\u2705 Actif</span>')
-        return format_html('<span style="background: #ef4444; color: white; padding: 4px 8px; border-radius: 4px;">\u274c Inactif</span>')
+            return format_html(?<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px;">\u2705 Actif</span>?)
+        return format_html(?<span style="background: #ef4444; color: white; padding: 4px 8px; border-radius: 4px;">\u274c Inactif</span>?)
 
 
 @admin.register(AudioConversionRequest)
@@ -699,7 +699,7 @@ class AudioConversionRequestAdmin(ModelAdmin):
         if success:
             self.message_user(request, f"{success} fichier(s) converti(s) avec succès.", level="success")
         if failures and not success:
-            self.message_user(request, "Aucune conversion n'a abouti. Vérifiez les erreurs ci-dessus.", level="error")
+            self.message_user(request, "Aucune conversion n?a abouti. Vérifiez les erreurs ci-dessus.", level="error")
 
     convertir_fichier_en_audio.short_description = "Convertir le fichier en MP3"
 
@@ -712,7 +712,7 @@ class AudioConversionRequestAdmin(ModelAdmin):
 
     def progress_message(self, obj):
         if obj.async_status == "queued":
-            return "En file d'attente"
+            return "En file d?attente"
         if obj.async_status == "started":
             if obj.async_progress < 25:
                 return "Extraction…"
@@ -729,14 +729,14 @@ class AudioConversionRequestAdmin(ModelAdmin):
 
     def fichier_link(self, obj):
         if obj.fichier:
-            return format_html('<a href="{}" target="_blank">Télécharger</a>', obj.fichier.url)
+            return format_html(?<a href="{}" target="_blank">Télécharger</a>?, obj.fichier.url)
         return "-"
 
     fichier_link.short_description = "Fichier"
 
     def audio_link(self, obj):
         if obj.audio:
-            return format_html('<a href="{}" target="_blank">Télécharger MP3</a>', obj.audio.url)
+            return format_html(?<a href="{}" target="_blank">Télécharger MP3</a>?, obj.audio.url)
         return "-"
 
     audio_link.short_description = "Audio"
@@ -778,8 +778,8 @@ class MessageContactAdmin(ModelAdmin):
 
     def badge_lu(self, obj):
         if obj.lu:
-            return format_html('<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px;">\u2705 Lu</span>')
-        return format_html('<span style="background: #ef4444; color: white; padding: 4px 8px; border-radius: 4px;">\U0001f4e7 Non lu</span>')
+            return format_html(?<span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 4px;">\u2705 Lu</span>?)
+        return format_html(?<span style="background: #ef4444; color: white; padding: 4px 8px; border-radius: 4px;">\U0001f4e7 Non lu</span>?)
 
     badge_lu.short_description = "Lu"
 

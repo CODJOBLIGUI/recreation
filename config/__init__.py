@@ -21,6 +21,6 @@ try:
 
     Context.flatten = _safe_flatten
 except Exception:
-    # If Django isn't ready yet, or import fails, do nothing.
+    # If Django isn?t ready yet, or import fails, do nothing.
     pass
 

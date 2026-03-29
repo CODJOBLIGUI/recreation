@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                 ("slug", models.SlugField(blank=True, max_length=200, unique=True, verbose_name="Slug")),
                 ("description", ckeditor.fields.RichTextField(blank=True, verbose_name="Description")),
                 ("image", models.ImageField(blank=True, null=True, upload_to="collections/%Y/%m/", verbose_name="Image")),
-                ("ordre_affichage", models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")),
+                ("ordre_affichage", models.PositiveIntegerField(default=0, verbose_name="Ordre d?affichage")),
                 ("est_active", models.BooleanField(default=True, verbose_name="Est active")),
             ],
             options={

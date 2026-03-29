@@ -18,4 +18,4 @@ Sur un autre environnement (base vide) :
 python manage.py loaddata data/backup.json
 ```
 
-Si la base contient deja des donnees, il est recommande de faire une sauvegarde avant l'import.
+Si la base contient deja des donnees, il est recommande de faire une sauvegarde avant l?import.

@@ -5,12 +5,12 @@
  */
 
 (function() {
-    'use strict';
+    ?use strict?;
     
     // Ce fichier peut contenir des scripts spécifiques aux auteurs
     // Par exemple : filtrage, tri, etc.
     
-    console.log('✅ Scripts page auteurs chargés');
+    console.log(?✅ Scripts page auteurs chargés?);
     
 })();
 

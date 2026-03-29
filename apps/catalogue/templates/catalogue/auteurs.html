@@ -1,4 +1,4 @@
-﻿{% extends 'catalogue/base.html' %}
+﻿{% extends ?catalogue/base.html? %}
 {% load static %}
 
 {% block content %}
@@ -42,7 +42,7 @@
                     </div>
                     {% endif %}
                     <p class="author-card__bio">{{ auteur.biographie_texte|truncatewords:30 }}</p>
-            <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">Lire la biographie</a>
+            <a href="{% url ?catalogue:auteur-detail? auteur.slug %}" class="btn btn--secondary">Lire la biographie</a>
                 </div>
             </div>
             {% endfor %}
@@ -53,7 +53,7 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'catalogue/js/auteurs.js' %}"></script>
+<script src="{% static ?catalogue/js/auteurs.js? %}"></script>
 {% endblock %}
 
 

@@ -2,7 +2,7 @@ from .base import *
 from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don?t run with debug turned on in production!
 DEBUG = False
 
 # Configure hosts from environment variables

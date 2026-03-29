@@ -20,7 +20,7 @@
                             {% if collection.image %}
                                 <img src="{{ collection.image.url }}" alt="{{ collection.nom }}">
                             {% else %}
-                                <img src="{% static 'catalogue/images/news/placeholder.jpg' %}" alt="{{ collection.nom }}">
+                                <img src="{% static ?catalogue/images/news/placeholder.jpg? %}" alt="{{ collection.nom }}">
                             {% endif %}
                         </div>
                         <div class="news-card__content">

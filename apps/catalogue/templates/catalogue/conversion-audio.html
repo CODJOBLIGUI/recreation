@@ -1,4 +1,4 @@
-﻿{% extends 'catalogue/base.html' %}
+﻿{% extends ?catalogue/base.html? %}
 {% load static %}
 
 {% block content %}
@@ -100,7 +100,7 @@
                         <a
                             class="btn btn--white btn--large"
                             id="payment-start"
-                            href="{% url 'catalogue:conversion-audio-pay' last_request.id %}">
+                            href="{% url ?catalogue:conversion-audio-pay? last_request.id %}">
                             Payer maintenant
                         </a>
                     {% else %}
@@ -118,8 +118,8 @@
                     <div id="payment-no-actions" style="display:none;">
                         <p class="cta-box__text">Souhaitez-vous discuter avec nous via WhatsApp ?</p>
                         <div class="cta-box__actions">
-                            <a class="btn btn--primary btn--large" href="{{ appearance.whatsapp|default:'https://wa.me/c/22968809777' }}" target="_blank" rel="noopener">WhatsApp</a>
-                            <a class="btn btn--white btn--large" href="{% url 'catalogue:index' %}">Revenir à la page d'accueil</a>
+                            <a class="btn btn--primary btn--large" href="{{ appearance.whatsapp|default:?https://wa.me/c/22968809777? }}" target="_blank" rel="noopener">WhatsApp</a>
+                            <a class="btn btn--white btn--large" href="{% url ?catalogue:index? %}">Revenir à la page d?accueil</a>
                         </div>
                     </div>
                 </div>
@@ -141,10 +141,10 @@
             {% if not last_request or last_request.statut != "error" or last_request.paiement_requis %}style="display:none;"{% endif %}>
             {{ site_content.conversion_unavailable_free_text|default:"Service momentanément indisponible. Veuillez réessayer plus tard ou essayez avec une version payante. Un professionnel prendra votre requette en charge." }}
             <div style="margin-top:0.6rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
-                <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-synthetique' %}">
+                <a class="btn btn--primary btn--large" href="{% url ?catalogue:conversion-audio-synthetique? %}">
                     {{ site_content.conversion_limit_cta_paid_label|default:"Téléverser un texte" }}
                 </a>
-                <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
+                <a class="btn btn--white btn--large" href="{% url ?catalogue:conversion-audio-humain? %}">
                     {{ site_content.conversion_limit_cta_human_label|default:"Lecture par un humain" }}
                 </a>
             </div>
@@ -156,10 +156,10 @@
                 {{ site_content.conversion_free_limit_reached_text|default:"Vous avez atteint la limite de conversion gratuite quotidienne." }}
                 Vous pourrez réessayer dans <strong id="free-limit-timer">00:00:00</strong>.
                 <div style="margin-top:0.6rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
-                    <a class="btn btn--primary btn--large" href="{% url 'catalogue:conversion-audio-synthetique' %}">
+                    <a class="btn btn--primary btn--large" href="{% url ?catalogue:conversion-audio-synthetique? %}">
                         {{ site_content.conversion_limit_cta_paid_label|default:"Téléverser un texte" }}
                     </a>
-                    <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
+                    <a class="btn btn--white btn--large" href="{% url ?catalogue:conversion-audio-humain? %}">
                         {{ site_content.conversion_limit_cta_human_label|default:"Lecture par un humain" }}
                     </a>
                 </div>
@@ -198,7 +198,7 @@
                     {% if form.langue.value == "fon" %}
                         <small class="form-hint">
                             La synthèse vocale en fon n’est pas disponible.
-                            <a href="{% url 'catalogue:conversion-audio-humain' %}">Ouvrir la lecture par un humain</a>.
+                            <a href="{% url ?catalogue:conversion-audio-humain? %}">Ouvrir la lecture par un humain</a>.
                         </small>
                     {% endif %}
                 </div>
@@ -260,11 +260,11 @@
         const freeLimitTimer = document.getElementById("free-limit-timer");
 
         function togglePayment() {
-            const textLength = (texte && texte.value) ? texte.value.length : 0;
+            const textLength = (texte && texte.value)  texte.value.length : 0;
             const hasFile = fichier && fichier.files && fichier.files.length > 0;
             const needsPayment = hasFile || textLength > 5000;
             if (needsPayment) {
-                paymentNote.style.display = textLength > 5000 ? "block" : "none";
+                paymentNote.style.display = textLength > 5000  "block" : "none";
                 if (emailInput) {
                     emailInput.required = true;
                 }
@@ -397,7 +397,7 @@
             if (!requestId) return;
             const url = `/conversion-texte-audio/statut/${requestId}/`;
             fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-                .then((res) => res.ok ? res.json() : null)
+                .then((res) => res.ok  res.json() : null)
                 .then((data) => {
                     if (!data) return;
                     if (data.status === "error" || data.async_status === "failed") {

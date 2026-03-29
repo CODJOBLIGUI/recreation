@@ -28,7 +28,7 @@
                 <td>{{ c.async_progress }}%</td>
                 <td>
                     {% if c.async_status == "queued" %}
-                        En file d'attente
+                        En file d?attente
                     {% elif c.async_status == "started" %}
                         {% if c.async_progress < 25 %}
                             Extraction…

@@ -1,4 +1,4 @@
-﻿{% extends 'catalogue/base.html' %}
+﻿{% extends ?catalogue/base.html? %}
 {% load static %}
 {% load text_extras %}
 
@@ -55,7 +55,7 @@
 
         <button type="submit" class="btn btn--secondary">Appliquer</button>
 
-        <a href="{% url 'catalogue:actualites' %}" class="btn btn--ghost">Réinitialiser</a>
+        <a href="{% url ?catalogue:actualites? %}" class="btn btn--ghost">Réinitialiser</a>
 
     </div>
 
@@ -67,14 +67,14 @@
                     {% if actualite.image %}
                     <img src="{{ actualite.image.url }}" alt="{{ actualite.titre|fix_mojibake }}">
                     {% else %}
-                    <img src="{% static 'catalogue/images/news/placeholder.jpg' %}" alt="{{ actualite.titre|fix_mojibake }}">
+                    <img src="{% static ?catalogue/images/news/placeholder.jpg? %}" alt="{{ actualite.titre|fix_mojibake }}">
                     {% endif %}
                 </div>
                 <div class="news-card__content">
                     <span class="news-card__date">{{ actualite.date_publication|date:"d F Y" }}</span>
                     <h3 class="news-card__title">{{ actualite.titre|fix_mojibake }}</h3>
                     <p class="news-card__excerpt">{{ actualite.extrait|striptags|truncatewords:24|safe|fix_mojibake }}</p>
-                    <a href="{% url 'catalogue:actualite-detail' actualite.slug %}" class="btn btn--secondary">Lire la suite</a>
+                    <a href="{% url ?catalogue:actualite-detail? actualite.slug %}" class="btn btn--secondary">Lire la suite</a>
                 </div>
             </article>
             {% empty %}

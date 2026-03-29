@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0002_seed_siteappearance'),
+        (?core?, ?0002_seed_siteappearance?),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='siteappearance',
-            name='audio_payment_url',
-            field=models.URLField(blank=True, verbose_name='Lien de paiement (conversion texte en audio)'),
+            model_name=?siteappearance?,
+            name=?audio_payment_url?,
+            field=models.URLField(blank=True, verbose_name=?Lien de paiement (conversion texte en audio)?),
         ),
     ]

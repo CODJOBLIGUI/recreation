@@ -1,5 +1,5 @@
 /**
- * PAGE D'ACCUEIL
+ * PAGE D?ACCUEIL
  * Gere les interactions specifiques de la page index
  */
 
@@ -58,8 +58,8 @@
             }
 
             var target = wrapper.getAttribute("data-book-carousel");
-            var prevBtn = document.querySelector('[data-book-action="prev"][data-book-target="' + target + '"]');
-            var nextBtn = document.querySelector('[data-book-action="next"][data-book-target="' + target + '"]');
+            var prevBtn = document.querySelector(?[data-book-action="prev"][data-book-target="? + target + ?"]?);
+            var nextBtn = document.querySelector(?[data-book-action="next"][data-book-target="? + target + ?"]?);
 
             if (prevBtn) {
                 prevBtn.addEventListener("click", function() {
@@ -142,8 +142,8 @@
         }
     }
 
-    var prevBtn = document.querySelector('[data-news-action="prev"]');
-    var nextBtn = document.querySelector('[data-news-action="next"]');
+    var prevBtn = document.querySelector(?[data-news-action="prev"]?);
+    var nextBtn = document.querySelector(?[data-news-action="next"]?);
     if (prevBtn) {
         prevBtn.addEventListener("click", function() {
             scrollPrev();

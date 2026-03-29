@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return !row.classList.contains("empty-form");
             });
             orderedRows.forEach(function (row, idx) {
-                var input = row.querySelector('input[name$="-ordre"]');
+                var input = row.querySelector(?input[name$="-ordre"]?);
                 if (input) {
                     input.value = idx + 1;
                 }

@@ -1,4 +1,4 @@
-﻿{% extends 'catalogue/base.html' %}
+﻿{% extends ?catalogue/base.html? %}
 {% load static %}
 
 {% block content %}
@@ -40,7 +40,7 @@
             {% endfor %}
         {% endif %}
 
-        <form method="POST" action="{% url 'catalogue:soumission-manuscrit' %}" enctype="multipart/form-data" class="manuscrit__form">
+        <form method="POST" action="{% url ?catalogue:soumission-manuscrit? %}" enctype="multipart/form-data" class="manuscrit__form">
             {% csrf_token %}
 
             <div class="form-group">

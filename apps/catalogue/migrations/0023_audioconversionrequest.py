@@ -6,31 +6,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalogue', '0022_add_audio_conversion_page'),
+        (?catalogue?, ?0022_add_audio_conversion_page?),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AudioConversionRequest',
+            name=?AudioConversionRequest?,
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Date de création')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Date de modification')),
-                ('email', models.EmailField(max_length=254, verbose_name='Email')),
-                ('whatsapp', models.CharField(blank=True, max_length=40, verbose_name='WhatsApp')),
-                ('texte', models.TextField(blank=True, verbose_name='Texte')),
-                ('fichier', models.FileField(blank=True, null=True, upload_to='audio_requests/files/%Y/%m/', verbose_name='Fichier')),
-                ('phrases_count', models.PositiveIntegerField(default=0, verbose_name='Nombre de phrases')),
-                ('langue', models.CharField(choices=[('fr', 'Français'), ('en', 'Anglais'), ('de', 'Allemand'), ('es', 'Espagnol'), ('pt', 'Portugais'), ('ar', 'Arabe')], default='fr', max_length=10, verbose_name='Langue')),
-                ('voix', models.CharField(choices=[('standard', 'Standard'), ('slow', 'Lent')], default='standard', max_length=20, verbose_name='Voix')),
-                ('audio', models.FileField(blank=True, null=True, upload_to='audio_requests/audio/%Y/%m/', verbose_name='Audio généré')),
-                ('paiement_requis', models.BooleanField(default=False, verbose_name='Paiement requis')),
-                ('statut', models.CharField(choices=[('free_generated', 'Audio généré (gratuit)'), ('awaiting_payment', 'En attente de paiement'), ('paid', 'Payé'), ('processing', 'En traitement'), ('delivered', 'Envoyé'), ('error', 'Erreur')], default='awaiting_payment', max_length=30, verbose_name='Statut')),
+                (?id?, models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name=?ID?)),
+                (?created_at?, models.DateTimeField(auto_now_add=True, db_index=True, verbose_name=?Date de création?)),
+                (?updated_at?, models.DateTimeField(auto_now=True, verbose_name=?Date de modification?)),
+                (?email?, models.EmailField(max_length=254, verbose_name=?Email?)),
+                (?whatsapp?, models.CharField(blank=True, max_length=40, verbose_name=?WhatsApp?)),
+                (?texte?, models.TextField(blank=True, verbose_name=?Texte?)),
+                (?fichier?, models.FileField(blank=True, null=True, upload_to=?audio_requests/files/%Y/%m/?, verbose_name=?Fichier?)),
+                (?phrases_count?, models.PositiveIntegerField(default=0, verbose_name=?Nombre de phrases?)),
+                (?langue?, models.CharField(choices=[(?fr?, ?Français?), (?en?, ?Anglais?), (?de?, ?Allemand?), (?es?, ?Espagnol?), (?pt?, ?Portugais?), (?ar?, ?Arabe?)], default=?fr?, max_length=10, verbose_name=?Langue?)),
+                (?voix?, models.CharField(choices=[(?standard?, ?Standard?), (?slow?, ?Lent?)], default=?standard?, max_length=20, verbose_name=?Voix?)),
+                (?audio?, models.FileField(blank=True, null=True, upload_to=?audio_requests/audio/%Y/%m/?, verbose_name=?Audio généré?)),
+                (?paiement_requis?, models.BooleanField(default=False, verbose_name=?Paiement requis?)),
+                (?statut?, models.CharField(choices=[(?free_generated?, ?Audio généré (gratuit)?), (?awaiting_payment?, ?En attente de paiement?), (?paid?, ?Payé?), (?processing?, ?En traitement?), (?delivered?, ?Envoyé?), (?error?, ?Erreur?)], default=?awaiting_payment?, max_length=30, verbose_name=?Statut?)),
             ],
             options={
-                'verbose_name': 'Conversion texte en audio',
-                'verbose_name_plural': 'Conversions texte en audio',
-                'ordering': ['-created_at'],
+                ?verbose_name?: ?Conversion texte en audio?,
+                ?verbose_name_plural?: ?Conversions texte en audio?,
+                ?ordering?: [?-created_at?],
             },
         ),
     ]

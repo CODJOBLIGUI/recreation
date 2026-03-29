@@ -73,11 +73,11 @@ def _text_contains(normalized_query, *values):
 
 
 # -------------------------------------------------------------------------------
-# PAGE D'ACCUEIL AVEC NEWSLETTER
+# PAGE D?ACCUEIL AVEC NEWSLETTER
 # -------------------------------------------------------------------------------
 
 class IndexView(TemplateView):
-    """Vue page d'accueil avec formulaire newsletter."""
+    """Vue page d?accueil avec formulaire newsletter."""
 
     template_name = "catalogue/index.html"
 
@@ -117,14 +117,14 @@ class IndexView(TemplateView):
         context["form"] = NewsletterForm()
         if "page_title" not in context:
             context["page_title"] = (
-                "Editions Recr\u00e9ation | Maison d'\u00e9dition g\u00e9n\u00e9raliste | "
+                "Editions Recr\u00e9ation | Maison d?\u00e9dition g\u00e9n\u00e9raliste | "
                 "Recr\u00e9ation | Recreation international book publisher - African book publisher"
             )
         if "page_description" not in context:
             context["page_description"] = (
-                "Editions Recr\u00e9ation (Recr\u00e9ation) - maison d'\u00e9dition / book publisher. "
-                "Livres papier, num\u00e9riques et audio. Meilleure maison d'\u00e9dition africaine - "
-                "Maison d'\u00e9dition au B\u00e9nin - Maison d'\u00e9dition internationale - "
+                "Editions Recr\u00e9ation (Recr\u00e9ation) - maison d?\u00e9dition / book publisher. "
+                "Livres papier, num\u00e9riques et audio. Meilleure maison d?\u00e9dition africaine - "
+                "Maison d?\u00e9dition au B\u00e9nin - Maison d?\u00e9dition internationale - "
                 "RECREATION - Recr\u00e9ation"
             )
         last_id = self.request.session.pop("audio_request_id", None)
@@ -150,7 +150,7 @@ class IndexView(TemplateView):
                 else:
                     messages.info(request, "Vous \u00eates d\u00e9j\u00e0 inscrit.")
         else:
-            messages.error(request, "Une erreur s'est produite. Veuillez v\u00e9rifier votre email.")
+            messages.error(request, "Une erreur s?est produite. Veuillez v\u00e9rifier votre email.")
 
         return redirect("catalogue:index")
 
@@ -238,9 +238,9 @@ class CatalogueView(ListView):
         context["page_title"] = "Catalogue - Editions Recr\u00e9ation"
         if "page_description" not in context:
             context["page_description"] = (
-                "Editions Recr\u00e9ation (Recreation) - maison d'\u00e9dition / book publisher. "
-                "Livres papier, num\u00e9riques et audio. Meilleure maison d'\u00e9dition africaine - "
-                "Maison d'\u00e9dition au B\u00e9nin - Maison d'\u00e9dition internationale"
+                "Editions Recr\u00e9ation (Recreation) - maison d?\u00e9dition / book publisher. "
+                "Livres papier, num\u00e9riques et audio. Meilleure maison d?\u00e9dition africaine - "
+                "Maison d?\u00e9dition au B\u00e9nin - Maison d?\u00e9dition internationale"
             )
         
         livres_page = context.get("livres")
@@ -455,7 +455,7 @@ class ContactView(FormView):
     def form_invalid(self, form):
         messages.error(
             self.request,
-            "Une erreur s'est produite. Veuillez v\u00e9rifier les informations saisies.",
+            "Une erreur s?est produite. Veuillez v\u00e9rifier les informations saisies.",
         )
         return super().form_invalid(form)
 
@@ -492,9 +492,9 @@ class AProposView(TemplateView):
             context["page_description"] = page.meta_description
         else:
             context["page_description"] = (
-                "Editions Recr\u00e9ation (Recreation) - maison d'\u00e9dition / book publisher. "
-                "Livres papier, num\u00e9riques et audio. Meilleure maison d'\u00e9dition africaine - "
-                "Maison d'\u00e9dition au B\u00e9nin - Maison d'\u00e9dition internationale"
+                "Editions Recr\u00e9ation (Recreation) - maison d?\u00e9dition / book publisher. "
+                "Livres papier, num\u00e9riques et audio. Meilleure maison d?\u00e9dition africaine - "
+                "Maison d?\u00e9dition au B\u00e9nin - Maison d?\u00e9dition internationale"
             )
         return context
 
@@ -598,7 +598,7 @@ class SoumissionManuscritView(FormView):
     def form_invalid(self, form):
         messages.error(
             self.request,
-            "Une erreur s'est produite. Veuillez v\u00e9rifier les informations saisies.",
+            "Une erreur s?est produite. Veuillez v\u00e9rifier les informations saisies.",
         )
         return super().form_invalid(form)
 
@@ -766,8 +766,8 @@ class SearchView(TemplateView):
                 {"title": "Auteurs", "url": reverse_lazy("catalogue:auteurs"), "keywords": "auteurs \u00e9crivains"},
                 {"title": "Actualit\u00e9s", "url": reverse_lazy("catalogue:actualites"), "keywords": "actualites news"},
                 {"title": "Nos contrats", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "contrats publication"},
-                {"title": "Contrat à Compte d'Éditeur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte editeur"},
-                {"title": "Contrat à Compte d'Auteur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte auteur"},
+                {"title": "Contrat à Compte d?Éditeur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte editeur"},
+                {"title": "Contrat à Compte d?Auteur", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte auteur"},
                 {"title": "Contrat à Compte Particitatif", "url": reverse_lazy("catalogue:nos-contrats"), "keywords": "compte participatif particitatif"},
                 {"title": "Contact", "url": reverse_lazy("catalogue:contact"), "keywords": "contact email telephone"},
                 {"title": "Mentions l\u00e9gales", "url": reverse_lazy("catalogue:mentions-legales"), "keywords": "mentions legales conditions"},
@@ -882,7 +882,7 @@ FREE_TEXT_LIMIT = 5000
 FREE_CONVERSION_LIMIT = 3
 FREE_LIMIT_MESSAGE = (
     "Vous venez de faire trois essais gratuits. Inscrivez-vous ou connectez-vous "
-    "pour continuer d'utiliser ce service gratuitement tant que votre texte ne "
+    "pour continuer d?utiliser ce service gratuitement tant que votre texte ne "
     "dépasse pas la longueur autorisée pour ce mode."
 )
 FREE_IP_LIMIT = 10
@@ -991,7 +991,7 @@ class AudioConversionView(FormView):
             message = (
                 "La synthèse vocale en fon n’est pas disponible pour le moment. "
                 "Choisissez ‘Lecture par un humain’ "
-                f"(<a href=\"{reverse_lazy('catalogue:conversion-audio-humain')}\">ouvrir l’interface</a>)."
+                f"(<a href=\"{reverse_lazy(?catalogue:conversion-audio-humain?)}\">ouvrir l’interface</a>)."
             )
             form.add_error(
                 "langue",
@@ -1367,7 +1367,7 @@ def sitemap_xml(request):
             continue
 
     # Build XML
-    lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    lines = [?<?xml version="1.0" encoding="UTF-8"?>?, ?<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">?]
     for loc, lastmod in url_items:
         lines.append("  <url>")
         lines.append(f"    <loc>{loc}</loc>")

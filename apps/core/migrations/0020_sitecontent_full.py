@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitecontent",
             name="nav_cta_button",
-            field=models.CharField(max_length=80, blank=True, default="S'abonner", verbose_name="Navigation - Bouton newsletter"),
+            field=models.CharField(max_length=80, blank=True, default="S?abonner", verbose_name="Navigation - Bouton newsletter"),
         ),
         migrations.AddField(
             model_name="sitecontent",
@@ -122,7 +122,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitecontent",
             name="conversion_hero_note",
-            field=models.TextField(blank=True, default="Collez votre texte ou televersez un fichier. Le service est gratuit pour les textes de 5000 caracteres maximum. Les fichiers televerses sont systematiquement soumis au paiement. Apres paiement, nous produisons l'audio et vous l'envoyons par e-mail.", verbose_name="Conversion - Texte d'introduction"),
+            field=models.TextField(blank=True, default="Collez votre texte ou televersez un fichier. Le service est gratuit pour les textes de 5000 caracteres maximum. Les fichiers televerses sont systematiquement soumis au paiement. Apres paiement, nous produisons l?audio et vous l?envoyons par e-mail.", verbose_name="Conversion - Texte d?introduction"),
         ),
         migrations.AddField(
             model_name="sitecontent",
@@ -157,7 +157,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitecontent",
             name="conversion_payment_required_text",
-            field=models.CharField(max_length=240, blank=True, default="Votre demande a ete enregistree. Veuillez proceder au paiement pour recevoir l'audio par e-mail.", verbose_name="Conversion - Texte paiement requis"),
+            field=models.CharField(max_length=240, blank=True, default="Votre demande a ete enregistree. Veuillez proceder au paiement pour recevoir l?audio par e-mail.", verbose_name="Conversion - Texte paiement requis"),
         ),
         migrations.AddField(
             model_name="sitecontent",
@@ -172,7 +172,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitecontent",
             name="conversion_processing_text",
-            field=models.CharField(max_length=200, blank=True, default="Nos equipes verifieront l'effectivite du paiement et vous feront un retour.", verbose_name="Conversion - Texte traitement"),
+            field=models.CharField(max_length=200, blank=True, default="Nos equipes verifieront l?effectivite du paiement et vous feront un retour.", verbose_name="Conversion - Texte traitement"),
         ),
         migrations.AddField(
             model_name="sitecontent",
@@ -192,7 +192,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitecontent",
             name="conversion_audio_download_label",
-            field=models.CharField(max_length=160, blank=True, default="Telecharger l'audio (MP3)", verbose_name="Conversion - Bouton telechargement"),
+            field=models.CharField(max_length=160, blank=True, default="Telecharger l?audio (MP3)", verbose_name="Conversion - Bouton telechargement"),
         ),
         migrations.AddField(
             model_name="sitecontent",
@@ -237,7 +237,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitecontent",
             name="conversion_choice_synth_text",
-            field=models.CharField(max_length=240, blank=True, default="Conversion rapide par voix synthetique, gratuite jusqu'a 5000 caracteres.", verbose_name="Choix conversion - Texte synthetique"),
+            field=models.CharField(max_length=240, blank=True, default="Conversion rapide par voix synthetique, gratuite jusqu?a 5000 caracteres.", verbose_name="Choix conversion - Texte synthetique"),
         ),
         migrations.AddField(
             model_name="sitecontent",
@@ -277,7 +277,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitecontent",
             name="activation_invalid_message",
-            field=models.CharField(max_length=200, blank=True, default="Lien d'activation invalide ou expire.", verbose_name="Message - Activation invalide"),
+            field=models.CharField(max_length=200, blank=True, default="Lien d?activation invalide ou expire.", verbose_name="Message - Activation invalide"),
         ),
         migrations.AddField(
             model_name="sitecontent",
@@ -292,7 +292,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitecontent",
             name="error_404_text",
-            field=models.TextField(blank=True, default="La page demandee est introuvable. Revenez a l'accueil ou utilisez la recherche.", verbose_name="Erreur 404 - Texte"),
+            field=models.TextField(blank=True, default="La page demandee est introuvable. Revenez a l?accueil ou utilisez la recherche.", verbose_name="Erreur 404 - Texte"),
         ),
         migrations.AddField(
             model_name="sitecontent",

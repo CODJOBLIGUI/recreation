@@ -8,24 +8,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalogue', '0026_audioconversionrequest_user_and_more'),
+        (?catalogue?, ?0026_audioconversionrequest_user_and_more?),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='UserProfile',
+            name=?UserProfile?,
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Date de création')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Date de modification')),
-                ('phone', models.CharField(blank=True, max_length=30, verbose_name='Téléphone')),
-                ('newsletter_opt_in', models.BooleanField(default=False, verbose_name='Inscrit à la newsletter')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='profile', to=settings.AUTH_USER_MODEL, verbose_name='Utilisateur')),
+                (?id?, models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name=?ID?)),
+                (?created_at?, models.DateTimeField(auto_now_add=True, db_index=True, verbose_name=?Date de création?)),
+                (?updated_at?, models.DateTimeField(auto_now=True, verbose_name=?Date de modification?)),
+                (?phone?, models.CharField(blank=True, max_length=30, verbose_name=?Téléphone?)),
+                (?newsletter_opt_in?, models.BooleanField(default=False, verbose_name=?Inscrit à la newsletter?)),
+                (?user?, models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name=?profile?, to=settings.AUTH_USER_MODEL, verbose_name=?Utilisateur?)),
             ],
             options={
-                'verbose_name': 'Profil utilisateur',
-                'verbose_name_plural': 'Profils utilisateurs',
+                ?verbose_name?: ?Profil utilisateur?,
+                ?verbose_name_plural?: ?Profils utilisateurs?,
             },
         ),
     ]

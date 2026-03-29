@@ -8,7 +8,7 @@
                 <div class="page-hero__content">
                     <h1 class="page-hero__title">{{ site_content.conversion_choice_title|default:"Conversion de texte en audio" }}</h1>
                     <p class="page-hero__subtitle">
-                        {{ site_content.conversion_choice_subtitle|default:"Choisissez le type de conversion qui vous convient : synthétique ou lecture humaine." }}
+                        {{ site_content.conversion_choice_subtitle|default:"Choisissez le type de conversion qui vous convient : synthÃ©tique ou lecture humaine." }}
                     </p>
                 </div>
                 <div class="page-hero__media">
@@ -20,7 +20,7 @@
         {% else %}
             <h1 class="page-hero__title">{{ site_content.conversion_choice_title|default:"Conversion de texte en audio" }}</h1>
             <p class="page-hero__subtitle">
-                {{ site_content.conversion_choice_subtitle|default:"Choisissez le type de conversion qui vous convient : synthétique ou lecture humaine." }}
+                {{ site_content.conversion_choice_subtitle|default:"Choisissez le type de conversion qui vous convient : synthÃ©tique ou lecture humaine." }}
             </p>
         {% endif %}
     </div>
@@ -29,21 +29,21 @@
 <section class="section conversion-audio__form-section">
     <div class="container container--narrow">
         <div class="cta-box conversion-audio__choice">
-            <h2 class="cta-box__title">{{ site_content.conversion_choice_synth_title|default:"Conversion synthétique" }}</h2>
+            <h2 class="cta-box__title">{{ site_content.conversion_choice_synth_title|default:"Conversion synthÃ©tique" }}</h2>
             <p class="cta-box__text">
-                {{ site_content.conversion_choice_synth_text|default:"Conversion rapide par voix synthétique, gratuite jusqu’à 5000 caractères." }}
+                {{ site_content.conversion_choice_synth_text|default:"Conversion rapide par voix synthÃ©tique, gratuite jusquâ€™Ã  5000 caractÃ¨res." }}
             </p>
-            <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-synthetique' %}">
-                {{ site_content.conversion_choice_synth_button|default:"Continuer en synthétique" }}
+            <a class="btn btn--white btn--large" href="{% url ?catalogue:conversion-audio-synthetique? %}">
+                {{ site_content.conversion_choice_synth_button|default:"Continuer en synthÃ©tique" }}
             </a>
         </div>
 
         <div class="cta-box conversion-audio__choice">
             <h2 class="cta-box__title">{{ site_content.conversion_choice_human_title|default:"Lecture par un humain" }}</h2>
             <p class="cta-box__text">
-                {{ site_content.conversion_choice_human_text|default:"Confiez votre texte à un membre de notre équipe pour une lecture par un humain (voix masculine ou féminine)." }}
+                {{ site_content.conversion_choice_human_text|default:"Confiez votre texte Ã  un membre de notre Ã©quipe pour une lecture par un humain (voix masculine ou fÃ©minine)." }}
             </p>
-            <a class="btn btn--white btn--large" href="{% url 'catalogue:conversion-audio-humain' %}">
+            <a class="btn btn--white btn--large" href="{% url ?catalogue:conversion-audio-humain? %}">
                 {{ site_content.conversion_choice_human_button|default:"Continuer en lecture par un humain" }}
             </a>
         </div>
