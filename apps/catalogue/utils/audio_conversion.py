@@ -140,12 +140,16 @@ def extract_text_from_file(file_field):
         text = "\n".join(pages).strip()
         if text:
             return text
-        # OCR fallback for scanned PDFs (pytesseract + Pillow)
+        # OCR fallback for scanned PDFs (EasyOCR)
         try:
-            import pytesseract
+            import easyocr
             from PIL import Image
+            import numpy as np
         except Exception as exc:
-            raise RuntimeError("OCR PDF indisponible (pytesseract/Pillow manquant).") from exc
+            raise RuntimeError("OCR PDF indisponible (EasyOCR manquant).") from exc
+        if _EASYOCR_READER is None:
+            _EASYOCR_READER = easyocr.Reader(["fr", "en"], gpu=False)
+        reader_ocr = _EASYOCR_READER
         texts = []
         for page in reader.pages:
             images = getattr(page, "images", []) or []
@@ -153,8 +157,10 @@ def extract_text_from_file(file_field):
                 for img in images:
                     try:
                         img_data = img.data
-                        image = Image.open(io.BytesIO(img_data))
-                        texts.append(pytesseract.image_to_string(image, lang="fra+eng"))
+                        image = Image.open(io.BytesIO(img_data)).convert("RGB")
+                        img_arr = np.array(image)
+                        results = reader_ocr.readtext(img_arr, detail=0, paragraph=True)
+                        texts.extend(results)
                     except Exception:
                         continue
         ocr_text = "\n".join(t for t in texts if t).strip()
@@ -169,12 +175,18 @@ def extract_text_from_file(file_field):
 
     if ext in {".jpg", ".jpeg", ".png"}:
         try:
-            import pytesseract
+            import easyocr
             from PIL import Image
+            import numpy as np
         except Exception as exc:
-            raise RuntimeError("OCR image indisponible (pytesseract/Pillow manquant).") from exc
-        image = Image.open(local_path)
-        ocr_text = pytesseract.image_to_string(image, lang="fra+eng")
+            raise RuntimeError("OCR image indisponible (EasyOCR manquant).") from exc
+        if _EASYOCR_READER is None:
+            _EASYOCR_READER = easyocr.Reader(["fr", "en"], gpu=False)
+        reader_ocr = _EASYOCR_READER
+        image = Image.open(local_path).convert("RGB")
+        img_arr = np.array(image)
+        results = reader_ocr.readtext(img_arr, detail=0, paragraph=True)
+        ocr_text = "\n".join(r for r in results if r).strip()
         detected = detect_language(ocr_text)
         if detected in {"es", "de"}:
             raise RuntimeError(
@@ -323,6 +335,7 @@ def generate_tts_mp3(
             time.sleep(inter_chunk_delay)
     output.seek(0)
     return output
+
 
 
 
