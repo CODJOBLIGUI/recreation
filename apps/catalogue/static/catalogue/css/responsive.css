@@ -679,3 +679,23 @@ font-size: 2rem;
         border-radius: 999px;
     }
 }
+/* FORCE mobile header alignment */
+@media (max-width: 768px) {
+    .header__top { display: grid !important; grid-template-columns: auto 1fr; grid-template-areas: "logo socials" "forms forms"; }
+    .header__brand { grid-area: logo; justify-content: flex-start !important; align-items: center !important; text-align: left !important; }
+    .header__logo { margin: 0 !important; }
+    .header__logo img { max-height: 60px !important; }
+    .header__social { grid-area: socials; justify-content: flex-end !important; flex-wrap: nowrap !important; white-space: nowrap; gap: 0.4rem !important; }
+    .header__actions { grid-area: forms; display: grid !important; grid-template-columns: 1fr 1fr; gap: 0.5rem !important; }
+    .header__newsletter-form, .header-search { width: 100% !important; min-width: 0 !important; }
+    .header__newsletter-form input, .header-search input { font-size: 0.72rem !important; padding: 0.28rem 0.5rem !important; }
+    .header__newsletter-form button, .header-search__btn { font-size: 0.7rem !important; padding: 0.28rem 0.5rem !important; }
+}
+
+/* EXTRA small text in carousel */
+@media (max-width: 768px) {
+    .hero__title { font-size: 0.85rem !important; }
+    .hero__author { font-size: 0.7rem !important; }
+    .hero__content p { font-size: 0.58rem !important; }
+    .hero__cta .btn { padding: 0.2rem 0.4rem !important; font-size: 0.52rem !important; }
+}
