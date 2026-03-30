@@ -217,3 +217,21 @@ h1, h2, h3, h4 {
 :root[data-theme="dark"] .changelist tbody td a:hover {
     color: #ffffff !important;
 }
+/* Links white by default, blue on hover */
+:root[data-theme="dark"] a,
+:root[data-theme="dark"] .breadcrumbs a,
+:root[data-theme="dark"] .sidebar .nav a,
+:root[data-theme="dark"] .unfold-sidebar a,
+:root[data-theme="dark"] .changelist a,
+:root[data-theme="dark"] .result_list a {
+    color: #ffffff !important;
+}
+
+:root[data-theme="dark"] a:hover,
+:root[data-theme="dark"] .breadcrumbs a:hover,
+:root[data-theme="dark"] .sidebar .nav a:hover,
+:root[data-theme="dark"] .unfold-sidebar a:hover,
+:root[data-theme="dark"] .changelist a:hover,
+:root[data-theme="dark"] .result_list a:hover {
+    color: var(--admin-accent) !important;
+}
