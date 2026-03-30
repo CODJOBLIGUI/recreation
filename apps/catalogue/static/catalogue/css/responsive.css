@@ -543,3 +543,21 @@ font-size: 2rem;
     .hero__content p { font-size: 0.6rem; }
     .hero__cta .btn { padding: 0.22rem 0.45rem; font-size: 0.58rem; }
 }
+/* MOBILE header tweaks per request */
+@media (max-width: 768px) {
+    .header__brand { justify-content: flex-start; }
+    .header__social { margin-left: auto; }
+
+    .header__nav-brand {
+        font-size: 1.3rem;
+        line-height: 1.1;
+    }
+
+    .header__nav-list a {
+        color: #111111;
+        line-height: 1.1;
+        font-size: 0.78rem;
+    }
+
+    .header__nav-list { gap: 0.35rem 0.6rem; }
+}
