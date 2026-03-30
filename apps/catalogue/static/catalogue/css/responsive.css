@@ -427,3 +427,58 @@ font-size: 2rem;
     .header-search input { font-size: 0.75rem; }
     .header-search__btn { font-size: 0.7rem; padding: 0.35rem 0.55rem; }
 }
+/* MOBILE: header layout adjustments */
+@media (max-width: 768px) {
+    .header__top {
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .header__brand {
+        flex: 1 1 48%;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .header__actions {
+        flex: 1 1 48%;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .header__social {
+        order: 2;
+        margin-left: auto;
+    }
+
+    .header__actions {
+        order: 3;
+    }
+
+    .header__newsletter-form,
+    .header-search {
+        width: 100%;
+    }
+
+    .header__newsletter-form input,
+    .header-search input {
+        font-size: 0.72rem;
+    }
+
+    .header__newsletter-form button,
+    .header-search__btn {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .header__nav { display: flex; }
+    .header__nav-list a { color: #111111; }
+    .nav-menu-btn, .header__hamburger { display: none !important; }
+}
+/* MOBILE: keep blue Menu button, hide black hamburger only */
+@media (max-width: 768px) {
+    .header__hamburger { display: none !important; }
+    .nav-menu-btn { display: inline-flex !important; }
+}
