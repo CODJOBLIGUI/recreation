@@ -570,3 +570,58 @@ font-size: 2rem;
     .header__brand { justify-content: flex-start !important; }
     .header__nav-list { gap: 0.35rem 0.6rem !important; }
 }
+/* MOBILE header: logo left, social right, search+newsletter on same row */
+@media (max-width: 768px) {
+    .header__top {
+        display: grid !important;
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+            "logo socials"
+            "forms forms";
+        align-items: center;
+        gap: 0.5rem 0.6rem;
+    }
+
+    .header__brand {
+        grid-area: logo;
+        justify-content: flex-start !important;
+    }
+
+    .header__social {
+        grid-area: socials;
+        justify-content: flex-end;
+        margin-left: 0 !important;
+    }
+
+    .header__actions {
+        grid-area: forms;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .header__newsletter-form,
+    .header-search {
+        width: 100%;
+        margin: 0;
+    }
+
+    .header__nav-brand {
+        font-size: 1.15rem !important;
+        line-height: 1.05 !important;
+    }
+
+    .header__nav-list a {
+        font-size: 0.74rem !important;
+        line-height: 1.05 !important;
+    }
+}
+
+/* MOBILE carousel: smaller text + button */
+@media (max-width: 768px) {
+    .hero__title { font-size: 0.9rem !important; }
+    .hero__author { font-size: 0.74rem !important; }
+    .hero__content p { font-size: 0.6rem !important; }
+    .hero__cta .btn { padding: 0.22rem 0.45rem !important; font-size: 0.55rem !important; }
+}
