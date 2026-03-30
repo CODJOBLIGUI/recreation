@@ -1,4 +1,4 @@
-from apps.core.models import SiteAppearance
+from apps.core.models import SiteAppearance, SiteContent
 from .models import Collection, Livre, MenuLink
 
 def global_context(request):
@@ -6,6 +6,7 @@ def global_context(request):
     Contexte global pour tous les templates.
     """
     appearance = SiteAppearance.objects.first()
+    site_content = SiteContent.objects.first()
     collections = Collection.objects.filter(est_active=True).order_by("ordre_affichage", "nom")
 
     social_links = [
@@ -47,6 +48,7 @@ def global_context(request):
         "categories_list": Livre.CATEGORIES,
         "collections_list": collections,
         "appearance": appearance,
+        "site_content": site_content,
         "social_links": social_links,
         "menu_header_links": menu_header_links,
         "menu_footer_links": menu_footer_links,

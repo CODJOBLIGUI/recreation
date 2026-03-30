@@ -1,0 +1,98 @@
+﻿{% extends "catalogue/base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="committee-dashboard">
+    <aside class="committee-sidebar">
+        <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Editions Recréation" class="committee-sidebar__logo-img" />
+        <div class="committee-sidebar__role">Membres du Comité de lecture</div>
+        <nav class="committee-sidebar__nav">
+            <a class="active" href="#">Nouvelles candidatures</a>
+        </nav>
+    </aside>
+
+    <div class="committee-main">
+        <div class="committee-topbar">
+            <div class="committee-topbar__title">Nouvelles candidatures</div>
+            <div class="committee-topbar__user">
+                <div class="committee-topbar__welcome">Bienvenue à vous</div>
+                <div class="committee-topbar__name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="committee-topbar__note">Nous comptons sur votre application pour envoyer une réponse définitive aux auteurs(es).</div>
+            </div>
+            <form method="post" action="{% url 'catalogue:logout' %}" class="committee-topbar__logout">
+                {% csrf_token %}
+                <button type="submit" class="btn btn--secondary btn--small">Se déconnecter</button>
+            </form>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="form-feedback form-feedback--{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="committee-card">
+            <h2 class="committee-card__title">Liste des nouvelles candidatures</h2>
+            <form method="get" class="committee-filters">
+                <input type="search" name="q" value="{{ filters.q }}" placeholder="Rechercher" class="committee-filter" />
+                <select name="statut" class="committee-filter">
+                    <option value="">Toutes les évaluations</option>
+                    <option value="pending" {% if filters.statut == 'pending' %}selected{% endif %}>En attente</option>
+                    <option value="done" {% if filters.statut == 'done' %}selected{% endif %}>Évaluées</option>
+                </select>
+                <select name="genre" class="committee-filter">
+                    <option value="">Filtrer par catégorie</option>
+                    {% for g in genres %}
+                        <option value="{{ g }}" {% if filters.genre == g %}selected{% endif %}>{{ g }}</option>
+                    {% endfor %}
+                </select>
+                <select name="decision" class="committee-filter">
+                    <option value="">Décision</option>
+                    <option value="yes" {% if filters.decision == 'yes' %}selected{% endif %}>Oui</option>
+                    <option value="no" {% if filters.decision == 'no' %}selected{% endif %}>Non</option>
+                </select>
+                <select name="pays" class="committee-filter">
+                    <option value="">Filtrer par pays</option>
+                    {% for p in pays_list %}
+                        <option value="{{ p }}" {% if filters.pays == p %}selected{% endif %}>{{ p }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn--secondary">Rechercher</button>
+            </form>
+
+            <div class="committee-table-wrap">
+                <table class="committee-table">
+                    <thead>
+                        <tr>
+                            <th>Nom et prénom</th>
+                            <th>E-mail</th>
+                            <th>Note /20</th>
+                            <th>Décision</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>{{ item.submission.nom_auteur }}</td>
+                            <td>{{ item.submission.nom_complet }}</td>
+                            <td>{% if item.review %}{{ item.review.note }}{% else %}-{% endif %}</td>
+                            <td>{% if item.review %}{{ item.review.get_decision_display }}{% else %}En attente{% endif %}</td>
+                            <td>
+                                <a class="btn btn--primary btn--small" href="{% url 'catalogue:committee-submission' item.submission.id %}">Ouvrir</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="committee-empty">Aucune soumission pour le moment.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

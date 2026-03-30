@@ -1,0 +1,21 @@
+{% extends 'catalogue/base.html' %}
+{% block content %}
+<section class="page-hero page-hero--compact">
+    <div class="container">
+        <h1 class="page-hero__title">Comité de lecture</h1>
+        <p class="page-hero__subtitle">Compte en attente de validation.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container container--narrow">
+        <div class="form-feedback form-feedback--success">
+            Votre compte est en attente de validation par l'administrateur.
+        </div>
+        <form method="post" action="{% url 'catalogue:logout' %}" style="margin-top: 16px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn--secondary">Se deconnecter</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

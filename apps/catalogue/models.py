@@ -647,9 +647,17 @@ class AudioConversionRequest(TimeStampedModel):
         ("fast", "Rapide"),
     ]
     
-    LANG_CHOICES = [
-        ("fr", "Français"),
+    HUMAN_VOICE_CHOICES = [
+        ("female", "Féminine"),
+        ("male", "Masculine"),
     ]
+    
+    VOICE_TYPE_CHOICES = [
+        ("synthetic", "Synthétique"),
+        ("human", "Humaine"),
+    ]
+    
+    LANG_CHOICES = Livre.LANGUES
     
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -666,6 +674,8 @@ class AudioConversionRequest(TimeStampedModel):
     phrases_count = models.PositiveIntegerField(default=0, verbose_name="Nombre de phrases")
     langue = models.CharField(max_length=10, choices=LANG_CHOICES, default="fr", verbose_name="Langue")
     voix = models.CharField(max_length=20, choices=VOICE_CHOICES, default="standard", verbose_name="Voix")
+    voix_humaine = models.CharField(max_length=10, choices=HUMAN_VOICE_CHOICES, blank=True, verbose_name="Voix humaine")
+    voice_type = models.CharField(max_length=10, choices=VOICE_TYPE_CHOICES, default="synthetic", verbose_name="Type de voix")
     audio = models.FileField(upload_to="audio_requests/audio/%Y/%m/", blank=True, null=True, verbose_name="Audio généré")
     paiement_requis = models.BooleanField(default=False, verbose_name="Paiement requis")
     statut = models.CharField(max_length=30, choices=STATUS_CHOICES, default="awaiting_payment", verbose_name="Statut")
@@ -720,6 +730,29 @@ class UserProfile(TimeStampedModel):
 
     def __str__(self):
         return f"{self.user.get_username()}"
+
+
+class CommitteeApplication(TimeStampedModel):
+    """Candidature pour membre du comité de lecture."""
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="committee_application",
+        verbose_name="Utilisateur",
+    )
+    cv = models.FileField(upload_to="committee/cv/%Y/%m/", verbose_name="CV")
+    motivation = models.TextField(verbose_name="Motivation")
+    confidentiality_ack = models.BooleanField(default=False, verbose_name="Accord confidentialité")
+    unpaid_ack = models.BooleanField(default=False, verbose_name="Mission non rémunérée acceptée")
+
+    class Meta:
+        verbose_name = "Candidature comité de lecture"
+        verbose_name_plural = "Candidatures comité de lecture"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user.get_username()} - candidature"
 
 
 # -------------------------------------------------------------------------------
@@ -797,3 +830,37 @@ class SoumissionManuscrit(TimeStampedModel):
 
     def __str__(self):
         return f"{self.titre_ouvrage} - {self.nom_auteur}"
+
+
+class ManuscriptReview(TimeStampedModel):
+    """Évaluation des soumissions de manuscrit."""
+
+    DECISION_CHOICES = [
+        ("yes", "Oui"),
+        ("no", "Non"),
+    ]
+
+    soumission = models.ForeignKey(
+        SoumissionManuscrit,
+        on_delete=models.CASCADE,
+        related_name="evaluations",
+        verbose_name="Soumission",
+    )
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="manuscript_reviews",
+        verbose_name="Évaluateur",
+    )
+    note = models.PositiveSmallIntegerField(verbose_name="Note (/20)")
+    observation = models.TextField(blank=True, verbose_name="Observation")
+    decision = models.CharField(max_length=10, choices=DECISION_CHOICES, verbose_name="Décision")
+
+    class Meta:
+        verbose_name = "Évaluation de manuscrit"
+        verbose_name_plural = "Évaluations de manuscrits"
+        unique_together = ("soumission", "reviewer")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.soumission} - {self.reviewer}"

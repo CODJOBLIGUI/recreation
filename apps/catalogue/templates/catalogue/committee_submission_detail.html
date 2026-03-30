@@ -1,0 +1,122 @@
+{% extends "catalogue/base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <h1 class="page-hero__title">Évaluation du manuscrit</h1>
+        <p class="page-hero__subtitle">{{ submission.titre_ouvrage }}</p>
+    </div>
+</section>
+
+<section class="committee section">
+    <div class="container container--narrow">
+        <div class="committee__back">
+            <a href="{% url 'catalogue:committee-portal' %}">&larr; Retour aux soumissions</a>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="form-feedback form-feedback--{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="committee__card">
+            <h2 class="committee__section-title">Informations sur l’ouvrage</h2>
+            <div class="committee__grid">
+                <div>
+                    <strong>Titre</strong>
+                    <p>{{ submission.titre_ouvrage }}</p>
+                </div>
+                <div>
+                    <strong>Auteur</strong>
+                    <p>{{ submission.nom_auteur }}</p>
+                </div>
+                <div>
+                    <strong>Nom complet</strong>
+                    <p>{{ submission.nom_complet }}</p>
+                </div>
+                <div>
+                    <strong>Genre littéraire</strong>
+                    <p>{{ submission.genre_litteraire }}</p>
+                </div>
+                <div>
+                    <strong>Nationalité</strong>
+                    <p>{{ submission.nationalite }}</p>
+                </div>
+                <div>
+                    <strong>Pays de résidence</strong>
+                    <p>{{ submission.pays_residence }}</p>
+                </div>
+                <div>
+                    <strong>WhatsApp</strong>
+                    <p>{{ submission.whatsapp }}</p>
+                </div>
+                <div>
+                    <strong>Autre numéro</strong>
+                    <p>{{ submission.autre_numero|default:"-" }}</p>
+                </div>
+            </div>
+
+            <div class="committee__downloads">
+                <h3 class="committee__section-title">Téléchargements</h3>
+                <div class="committee__download-list">
+                    {% if submission.fichier_ouvrage %}
+                        <a class="btn btn--secondary btn--small" href="{{ submission.fichier_ouvrage.url }}" target="_blank" rel="noopener">Télécharger le manuscrit</a>
+                    {% else %}
+                        <span class="committee__download-empty">Manuscrit non fourni</span>
+                    {% endif %}
+
+                    {% if submission.photo_auteur %}
+                        <a class="btn btn--secondary btn--small" href="{{ submission.photo_auteur.url }}" target="_blank" rel="noopener">Photo auteur</a>
+                    {% else %}
+                        <span class="committee__download-empty">Photo auteur non fournie</span>
+                    {% endif %}
+
+                    {% if submission.carte_identite %}
+                        <a class="btn btn--secondary btn--small" href="{{ submission.carte_identite.url }}" target="_blank" rel="noopener">Carte d'identité</a>
+                    {% else %}
+                        <span class="committee__download-empty">Carte d'identité non fournie</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="committee__texts">
+                <h3 class="committee__section-title">Synopsis</h3>
+                <p class="committee__text-block">{{ submission.synopsis|linebreaksbr }}</p>
+
+                <h3 class="committee__section-title">Avantages</h3>
+                <p class="committee__text-block">{{ submission.avantages|linebreaksbr }}</p>
+
+                <h3 class="committee__section-title">Inconvénients</h3>
+                <p class="committee__text-block">{{ submission.inconvenients|linebreaksbr }}</p>
+            </div>
+        </div>
+
+        <div class="committee__card">
+            <h2 class="committee__section-title">Votre évaluation</h2>
+            <form method="post" class="committee__form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_note">Note /20</label>
+                    {{ form.note }}
+                    {% if form.note.errors %}<span class="form-error">{{ form.note.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_decision">Doit-on l’éditer ?</label>
+                    {{ form.decision }}
+                    {% if form.decision.errors %}<span class="form-error">{{ form.decision.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_observation">Observation</label>
+                    {{ form.observation }}
+                    {% if form.observation.errors %}<span class="form-error">{{ form.observation.errors.0 }}</span>{% endif %}
+                </div>
+                <button type="submit" class="btn btn--primary">Enregistrer l’évaluation</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -31,6 +31,8 @@ from .models import (
     PrixLitteraire,
     SoumissionManuscrit,
     UserProfile,
+    ManuscriptReview,
+    CommitteeApplication,
 )
 from apps.core.models import SiteAppearance
 
@@ -38,7 +40,21 @@ from apps.core.models import SiteAppearance
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
+
+
+@admin.register(ManuscriptReview)
+class ManuscriptReviewAdmin(ModelAdmin):
+    list_display = ("soumission", "reviewer", "note", "decision", "created_at")
+    list_filter = ("decision", "created_at")
+    search_fields = ("soumission__titre_ouvrage", "reviewer__username", "reviewer__email")
     extra = 0
+
+
+@admin.register(CommitteeApplication)
+class CommitteeApplicationAdmin(ModelAdmin):
+    list_display = ("user", "created_at")
+    search_fields = ("user__username", "user__email", "user__first_name", "user__last_name")
+    readonly_fields = ("created_at", "updated_at")
 
 
 try:
@@ -380,9 +396,11 @@ class MenuLinkAdmin(ModelAdmin):
             ("Actualités", "/actualites/", 2),
             ("Auteurs", "/auteurs/", 3),
             ("Catalogue", "/catalogue/", 4),
-            ("Nos contrats", "/nos-contrats/", 5),
-            ("A propos", "/a-propos/", 6),
-            ("Contacts", "/contact/", 7),
+            ("Conversion de texte en audio", "/conversion-texte-audio/", 5),
+            ("Nos contrats", "/nos-contrats/", 6),
+            ("A propos", "/a-propos/", 7),
+            ("Contacts", "/contact/", 8),
+            ("Comité de lecture", "/lecture-evaluation-des-soumissions-de-manuscrit-ou-tapuscrits/", 9),
         ]
         for title, url, order in header_links:
             MenuLink.objects.create(

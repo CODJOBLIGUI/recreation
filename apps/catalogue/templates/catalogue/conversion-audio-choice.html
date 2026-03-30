@@ -1,0 +1,28 @@
+{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="page-hero page-hero--compact">
+    <div class="container">
+        <h1 class="page-hero__title">Conversion de texte en audio</h1>
+        <p class="page-hero__subtitle">Choisissez le type de conversion souhaité.</p>
+    </div>
+</section>
+
+<section class="section conversion-choice">
+    <div class="container container--narrow">
+        <div class="conversion-choice__grid">
+            <a class="conversion-choice__card" href="{% url 'catalogue:conversion-audio-synthetique' %}">
+                <h3>Voix synthétique</h3>
+                <p>Conversion automatique, rapide et gratuite jusqu’à 5000 caractères.</p>
+                <span class="btn btn--secondary">Choisir</span>
+            </a>
+            <a class="conversion-choice__card" href="{% url 'catalogue:conversion-audio-humain' %}">
+                <h3>Voix humaine</h3>
+                <p>Lecture professionnelle par un narrateur. Paiement requis.</p>
+                <span class="btn btn--secondary">Choisir</span>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

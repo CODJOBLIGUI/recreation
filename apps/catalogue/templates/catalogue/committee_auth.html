@@ -1,0 +1,70 @@
+﻿{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="committee-login-hero">
+    <div class="committee-login-hero__overlay"></div>
+    <div class="committee-login-card">
+        <div class="committee-login-brand">
+            <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Editions Recréation" />
+            <div class="committee-login-brand__title">Editions Recréation</div>
+            <div class="committee-login-brand__subtitle">Membres du Comité de lecture</div>
+        </div>
+
+        <div class="committee-login-form">
+            <h1>Connexion</h1>
+            <p>Connectez-vous pour accéder à l’espace des membres du Comité de lecture.</p>
+            <p>Si vous n’avez pas encore un compte évaluateur, inscrivez-vous.</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="form-feedback form-feedback--{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="login">
+                {{ login_form.non_field_errors }}
+                <div class="form-group">
+                    <label for="id_username">E-mail</label>
+                    {{ login_form.username }}
+                </div>
+                <div class="form-group">
+                    <label for="id_password">Mot de passe</label>
+                    <div class="password-field">
+                        {{ login_form.password }}
+                        <button type="button" class="password-toggle" data-target="id_password">Afficher</button>
+                    </div>
+                </div>
+                <div class="committee-login-links">
+                    <a href="{% url 'catalogue:password_reset' %}">Mot de passe oublié ?</a>
+                    <a class="committee-login-links__signup" href="{% url 'catalogue:committee-signup' %}">S’inscrire</a>
+                </div>
+                <button type="submit" class="btn btn--primary committee-login-btn">Connexion</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.password-toggle').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var id = btn.getAttribute('data-target');
+    var input = document.getElementById(id);
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = 'Cacher';
+    } else {
+      input.type = 'password';
+      btn.textContent = 'Afficher';
+    }
+  });
+});
+</script>
+{% endblock %}

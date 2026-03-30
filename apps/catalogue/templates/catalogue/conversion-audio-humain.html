@@ -1,0 +1,77 @@
+{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="page-hero page-hero--compact">
+    <div class="container">
+        <h1 class="page-hero__title">Conversion de texte en audio (voix humaine)</h1>
+        <p class="page-hero__subtitle">Renseignez votre texte et vos préférences de voix. Le paiement est obligatoire.</p>
+    </div>
+</section>
+
+<section class="section conversion-audio__form-section">
+    <div class="container container--narrow">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="form-feedback form-feedback--{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="conversion-audio__form">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_texte">{{ form.texte.label }}</label>
+                    {{ form.texte }}
+                    {% if form.texte.errors %}
+                        <span class="form-error">{{ form.texte.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_fichier">{{ form.fichier.label }}</label>
+                    {{ form.fichier }}
+                    {% if form.fichier.errors %}
+                        <span class="form-error">{{ form.fichier.errors.0 }}</span>
+                    {% endif %}
+                    <small class="form-hint">Formats pris en charge : txt, docx, pdf, jpg, png, pptx, xlsx, epub.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_langue">{{ form.langue.label }}</label>
+                    {{ form.langue }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_voix_humaine">{{ form.voix_humaine.label }}</label>
+                    {{ form.voix_humaine }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email">{{ form.email.label }} *</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <span class="form-error">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_whatsapp">{{ form.whatsapp.label }} *</label>
+                    {{ form.whatsapp }}
+                    {% if form.whatsapp.errors %}
+                        <span class="form-error">{{ form.whatsapp.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                {% if form.non_field_errors %}
+                    <span class="form-error">{{ form.non_field_errors.0 }}</span>
+                {% endif %}
+
+                <button type="submit" class="btn btn--primary btn--large">Continuer vers le paiement</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

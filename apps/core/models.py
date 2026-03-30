@@ -97,6 +97,13 @@ class SiteAppearance(models.Model):
     audio_payment_url_3 = models.URLField(blank=True, verbose_name="Paiement audio (201 à 500 pages)")
     audio_payment_url_4 = models.URLField(blank=True, verbose_name="Paiement audio (501 à 1000 pages)")
     audio_payment_url_5 = models.URLField(blank=True, verbose_name="Paiement audio (1001+ pages)")
+    audio_human_payment_url = models.URLField(blank=True, verbose_name="Lien de paiement (voix humaine)")
+    audio_human_payment_url_1 = models.URLField(blank=True, verbose_name="Paiement voix humaine (1 à 50 pages)")
+    audio_human_payment_url_2 = models.URLField(blank=True, verbose_name="Paiement voix humaine (51 à 100 pages)")
+    audio_human_payment_url_3 = models.URLField(blank=True, verbose_name="Paiement voix humaine (101 à 200 pages)")
+    audio_human_payment_url_4 = models.URLField(blank=True, verbose_name="Paiement voix humaine (201 à 500 pages)")
+    audio_human_payment_url_5 = models.URLField(blank=True, verbose_name="Paiement voix humaine (501 à 1000 pages)")
+    audio_human_payment_url_6 = models.URLField(blank=True, verbose_name="Paiement voix humaine (1001+ pages)")
 
     class Meta:
         verbose_name = "Apparence du site"
@@ -104,4 +111,160 @@ class SiteAppearance(models.Model):
 
     def __str__(self):
         return self.site_name
+
+
+class SiteContent(TimeStampedModel):
+    """Textes et labels éditables du site (singleton)."""
+
+    header_search_placeholder = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Placeholder recherche",
+        default="Rechercher des livres, auteurs, actualités...",
+    )
+    header_search_button = models.CharField(
+        max_length=60,
+        blank=True,
+        verbose_name="Bouton recherche",
+        default="Chercher",
+    )
+    newsletter_placeholder = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="Placeholder newsletter",
+        default="Votre email",
+    )
+    newsletter_button_label = models.CharField(
+        max_length=80,
+        blank=True,
+        verbose_name="Bouton newsletter",
+        default="Bulletin",
+    )
+    nav_menu_label = models.CharField(
+        max_length=40,
+        blank=True,
+        verbose_name="Label bouton menu",
+        default="Menu",
+    )
+    nav_drawer_title = models.CharField(
+        max_length=80,
+        blank=True,
+        verbose_name="Titre menu mobile",
+        default="Menu",
+    )
+    nav_drawer_social_title = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="Titre réseaux sociaux (mobile)",
+        default="Suivez Recréation sur les réseaux sociaux",
+    )
+    nav_drawer_shop_label = models.CharField(
+        max_length=80,
+        blank=True,
+        verbose_name="Label shop (mobile)",
+        default="Recréation Shop",
+    )
+    nav_cta_title = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="Titre CTA menu",
+        default="Abonnez-vous à la newsletter",
+    )
+    nav_cta_text = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Texte CTA menu",
+        default="Recevez nos actualités et nouveautés.",
+    )
+    nav_cta_button = models.CharField(
+        max_length=60,
+        blank=True,
+        verbose_name="Bouton CTA menu",
+        default="S'abonner",
+    )
+    footer_slogan = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Slogan footer",
+        default="Avec le verbe, recréons le monde et conservons en une copie dans un livre !",
+    )
+    footer_address = models.CharField(
+        max_length=240,
+        blank=True,
+        verbose_name="Adresse footer",
+        default="Bénin | Abomey-Calavi, France | Marseille, avec des Représentants éditoriaux dans 7 autres pays en Afrique.",
+    )
+    footer_action_phone_label = models.CharField(
+        max_length=60,
+        blank=True,
+        verbose_name="Label action téléphone",
+        default="Téléphone",
+    )
+    footer_action_submit_label = models.CharField(
+        max_length=80,
+        blank=True,
+        verbose_name="Label action soumission",
+        default="Soumettre un manuscrit",
+    )
+    footer_action_email_label = models.CharField(
+        max_length=60,
+        blank=True,
+        verbose_name="Label action email",
+        default="E-mail",
+    )
+    footer_social_title = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="Titre réseaux sociaux (footer)",
+        default="Nous suivre les réseaux sociaux",
+    )
+    footer_catalogue_title = models.CharField(
+        max_length=80,
+        blank=True,
+        verbose_name="Titre colonne Catalogue",
+        default="Catalogue",
+    )
+    footer_collections_title = models.CharField(
+        max_length=80,
+        blank=True,
+        verbose_name="Titre collections",
+        default="Collections",
+    )
+    footer_audio_cta_label = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="CTA audio",
+        default="Conversion de texte en audio",
+    )
+    footer_shop_cta_label = models.CharField(
+        max_length=80,
+        blank=True,
+        verbose_name="CTA shop",
+        default="Recréation Shop",
+    )
+    footer_resources_title = models.CharField(
+        max_length=80,
+        blank=True,
+        verbose_name="Titre colonne Ressources",
+        default="Ressources",
+    )
+    footer_contact_link_label = models.CharField(
+        max_length=80,
+        blank=True,
+        verbose_name="Lien Nous contacter",
+        default="Nous contacter",
+    )
+    footer_copyright_text = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Copyright",
+        default="Editions Recréation - Tous droits réservés - 2026",
+    )
+
+    class Meta:
+        verbose_name = "Contenu du site"
+        verbose_name_plural = "Contenu du site"
+
+    def __str__(self):
+        return "Contenu du site"
 

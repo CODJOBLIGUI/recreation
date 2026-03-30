@@ -5,7 +5,9 @@ FICHIER : apps/catalogue/forms.py
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from .models import MessageContact, InscriptionNewsletter, SoumissionManuscrit, AudioConversionRequest, UserProfile
+from .models import ManuscriptReview, CommitteeApplication
 
 
 class ContactForm(forms.ModelForm):
@@ -190,6 +192,102 @@ class AudioConversionForm(forms.ModelForm):
         if paiement_requis and not email:
             raise forms.ValidationError("Email requis pour les demandes soumises au paiement.")
         return cleaned
+
+
+class AudioConversionHumanForm(forms.ModelForm):
+    """Formulaire conversion texte en audio (voix humaine)."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].required = True
+        self.fields["whatsapp"].required = True
+
+    class Meta:
+        model = AudioConversionRequest
+        fields = ["email", "whatsapp", "texte", "fichier", "langue", "voix_humaine"]
+        widgets = {
+            "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "votre@email.com"}),
+            "whatsapp": forms.TextInput(attrs={"class": "form-control phone-input", "placeholder": "+229 XX XX XX XX"}),
+            "texte": forms.Textarea(attrs={"class": "form-control", "rows": 6, "placeholder": "Collez votre texte ici."}),
+            "fichier": forms.ClearableFileInput(attrs={"class": "form-control"}),
+            "langue": forms.Select(attrs={"class": "form-control"}),
+            "voix_humaine": forms.Select(attrs={"class": "form-control"}),
+        }
+        labels = {
+            "email": "Email",
+            "whatsapp": "WhatsApp",
+            "texte": "Texte",
+            "fichier": "Fichier",
+            "langue": "Langue",
+            "voix_humaine": "Voix humaine",
+        }
+
+    def clean(self):
+        cleaned = super().clean()
+        texte = (cleaned.get("texte") or "").strip()
+        fichier = cleaned.get("fichier")
+        email = (cleaned.get("email") or "").strip()
+        whatsapp = (cleaned.get("whatsapp") or "").strip()
+        if not texte and not fichier:
+            raise forms.ValidationError("Veuillez coller un texte ou téléverser un fichier.")
+        if not email or not whatsapp:
+            raise forms.ValidationError("Email et WhatsApp sont requis pour la lecture humaine.")
+        return cleaned
+
+
+class CommitteeSignupForm(forms.ModelForm):
+    """Inscription comité de lecture (validation par admin)."""
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Mot de passe"}),
+        label="Mot de passe",
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirmer le mot de passe"}),
+        label="Confirmer le mot de passe",
+    )
+    cv = forms.FileField(widget=forms.ClearableFileInput(attrs={"class": "form-control"}), label="Téléversez votre CV")
+    motivation = forms.CharField(
+        widget=forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+        label="Motivation",
+    )
+    confidentiality_ack = forms.BooleanField(
+        required=True,
+        label="Confidentialité",
+    )
+    unpaid_ack = forms.BooleanField(
+        required=True,
+        label="Mission non rémunérée",
+    )
+
+    class Meta:
+        model = User
+        fields = ["username", "email", "first_name", "last_name"]
+        widgets = {
+            "username": forms.TextInput(attrs={"class": "form-control", "placeholder": "Nom d'utilisateur"}),
+            "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "Email"}),
+            "first_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Prénom"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Nom"}),
+        }
+
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get("password1") != cleaned.get("password2"):
+            raise forms.ValidationError("Les mots de passe ne correspondent pas.")
+        if not cleaned.get("confidentiality_ack"):
+            raise forms.ValidationError("Vous devez accepter les dispositions de confidentialité.")
+        if not cleaned.get("unpaid_ack"):
+            raise forms.ValidationError("Vous devez confirmer que la mission n'est pas rémunérée.")
+        return cleaned
+
+
+class ManuscriptReviewForm(forms.ModelForm):
+    class Meta:
+        model = ManuscriptReview
+        fields = ["note", "decision", "observation"]
+        widgets = {
+            "note": forms.NumberInput(attrs={"class": "form-control", "min": 0, "max": 20}),
+            "decision": forms.Select(attrs={"class": "form-control"}),
+            "observation": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+        }
 
 
 class StyledLoginForm(AuthenticationForm):

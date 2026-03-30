@@ -41,6 +41,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.core.middleware.SmartApostropheMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -163,8 +164,8 @@ UNFOLD = {
     "SITE_URL": "/",
     
     "SITE_LOGO": {
-        "light": "catalogue/images/logo.jpg",
-        "dark": "catalogue/images/logo.jpg",
+        "light": "/static/catalogue/images/logo.jpg",
+        "dark": "/static/catalogue/images/logo.jpg",
     },
     
     "SITE_SYMBOL": "📚",
@@ -207,7 +208,7 @@ UNFOLD = {
                     {
                         "title": "Accueil",
                         "icon": "home",
-                        "link": "/admin/",
+                        "link": "/edrecreation/",
                     },
                 ],
             },
@@ -219,17 +220,17 @@ UNFOLD = {
                     {
                         "title": "Livres",
                         "icon": "menu_book",
-                        "link": "/admin/catalogue/livre/",
+                        "link": "/edrecreation/catalogue/livre/",
                     },
                     {
                         "title": "Auteurs",
                         "icon": "person",
-                        "link": "/admin/catalogue/auteur/",
+                        "link": "/edrecreation/catalogue/auteur/",
                     },
                     {
                         "title": "Membres de l'équipe",
                         "icon": "group",
-                        "link": "/admin/catalogue/membre/",
+                        "link": "/edrecreation/catalogue/membre/",
                     },
                 ],
             },
@@ -241,12 +242,12 @@ UNFOLD = {
                     {
                         "title": "Pages",
                         "icon": "edit_document",
-                        "link": "/admin/catalogue/page/",
+                        "link": "/edrecreation/catalogue/page/",
                     },
                     {
                         "title": "Liens de menu",
                         "icon": "link",
-                        "link": "/admin/catalogue/menulink/",
+                        "link": "/edrecreation/catalogue/menulink/",
                     },
                     {
                         "title": "A propos (site)",
@@ -273,18 +274,18 @@ UNFOLD = {
                     {
                         "title": "Actualités",
                         "icon": "newspaper",
-                        "link": "/admin/catalogue/actualite/",
+                        "link": "/edrecreation/catalogue/actualite/",
                     },
                     {
                         "title": "Inscriptions Newsletter",
                         "icon": "mail",
-                        "link": "/admin/catalogue/inscriptionnewsletter/",
+                        "link": "/edrecreation/catalogue/inscriptionnewsletter/",
                         "badge": "new",
                     },
                     {
                         "title": "Messages de contact",
                         "icon": "inbox",
-                        "link": "/admin/catalogue/messagecontact/",
+                        "link": "/edrecreation/catalogue/messagecontact/",
                         "badge": "new",
                     },
                 ],
@@ -297,12 +298,12 @@ UNFOLD = {
                     {
                         "title": "Utilisateurs",
                         "icon": "manage_accounts",
-                        "link": "/admin/auth/user/",
+                        "link": "/edrecreation/auth/user/",
                     },
                     {
                         "title": "Groupes",
                         "icon": "verified_user",
-                        "link": "/admin/auth/group/",
+                        "link": "/edrecreation/auth/group/",
                     },
                 ],
             },
@@ -314,7 +315,7 @@ UNFOLD = {
                     {
                         "title": "Apparence du site",
                         "icon": "palette",
-                        "link": "/admin/core/siteappearance/",
+                        "link": "/edrecreation/core/siteappearance/",
                     },
                 ],
             },
@@ -325,7 +326,7 @@ UNFOLD = {
     # CSS PERSONNALISÉ (optionnel)
     # -------------------------------------------------------------------------
     "STYLES": [
-        lambda request: "catalogue/css/admin-custom.css",
+        lambda request: "/static/catalogue/css/admin-custom.css",
     ],
 }
 

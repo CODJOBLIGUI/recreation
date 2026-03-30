@@ -12,8 +12,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, ListView, TemplateView
 from django.contrib.auth import login, logout
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import authenticate
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
@@ -23,7 +25,7 @@ from django.contrib.auth.views import LoginView as DjangoLoginView, PasswordRese
 from datetime import date
 import unicodedata
 
-from .forms import ContactForm, NewsletterForm, SoumissionManuscritForm, AudioConversionForm, StyledSignupForm, StyledLoginForm
+from .forms import ContactForm, NewsletterForm, SoumissionManuscritForm, AudioConversionForm, AudioConversionHumanForm, CommitteeSignupForm, ManuscriptReviewForm, StyledSignupForm, StyledLoginForm
 from .utils.audio_conversion import estimate_pages_from_text, count_pages_for_file, extract_text_from_file
 from .models import (
     Actualite,
@@ -39,6 +41,8 @@ from .models import (
     PrixLitteraire,
     AudioConversionRequest,
     SoumissionManuscrit,
+    ManuscriptReview,
+    CommitteeApplication,
 )
 from apps.core.models import SiteAppearance
 
@@ -446,7 +450,10 @@ class AProposView(TemplateView):
         context["auteurs_count"] = auteurs_publies.count()
         context["pays_count"] = Nationalite.objects.filter(auteurs__in=auteurs_publies).distinct().count()
         context["prix_litteraires_count"] = PrixLitteraire.objects.filter(est_actif=True).count()
-        context["annees_experience"] = max(1, date.today().year - 2023 + 1)
+        start = date(2023, 12, 1)
+        today = date.today()
+        years_elapsed = today.year - start.year - ((today.month, today.day) < (start.month, start.day))
+        context["annees_experience"] = f"{max(1, years_elapsed)}+"
         page = Page.objects.filter(slug="a-propos", is_active=True).first()
         context["page"] = page
         context["page_blocks"] = (
@@ -819,11 +826,217 @@ class ActualiteDetailView(DetailView):
 FREE_TEXT_LIMIT = 5000
 
 
-class AudioConversionView(LoginRequiredMixin, FormView):
+class AudioConversionChoiceView(TemplateView):
+    template_name = "catalogue/conversion-audio-choice.html"
+
+
+class AudioConversionHumanView(FormView):
+    template_name = "catalogue/conversion-audio-humain.html"
+    form_class = AudioConversionHumanForm
+    success_url = reverse_lazy("catalogue:conversion-audio-humain")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page = Page.objects.filter(slug="conversion-texte-audio", is_active=True).first()
+        context["page"] = page
+        context["page_title"] = "Conversion de texte en audio (voix humaine) - Editions Récréation"
+        return context
+
+    def form_valid(self, form):
+        texte = (form.cleaned_data.get("texte") or "").strip()
+        fichier = form.cleaned_data.get("fichier")
+
+        demande = form.save(commit=False)
+        demande.voice_type = "human"
+        demande.paiement_requis = True
+        demande.statut = "awaiting_payment"
+
+        if fichier:
+            pages_count = count_pages_for_file(fichier)
+        else:
+            pages_count = estimate_pages_from_text(texte)
+        demande.pages_count = pages_count
+        if pages_count <= 50:
+            demande.payment_tier = 1
+        elif pages_count <= 100:
+            demande.payment_tier = 2
+        elif pages_count <= 200:
+            demande.payment_tier = 3
+        elif pages_count <= 500:
+            demande.payment_tier = 4
+        elif pages_count <= 1000:
+            demande.payment_tier = 5
+        else:
+            demande.payment_tier = 6
+
+        demande.save()
+        self.request.session["audio_request_id"] = demande.id
+        return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
+
+
+def _is_committee_member(user):
+    return user.is_authenticated and user.groups.filter(name="ComiteLecture").exists()
+
+
+@ensure_csrf_cookie
+def committee_portal(request):
+    """Portail du comité de lecture (inscription + connexion + accès évaluations)."""
+    if request.user.is_authenticated:
+        if _is_committee_member(request.user):
+            submissions = SoumissionManuscrit.objects.all().order_by("-created_at")
+            reviews_qs = ManuscriptReview.objects.filter(reviewer=request.user)
+            reviews = {r.soumission_id: r for r in reviews_qs}
+
+            # Filters
+            q = (request.GET.get("q") or "").strip()
+            genre = (request.GET.get("genre") or "").strip()
+            nationalite = (request.GET.get("nationalite") or "").strip()
+            pays = (request.GET.get("pays") or "").strip()
+            decision = (request.GET.get("decision") or "").strip()
+            statut = (request.GET.get("statut") or "").strip()
+
+            if q:
+                submissions = submissions.filter(
+                    Q(titre_ouvrage__icontains=q)
+                    | Q(nom_auteur__icontains=q)
+                    | Q(nom_complet__icontains=q)
+                )
+            if genre:
+                submissions = submissions.filter(genre_litteraire__iexact=genre)
+            if nationalite:
+                submissions = submissions.filter(nationalite__iexact=nationalite)
+            if pays:
+                submissions = submissions.filter(pays_residence__iexact=pays)
+
+            items = [{"submission": submission, "review": reviews.get(submission.id)} for submission in submissions]
+
+            if decision:
+                items = [item for item in items if item["review"] and item["review"].decision == decision]
+            if statut == "pending":
+                items = [item for item in items if not item["review"]]
+            elif statut == "done":
+                items = [item for item in items if item["review"]]
+
+            # Dropdown data
+            genres = (
+                SoumissionManuscrit.objects.exclude(genre_litteraire="")
+                .values_list("genre_litteraire", flat=True)
+                .distinct()
+                .order_by("genre_litteraire")
+            )
+            nationalites = (
+                SoumissionManuscrit.objects.exclude(nationalite="")
+                .values_list("nationalite", flat=True)
+                .distinct()
+                .order_by("nationalite")
+            )
+            pays_list = (
+                SoumissionManuscrit.objects.exclude(pays_residence="")
+                .values_list("pays_residence", flat=True)
+                .distinct()
+                .order_by("pays_residence")
+            )
+
+            return render(
+                request,
+                "catalogue/committee_portal.html",
+                {
+                    "items": items,
+                    "genres": genres,
+                    "nationalites": nationalites,
+                    "pays_list": pays_list,
+                    "filters": {
+                        "q": q,
+                        "genre": genre,
+                        "nationalite": nationalite,
+                        "pays": pays,
+                        "decision": decision,
+                        "statut": statut,
+                    },
+                },
+            )
+        return render(request, "catalogue/committee_pending.html")
+
+    login_form = AuthenticationForm(request, data=request.POST if request.POST.get("action") == "login" else None)
+    login_form.fields["username"].widget.attrs.update({"placeholder": "Nom d’utilisateur ou E-mail"})
+    login_form.fields["password"].widget.attrs.update({"placeholder": "Mot de passe"})
+
+    if request.method == "POST" and request.POST.get("action") == "login" and login_form.is_valid():
+        user = login_form.get_user()
+        login(request, user)
+        return redirect(request.path)
+
+    return render(
+        request,
+        "catalogue/committee_auth.html",
+        {"login_form": login_form},
+    )
+
+
+@ensure_csrf_cookie
+def committee_signup(request):
+    """Inscription comité de lecture (page dédiée)."""
+    signup_form = CommitteeSignupForm(request.POST or None, request.FILES or None)
+    if request.method == "POST" and signup_form.is_valid():
+        user = signup_form.save(commit=False)
+        user.is_active = False
+        user.set_password(signup_form.cleaned_data["password1"])
+        user.save()
+        group, _ = Group.objects.get_or_create(name="ComiteLecture")
+        user.groups.add(group)
+        CommitteeApplication.objects.create(
+            user=user,
+            cv=signup_form.cleaned_data["cv"],
+            motivation=signup_form.cleaned_data["motivation"],
+            confidentiality_ack=signup_form.cleaned_data["confidentiality_ack"],
+            unpaid_ack=signup_form.cleaned_data["unpaid_ack"],
+        )
+        messages.success(request, "Votre demande a été envoyée. Un administrateur doit l’approuver.")
+        return redirect("catalogue:committee-portal")
+
+    return render(
+        request,
+        "catalogue/committee_signup.html",
+        {"signup_form": signup_form},
+    )
+
+
+def committee_submission_detail(request, pk):
+    if not _is_committee_member(request.user):
+        return redirect("catalogue:committee-portal")
+
+    submission = get_object_or_404(SoumissionManuscrit, pk=pk)
+    review, _ = ManuscriptReview.objects.get_or_create(
+        soumission=submission,
+        reviewer=request.user,
+        defaults={"note": 0, "decision": "no"},
+    )
+
+    form = ManuscriptReviewForm(request.POST or None, instance=review)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Évaluation enregistrée.")
+        return redirect("catalogue:committee-submission", pk=submission.pk)
+
+    return render(
+        request,
+        "catalogue/committee_submission_detail.html",
+        {"submission": submission, "form": form, "review": review},
+    )
+
+
+def logout_view(request):
+    """Logout compatible GET/POST to avoid 405 errors."""
+    if request.method in ("GET", "POST"):
+        logout(request)
+        return redirect("catalogue:index")
+    return redirect("catalogue:index")
+
+
+class AudioConversionView(FormView):
     template_name = "catalogue/conversion-audio.html"
     form_class = AudioConversionForm
-    success_url = reverse_lazy("catalogue:conversion-audio")
-    login_url = reverse_lazy("catalogue:login")
+    success_url = reverse_lazy("catalogue:conversion-audio-synthetique")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -853,15 +1066,6 @@ class AudioConversionView(LoginRequiredMixin, FormView):
                 context["payment_available"] = bool(context["payment_url"])
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser):
-            messages.info(request, "Veuillez vous connecter avec un compte client pour utiliser ce service.")
-            logout(request)
-            return redirect("catalogue:login")
-        if not request.user.is_authenticated:
-            messages.info(request, "Inscrivez-vous ou connectez-vous pour utiliser ce service.")
-        return super().dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
         texte = (form.cleaned_data.get("texte") or "").strip()
         fichier = form.cleaned_data.get("fichier")
@@ -869,6 +1073,7 @@ class AudioConversionView(LoginRequiredMixin, FormView):
 
 
         demande = form.save(commit=False)
+        demande.voice_type = "synthetic"
         if self.request.user.is_authenticated:
             demande.user = self.request.user
         demande.phrases_count = 0
@@ -902,7 +1107,12 @@ class AudioConversionView(LoginRequiredMixin, FormView):
                 demande.statut = "error"
                 demande.async_error = str(exc)
                 demande.save(update_fields=["statut", "async_error", "updated_at"])
-                messages.error(self.request, "Extraction du texte impossible. Merci de réessayer ou d’utiliser un autre fichier.")
+                self.request.session["audio_request_id"] = demande.id
+                return redirect(self.success_url)
+            if not audio_text:
+                demande.statut = "error"
+                demande.async_error = "Aucun texte extrait."
+                demande.save(update_fields=["statut", "async_error", "updated_at"])
                 self.request.session["audio_request_id"] = demande.id
                 return redirect(self.success_url)
 
@@ -910,7 +1120,6 @@ class AudioConversionView(LoginRequiredMixin, FormView):
             try:
                 from gtts import gTTS
             except Exception:
-                messages.error(self.request, "Conversion indisponible pour le moment. Veuillez réessayer plus tard.")
                 self.request.session["audio_request_id"] = demande.id
                 return redirect(self.success_url)
 
@@ -948,7 +1157,6 @@ class AudioConversionView(LoginRequiredMixin, FormView):
                 except Exception:
                     demande.statut = "error"
                     demande.save(update_fields=["statut", "updated_at"])
-                    messages.error(self.request, "La conversion a échoué. Vérifiez votre connexion et réessayez.")
                     self.request.session["audio_request_id"] = demande.id
                     return redirect(self.success_url)
 
@@ -958,7 +1166,7 @@ class AudioConversionView(LoginRequiredMixin, FormView):
             messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
             return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
 
-        messages.success(self.request, "Votre audio est prêt. Vous pouvez le télécharger.")
+        messages.success(self.request, "Votre audio est prêt. Vous pouvez l'écouter en cliquant sur play. Vous pouvez aussi le télécharger gratuitement.")
         return redirect(self.success_url)
 
 
@@ -981,13 +1189,23 @@ def conversion_payment_redirect(request, demande_id):
     tier = demande.payment_tier or 1
     payment_url = ""
     if appearance:
-        payment_url = {
-            1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
-            2: appearance.audio_payment_url_2,
-            3: appearance.audio_payment_url_3,
-            4: appearance.audio_payment_url_4,
-            5: appearance.audio_payment_url_5,
-        }.get(tier) or appearance.audio_payment_url
+        if demande.voice_type == "human":
+            payment_url = {
+                1: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
+                2: appearance.audio_human_payment_url_2,
+                3: appearance.audio_human_payment_url_3,
+                4: appearance.audio_human_payment_url_4,
+                5: appearance.audio_human_payment_url_5,
+                6: appearance.audio_human_payment_url_6,
+            }.get(tier) or appearance.audio_human_payment_url
+        else:
+            payment_url = {
+                1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
+                2: appearance.audio_payment_url_2,
+                3: appearance.audio_payment_url_3,
+                4: appearance.audio_payment_url_4,
+                5: appearance.audio_payment_url_5,
+            }.get(tier) or appearance.audio_payment_url
 
     if request.GET.get("ajax") == "1" or request.headers.get("x-requested-with") == "XMLHttpRequest":
         return JsonResponse(
@@ -1000,7 +1218,6 @@ def conversion_payment_redirect(request, demande_id):
 
     if payment_url:
         return redirect(payment_url)
-    messages.error(request, "Le lien de paiement n’est pas encore disponible.")
     return redirect("catalogue:conversion-audio")
 
 
