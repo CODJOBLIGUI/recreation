@@ -561,3 +561,12 @@ font-size: 2rem;
 
     .header__nav-list { gap: 0.35rem 0.6rem; }
 }
+/* MOBILE override with !important to ensure apply */
+@media (max-width: 768px) {
+    .header__nav { display: flex !important; }
+    .header__nav-list a { color: #111111 !important; }
+    .header__nav-brand { font-size: 1.3rem !important; line-height: 1.1 !important; }
+    .header__social { margin-left: auto !important; }
+    .header__brand { justify-content: flex-start !important; }
+    .header__nav-list { gap: 0.35rem 0.6rem !important; }
+}
