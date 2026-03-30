@@ -625,3 +625,57 @@ font-size: 2rem;
     .hero__content p { font-size: 0.6rem !important; }
     .hero__cta .btn { padding: 0.22rem 0.45rem !important; font-size: 0.55rem !important; }
 }
+/* MOBILE header refine: logo left, socials right (no wrap), nicer search/newsletter */
+@media (max-width: 768px) {
+    .header__top {
+        display: grid !important;
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+            "logo socials"
+            "forms forms";
+        align-items: center;
+        gap: 0.5rem 0.75rem;
+    }
+
+    .header__brand {
+        grid-area: logo;
+        justify-content: flex-start !important;
+        align-items: center;
+    }
+
+    .header__social {
+        grid-area: socials;
+        justify-content: flex-end;
+        flex-wrap: nowrap !important;
+        white-space: nowrap;
+        gap: 0.45rem;
+    }
+
+    .header__actions {
+        grid-area: forms;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+    }
+
+    .header__newsletter-form,
+    .header-search {
+        width: 100%;
+        background: #f7f3ee;
+        border-radius: 999px;
+        padding: 0.15rem 0.2rem;
+    }
+
+    .header__newsletter-form input,
+    .header-search input {
+        font-size: 0.78rem;
+        padding: 0.35rem 0.55rem;
+    }
+
+    .header__newsletter-form button,
+    .header-search__btn {
+        font-size: 0.72rem;
+        padding: 0.32rem 0.55rem;
+        border-radius: 999px;
+    }
+}
