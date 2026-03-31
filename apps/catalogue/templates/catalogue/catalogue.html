@@ -7,8 +7,8 @@
 <!-- En-tête du catalogue -->
 <section class="page-header">
     <div class="container">
-        <h1>{{ page_heading|default:"Notre Catalogue" }}</h1>
-        <p>{{ page_subtitle|default:"Découvrez tous nos livres" }}</p>
+        <h1>{{ page_heading|default:site_content.catalogue_page_title|default:"Notre Catalogue" }}</h1>
+        <p>{{ page_subtitle|default:site_content.catalogue_page_subtitle|default:"Découvrez tous nos livres" }}</p>
     </div>
 </section>
 
@@ -20,13 +20,13 @@
             <div class="search-box">
                 <input type="text" 
                        id="search-input" 
-                       placeholder="Rechercher un livre, auteur..." 
+                       placeholder="{{ site_content.catalogue_search_placeholder|default:"Rechercher un livre, auteur..." }}" 
                        value="{{ recherche }}"
                        aria-label="Rechercher">
                 <span class="search-box__icon" aria-hidden="true">
                     <i class="fas fa-search"></i>
                 </span>
-                <button type="button" id="catalogue-search-btn" class="search-box__btn" aria-label="Valider la recherche"><span class="search-box__btn-label">Rechercher</span></button>
+                <button type="button" id="catalogue-search-btn" class="search-box__btn" aria-label="Valider la recherche"><span class="search-box__btn-label">{{ site_content.catalogue_search_button_label|default:"Rechercher" }}</span></button>
             </div>
             
             <!-- Filtres -->
@@ -147,5 +147,6 @@
 {% block extra_js %}
 <script src="{% static 'catalogue/js/filter.js' %}?v=5"></script>
 {% endblock %}
+
 
 

@@ -29,7 +29,10 @@ urlpatterns = [
     path('conversion-texte-audio/', views.AudioConversionChoiceView.as_view(), name='conversion-audio'),
     path('conversion-texte-audio/synthetique/', views.AudioConversionView.as_view(), name='conversion-audio-synthetique'),
     path('conversion-texte-audio/humaine/', views.AudioConversionHumanView.as_view(), name='conversion-audio-humain'),
+    path('conversion-texte-audio/paiement-requis/<int:demande_id>/', views.conversion_payment_required, name='conversion-audio-pay-required'),
+    path('conversion-texte-audio/deja-paye/<int:demande_id>/', views.conversion_payment_already_paid, name='conversion-audio-already-paid'),
     path('conversion-texte-audio/payer/<int:demande_id>/', views.conversion_payment_redirect, name='conversion-audio-pay'),
+    path('conversion-texte-audio/paiement/callback/', views.conversion_payment_callback, name='conversion-audio-callback'),
     path(
         'lecture-evaluation-des-soumissions-de-manuscrit-ou-tapuscrits/',
         views.committee_portal,

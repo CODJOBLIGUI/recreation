@@ -154,6 +154,9 @@ LOGOUT_REDIRECT_URL = "/"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Callback paiement (optionnel)
+PAYMENT_CALLBACK_TOKEN = os.getenv("PAYMENT_CALLBACK_TOKEN", "")
+
 
 UNFOLD = {
     # -------------------------------------------------------------------------
@@ -326,7 +329,7 @@ UNFOLD = {
     # CSS PERSONNALISÉ (optionnel)
     # -------------------------------------------------------------------------
     "STYLES": [
-        lambda request: "/static/catalogue/css/admin-custom.css",
+        lambda request: "/static/catalogue/css/admin-custom.css?v=20260330",
     ],
 }
 

@@ -62,21 +62,19 @@
         <div class="auteurs-list">
             {% for auteur in auteurs_collection %}
             <div class="author-card">
+
                 <div class="author-card__photo">
                     <img src="{{ auteur.photo.url }}" alt="{{ auteur.nom }}">
+                    {% with nat=auteur.nationalites.first %}
+                    {% if nat and nat.drapeau %}
+                    <div class="author-card__flag" title="{{ nat.nom }}">
+                        <img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">
+                    </div>
+                    {% endif %}
+                    {% endwith %}
                 </div>
                 <div class="author-card__info">
                     <h3 class="author-card__name">{{ auteur.nom }}</h3>
-                    {% if auteur.nationalites.all %}
-                    <div class="author-card__nationality">
-                        {% for nat in auteur.nationalites.all %}
-                        <span class="nationality">
-                            {% if nat.drapeau %}<img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">{% endif %}
-                            {{ nat.nom }}
-                        </span>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
                     <p class="author-card__bio">{{ auteur.biographie_texte|truncatewords:30 }}</p>
                     <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">Voir la bibliographie</a>
                 </div>

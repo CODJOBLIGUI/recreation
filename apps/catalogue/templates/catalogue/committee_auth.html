@@ -7,14 +7,14 @@
     <div class="committee-login-card">
         <div class="committee-login-brand">
             <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Editions Recréation" />
-            <div class="committee-login-brand__title">Editions Recréation</div>
-            <div class="committee-login-brand__subtitle">Membres du Comité de lecture</div>
+            <div class="committee-login-brand__title">{{ site_content.committee_login_brand_title|default:"Editions Recréation" }}</div>
+            <div class="committee-login-brand__subtitle">{{ site_content.committee_login_brand_subtitle|default:"Membres du Comité de lecture" }}</div>
         </div>
 
         <div class="committee-login-form">
-            <h1>Connexion</h1>
-            <p>Connectez-vous pour accéder à l’espace des membres du Comité de lecture.</p>
-            <p>Si vous n’avez pas encore un compte évaluateur, inscrivez-vous.</p>
+            <h1>{{ site_content.committee_login_title|default:"Connexion" }}</h1>
+            <p>{{ site_content.committee_login_text_primary|default:"Connectez-vous pour accéder à l’espace des membres du Comité de lecture." }}</p>
+            <p>{{ site_content.committee_login_text_secondary|default:"Si vous n’avez pas encore un compte évaluateur, inscrivez-vous." }}</p>
 
             {% if messages %}
                 {% for message in messages %}

@@ -22,7 +22,16 @@
                     <div class="hero__visual">
                         {% with auteur_principal=livre.auteurs.first %}
                         {% if auteur_principal and auteur_principal.photo %}
-                        <img class="hero__author-photo" src="{{ auteur_principal.photo.url }}" alt="Photo de {{ auteur_principal.nom }}">
+                        <div class="author-card__photo hero__author-photo-wrap">
+                            <img class="hero__author-photo" src="{{ auteur_principal.photo.url }}" alt="Photo de {{ auteur_principal.nom }}">
+                            {% with nat=auteur_principal.nationalites.first %}
+                            {% if nat and nat.drapeau %}
+                            <div class="author-card__flag" title="{{ nat.nom }}">
+                                <img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">
+                            </div>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
                         {% endif %}
                         {% endwith %}
                         {% if livre.image_par_defaut %}

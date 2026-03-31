@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ page_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
-    <title>{{ page_title|default:'Editions Recréation' }}</title>
+    <meta name="description" content="{{ page_description|default:site_content.default_meta_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+    <meta name="keywords" content="{{ page_keywords|default:site_content.default_meta_keywords|default:appearance.site_meta_keywords|default:'' }}">
+    <title>{{ page_title|default:site_content.default_meta_title|default:appearance.site_name|default:'Editions Recréation' }}</title>
     {% if appearance and appearance.favicon %}
     <link rel="icon" type="image/png" href="{{ appearance.favicon.url }}">
     {% else %}
@@ -23,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- CSS Principal -->
-    <link rel="stylesheet" href="{% static 'catalogue/css/style.css' %}?v=45">
+    <link rel="stylesheet" href="{% static 'catalogue/css/style.css' %}?v=53">
     <link rel="stylesheet" href="{% static 'catalogue/css/responsive.css' %}?v=18">
     <link rel="stylesheet" href="{% static 'catalogue/css/responsive.css' %}">
     
@@ -98,7 +99,7 @@
 
             <!-- Navigation principale -->
             <nav class="header__nav">
-                <div class="header__nav-brand"><a href="{% url 'catalogue:index' %}">Recréation</a></div>
+                <div class="header__nav-brand"><a href="{% url 'catalogue:index' %}">{{ site_content.nav_brand_label|default:"Recréation" }}</a></div>
                 <ul class="header__nav-list">
                     {% if menu_header_links %}
                         {% for link in menu_header_links %}
@@ -112,14 +113,14 @@
                         {% endfor %}
                     {% else %}
                         <li><a href="{% url 'catalogue:index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Accueil</a></li>
-                        <li><a href="{% url 'catalogue:actualites' %}" {% if request.resolver_match.url_name == 'actualites' %}class="active"{% endif %}>Actualités</a></li>
-                        <li><a href="{% url 'catalogue:auteurs' %}" {% if request.resolver_match.url_name == 'auteurs' %}class="active"{% endif %}>Auteurs</a></li>
-                        <li><a href="{% url 'catalogue:catalogue' %}" {% if request.resolver_match.url_name == 'catalogue' %}class="active"{% endif %}>Catalogue</a></li>
-                        <li><a href="{% url 'catalogue:nos-contrats' %}" {% if request.resolver_match.url_name == 'nos-contrats' %}class="active"{% endif %}>Nos contrats</a></li>
-                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>Conversion de texte en audio</a></li>
-                        <li><a href="{% url 'catalogue:a-propos' %}" {% if request.resolver_match.url_name == 'a-propos' %}class="active"{% endif %}>A propos</a></li>
+                        <li><a href="{% url 'catalogue:actualites' %}" {% if request.resolver_match.url_name == 'actualites' %}class="active"{% endif %}>{{ site_content.footer_link_actualites|default:"Actualités" }}</a></li>
+                        <li><a href="{% url 'catalogue:auteurs' %}" {% if request.resolver_match.url_name == 'auteurs' %}class="active"{% endif %}>{{ site_content.footer_link_auteurs|default:"Auteurs" }}</a></li>
+                        <li><a href="{% url 'catalogue:catalogue' %}" {% if request.resolver_match.url_name == 'catalogue' %}class="active"{% endif %}>{{ site_content.footer_link_catalogue|default:"Catalogue" }}</a></li>
+                        <li><a href="{% url 'catalogue:nos-contrats' %}" {% if request.resolver_match.url_name == 'nos-contrats' %}class="active"{% endif %}>{{ site_content.footer_link_nos_contrats|default:"Nos contrats" }}</a></li>
+                        <li><a href="{% url 'catalogue:conversion-audio' %}" {% if request.resolver_match.url_name == 'conversion-audio' %}class="active"{% endif %}>{{ site_content.nav_drawer_conversion_label|default:"Conversion de texte en audio" }}</a></li>
+                        <li><a href="{% url 'catalogue:a-propos' %}" {% if request.resolver_match.url_name == 'a-propos' %}class="active"{% endif %}>{{ site_content.footer_link_a_propos|default:"A propos" }}</a></li>
                         <li><a href="{% url 'catalogue:contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>Contacts</a></li>
-                        <li><a href="{% url 'catalogue:committee-portal' %}" {% if request.resolver_match.url_name == 'committee-portal' %}class="active"{% endif %}>Espace des membres du Comité de lecture</a></li>
+                        <li><a href="{% url 'catalogue:committee-portal' %}" {% if request.resolver_match.url_name == 'committee-portal' %}class="active"{% endif %}>{{ site_content.nav_drawer_committee_label|default:"Espace des membres du Comité de lecture" }}</a></li>
                     {% endif %}
                     <li>
                         <button id="nav-menu-btn" class="nav-menu-btn" type="button" aria-expanded="false" aria-controls="nav-drawer">
@@ -146,7 +147,7 @@
             </div>
             <nav class="nav-drawer__nav">
                 {% if collections_list %}
-                <div class="nav-drawer__section-title">Collections</div>
+                <div class="nav-drawer__section-title">{{ site_content.nav_drawer_collections_title|default:"Collections" }}</div>
                 <div class="nav-drawer__collections">
                     {% for collection in collections_list %}
                     {% if collection.slug %}
@@ -157,27 +158,27 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-                <div class="nav-drawer__section-title">Autres versions de livres</div>
+                <div class="nav-drawer__section-title">{{ site_content.nav_drawer_formats_title|default:"Autres versions de livres" }}</div>
                 <div class="nav-drawer__collections">
-                    <a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a>
-                    <a href="{% url 'catalogue:livres-audio' %}">Livres audio</a>
-                    <a href="{% url 'catalogue:livres-papier' %}">Livres papier</a>
+                    <a href="{% url 'catalogue:livres-numeriques' %}">{{ site_content.nav_drawer_books_digital_label|default:"Livres numériques" }}</a>
+                    <a href="{% url 'catalogue:livres-audio' %}">{{ site_content.nav_drawer_books_audio_label|default:"Livres audio" }}</a>
+                    <a href="{% url 'catalogue:livres-papier' %}">{{ site_content.nav_drawer_books_print_label|default:"Livres papier" }}</a>
                 </div>
-                <div class="nav-drawer__section-title">Autres services</div>
+                <div class="nav-drawer__section-title">{{ site_content.nav_drawer_services_title|default:"Autres services" }}</div>
                 <div class="nav-drawer__collections">
                     <a href="{% url 'catalogue:conversion-audio' %}">
                         <span class="footer-fayard__btn-icon" aria-hidden="true">
                             <i class="fas fa-headphones"></i>
                             <i class="fas fa-book"></i>
                         </span>
-                        Conversion de texte en audio
+                        {{ site_content.nav_drawer_conversion_label|default:"Conversion de texte en audio" }}
                     </a>
                     <a href="{% url 'catalogue:committee-portal' %}">
                         <span class="footer-fayard__btn-icon" aria-hidden="true">
                             <i class="fas fa-book-open"></i>
                             <i class="fas fa-user-check"></i>
                         </span>
-                        Espace des membres du Comité de lecture
+                        {{ site_content.nav_drawer_committee_label|default:"Espace des membres du Comité de lecture" }}
                     </a>
                 </div>
             </nav>
@@ -261,10 +262,10 @@
                         <div class="footer-fayard__menu-col">
                             <h3 class="footer-fayard__menu-title">{{ site_content.footer_catalogue_title|default:"Catalogue" }}</h3>
                             <ul class="footer-fayard__menu-list">
-                                <li><a href="{% url 'catalogue:catalogue' %}">Catalogue</a></li>
-                                <li><a href="{% url 'catalogue:livres-numeriques' %}">Livres numériques</a></li>
-                                <li><a href="{% url 'catalogue:livres-audio' %}">Livres audio</a></li>
-                                <li><a href="{% url 'catalogue:livres-papier' %}">Livres papier</a></li>
+                                <li><a href="{% url 'catalogue:catalogue' %}">{{ site_content.footer_link_catalogue|default:"Catalogue" }}</a></li>
+                                <li><a href="{% url 'catalogue:livres-numeriques' %}">{{ site_content.nav_drawer_books_digital_label|default:"Livres numériques" }}</a></li>
+                                <li><a href="{% url 'catalogue:livres-audio' %}">{{ site_content.nav_drawer_books_audio_label|default:"Livres audio" }}</a></li>
+                                <li><a href="{% url 'catalogue:livres-papier' %}">{{ site_content.nav_drawer_books_print_label|default:"Livres papier" }}</a></li>
                             </ul>
 
                             <h3 class="footer-fayard__menu-title footer-fayard__menu-title--spaced">{{ site_content.footer_collections_title|default:"Collections" }}</h3>
@@ -300,16 +301,16 @@
                         <div class="footer-fayard__menu-col">
                             <h3 class="footer-fayard__menu-title">{{ site_content.footer_resources_title|default:"Ressources" }}</h3>
                     <ul class="footer-fayard__menu-list">
-                        <li><a href="{% url 'catalogue:actualites' %}">Actualités</a></li>
-                        <li><a href="{% url 'catalogue:auteurs' %}">Auteurs</a></li>
-                        <li><a href="{% url 'catalogue:a-propos' %}">A propos</a></li>
-                        <li><a href="{% url 'catalogue:index' %}#nouveautes">Nouveautés</a></li>
-                        <li><a href="{% url 'catalogue:index' %}#a-paraitre">A paraître</a></li>
-                        <li><a href="{% url 'catalogue:index' %}#meilleures-ventes">Meilleures ventes</a></li>
-                        <li><a href="{% url 'catalogue:nos-contrats' %}">Nos contrats</a></li>
-                        <li><a href="{% url 'catalogue:a-propos' %}#equipe">Equipe</a></li>
-                        <li><a href="{% url 'catalogue:soumission-manuscrit' %}">Devenir auteur</a></li>
-                        <li><a href="{% url 'catalogue:committee-portal' %}">Rejoindre notre Comité de lecture</a></li>
+                        <li><a href="{% url 'catalogue:actualites' %}">{{ site_content.footer_link_actualites|default:"Actualités" }}</a></li>
+                        <li><a href="{% url 'catalogue:auteurs' %}">{{ site_content.footer_link_auteurs|default:"Auteurs" }}</a></li>
+                        <li><a href="{% url 'catalogue:a-propos' %}">{{ site_content.footer_link_a_propos|default:"A propos" }}</a></li>
+                        <li><a href="{% url 'catalogue:index' %}#nouveautes">{{ site_content.footer_link_nouveautes|default:"Nouveautés" }}</a></li>
+                        <li><a href="{% url 'catalogue:index' %}#a-paraitre">{{ site_content.footer_link_a_paraitre|default:"A paraître" }}</a></li>
+                        <li><a href="{% url 'catalogue:index' %}#meilleures-ventes">{{ site_content.footer_link_meilleures_ventes|default:"Meilleures ventes" }}</a></li>
+                        <li><a href="{% url 'catalogue:nos-contrats' %}">{{ site_content.footer_link_nos_contrats|default:"Nos contrats" }}</a></li>
+                        <li><a href="{% url 'catalogue:a-propos' %}#equipe">{{ site_content.footer_link_equipe|default:"Equipe" }}</a></li>
+                        <li><a href="{% url 'catalogue:soumission-manuscrit' %}">{{ site_content.footer_link_devenir_auteur|default:"Devenir auteur" }}</a></li>
+                        <li><a href="{% url 'catalogue:committee-portal' %}">{{ site_content.footer_link_rejoindre_comite|default:"Rejoindre notre Comité de lecture" }}</a></li>
                     </ul>
                         </div>
                     </div>
@@ -319,11 +320,10 @@
             <!-- Copyright -->
             <div class="footer-fayard__bottom">
                 <div class="footer-fayard__links">
-                    <a href="{% url 'catalogue:mentions-legales' %}">Mentions légales</a>
-                    <a href="{% url 'catalogue:confidentialite' %}">Confidentialité</a>
-                    <a href="{% url 'catalogue:cookies' %}">Cookies</a>
+                    <a href="{% url 'catalogue:mentions-legales' %}">{{ site_content.footer_link_mentions|default:"Mentions légales" }}</a>
+                    <a href="{% url 'catalogue:confidentialite' %}">{{ site_content.footer_link_confidentialite|default:"Confidentialité" }}</a>
+                    <a href="{% url 'catalogue:cookies' %}">{{ site_content.footer_link_cookies|default:"Cookies" }}</a>
                 </div>
-                <a href="{% url 'catalogue:contact' %}" class="footer-fayard__contact-link">{{ site_content.footer_contact_link_label|default:"Nous contacter" }}</a>
                 <p>&copy; <a href="{% url 'catalogue:index' %}">Editions Recréation</a> - {{ site_content.footer_copyright_text|default:"Tous droits réservés - 2026" }}</p>
             </div>
         </div>
@@ -371,8 +371,3 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
-
-
-
-
-

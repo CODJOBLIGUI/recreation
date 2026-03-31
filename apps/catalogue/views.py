@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
 from django.utils import timezone
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, ListView, TemplateView
@@ -26,7 +28,13 @@ from datetime import date
 import unicodedata
 
 from .forms import ContactForm, NewsletterForm, SoumissionManuscritForm, AudioConversionForm, AudioConversionHumanForm, CommitteeSignupForm, ManuscriptReviewForm, StyledSignupForm, StyledLoginForm
-from .utils.audio_conversion import estimate_pages_from_text, count_pages_for_file, extract_text_from_file
+from .utils.audio_conversion import (
+    estimate_pages_from_text,
+    count_pages_for_file,
+    extract_text_from_file,
+    normalize_tts_text,
+    detect_tts_language,
+)
 from .models import (
     Actualite,
     Auteur,
@@ -93,6 +101,8 @@ class IndexView(TemplateView):
             context["page_title"] = page.meta_title
         if page and page.meta_description:
             context["page_description"] = page.meta_description
+        if page and getattr(page, "meta_keywords", ""):
+            context["page_keywords"] = getattr(page, "meta_keywords", "")
 
         context["livres_carousel"] = (
             Livre.objects.filter(est_publie=True).prefetch_related("auteurs").order_by("-parution")
@@ -415,6 +425,8 @@ class ContactView(FormView):
             context["page_title"] = "Contact - Editions Recr\u00e9ation"
         if page and page.meta_description:
             context["page_description"] = page.meta_description
+        if page and getattr(page, "meta_keywords", ""):
+            context["page_keywords"] = getattr(page, "meta_keywords", "")
         return context
 
     def form_valid(self, form):
@@ -466,6 +478,8 @@ class AProposView(TemplateView):
         context["page_title"] = page.meta_title if page and page.meta_title else "\u00c0 Propos - Editions Recr\u00e9ation"
         if page and page.meta_description:
             context["page_description"] = page.meta_description
+        if page and getattr(page, "meta_keywords", ""):
+            context["page_keywords"] = getattr(page, "meta_keywords", "")
         return context
 
 
@@ -501,6 +515,7 @@ class CollectionDetailView(DetailView):
                 "auteurs_collection": auteurs,
                 "page_title": collection.meta_title if collection.meta_title else f"{collection.nom} - Editions Recréation",
                 "page_description": collection.meta_description if collection.meta_description else None,
+            "page_keywords": getattr(collection, "meta_keywords", "") if getattr(collection, "meta_keywords", None) else "",
             }
         )
         return context
@@ -525,6 +540,8 @@ class NosContratsView(TemplateView):
         context["page_title"] = page.meta_title if page and page.meta_title else "Nos Contrats - Editions Recr\u00e9ation"
         if page and page.meta_description:
             context["page_description"] = page.meta_description
+        if page and getattr(page, "meta_keywords", ""):
+            context["page_keywords"] = getattr(page, "meta_keywords", "")
         return context
 
 
@@ -535,14 +552,43 @@ class SoumissionManuscritView(FormView):
     form_class = SoumissionManuscritForm
     success_url = reverse_lazy("catalogue:soumission-manuscrit")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if context.get("site_content") and context["site_content"].soumission_meta_keywords:
+            context["page_keywords"] = context["site_content"].soumission_meta_keywords
+        return context
+
     def form_valid(self, form):
-        form.save()
+        submission = form.save()
+        audio_request = None
+        try:
+            audio_request = AudioConversionRequest.objects.create(
+                email="",
+                whatsapp=submission.whatsapp or "",
+                texte="",
+                fichier=submission.fichier_ouvrage,
+                langue="auto",
+                voix="standard",
+                voice_type="synthetic",
+                paiement_requis=False,
+                statut="processing",
+            )
+            submission.audio_request = audio_request
+            submission.save(update_fields=["audio_request", "updated_at"])
+
+            from .tasks import convert_audio_request
+            convert_audio_request(audio_request.id)
+        except Exception as exc:
+            if audio_request:
+                audio_request.statut = "error"
+                audio_request.async_error = str(exc)
+                audio_request.save(update_fields=["statut", "async_error", "updated_at"])
+
         messages.success(
             self.request,
-            "Merci ! Votre manuscrit a \u00e9t\u00e9 soumis avec succ\u00e8s. Nous vous contacterons rapidement.",
+            "Merci ! Votre manuscrit a ?t? soumis avec succ?s. Nous vous contacterons rapidement.",
         )
         return super().form_valid(form)
-
     def form_invalid(self, form):
         messages.error(
             self.request,
@@ -585,6 +631,8 @@ class LegalView(TemplateView):
             context["page_title"] = titles.get(slug, "Mentions l\u00e9gales - Editions Recr\u00e9ation")
         if page and page.meta_description:
             context["page_description"] = page.meta_description
+        if page and getattr(page, "meta_keywords", ""):
+            context["page_keywords"] = getattr(page, "meta_keywords", "")
         return context
 
 
@@ -616,6 +664,8 @@ class PageDetailView(DetailView):
             context["page_title"] = f"{page.title} - Editions Recr\u00e9ation" if page else "Editions Recr\u00e9ation"
         if page and page.meta_description:
             context["page_description"] = page.meta_description
+        if page and getattr(page, "meta_keywords", ""):
+            context["page_keywords"] = getattr(page, "meta_keywords", "")
         return context
 
 
@@ -763,20 +813,14 @@ class ActualitesView(ListView):
         qs = Actualite.objects.filter(est_publie=True).order_by("-est_une_a_la_une", "-date_publication")
         filtre = self.request.GET.get("filtre", "tous")
         annee = self.request.GET.get("annee", "")
-        date_debut = self.request.GET.get("date_debut")
-        date_fin = self.request.GET.get("date_fin")
+        mois = self.request.GET.get("mois", "")
         if filtre == "a-la-une":
             qs = qs.filter(est_une_a_la_une=True)
         if annee:
             qs = qs.filter(date_publication__year=annee)
-        if date_debut:
+        if mois:
             try:
-                qs = qs.filter(date_publication__gte=date.fromisoformat(date_debut))
-            except ValueError:
-                pass
-        if date_fin:
-            try:
-                qs = qs.filter(date_publication__lte=date.fromisoformat(date_fin))
+                qs = qs.filter(date_publication__month=int(mois))
             except ValueError:
                 pass
         return qs
@@ -786,11 +830,11 @@ class ActualitesView(ListView):
         context["page_title"] = "Actualit\u00e9s - Editions Recr\u00e9ation"
         context["filtre_actuel"] = self.request.GET.get("filtre", "tous")
         context["annee_actuelle"] = self.request.GET.get("annee", "")
-        context["date_debut"] = self.request.GET.get("date_debut", "")
-        context["date_fin"] = self.request.GET.get("date_fin", "")
+        context["mois_actuel"] = self.request.GET.get("mois", "")
         context["annees_actualites"] = (
             Actualite.objects.filter(est_publie=True)
             .dates("date_publication", "year", order="DESC")
+            .values_list("date_publication__year", flat=True)
         )
         return context
 
@@ -829,9 +873,21 @@ FREE_TEXT_LIMIT = 5000
 class AudioConversionChoiceView(TemplateView):
     template_name = "catalogue/conversion-audio-choice.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if context.get("site_content") and context["site_content"].conversion_meta_keywords:
+            context["page_keywords"] = context["site_content"].conversion_meta_keywords
+        return context
+
 
 class AudioConversionHumanView(FormView):
     template_name = "catalogue/conversion-audio-humain.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if context.get("site_content") and context["site_content"].conversion_meta_keywords:
+            context["page_keywords"] = context["site_content"].conversion_meta_keywords
+        return context
     form_class = AudioConversionHumanForm
     success_url = reverse_lazy("catalogue:conversion-audio-humain")
 
@@ -852,7 +908,11 @@ class AudioConversionHumanView(FormView):
         demande.statut = "awaiting_payment"
 
         if fichier:
-            pages_count = count_pages_for_file(fichier)
+            pages_count = count_pages_for_file(
+                fichier,
+                language_hint=demande.langue,
+                force_ocr=demande.force_ocr,
+            )
         else:
             pages_count = estimate_pages_from_text(texte)
         demande.pages_count = pages_count
@@ -871,7 +931,7 @@ class AudioConversionHumanView(FormView):
 
         demande.save()
         self.request.session["audio_request_id"] = demande.id
-        return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
+        return redirect("catalogue:conversion-audio-pay-required", demande_id=demande.id)
 
 
 def _is_committee_member(user):
@@ -1035,6 +1095,12 @@ def logout_view(request):
 
 class AudioConversionView(FormView):
     template_name = "catalogue/conversion-audio.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if context.get("site_content") and context["site_content"].conversion_meta_keywords:
+            context["page_keywords"] = context["site_content"].conversion_meta_keywords
+        return context
     form_class = AudioConversionForm
     success_url = reverse_lazy("catalogue:conversion-audio-synthetique")
 
@@ -1074,35 +1140,52 @@ class AudioConversionView(FormView):
 
         demande = form.save(commit=False)
         demande.voice_type = "synthetic"
+        appearance = SiteAppearance.objects.first()
+        if appearance and not appearance.tts_use_normalization:
+            demande.use_original_text = True
         if self.request.user.is_authenticated:
             demande.user = self.request.user
         demande.phrases_count = 0
         demande.paiement_requis = True if fichier else text_length > FREE_TEXT_LIMIT
         demande.statut = "awaiting_payment" if demande.paiement_requis else "processing"
         if fichier:
-            pages_count = count_pages_for_file(fichier)
+            pages_count = count_pages_for_file(
+                fichier,
+                language_hint=demande.langue,
+                force_ocr=demande.force_ocr,
+            )
         else:
             pages_count = estimate_pages_from_text(texte)
         demande.pages_count = pages_count
-        if pages_count <= 100:
+        if pages_count <= 50:
             demande.payment_tier = 1
-        elif pages_count <= 200:
+        elif pages_count <= 100:
             demande.payment_tier = 2
-        elif pages_count <= 500:
+        elif pages_count <= 200:
             demande.payment_tier = 3
-        elif pages_count <= 1000:
+        elif pages_count <= 500:
             demande.payment_tier = 4
         else:
             demande.payment_tier = 5
         demande.save()
 
+        # Si paiement requis (fichier ou texte long), rediriger immédiatement vers le paiement
+        if demande.paiement_requis:
+            self.request.session["audio_request_id"] = demande.id
+            return redirect("catalogue:conversion-audio-pay-required", demande_id=demande.id)
+
         # Extraire le texte depuis le fichier si nécessaire
         audio_text = texte
         if fichier:
             try:
-                audio_text = extract_text_from_file(fichier).strip()
+                audio_text = extract_text_from_file(
+                    fichier,
+                    language_hint=demande.langue,
+                    force_ocr=demande.force_ocr,
+                ).strip()
                 if audio_text:
                     demande.texte = audio_text
+                    demande.save(update_fields=["texte", "updated_at"])
             except Exception as exc:
                 demande.statut = "error"
                 demande.async_error = str(exc)
@@ -1117,6 +1200,25 @@ class AudioConversionView(FormView):
                 return redirect(self.success_url)
 
         if audio_text:
+            # Détection langue si auto
+            if demande.langue == "auto":
+                detected_lang = detect_tts_language(audio_text, selected="auto")
+                if detected_lang and detected_lang != demande.langue:
+                    demande.langue = detected_lang
+                    demande.save(update_fields=["langue", "updated_at"])
+
+            appearance = appearance or SiteAppearance.objects.first()
+            normalized_text = normalize_tts_text(
+                audio_text,
+                appearance=appearance,
+                use_original=demande.use_original_text,
+            )
+            if normalized_text and normalized_text != audio_text:
+                demande.texte_normalise = normalized_text
+                demande.save(update_fields=["texte_normalise", "updated_at"])
+            else:
+                normalized_text = audio_text
+
             try:
                 from gtts import gTTS
             except Exception:
@@ -1142,16 +1244,9 @@ class AudioConversionView(FormView):
                         obj.statut = "error"
                         obj.save(update_fields=["statut", "updated_at"])
 
-            if demande.paiement_requis:
-                import threading
-                threading.Thread(
-                    target=_generate_audio,
-                    args=(demande.id, audio_text, demande.langue, demande.voix),
-                    daemon=True,
-                ).start()
-            else:
+            if not demande.paiement_requis:
                 try:
-                    _generate_audio(demande.id, audio_text, demande.langue, demande.voix)
+                    _generate_audio(demande.id, normalized_text, demande.langue, demande.voix)
                     demande.statut = "free_generated"
                     demande.save(update_fields=["statut", "updated_at"])
                 except Exception:
@@ -1161,10 +1256,6 @@ class AudioConversionView(FormView):
                     return redirect(self.success_url)
 
         self.request.session["audio_request_id"] = demande.id
-
-        if demande.paiement_requis:
-            messages.info(self.request, "Texte trop long en mode gratuit ou fichier téléversé. Veuillez payer pour recevoir l’audio.")
-            return redirect("catalogue:conversion-audio-pay", demande_id=demande.id)
 
         messages.success(self.request, "Votre audio est prêt. Vous pouvez l'écouter en cliquant sur play. Vous pouvez aussi le télécharger gratuitement.")
         return redirect(self.success_url)
@@ -1219,6 +1310,144 @@ def conversion_payment_redirect(request, demande_id):
     if payment_url:
         return redirect(payment_url)
     return redirect("catalogue:conversion-audio")
+
+
+def conversion_payment_required(request, demande_id):
+    """Page intermédiaire : paiement requis avant génération."""
+    demande = get_object_or_404(AudioConversionRequest, id=demande_id)
+    appearance = SiteAppearance.objects.first()
+    tier = demande.payment_tier or 1
+    payment_url = ""
+    if appearance:
+        if demande.voice_type == "human":
+            payment_url = {
+                1: appearance.audio_human_payment_url_1 or appearance.audio_human_payment_url,
+                2: appearance.audio_human_payment_url_2,
+                3: appearance.audio_human_payment_url_3,
+                4: appearance.audio_human_payment_url_4,
+                5: appearance.audio_human_payment_url_5,
+                6: appearance.audio_human_payment_url_6,
+            }.get(tier) or appearance.audio_human_payment_url
+        else:
+            payment_url = {
+                1: appearance.audio_payment_url_1 or appearance.audio_payment_url,
+                2: appearance.audio_payment_url_2,
+                3: appearance.audio_payment_url_3,
+                4: appearance.audio_payment_url_4,
+                5: appearance.audio_payment_url_5,
+            }.get(tier) or appearance.audio_payment_url
+
+    context = {
+        "demande": demande,
+        "payment_url": payment_url,
+        "page_title": "Paiement requis - Editions Récréation",
+    }
+    return render(request, "catalogue/conversion-audio-payment-required.html", context)
+
+
+def conversion_payment_already_paid(request, demande_id):
+    """Marque une demande comme paiement à vérifier (sans générer)."""
+    demande = get_object_or_404(AudioConversionRequest, id=demande_id)
+    if demande.statut != "paid":
+        demande.statut = "payment_pending"
+        demande.save(update_fields=["statut", "updated_at"])
+    appearance = SiteAppearance.objects.first()
+    if appearance and appearance.site_email:
+        try:
+            send_mail(
+                "Paiement à vérifier - Conversion audio",
+                f"Demande ID: {demande.id}\n"
+                f"Email: {demande.email}\n"
+                f"Type: {'Voix humaine' if demande.voice_type == 'human' else 'Voix synthétique'}\n"
+                f"Pages: {demande.pages_count}\n",
+                appearance.site_email,
+                [appearance.site_email],
+                fail_silently=True,
+            )
+        except Exception:
+            pass
+    messages.info(
+        request,
+        "Merci. Nous allons vérifier votre paiement et vous contacter très rapidement par e-mail.",
+    )
+    return redirect("catalogue:conversion-audio")
+
+
+@csrf_exempt
+def conversion_payment_callback(request):
+    """Callback paiement: marque la demande comme payée et génère l'audio."""
+    token = request.POST.get("token") or request.GET.get("token")
+    expected = getattr(settings, "PAYMENT_CALLBACK_TOKEN", "")
+    if expected and token != expected:
+        return JsonResponse({"ok": False, "error": "Token invalide."}, status=403)
+
+    demande_id = request.POST.get("demande_id") or request.GET.get("demande_id") or request.POST.get("id") or request.GET.get("id")
+    if not demande_id:
+        return JsonResponse({"ok": False, "error": "ID manquant."}, status=400)
+
+    demande = AudioConversionRequest.objects.filter(id=demande_id).first()
+    if not demande:
+        return JsonResponse({"ok": False, "error": "Demande introuvable."}, status=404)
+
+    demande.statut = "paid"
+    if demande.paiement_initie_at is None:
+        demande.paiement_initie_at = timezone.now()
+    demande.save(update_fields=["statut", "paiement_initie_at", "updated_at"])
+
+    if demande.audio:
+        return JsonResponse({"ok": True, "status": "already_generated"})
+
+    # Génération audio après paiement
+    try:
+        text = demande.texte or ""
+        if demande.fichier and not text.strip():
+            text = extract_text_from_file(
+                demande.fichier,
+                language_hint=demande.langue,
+                force_ocr=demande.force_ocr,
+            )
+            if text and not demande.texte:
+                demande.texte = text
+                demande.save(update_fields=["texte", "updated_at"])
+
+        if not text.strip():
+            demande.statut = "error"
+            demande.async_error = "Texte vide après extraction."
+            demande.save(update_fields=["statut", "async_error", "updated_at"])
+            return JsonResponse({"ok": False, "error": "Texte vide."}, status=400)
+
+        if demande.langue == "auto":
+            detected_lang = detect_tts_language(text, selected="auto")
+            if detected_lang and detected_lang != demande.langue:
+                demande.langue = detected_lang
+                demande.save(update_fields=["langue", "updated_at"])
+
+        appearance = SiteAppearance.objects.first()
+        normalized_text = normalize_tts_text(
+            text,
+            appearance=appearance,
+            use_original=demande.use_original_text,
+        )
+        if normalized_text and normalized_text != text:
+            demande.texte_normalise = normalized_text
+            demande.save(update_fields=["texte_normalise", "updated_at"])
+
+        from gtts import gTTS
+        import uuid
+        audio_bytes = ContentFile(b"")
+        tts = gTTS(normalized_text or text, lang=demande.langue, slow=False)
+        filename = f"conversion-{uuid.uuid4().hex}.mp3"
+        tts.write_to_fp(audio_bytes)
+        audio_bytes.seek(0)
+        demande.audio.save(filename, audio_bytes, save=False)
+        demande.statut = "delivered"
+        demande.save(update_fields=["audio", "statut", "updated_at"])
+        return JsonResponse({"ok": True, "status": "generated"})
+    except Exception as exc:
+        demande.statut = "error"
+        demande.async_error = str(exc)
+        demande.save(update_fields=["statut", "async_error", "updated_at"])
+        return JsonResponse({"ok": False, "error": str(exc)}, status=500)
 
 
 class SignupView(FormView):

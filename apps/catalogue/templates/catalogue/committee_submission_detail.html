@@ -1,4 +1,4 @@
-{% extends "catalogue/base.html" %}
+﻿{% extends "catalogue/base.html" %}
 {% load static %}
 
 {% block content %}
@@ -79,6 +79,18 @@
                         <a class="btn btn--secondary btn--small" href="{{ submission.carte_identite.url }}" target="_blank" rel="noopener">Carte d'identité</a>
                     {% else %}
                         <span class="committee__download-empty">Carte d'identité non fournie</span>
+                    {% endif %}
+                </div>
+
+                <div class="committee__audio">
+                    <h3 class="committee__section-title">Audio du manuscrit</h3>
+                    {% if submission.audio_request and submission.audio_request.audio %}
+                        <audio controls preload="none" class="committee__audio-player">
+                            <source src="{{ submission.audio_request.audio.url }}">
+                        </audio>
+                        <a class="btn btn--primary btn--small" href="{{ submission.audio_request.audio.url }}" download>Télécharger l’audio</a>
+                    {% else %}
+                        <span class="committee__download-empty">Audio en cours de génération ou indisponible.</span>
                     {% endif %}
                 </div>
             </div>

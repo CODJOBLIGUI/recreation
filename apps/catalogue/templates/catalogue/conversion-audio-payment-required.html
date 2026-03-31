@@ -1,0 +1,53 @@
+{% extends "catalogue/base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container container--narrow">
+        <h1 class="page-hero__title">Paiement requis</h1>
+        <p class="page-hero__subtitle">
+            {% if demande.voice_type == "human" %}
+            La lecture par voix humaine est un service payant. Le paiement est requis avant le lancement du traitement.
+            {% else %}
+            Cette conversion nécessite un paiement avant le lancement du traitement.
+            {% endif %}
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container container--narrow">
+        <div class="cta-box cta-box--neutral">
+            <h2 class="cta-box__title">Votre demande est enregistrée</h2>
+            <p class="cta-box__text">
+                {% if demande.voice_type == "human" %}
+                Merci. Veuillez procéder au paiement pour lancer la lecture humaine.
+                {% else %}
+                Merci. Vous pouvez procéder au paiement pour lancer la conversion.
+                {% endif %}
+            </p>
+            <p class="cta-box__text">
+                <strong>Type :</strong> {% if demande.voice_type == "human" %}Voix humaine{% else %}Voix synthétique{% endif %}<br>
+                <strong>Pages estimées :</strong> {{ demande.pages_count|default:"-" }}
+            </p>
+            <div class="cta-box__actions">
+                <a href="{% url 'catalogue:conversion-audio-pay' demande.id %}" class="btn btn--primary">
+                    Payer maintenant
+                </a>
+                <a href="{% url 'catalogue:conversion-audio-already-paid' demande.id %}" class="btn btn--secondary btn--paid">
+                    J’ai déjà payé
+                </a>
+                <a href="{% url 'catalogue:conversion-audio' %}" class="btn btn--secondary">
+                    Retour
+                </a>
+            </div>
+            <p class="cta-box__text" style="margin-top: 1rem;">
+                Si vous avez déjà payé, nous vérifierons et vous contacterons très rapidement par e-mail.
+            </p>
+            <a href="{{ appearance.whatsapp|default:'https://wa.me/c/22968809777' }}" class="btn btn--secondary btn--center" target="_blank" rel="noopener" style="margin-top: 0.75rem;">
+                Echanger avec<br>un membre de<br>l'équipe
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

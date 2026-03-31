@@ -111,24 +111,22 @@
         <div class="team-grid auteurs-list">
             {% for membre in membres %}
             <div class="author-card team-member">
+
                 <div class="author-card__photo team-member__photo">
                     {% if membre.photo %}
                     <img src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}">
+                    {% with nat=membre.nationalites.first %}
+                    {% if nat and nat.drapeau %}
+                    <div class="author-card__flag" title="{{ nat.nom }}">
+                        <img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">
+                    </div>
+                    {% endif %}
+                    {% endwith %}
                     {% endif %}
                 </div>
                 <div class="author-card__info team-member__info">
                     <h3 class="author-card__name team-member__name">{{ membre.nom_complet }}</h3>
                     <p class="author-card__specialty team-member__role">{{ membre.poste }}</p>
-                    {% if membre.nationalites.all %}
-                    <div class="author-card__nationality">
-                        {% for nat in membre.nationalites.all %}
-                        <span class="nationality">
-                            {% if nat.drapeau %}<img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">{% endif %}
-                            {{ nat.nom }}
-                        </span>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
                     {% if membre.biographie %}
                     <p class="author-card__bio team-member__bio">{{ membre.biographie|truncatewords:30 }}</p>
                     {% endif %}

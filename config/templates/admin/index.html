@@ -1,0 +1,82 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static log %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'catalogue/css/admin-dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+  <header class="admin-dashboard__header">
+    <h1 class="admin-dashboard__title">{% trans "Tableau de bord" %}</h1>
+    <p class="admin-dashboard__subtitle">{% trans "Accès rapide aux modules principaux." %}</p>
+  </header>
+
+  <section class="admin-dashboard__quick">
+    <div class="admin-quick-card">
+      <span class="admin-quick-card__title">{% trans "Gestion des médias" %}</span>
+      <a class="admin-quick-card__link" href="{% url 'admin:media-cleanup' %}">{% trans "Ouvrir" %}</a>
+    </div>
+  </section>
+
+  <section class="admin-dashboard__apps">
+    {% if app_list %}
+      {% for app in app_list %}
+        <div class="admin-app-card">
+          <div class="admin-app-card__header">
+            <h2 class="admin-app-card__title">{{ app.name }}</h2>
+            <span class="admin-app-card__count">{{ app.models|length }}</span>
+          </div>
+          <ul class="admin-app-card__list">
+            {% for model in app.models %}
+              <li class="admin-app-card__item">
+                <span class="admin-app-card__model">{{ model.name }}</span>
+                <span class="admin-app-card__actions">
+                  {% if model.admin_url %}
+                    <a class="admin-pill" href="{{ model.admin_url }}">{% trans "Ouvrir" %}</a>
+                  {% endif %}
+                  {% if model.add_url %}
+                    <a class="admin-pill admin-pill--ghost" href="{{ model.add_url }}">{% trans "Ajouter" %}</a>
+                  {% endif %}
+                </span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="admin-empty">{% trans "Aucune application disponible." %}</p>
+    {% endif %}
+  </section>
+
+  <aside class="admin-dashboard__recent">
+    <h2 class="admin-dashboard__section-title">{% trans "Actions récentes" %}</h2>
+    {% get_admin_log 8 as admin_log for_user user %}
+    {% if admin_log %}
+      <ul class="admin-recent">
+        {% for entry in admin_log %}
+          <li class="admin-recent__item">
+            <span class="admin-recent__action">
+              {% if entry.is_addition %}{% trans "Ajout" %}
+              {% elif entry.is_change %}{% trans "Modification" %}
+              {% elif entry.is_deletion %}{% trans "Suppression" %}
+              {% else %}{% trans "Action" %}{% endif %}
+            </span>
+            <span class="admin-recent__object">
+              {% if entry.get_admin_url %}
+                <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+              {% else %}
+                {{ entry.object_repr }}
+              {% endif %}
+            </span>
+            <span class="admin-recent__meta">{{ entry.content_type }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="admin-empty">{% trans "Aucune action récente." %}</p>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

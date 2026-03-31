@@ -7,9 +7,9 @@
     <div class="container">
         <div class="livre-detail__grid">
             <!-- Image du livre -->
-            <div class="livre-detail__image">
+            <div class="livre-detail__image detail-media--rounded-box">
                 {% if livre.image_par_defaut %}
-                <img src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}">
+                <img class="detail-media--rounded" style="border-radius:18px;overflow:hidden;display:block;clip-path:inset(0 round 18px);" src="{{ livre.image_par_defaut.url }}" alt="{{ livre.titre }}">
                 {% endif %}
             </div>
             

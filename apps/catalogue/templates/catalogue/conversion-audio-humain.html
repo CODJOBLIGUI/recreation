@@ -1,4 +1,4 @@
-{% extends 'catalogue/base.html' %}
+﻿{% extends 'catalogue/base.html' %}
 {% load static %}
 
 {% block content %}
@@ -39,6 +39,7 @@
                     <small class="form-hint">Formats pris en charge : txt, docx, pdf, jpg, png, pptx, xlsx, epub.</small>
                 </div>
 
+
                 <div class="form-group">
                     <label for="id_langue">{{ form.langue.label }}</label>
                     {{ form.langue }}
@@ -75,3 +76,12 @@
     </div>
 </section>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    (function() {
+    })();
+</script>
+{% endblock %}
+
+

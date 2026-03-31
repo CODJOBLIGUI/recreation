@@ -157,12 +157,13 @@ class AudioConversionForm(forms.ModelForm):
     
     class Meta:
         model = AudioConversionRequest
-        fields = ["email", "whatsapp", "texte", "fichier", "langue", "voix"]
+        fields = ["email", "whatsapp", "texte", "fichier", "force_ocr", "langue", "voix"]
         widgets = {
             "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "votre@email.com"}),
             "whatsapp": forms.TextInput(attrs={"class": "form-control phone-input", "placeholder": "+229 XX XX XX XX"}),
             "texte": forms.Textarea(attrs={"class": "form-control", "rows": 6, "placeholder": "Collez votre texte ici (5000 caractères gratuits)."}),
             "fichier": forms.ClearableFileInput(attrs={"class": "form-control"}),
+            "force_ocr": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "langue": forms.Select(attrs={"class": "form-control"}),
             "voix": forms.Select(attrs={"class": "form-control"}),
         }
@@ -203,12 +204,13 @@ class AudioConversionHumanForm(forms.ModelForm):
 
     class Meta:
         model = AudioConversionRequest
-        fields = ["email", "whatsapp", "texte", "fichier", "langue", "voix_humaine"]
+        fields = ["email", "whatsapp", "texte", "fichier", "force_ocr", "langue", "voix_humaine"]
         widgets = {
             "email": forms.EmailInput(attrs={"class": "form-control", "placeholder": "votre@email.com"}),
             "whatsapp": forms.TextInput(attrs={"class": "form-control phone-input", "placeholder": "+229 XX XX XX XX"}),
             "texte": forms.Textarea(attrs={"class": "form-control", "rows": 6, "placeholder": "Collez votre texte ici."}),
             "fichier": forms.ClearableFileInput(attrs={"class": "form-control"}),
+            "force_ocr": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             "langue": forms.Select(attrs={"class": "form-control"}),
             "voix_humaine": forms.Select(attrs={"class": "form-control"}),
         }

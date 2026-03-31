@@ -7,8 +7,8 @@
         <div class="committee-signup__brand">
             <img src="{% static 'catalogue/images/logo.jpg' %}" alt="Editions Recréation" />
             <div>
-                <h1>Inscription évaluateur</h1>
-                <p>Veuillez compléter ce formulaire afin de soumettre votre demande d'accès. Votre demande fera l'objet d'une analyse par un administrateur. Une fois la conformité de votre profil à nos critères validée, votre compte sera activé.</p>
+                <h1>{{ site_content.committee_signup_title|default:"Inscription évaluateur" }}</h1>
+                <p>{{ site_content.committee_signup_intro|default:"Veuillez compléter ce formulaire afin de soumettre votre demande d'accès. Votre demande fera l'objet d'une analyse par un administrateur. Une fois la conformité de votre profil à nos critères validée, votre compte sera activé." }}</p>
             </div>
         </div>
 
@@ -57,7 +57,7 @@
             </div>
 
             <div class="committee-signup__disclaimer">
-                Votre inscription implique votre accord pour garantir la confidentialité des données personnelles de nos auteurs et de tous les fichiers dont vous auriez connaissance, afin d’empêcher toute divulgation à des tiers. Les fichiers téléchargés lors de l’évaluation des dossiers d’édition ne doivent en aucun cas être conservés. La suppression est impérative dans un délai inférieur à une semaine. Prenez-vous acte de ces dispositions et consentez-vous à en respecter strictement toutes les clauses ?
+                {{ site_content.committee_signup_confidentiality_text|default:"Votre inscription implique votre accord pour garantir la confidentialité des données personnelles de nos auteurs et de tous les fichiers dont vous auriez connaissance, afin d’empêcher toute divulgation à des tiers. Les fichiers téléchargés lors de l’évaluation des dossiers d’édition ne doivent en aucun cas être conservés. La suppression est impérative dans un délai inférieur à une semaine. Prenez-vous acte de ces dispositions et consentez-vous à en respecter strictement toutes les clauses ?" }}
             </div>
             <div class="form-group">
                 <label class="inline-label">{{ signup_form.confidentiality_ack }} Oui, je m’engage à respecter ces dispositions.</label>
@@ -67,15 +67,15 @@
                 {{ signup_form.cv }}
             </div>
             <div class="form-group">
-                <label for="id_motivation">Qu’est-ce qui vous motive à rejoindre l’équipe des membres du Comité de lecture des éditions Recréation ?</label>
+                <label for="id_motivation">{{ site_content.committee_signup_motivation_label|default:"Qu’est-ce qui vous motive à rejoindre l’équipe des membres du Comité de lecture des éditions Recréation ?" }}</label>
                 {{ signup_form.motivation }}
             </div>
             <div class="form-group">
-                <label class="inline-label">Cette mission n’est pas rémunérée. En avez-vous conscience et êtes-vous toujours partant pour nous rejoindre ?</label>
+                <label class="inline-label">{{ site_content.committee_signup_unpaid_label|default:"Cette mission n’est pas rémunérée. En avez-vous conscience et êtes-vous toujours partant pour nous rejoindre ?" }}</label>
                 <div>{{ signup_form.unpaid_ack }} Oui, je confirme.</div>
             </div>
 
-            <button type="submit" class="btn btn--secondary committee-login-btn">Envoyer la demande</button>
+            <button type="submit" class="btn btn--secondary committee-login-btn">{{ site_content.committee_signup_submit_label|default:"Envoyer la demande" }}</button>
         </form>
     </div>
 </section>

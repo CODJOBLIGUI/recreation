@@ -1,0 +1,250 @@
+﻿{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" href="{% static 'catalogue/css/admin-dashboard.css' %}?v=2">
+{% endblock %}
+
+{% block content %}
+<div class="admin-cleanup">
+  <header class="admin-cleanup__header">
+  <div class="admin-cleanup__back"><a href="{% url 'admin:index' %}">Retourner sur la page d'accueil</a></div>
+
+    <div>
+      <h1>{% trans "Gestion des médias" %}</h1>
+      <p>{% trans "Sélectionnez les fichiers à supprimer du dossier média." %}</p>
+    </div>
+    <div class="admin-cleanup__tools">
+      <input id="media-search" class="admin-cleanup__search" type="search" placeholder="{% trans 'Rechercher un fichier…' %}">
+      <select id="media-filter" class="admin-cleanup__filter" aria-label="{% trans 'Filtrer' %}">
+        <option value="all">{% trans "Tous" %}</option>
+        <option value="image">{% trans "Images" %}</option>
+        <option value="audio">{% trans "Audios" %}</option>
+        <option value="pdf">{% trans "PDF" %}</option>
+        <option value="other">{% trans "Autres" %}</option>
+      </select>
+      <select id="media-sort" class="admin-cleanup__filter" aria-label="{% trans 'Trier' %}">
+        <option value="name" {% if sort == 'name' %}selected{% endif %}>{% trans "Trier par nom" %}</option>
+        <option value="date" {% if sort == 'date' %}selected{% endif %}>{% trans "Trier par date" %}</option>
+        <option value="size" {% if sort == 'size' %}selected{% endif %}>{% trans "Trier par taille" %}</option>
+      </select>
+      <select id="media-order" class="admin-cleanup__filter" aria-label="{% trans 'Ordre' %}">
+        <option value="asc" {% if order == 'asc' %}selected{% endif %}>{% trans "Croissant" %}</option>
+        <option value="desc" {% if order == 'desc' %}selected{% endif %}>{% trans "Décroissant" %}</option>
+      </select>
+      <div class="admin-cleanup__view">
+        <button type="button" class="admin-cleanup__view-btn is-active" data-view="grid">Grille</button>
+        <button type="button" class="admin-cleanup__view-btn" data-view="list">Liste</button>
+      </div>
+    </div>
+  </header>
+
+  <form method="post" enctype="multipart/form-data" class="admin-cleanup__upload">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="upload">
+    <input type="file" name="file" required>
+    <button type="submit" class="btn btn--secondary">Téléverser</button>
+  </form>
+
+  <div class="admin-cleanup__meta">
+    <div class="admin-cleanup__stats">
+      <div class="admin-cleanup__stat">
+        <span>{% trans "Fichiers" %}</span>
+        <strong id="media-total">0</strong>
+      </div>
+      <div class="admin-cleanup__stat">
+        <span>{% trans "Sélectionnés" %}</span>
+        <strong id="media-selected">0</strong>
+      </div>
+    </div>
+    <div class="admin-cleanup__bulk">
+      <button type="button" class="admin-cleanup__ghost" id="select-all">{% trans "Tout sélectionner" %}</button>
+      <button type="button" class="admin-cleanup__ghost" id="select-none">{% trans "Tout désélectionner" %}</button>
+    </div>
+  </div>
+
+  <div class="admin-cleanup__filters" role="tablist" aria-label="{% trans 'Filtres de médias' %}">
+    <button type="button" class="admin-cleanup__filter-btn is-active" data-type="all">{% trans "Tous" %}</button>
+    <button type="button" class="admin-cleanup__filter-btn" data-type="image">{% trans "Images" %}</button>
+    <button type="button" class="admin-cleanup__filter-btn" data-type="audio">{% trans "Audios" %}</button>
+    <button type="button" class="admin-cleanup__filter-btn" data-type="pdf">{% trans "PDF" %}</button>
+    <button type="button" class="admin-cleanup__filter-btn" data-type="other">{% trans "Autres" %}</button>
+  </div>
+
+  <form method="post" id="media-cleanup-form">
+    {% csrf_token %}
+    <div class="admin-cleanup__grid" id="media-grid" data-view="grid">
+      {% for f in files %}
+        <label class="admin-cleanup__card" data-path="{{ f.path|lower }}" data-type="{{ f.type }}">
+          <input type="checkbox" name="paths" value="{{ f.path }}">
+          <span class="admin-cleanup__preview">
+            {% if f.type == "image" %}
+              <img src="{{ f.url }}" alt="{{ f.path }}">
+            {% elif f.type == "audio" %}
+              <audio controls preload="none">
+                <source src="{{ f.url }}">
+              </audio>
+            {% elif f.type == "pdf" %}
+              <span class="admin-cleanup__file-tag">PDF</span>
+            {% else %}
+              <span class="admin-cleanup__file-tag">Fichier</span>
+            {% endif %}
+          </span>
+          <span class="admin-cleanup__meta-row">
+            <span class="admin-cleanup__type">{{ f.type|capfirst }}</span>
+            <span class="admin-cleanup__size">{{ f.size }} octets</span>
+          </span>
+          <span class="admin-cleanup__path">{{ f.path }}</span>
+        </label>
+      {% empty %}
+        <p>{% trans "Aucun fichier média." %}</p>
+      {% endfor %}
+    </div>
+
+    {% if page_obj and page_obj.paginator.num_pages > 1 %}
+    <div class="admin-cleanup__pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&sort={{ sort }}&order={{ order }}" class="admin-cleanup__page">&laquo;</a>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+          <span class="admin-cleanup__page is-active">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a href="?page={{ num }}&sort={{ sort }}&order={{ order }}" class="admin-cleanup__page">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&sort={{ sort }}&order={{ order }}" class="admin-cleanup__page">&raquo;</a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="admin-cleanup__confirm">
+      <label class="admin-cleanup__confirm-label">
+        <input type="checkbox" id="confirm-delete" required>
+        {% trans "Je confirme la suppression définitive des fichiers sélectionnés." %}
+      </label>
+      <p class="admin-cleanup__confirm-note">{% trans "Cette action est irréversible." %}</p>
+    </div>
+
+    <div class="admin-cleanup__actions">
+      <div class="admin-cleanup__actions-info">
+        <span>{% trans "Action" %}</span>
+        <strong>{% trans "Suppression définitive" %}</strong>
+      </div>
+      <input type="submit" class="default admin-cleanup__danger" id="delete-submit" value="{% trans 'Exécuter la suppression' %}">
+    </div>
+  </form>
+</div>
+
+<script>
+  (function () {
+    const search = document.getElementById("media-search");
+    const filter = document.getElementById("media-filter");
+    const sort = document.getElementById("media-sort");
+    const order = document.getElementById("media-order");
+    const cards = Array.from(document.querySelectorAll(".admin-cleanup__card"));
+    const form = document.getElementById("media-cleanup-form");
+    const totalEl = document.getElementById("media-total");
+    const selectedEl = document.getElementById("media-selected");
+    const selectAllBtn = document.getElementById("select-all");
+    const selectNoneBtn = document.getElementById("select-none");
+    const filterBtns = Array.from(document.querySelectorAll(".admin-cleanup__filter-btn"));
+    const viewBtns = Array.from(document.querySelectorAll(".admin-cleanup__view-btn"));
+    const grid = document.getElementById("media-grid");
+    const submitBtn = document.getElementById("delete-submit");
+
+    function updateCounts() {
+      const visibleCards = cards.filter(card => card.style.display !== "none");
+      const selected = document.querySelectorAll("input[name='paths']:checked").length;
+      if (totalEl) totalEl.textContent = visibleCards.length.toString();
+      if (selectedEl) selectedEl.textContent = selected.toString();
+      if (submitBtn) submitBtn.disabled = selected === 0;
+    }
+
+    function applyFilters() {
+      const q = (search.value || "").toLowerCase().trim();
+      const type = filter.value;
+      cards.forEach(card => {
+        const matchesText = card.dataset.path.includes(q);
+        const matchesType = type === "all" || card.dataset.type === type;
+        card.style.display = (matchesText && matchesType) ? "" : "none";
+      });
+      updateCounts();
+    }
+
+    function updateSortUrl() {
+      const params = new URLSearchParams(window.location.search);
+      params.set('sort', sort.value);
+      params.set('order', order.value);
+      window.location.search = params.toString();
+    }
+
+    if (search) search.addEventListener("input", applyFilters);
+    if (filter) filter.addEventListener("change", () => {
+      filterBtns.forEach(btn => btn.classList.toggle("is-active", btn.dataset.type === filter.value));
+      applyFilters();
+    });
+    if (sort) sort.addEventListener('change', updateSortUrl);
+    if (order) order.addEventListener('change', updateSortUrl);
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filter.value = btn.dataset.type;
+        filterBtns.forEach(b => b.classList.toggle("is-active", b === btn));
+        applyFilters();
+      });
+    });
+
+    viewBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const view = btn.dataset.view;
+        viewBtns.forEach(b => b.classList.toggle("is-active", b === btn));
+        grid.dataset.view = view;
+        grid.classList.toggle("is-list", view === "list");
+      });
+    });
+
+    cards.forEach(card => {
+      const checkbox = card.querySelector("input[type='checkbox']");
+      if (checkbox) checkbox.addEventListener("change", updateCounts);
+    });
+
+    if (selectAllBtn) {
+      selectAllBtn.addEventListener("click", () => {
+        cards.forEach(card => {
+          if (card.style.display !== "none") {
+            const checkbox = card.querySelector("input[type='checkbox']");
+            if (checkbox) checkbox.checked = true;
+          }
+        });
+        updateCounts();
+      });
+    }
+
+    if (selectNoneBtn) {
+      selectNoneBtn.addEventListener("click", () => {
+        cards.forEach(card => {
+          const checkbox = card.querySelector("input[type='checkbox']");
+          if (checkbox) checkbox.checked = false;
+        });
+        updateCounts();
+      });
+    }
+
+    applyFilters();
+
+    form.addEventListener("submit", function (e) {
+      const checked = document.querySelectorAll("input[name='paths']:checked").length;
+      if (!checked) {
+        e.preventDefault();
+        alert("Veuillez sélectionner au moins un fichier.");
+        return;
+      }
+      if (!confirm("Confirmer la suppression définitive ?")) {
+        e.preventDefault();
+      }
+    });
+  })();
+</script>
+{% endblock %}

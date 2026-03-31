@@ -1,10 +1,129 @@
-import io
+﻿import io
 import os
+import re
 from pathlib import Path
 
 from django.conf import settings
 
-_EASYOCR_READER = None
+_EASYOCR_READERS = {}
+
+_ACRONYM_RE = re.compile(r"\b[A-Z0-9]{2,}\b")
+_DIGIT_WORDS_FR = {
+    "0": "zéro",
+    "1": "un",
+    "2": "deux",
+    "3": "trois",
+    "4": "quatre",
+    "5": "cinq",
+    "6": "six",
+    "7": "sept",
+    "8": "huit",
+    "9": "neuf",
+}
+
+
+def _parse_tts_acronyms(raw_text):
+    replacements = {}
+    spell_set = set()
+    if not raw_text:
+        return replacements, spell_set
+    for line in raw_text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "=" in line:
+            key, value = line.split("=", 1)
+            key = key.strip().upper()
+            value = value.strip()
+            if value:
+                replacements[key] = value
+            else:
+                spell_set.add(key)
+        else:
+            spell_set.add(line.strip().upper())
+    return replacements, spell_set
+
+
+def _spell_token(token):
+    parts = []
+    for ch in token:
+        if ch.isdigit():
+            parts.append(_DIGIT_WORDS_FR.get(ch, ch))
+        else:
+            parts.append(ch)
+    return " ".join(parts)
+
+
+def normalize_tts_text(text, appearance=None, use_original=False):
+    """
+    Normalise les sigles et MAJUSCULES avant TTS.
+    - remplace via dictionnaire (SIGLE=prononciation)
+    - épelle les sigles courts (2-4) si activé
+    - convertit les longs sigles en forme "mot" (ex: UNESCO -> Unesco)
+    """
+    if not text:
+        return text
+    if use_original:
+        return text
+    if appearance and not getattr(appearance, "tts_use_normalization", True):
+        return text
+
+    replacements, spell_set = _parse_tts_acronyms(
+        getattr(appearance, "tts_acronyms", "")
+    )
+    spell_unknown = True
+    if appearance is not None:
+        spell_unknown = getattr(appearance, "tts_spell_unknown", True)
+
+    def _replace(match):
+        token = match.group(0)
+        if token in replacements:
+            return replacements[token]
+        if token in spell_set or (spell_unknown and 2 <= len(token) <= 4):
+            return _spell_token(token)
+        if len(token) > 4:
+            return token[0] + token[1:].lower()
+        return token
+
+    return _ACRONYM_RE.sub(_replace, text)
+
+
+def _map_lang_to_ocr(lang_code):
+    if not lang_code:
+        return None
+    code = (lang_code or "").lower()
+    if code.startswith("fr"):
+        return "fr"
+    if code.startswith("en"):
+        return "en"
+    if code.startswith("ar"):
+        return "ar"
+    return None
+
+
+def _detect_lang(text):
+    try:
+        from langdetect import detect
+    except Exception:
+        return None
+    try:
+        detected = detect(text)
+    except Exception:
+        return None
+    if detected in {"fr", "en", "ar"}:
+        return detected
+    return None
+
+
+def detect_tts_language(text, selected=None):
+    """
+    Détecte la langue pour TTS (fr/en/ar) si l'utilisateur choisit "auto".
+    Sinon, on respecte la langue sélectionnée.
+    """
+    if selected and selected != "auto":
+        return selected
+    detected = _detect_lang(text or "")
+    return detected or (selected if selected else "fr")
 
 
 def estimate_pages_from_text(text):
@@ -17,7 +136,7 @@ def estimate_pages_from_text(text):
     return max(1, int((words + 299) / 300))
 
 
-def count_pages_for_file(file_field):
+def count_pages_for_file(file_field, language_hint=None, force_ocr=False):
     if not file_field:
         return 0
     name = file_field.name or ""
@@ -57,7 +176,7 @@ def count_pages_for_file(file_field):
 
     # Pour les autres formats, estimation via texte extrait
     try:
-        text = extract_text_from_file(file_field)
+        text = extract_text_from_file(file_field, language_hint=language_hint, force_ocr=force_ocr)
     except Exception:
         text = ""
     return estimate_pages_from_text(text)
@@ -83,8 +202,7 @@ def _ensure_local_path(file_field):
     return str(tmp_path)
 
 
-def extract_text_from_file(file_field):
-    global _EASYOCR_READER
+def extract_text_from_file(file_field, language_hint=None, force_ocr=False):
     if not file_field:
         return ""
 
@@ -113,7 +231,7 @@ def extract_text_from_file(file_field):
             reader = PdfReader(f)
             pages = [p.extract_text() or "" for p in reader.pages]
         text = "\n".join(pages).strip()
-        if text:
+        if text and not force_ocr:
             return text
         # OCR fallback for scanned PDFs (extract embedded images)
         try:
@@ -122,9 +240,13 @@ def extract_text_from_file(file_field):
             import numpy as np
         except Exception as exc:
             raise RuntimeError("OCR PDF indisponible (EasyOCR/Pillow manquant).") from exc
-        if _EASYOCR_READER is None:
-            _EASYOCR_READER = easyocr.Reader(["fr"], gpu=False)
-        reader_ocr = _EASYOCR_READER
+        selected = _map_lang_to_ocr(language_hint)
+        detected = _detect_lang(text) if text else None
+        ocr_lang = selected or detected or "fr"
+        langs = (ocr_lang,)
+        if langs not in _EASYOCR_READERS:
+            _EASYOCR_READERS[langs] = easyocr.Reader(list(langs), gpu=False)
+        reader_ocr = _EASYOCR_READERS[langs]
         texts = []
         for page in reader.pages:
             images = getattr(page, "images", []) or []
@@ -138,6 +260,7 @@ def extract_text_from_file(file_field):
                         texts.extend(results)
                     except Exception:
                         continue
+
         return "\n".join(texts)
 
     if ext in {".jpg", ".jpeg", ".png"}:
@@ -145,9 +268,12 @@ def extract_text_from_file(file_field):
             import easyocr
         except Exception as exc:
             raise RuntimeError("easyocr n'est pas installé.") from exc
-        if _EASYOCR_READER is None:
-            _EASYOCR_READER = easyocr.Reader(["fr"], gpu=False)
-        reader = _EASYOCR_READER
+        selected = _map_lang_to_ocr(language_hint)
+        ocr_lang = selected or "fr"
+        langs = (ocr_lang,)
+        if langs not in _EASYOCR_READERS:
+            _EASYOCR_READERS[langs] = easyocr.Reader(list(langs), gpu=False)
+        reader = _EASYOCR_READERS[langs]
         results = reader.readtext(local_path, detail=0, paragraph=True)
         return "\n".join(results)
 
@@ -193,3 +319,5 @@ def extract_text_from_file(file_field):
         return "\n".join(texts)
 
     raise RuntimeError("Type de fichier non pris en charge.")
+
+

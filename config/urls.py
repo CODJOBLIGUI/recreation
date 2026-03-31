@@ -1,6 +1,6 @@
 ﻿"""
 URLs principales du projet Django.
-Inclut les URLs de l'application catalogue et gÃ¨re les mÃ©dias.
+Inclut les URLs de l'application catalogue et gère les médias.
 """
 
 from django.contrib import admin
@@ -21,9 +21,9 @@ urlpatterns = [
     path('', include('apps.catalogue.urls', namespace='catalogue')),
 ]
 
-# En mode dÃ©veloppement, servir les fichiers mÃ©dia et statiques
+# En mode développement, servir les fichiers média et statiques
 if settings.DEBUG:
-    # Fichiers mÃ©dia (images uploadÃ©es)
+    # Fichiers média (images uploadées)
     urlpatterns += static(
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT

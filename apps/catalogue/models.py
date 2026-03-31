@@ -657,7 +657,7 @@ class AudioConversionRequest(TimeStampedModel):
         ("human", "Humaine"),
     ]
     
-    LANG_CHOICES = Livre.LANGUES
+    LANG_CHOICES = [("auto", "Auto (détection)")] + list(Livre.LANGUES)
     
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -670,6 +670,15 @@ class AudioConversionRequest(TimeStampedModel):
     email = models.EmailField(verbose_name="Email", blank=True)
     whatsapp = models.CharField(max_length=40, verbose_name="WhatsApp", blank=True)
     texte = models.TextField(blank=True, verbose_name="Texte")
+    texte_normalise = models.TextField(blank=True, verbose_name="Texte normalisé (TTS)")
+    use_original_text = models.BooleanField(
+        default=False,
+        verbose_name="Utiliser le texte original (sans normalisation)",
+    )
+    force_ocr = models.BooleanField(
+        default=False,
+        verbose_name="Forcer OCR (PDF scanné)",
+    )
     fichier = models.FileField(upload_to="audio_requests/files/%Y/%m/", blank=True, null=True, verbose_name="Fichier")
     phrases_count = models.PositiveIntegerField(default=0, verbose_name="Nombre de phrases")
     langue = models.CharField(max_length=10, choices=LANG_CHOICES, default="fr", verbose_name="Langue")
@@ -822,6 +831,15 @@ class SoumissionManuscrit(TimeStampedModel):
     fichier_ouvrage = models.FileField(upload_to='soumissions/manuscrits/%Y/%m/', verbose_name="Fichier de l'ouvrage")
     photo_auteur = models.ImageField(upload_to='soumissions/auteurs/%Y/%m/', verbose_name="Photo de l'auteur")
     carte_identite = models.FileField(upload_to='soumissions/cartes/%Y/%m/', verbose_name="Carte d'identité")
+
+    audio_request = models.OneToOneField(
+        'AudioConversionRequest',
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='soumission_manuscrit',
+        verbose_name="Conversion audio",
+    )
 
     class Meta:
         verbose_name = "Soumission de manuscrit"

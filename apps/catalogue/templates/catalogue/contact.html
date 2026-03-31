@@ -14,31 +14,31 @@
                 {% elif page and page.body %}
                     {{ page.body|safe }}
                 {% else %}
-                    <h1>Contactez-nous</h1>
-                    <p>Une question ? Un projet ? N'hésitez pas à nous contacter.</p>
+                    <h1>{{ site_content.contact_title|default:"Contactez-nous" }}</h1>
+                    <p>{{ site_content.contact_subtitle|default:"Une question ? Un projet ? N\'hésitez pas à nous contacter." }}</p>
                     
                     <div class="contact__details">
                         <div class="contact__item">
                             <i class="fas fa-map-marker-alt"></i>
                             <div>
-                                <h3>Adresse</h3>
-                                <p><span class="contact__address-main">Bénin | Abomey-Calavi, France | Marseille, avec des Représentants éditoriaux dans 7 autres pays en Afrique.</span></p>
+                                <h3>{{ site_content.contact_address_label|default:"Adresse" }}</h3>
+                                <p><span class="contact__address-main">{{ site_content.contact_address_text|default:"Bénin | Abomey-Calavi, France | Marseille, avec des Représentants éditoriaux dans 7 autres pays en Afrique." }}</span></p>
                             </div>
                         </div>
                         
                         <div class="contact__item">
                             <i class="fas fa-phone"></i>
                             <div>
-                                <h3>Téléphone</h3>
-                                <p><a href="tel:+22901688097777">(+229) 01 68 80 97 77</a></p>
+                                <h3>{{ site_content.contact_phone_label|default:"Téléphone" }}</h3>
+                                <p><a href="tel:{{ site_content.contact_phone_link|default:"+22901688097777" }}">{{ site_content.contact_phone_display|default:"(+229) 01 68 80 97 77" }}</a></p>
                             </div>
                         </div>
                         
                         <div class="contact__item" id="contact-email">
                             <i class="fas fa-envelope"></i>
                             <div>
-                                <h3>Email</h3>
-                                <p><a href="mailto:contactedrecreation@gmail.com">contactedrecreation@gmail.com</a></p>
+                                <h3>{{ site_content.contact_email_label|default:"Email" }}</h3>
+                                <p><a href="mailto:{{ site_content.contact_email_value|default:"contactedrecreation@gmail.com" }}">{{ site_content.contact_email_value|default:"contactedrecreation@gmail.com" }}</a></p>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
             
             <!-- Formulaire de contact -->
             <div class="contact__form-wrapper">
-                <h2>Envoyez-nous un message</h2>
+                <h2>{{ site_content.contact_form_title|default:"Envoyez-nous un message" }}</h2>
                 
                 <!-- Affichage des messages de succès/erreur -->
                 {% if messages %}
@@ -105,7 +105,7 @@
                         {% endif %}
                     </div>
                     
-                    <button type="submit" class="btn btn--primary">Envoyer le message</button>
+                    <button type="submit" class="btn btn--primary">{{ site_content.contact_submit_label|default:"Envoyer le message" }}</button>
                 </form>
             </div>
         </div>
@@ -131,3 +131,6 @@
     })();
 </script>
 {% endblock %}
+
+
+

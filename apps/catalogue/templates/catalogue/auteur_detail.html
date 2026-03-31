@@ -6,19 +6,23 @@
 <section class="auteur-detail section">
     <div class="container">
         <div class="auteur-detail__header">
-            <div class="auteur-detail__photo">
-                <img src="{{ auteur.photo.url }}" alt="{{ auteur.nom }}">
+            <div class="auteur-detail__photo detail-media--rounded-box author-card__photo">
+                <img class="detail-media--rounded" style="border-radius:18px;overflow:hidden;display:block;clip-path:inset(0 round 18px);" src="{{ auteur.photo.url }}" alt="{{ auteur.nom }}">
+                {% if auteur.nationalites.all %}
+                <div class="author-card__flags" aria-label="Nationalités">
+                    {% for nat in auteur.nationalites.all %}
+                    {% if nat.drapeau %}
+                    <div class="author-card__flag" title="{{ nat.nom }}">
+                        <img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
             <div class="auteur-detail__info">
                 <h1>{{ auteur.nom }}</h1>
                 <p class="auteur-detail__specialty">{{ auteur.specialite }}</p>
-                {% if auteur.nationalites.all %}
-                <div class="auteur-detail__nationality">
-                    {% for nat in auteur.nationalites.all %}
-                    <span class="badge badge--nationality">{{ nat.nom }}</span>{% if not forloop.last %} - {% endif %}
-                    {% endfor %}
-                </div>
-                {% endif %}
                 <div class="auteur-detail__bio">
                     <h2>Biographie</h2>
                     <div class="auteur-detail__bio-text">{{ auteur.biographie_html|safe }}</div>

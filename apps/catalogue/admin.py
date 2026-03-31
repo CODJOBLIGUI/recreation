@@ -3,16 +3,26 @@ FICHIER : apps/catalogue/admin.py
 """
 
 from django.contrib import admin
+import os
+from django.contrib.admin.helpers import ActionForm
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django import forms
 from django.utils.dateparse import parse_date
 from django.utils.html import format_html
+from django.conf import settings
+from django.urls import path
+from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
+from django.core.files.storage import FileSystemStorage
+from django.utils import timezone
+from django.contrib import messages
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from unfold.admin import ModelAdmin
 
-from .utils.audio_conversion import extract_text_from_file
+from .utils.audio_conversion import extract_text_from_file, normalize_tts_text, detect_tts_language
+from apps.core.models import SiteAppearance
 from .models import (
     Actualite,
     Auteur,
@@ -83,7 +93,7 @@ class AuteurAdmin(ModelAdmin):
     fieldsets = (
         ("Informations principales", {"fields": ("nom", "specialite", "photo", "nationalites")}),
         ("Biographie", {"fields": ("biographie",)}),
-        ("SEO", {"fields": ("slug", "meta_title", "meta_description"), "classes": ("collapse",)}),
+        ("SEO", {"fields": ("slug", "meta_title", "meta_description", "meta_keywords"), "classes": ("collapse",)}),
         ("Statistiques", {"fields": ("nombre_livres", "created_at", "updated_at"), "classes": ("collapse",)}),
     )
 
@@ -151,7 +161,7 @@ class LivreAdmin(ModelAdmin):
         ("Liens d'achat (num\u00e9rique)", {"fields": ("lien_chariow_numerique", "lien_amazon_numerique", "lien_whatsapp_numerique")}),
         ("Liens d'achat (audio)", {"fields": ("lien_chariow_audio", "lien_amazon_audio", "lien_whatsapp_audio")}),
         ("Mise en avant", {"fields": ("est_nouveau", "est_bestseller", "est_prochaine_parution", "est_publie")}),
-        ("SEO", {"fields": ("slug", "meta_title", "meta_description"), "classes": ("collapse",)}),
+        ("SEO", {"fields": ("slug", "meta_title", "meta_description", "meta_keywords"), "classes": ("collapse",)}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
     )
 
@@ -340,7 +350,7 @@ class PageAdmin(ModelAdmin):
     fieldsets = (
         ("Contenu", {"fields": ("title", "slug", "hero_title", "hero_subtitle", "body")}),
         ("Options", {"fields": ("is_active", "show_team")}),
-        ("SEO", {"fields": ("meta_title", "meta_description"), "classes": ("collapse",)}),
+        ("SEO", {"fields": ("meta_title", "meta_description", "meta_keywords"), "classes": ("collapse",)}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
     )
 
@@ -360,7 +370,7 @@ class CollectionAdmin(ModelAdmin):
         ("Informations", {"fields": ("nom", "slug", "image")}),
         ("Description", {"fields": ("description",)}),
         ("Affichage", {"fields": ("ordre_affichage", "est_active")}),
-        ("SEO", {"fields": ("meta_title", "meta_description"), "classes": ("collapse",)}),
+        ("SEO", {"fields": ("meta_title", "meta_description", "meta_keywords"), "classes": ("collapse",)}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
     )
 
@@ -374,7 +384,7 @@ class MenuLinkAdmin(ModelAdmin):
     ordering = ("location", "order", "title")
     actions = ["reinitialiser_menu"]
     
-    class MenuLinkActionForm(forms.Form):
+    class MenuLinkActionForm(ActionForm):
         confirmer_reinitialisation = forms.BooleanField(
             required=False,
             label="Confirmer la réinitialisation du menu",
@@ -457,7 +467,7 @@ class ActualiteAdmin(ModelAdmin):
         ("Informations principales", {"fields": ("titre", "image", "date_publication")}),
         ("Contenu", {"fields": ("extrait", "contenu")}),
         ("Mise en avant", {"fields": ("est_publie", "est_une_a_la_une")}),
-        ("SEO", {"fields": ("slug", "meta_title", "meta_description"), "classes": ("collapse",)}),
+        ("SEO", {"fields": ("slug", "meta_title", "meta_description", "meta_keywords"), "classes": ("collapse",)}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
     )
 
@@ -613,17 +623,76 @@ class AudioConversionRequestAdmin(ModelAdmin):
     )
     list_filter = ("paiement_requis", "paiement_initie_at", "statut", "langue", "voix", "created_at")
     search_fields = ("email", "whatsapp", "texte")
-    readonly_fields = ("created_at", "updated_at", "audio", "fichier", "paiement_initie_at", "pages_count", "payment_tier")
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "audio",
+        "fichier",
+        "paiement_initie_at",
+        "pages_count",
+        "payment_tier",
+        "texte_normalise",
+    )
     date_hierarchy = "created_at"
     actions = ["convertir_fichier_en_audio", "marquer_paye_et_envoyer"]
     change_list_template = "admin/catalogue/audioconversionrequest/change_list.html"
+    change_form_template = "admin/catalogue/audioconversionrequest/change_form.html"
     list_select_related = ("user",)
     fieldsets = (
         ("Contact", {"fields": ("user", "email", "whatsapp")}),
-        ("Demande", {"fields": ("texte", "fichier", "langue", "voix")}),
+        ("Demande", {"fields": ("texte", "texte_normalise", "use_original_text", "force_ocr", "fichier", "langue", "voix")}),
         ("Statut", {"fields": ("pages_count", "payment_tier", "paiement_requis", "paiement_initie_at", "statut", "audio")}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
     )
+
+    def save_model(self, request, obj, form, change):
+        """Si statut passe à payé, générer l'audio (si absent)."""
+        super().save_model(request, obj, form, change)
+        if obj.statut == "paid" and not obj.audio:
+            try:
+                self._generate_audio_for_obj(obj)
+            except Exception as exc:
+                obj.statut = "error"
+                obj.async_error = str(exc)
+                obj.save(update_fields=["statut", "async_error", "updated_at"])
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                "<int:object_id>/generate-now/",
+                self.admin_site.admin_view(self.generate_now_view),
+                name="audioconversionrequest-generate-now",
+            )
+        ]
+        return custom + urls
+
+    def generate_now_view(self, request, object_id):
+        obj = AudioConversionRequest.objects.filter(pk=object_id).first()
+        if not obj:
+            self.message_user(request, "Demande introuvable.", level="error")
+            return redirect("..")
+        if obj.paiement_requis and obj.statut != "paid":
+            self.message_user(request, "Paiement non validé. Impossible de générer.", level="error")
+            return redirect("..")
+        if obj.audio:
+            self.message_user(request, "Audio déjà généré.", level="warning")
+            return redirect("..")
+        try:
+            self._generate_audio_for_obj(obj)
+            self.message_user(request, "Audio généré avec succès.")
+        except Exception as exc:
+            obj.statut = "error"
+            obj.async_error = str(exc)
+            obj.save(update_fields=["statut", "async_error", "updated_at"])
+            self.message_user(request, f"Erreur génération: {exc}", level="error")
+        return redirect("..")
+
+    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        if object_id:
+            extra_context["generate_now_url"] = f"{object_id}/generate-now/"
+        return super().changeform_view(request, object_id, form_url, extra_context)
 
     def paiement_initie(self, obj):
         return bool(obj.paiement_initie_at)
@@ -651,10 +720,31 @@ class AudioConversionRequestAdmin(ModelAdmin):
 
         text = obj.texte or ""
         if obj.fichier and not text.strip():
-            text = extract_text_from_file(obj.fichier)
+            text = extract_text_from_file(
+                obj.fichier,
+                language_hint=obj.langue,
+                force_ocr=obj.force_ocr,
+            )
+            if text and not obj.texte:
+                obj.texte = text
+                obj.save(update_fields=["texte", "updated_at"])
         if not text.strip():
             raise RuntimeError("Texte vide après extraction.")
-        tts = gTTS(text, lang="fr", slow=False)
+        if obj.langue == "auto":
+            detected = detect_tts_language(text, selected="auto")
+            if detected and detected != obj.langue:
+                obj.langue = detected
+                obj.save(update_fields=["langue", "updated_at"])
+        appearance = SiteAppearance.objects.first()
+        normalized_text = normalize_tts_text(
+            text,
+            appearance=appearance,
+            use_original=obj.use_original_text,
+        )
+        if normalized_text and normalized_text != text:
+            obj.texte_normalise = normalized_text
+            obj.save(update_fields=["texte_normalise", "updated_at"])
+        tts = gTTS(normalized_text or text, lang="fr", slow=False)
         audio_bytes = ContentFile(b"")
         filename = f"conversion-{slugify(obj.email) or obj.id}-{uuid.uuid4().hex}.mp3"
         tts.write_to_fp(audio_bytes)
@@ -844,10 +934,10 @@ class SoumissionManuscritAdmin(ModelAdmin):
     formfield_overrides = {
         RichTextField: {"widget": CKEditorUploadingWidget},
     }
-    list_display = ("titre_ouvrage", "nom_auteur", "nom_complet", "type_contrat", "nationalite", "pays_residence", "whatsapp", "created_at")
+    list_display = ("titre_ouvrage", "nom_auteur", "nom_complet", "type_contrat", "nationalite", "pays_residence", "whatsapp", "audio_link", "created_at")
     list_filter = ("created_at",)
     search_fields = ("titre_ouvrage", "nom_auteur", "nom_complet", "whatsapp", "autre_numero", "nationalite", "pays_residence")
-    readonly_fields = ("created_at", "updated_at")
+    readonly_fields = ("created_at", "updated_at", "audio_link")
 
     fieldsets = (
         ("Identité", {"fields": ("nom_complet", "nom_auteur", "whatsapp", "autre_numero", "nationalite", "pays_residence")}),
@@ -855,3 +945,95 @@ class SoumissionManuscritAdmin(ModelAdmin):
         ("Fichiers", {"fields": ("fichier_ouvrage", "photo_auteur", "carte_identite")}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
     )
+    def audio_link(self, obj):
+        if obj.audio_request and obj.audio_request.audio:
+            return format_html('<a href="{}" target="_blank">?couter / T?l?charger</a>', obj.audio_request.audio.url)
+        return '-'
+
+    audio_link.short_description = 'Audio'
+
+
+
+
+# -------------------------------------------------------------------------------
+# ADMIN: MEDIA CLEANUP
+# -------------------------------------------------------------------------------
+
+def _list_media_files():
+    media_root = getattr(settings, "MEDIA_ROOT", None)
+    if not media_root or not os.path.isdir(media_root):
+        return []
+    media_url = getattr(settings, "MEDIA_URL", "/media/")
+    files = []
+    for root, _, filenames in os.walk(media_root):
+        for name in filenames:
+            full_path = os.path.join(root, name)
+            rel_path = os.path.relpath(full_path, media_root)
+            try:
+                size = os.path.getsize(full_path)
+            except OSError:
+                size = 0
+            try:
+                mtime = os.path.getmtime(full_path)
+            except OSError:
+                mtime = 0
+            ext = os.path.splitext(name)[1].lower()
+            file_type = "other"
+            if ext in {".jpg", ".jpeg", ".png", ".gif", ".webp"}:
+                file_type = "image"
+            elif ext in {".mp3", ".wav", ".m4a", ".ogg"}:
+                file_type = "audio"
+            elif ext in {".pdf"}:
+                file_type = "pdf"
+            file_url = f"{media_url}{rel_path.replace('\\', '/')}"
+            files.append({"path": rel_path.replace("\\", "/"), "size": size, "mtime": mtime})
+            files[-1].update({"type": file_type, "url": file_url})
+    return sorted(files, key=lambda f: f["path"].lower())
+
+
+def media_cleanup_view(request):
+    files = _list_media_files()
+    if request.method == "POST":
+        selected = request.POST.getlist("paths")
+        media_root = getattr(settings, "MEDIA_ROOT", None)
+        deleted = 0
+        if media_root:
+            for rel in selected:
+                rel = rel.replace("\\", "/")
+                full_path = os.path.abspath(os.path.join(media_root, rel))
+                if not full_path.startswith(os.path.abspath(media_root)):
+                    continue
+                if os.path.isfile(full_path):
+                    try:
+                        os.remove(full_path)
+                        deleted += 1
+                    except OSError:
+                        continue
+        if deleted:
+            messages.success(request, f"{deleted} fichier(s) supprimé(s).")
+        return redirect("admin:media-cleanup")
+    return render(
+        request,
+        "admin/media_cleanup.html",
+        {"files": files, "media_root": getattr(settings, "MEDIA_ROOT", "")},
+    )
+
+
+def _patch_admin_urls():
+    orig_get_urls = admin.site.get_urls
+
+    def get_urls():
+        urls = orig_get_urls()
+        custom = [
+            path(
+                "media-cleanup/",
+                admin.site.admin_view(media_cleanup_view),
+                name="media-cleanup",
+            )
+        ]
+        return custom + urls
+
+    admin.site.get_urls = get_urls
+
+
+_patch_admin_urls()

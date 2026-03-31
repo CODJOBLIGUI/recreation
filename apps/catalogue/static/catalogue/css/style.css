@@ -1,4 +1,4 @@
-/* ========================================
+ï»¿/* ========================================
    VARIABLES CSS
    ======================================== */
 
@@ -7,7 +7,7 @@
     --color-primary: #F5F1E8;      /* Beige chaud */
     --color-white: #FFFFFF;
     --color-text: #2C2C2C;         /* Charbon */
-    --color-text-light: #4A4A4A;   /* Gris foncé */
+    --color-text-light: #4A4A4A;   /* Gris foncÃ© */
     --color-accent: #0A18FF;      /* Bleu logo */
     --color-accent-dark: #001FD8; /* Bleu logo fonce */
     --color-border: #E0D9CD;
@@ -709,15 +709,29 @@ body.nav-drawer-open {
     align-items: center;
 }
 
+.hero__image .author-card__photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 190px;
+    height: 240px;
+}
+
+.hero__image .hero__author-photo {
+    align-self: center;
+}
+
 .hero__visual {
     position: relative;
     width: auto;
-    min-height: auto;
+    min-height: 240px;
     padding: 0 18px;
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: nowrap;
+    justify-content: center;
 }
 
 .hero__author-photo {
@@ -731,6 +745,12 @@ body.nav-drawer-open {
     padding: 0;
 }
 
+/* Keep carousel author photo wrapper the same size as the image */
+.hero__author-photo-wrap {
+    width: 190px !important;
+    height: 240px !important;
+}
+
 .hero__book-cover {
     position: relative;
     right: auto;
@@ -740,6 +760,7 @@ body.nav-drawer-open {
     height: auto;
     max-height: 228px;
     object-fit: contain;
+    align-self: center;
     box-shadow: var(--shadow-lg);
     border-radius: var(--radius-media);
     background: transparent;
@@ -1993,7 +2014,7 @@ body.nav-drawer-open {
     background-color: var(--color-accent);
 }
 
-/* A PROPOS - fond avec icônes reliées */
+/* A PROPOS - fond avec icÃ´nes reliÃ©es */
 .page-hero--about {
     position: relative;
     overflow: hidden;
@@ -2259,7 +2280,7 @@ body.nav-drawer-open {
 
 
 /* ========================================
-   ÉQUIPE
+   Ã‰QUIPE
    ======================================== */
 
 .team-grid {
@@ -2379,7 +2400,7 @@ body.nav-drawer-open {
 
 
 /* ========================================
-   ACTUALITÉS
+   ACTUALITÃ‰S
    ======================================== */
 
 .actualites-grid {
@@ -2465,7 +2486,7 @@ body.nav-drawer-open {
     color: #4A4A4A;
 }
 
-/* Détail actualité */
+/* DÃ©tail actualitÃ© */
 .actualite-detail__header {
     text-align: center;
     margin-bottom: 2rem;
@@ -2955,13 +2976,13 @@ html {
 }
 
 
-/* Resserre l'espace entre le hero et Nouveautés */
+/* Resserre l'espace entre le hero et NouveautÃ©s */
 .new-releases.section {
     padding-top: 2rem;
 }
 
 
-/* Resserre l'espace entre Nouveautés et Meilleures Ventes */
+/* Resserre l'espace entre NouveautÃ©s et Meilleures Ventes */
 .bestsellers.section {
     padding-top: 2rem;
 }
@@ -2973,7 +2994,7 @@ html {
     background-color: #eef6ff;
 }
 
-/* Resserre l'espace entre Suivez l'actualité et la newsletter */
+/* Resserre l'espace entre Suivez l'actualitÃ© et la newsletter */
 .news-ticker.section {
     padding-bottom: 2rem;
 }
@@ -4311,3 +4332,146 @@ html {
     border-radius: 999px;
     font-weight: 600;
 }
+
+
+/* Flag overlay fix (force small circle on author cards) */
+.author-card__photo { position: relative !important; }
+.author-card__flag { position: absolute !important; top: 8px !important; right: 8px !important; width: 19px !important; height: 19px !important; padding: 0 !important; border-radius: 50% !important; overflow: hidden !important; background: transparent !important; box-shadow: 0 3px 8px rgba(0,0,0,0.18) !important; }
+.author-card__flag img { display: block !important; width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important; }
+
+
+
+/* Force rounded author photos on detail pages */
+.auteur-detail__photo { border-radius: 18px !important; overflow: hidden !important; }
+.auteur-detail__photo img { border-radius: 18px !important; display: block; }
+
+
+
+/* Emphasize 'Jâ€™ai dÃ©jÃ  payÃ©' button */
+.btn--paid {
+    background: #ffffff;
+    color: #0A18FF;
+    border: 2px solid #0A18FF;
+    box-shadow: 0 8px 18px rgba(10, 24, 255, 0.18);
+    font-weight: 700;
+}
+.btn--paid:hover {
+    background: #0A18FF;
+    color: #ffffff;
+    box-shadow: 0 10px 22px rgba(10, 24, 255, 0.28);
+}
+
+\n\n/* Toggle state badge for checkboxes */\n.toggle-state {\n    margin-left: 0.5rem;\n    padding: 0.2rem 0.5rem;\n    border-radius: 999px;\n    font-size: 0.75rem;\n    font-weight: 600;\n    border: 1px solid #cfd8ff;\n    color: #4251a6;\n    background: #f2f5ff;\n}\n.toggle-state.is-active {\n    color: #ffffff;\n    background: #0A18FF;\n    border-color: #0A18FF;\n}\n
+
+/* Checkbox visual state for OCR / original text */
+.form-check input[type="checkbox"]:checked + label {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+.form-check input[type="checkbox"]:checked + label::before {
+    content: "âœ“";
+    display: inline-block;
+    margin-right: 0.4rem;
+    color: var(--color-accent);
+}
+
+/* News filters: modern UI */
+.news-filters {
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
+}
+.news-filters__row {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr 0.9fr auto;
+    gap: 1rem;
+    align-items: end;
+}
+.news-filters__label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    margin-bottom: 0.35rem;
+    display: inline-block;
+}
+.news-filters__chips {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: #f7f6f4;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+.filter-chip input { display: none; }
+.filter-chip span { color: var(--color-text); }
+.filter-chip input:checked + span {
+    color: #fff;
+    background: var(--color-accent);
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+}
+.news-filters__select {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background: #ffffff;
+    font-weight: 600;
+}
+.news-filters__actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+.btn--ghost {
+    background: transparent;
+    color: var(--color-accent);
+    border: 2px solid var(--color-accent);
+    border-radius: 999px;
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+}
+.btn--ghost:hover { background: var(--color-accent); color: #fff; }
+@media (max-width: 900px) {
+    .news-filters__row { grid-template-columns: 1fr; }
+    .news-filters__actions { justify-content: flex-start; }
+}
+
+/* Conversion form premium card */
+.conversion-audio__form .contact__form-wrapper { background: #fff; border-radius: 20px; padding: 2rem; box-shadow: 0 12px 30px rgba(0,0,0,0.08); border: 1px solid #efe8dd; }
+.conversion-audio__form h2 { font-size: 2rem; margin-bottom: 1.25rem; }
+.conversion-audio__form .form-group { margin-bottom: 1.4rem; }
+.conversion-audio__form label { font-weight: 700; font-size: 1rem; color: #2c2c2c; }
+.conversion-audio__form .form-control { border-radius: 14px; padding: 0.85rem 1rem; font-size: 0.95rem; background: #fff; border: 2px solid var(--color-accent); box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 8px rgba(0,0,0,0.05); }
+.conversion-audio__form .form-control:focus { border-color: var(--color-accent); box-shadow: 0 0 0 4px rgba(10,24,255,0.12); }
+.conversion-audio__form input[type=file].form-control { background: #f8f5f0; }
+.conversion-audio__form .btn--primary.btn--large { border-radius: 999px; padding: 0.75rem 1.6rem; font-weight: 700; }
+.conversion-audio__form .form-hint { color: #6c6c6c; font-size: 0.85rem; }
+
+
+/* Neutral payment required box */
+.cta-box--neutral {
+    background: #ffffff;
+    color: var(--color-text);
+    border: 1px solid #efe8dd;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+}
+.cta-box--neutral .cta-box__title,
+.cta-box--neutral .cta-box__text {
+    color: var(--color-text);
+}
+
+/* Centered multi-line button text */
+.btn--center { text-align: center; line-height: 1.1; }
