@@ -4505,3 +4505,24 @@ html {
         height: 160px;
     }
 }
+
+/* MOBILE: header not sticky and logo aligned left */
+@media (max-width: 768px) {
+    .header {
+        position: static;
+        top: auto;
+    }
+
+    .header__top {
+        justify-content: space-between;
+    }
+
+    .header__brand {
+        justify-content: flex-start;
+        width: auto;
+    }
+
+    .header__logo {
+        margin-right: auto;
+    }
+}
