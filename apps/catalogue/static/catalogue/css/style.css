@@ -4477,3 +4477,31 @@ html {
 
 /* Centered multi-line button text */
 .btn--center { text-align: center; line-height: 1.1; }
+
+/* MOBILE: keep flags aligned with author photo in carousel */
+@media (max-width: 768px) {
+    .hero__image .author-card__photo {
+        width: auto;
+        height: auto;
+    }
+
+    .hero__author-photo-wrap {
+        width: auto !important;
+        height: auto !important;
+        align-self: center;
+    }
+
+    .hero__author-photo {
+        width: 140px;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero__author-photo {
+        width: 120px;
+        height: 160px;
+    }
+}
