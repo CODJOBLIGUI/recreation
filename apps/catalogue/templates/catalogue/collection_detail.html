@@ -65,13 +65,17 @@
 
                 <div class="author-card__photo">
                     <img src="{{ auteur.photo.url }}" alt="{{ auteur.nom }}">
-                    {% with nat=auteur.nationalites.first %}
-                    {% if nat and nat.drapeau %}
-                    <div class="author-card__flag" title="{{ nat.nom }}">
-                        <img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">
+                    {% if auteur.nationalites.all %}
+                    <div class="author-card__flags" aria-label="Nationalités">
+                        {% for nat in auteur.nationalites.all %}
+                        {% if nat.drapeau %}
+                        <div class="author-card__flag" title="{{ nat.nom }}">
+                            <img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">
+                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                     {% endif %}
-                    {% endwith %}
                 </div>
                 <div class="author-card__info">
                     <h3 class="author-card__name">{{ auteur.nom }}</h3>

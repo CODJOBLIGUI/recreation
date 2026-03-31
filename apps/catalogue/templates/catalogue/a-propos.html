@@ -115,13 +115,17 @@
                 <div class="author-card__photo team-member__photo">
                     {% if membre.photo %}
                     <img src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}">
-                    {% with nat=membre.nationalites.first %}
-                    {% if nat and nat.drapeau %}
-                    <div class="author-card__flag" title="{{ nat.nom }}">
-                        <img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">
+                    {% if membre.nationalites.all %}
+                    <div class="author-card__flags" aria-label="Nationalités">
+                        {% for nat in membre.nationalites.all %}
+                        {% if nat.drapeau %}
+                        <div class="author-card__flag" title="{{ nat.nom }}">
+                            <img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">
+                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                     {% endif %}
-                    {% endwith %}
                     {% endif %}
                 </div>
                 <div class="author-card__info team-member__info">

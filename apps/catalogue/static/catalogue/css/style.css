@@ -4338,6 +4338,8 @@ html {
 .author-card__photo { position: relative !important; }
 .author-card__flag { position: absolute !important; top: 8px !important; right: 8px !important; width: 19px !important; height: 19px !important; padding: 0 !important; border-radius: 50% !important; overflow: hidden !important; background: transparent !important; box-shadow: 0 3px 8px rgba(0,0,0,0.18) !important; }
 .author-card__flag img { display: block !important; width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important; }
+.author-card__flags { position: absolute !important; top: 8px !important; right: 8px !important; display: flex !important; gap: 4px !important; align-items: center !important; z-index: 3 !important; }
+.author-card__flags .author-card__flag { position: static !important; }
 
 
 
