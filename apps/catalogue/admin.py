@@ -985,8 +985,9 @@ def _list_media_files():
                 file_type = "audio"
             elif ext in {".pdf"}:
                 file_type = "pdf"
-            file_url = f"{media_url}{rel_path.replace('\\', '/')}"
-            files.append({"path": rel_path.replace("\\", "/"), "size": size, "mtime": mtime})
+            rel_web = rel_path.replace("\\", "/")
+            file_url = f"{media_url}{rel_web}"
+            files.append({"path": rel_web, "size": size, "mtime": mtime})
             files[-1].update({"type": file_type, "url": file_url})
     return sorted(files, key=lambda f: f["path"].lower())
 
