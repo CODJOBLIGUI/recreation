@@ -7,9 +7,9 @@
 <section class="auteur-detail section team-member-detail">
     <div class="container">
         <div class="auteur-detail__header">
-            <div class="auteur-detail__photo detail-media--rounded-box author-card__photo">
+            <div class="auteur-detail__photo detail-media--rounded-box author-card__photo" style="border-radius:18px; overflow:hidden;">
                 {% if membre.photo %}
-                <img class="detail-media--rounded" style="border-radius:18px;overflow:hidden;display:block;clip-path:inset(0 round 18px);" src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}">
+                <img class="detail-media--rounded" style="border-radius:18px;display:block;width:100%;height:100%;object-fit:cover;clip-path:inset(0 round 18px);" src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}">
                 {% endif %}
                 {% if membre.nationalites.all %}
                 <div class="author-card__flags" aria-label="Nationalités">
