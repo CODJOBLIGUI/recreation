@@ -4502,6 +4502,15 @@ html {
 /* Force rounded author photos on detail pages */
 .auteur-detail__photo { border-radius: 18px !important; overflow: hidden !important; }
 .auteur-detail__photo img { border-radius: 18px !important; display: block; }
+/* Align team member detail photo rounding with authors */
+.team-member-detail .auteur-detail__photo { border-radius: 18px !important; overflow: hidden !important; }
+.team-member-detail .auteur-detail__photo img {
+    border-radius: 18px !important;
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
 
 
 
