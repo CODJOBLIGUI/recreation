@@ -1359,3 +1359,29 @@ font-size: 2rem;
     white-space: nowrap !important;
   }
 }
+
+/* FINAL OVERRIDE: newsletter input must fill line on mobile */
+@media (max-width: 768px) {
+  .header__brand {
+    width: 100% !important;
+  }
+
+  .header__newsletter-form {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+  }
+
+  .header__newsletter-form input {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .header__newsletter-form button {
+    flex: 0 0 auto !important;
+    margin-left: 0.4rem !important;
+  }
+}
