@@ -284,6 +284,13 @@ class MembreAdmin(ModelAdmin):
 
     apercu_photo_mini.short_description = "\U0001f4f7"
     
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if db_field.name == "biographie":
+            kwargs["widget"] = CKEditor5Widget(config_name="simple")
+        elif db_field.name == "biographie_longue":
+            kwargs["widget"] = CKEditor5Widget(config_name="extends")
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
+    
     def nationalites_affichage(self, obj):
         return ", ".join(nat.nom for nat in obj.nationalites.all())
     
@@ -449,7 +456,7 @@ class ActualiteAdmin(ModelAdmin):
             model = Actualite
             fields = "__all__"
             widgets = {
-                "extrait": CKEditor5Widget(config_name="extends"),
+                "extrait": CKEditor5Widget(config_name="simple"),
                 "contenu": CKEditor5Widget(config_name="extends"),
             }
 
@@ -929,6 +936,11 @@ class MessageContactAdmin(ModelAdmin):
         return format_html('<span style="background: #ef4444; color: white; padding: 4px 8px; border-radius: 4px;">\U0001f4e7 Non lu</span>')
 
     badge_lu.short_description = "Lu"
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if db_field.name in {"message", "notes_admin"}:
+            kwargs["widget"] = CKEditor5Widget(config_name="simple")
+        return super().formfield_for_dbfield(db_field, request, **kwargs)
 
 
 @admin.register(SoumissionManuscrit)

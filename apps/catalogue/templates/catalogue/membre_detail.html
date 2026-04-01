@@ -31,7 +31,7 @@
 
                 <div class="auteur-detail__bio">
                     <h2>Biographie</h2>
-                    <div class="auteur-detail__bio-text rich-content">
+                    <div class="auteur-detail__bio-text rich-content ck-content">
                         {% if membre.biographie_longue %}
                             {{ membre.biographie_longue|unescape|fix_mojibake|safe }}
                         {% elif membre.biographie %}

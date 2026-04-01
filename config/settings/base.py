@@ -148,6 +148,22 @@ CKEDITOR_5_CONFIGS = {
         },
         "language": "fr",
     },
+    "simple": {
+        "toolbar": {
+            "items": [
+                "bold",
+                "italic",
+                "underline",
+                "link",
+                "bulletedList",
+                "numberedList",
+                "undo",
+                "redo",
+            ],
+            "shouldNotGroupWhenFull": True,
+        },
+        "language": "fr",
+    },
     "extends": {
         "blockToolbar": [
             "paragraph",

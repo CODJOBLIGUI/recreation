@@ -674,6 +674,60 @@ h1, h2, h3 {
     color: #111827 !important;
 }
 
+/* CKEditor 5 content styling in admin */
+:root .ck-content {
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #1f2937;
+}
+:root .ck-content h1,
+:root .ck-content h2,
+:root .ck-content h3,
+:root .ck-content h4 {
+    margin: 1rem 0 0.6rem;
+    line-height: 1.3;
+}
+:root .ck-content p {
+    margin: 0 0 0.9rem;
+}
+:root .ck-content blockquote {
+    border-left: 4px solid #0A18FF;
+    padding: 0.6rem 1rem;
+    margin: 1rem 0;
+    background: #f2f5ff;
+}
+:root .ck-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+:root .ck-content th,
+:root .ck-content td {
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem 0.6rem;
+}
+:root .ck-content .image-style-align-left {
+    float: left;
+    margin: 0.25rem 1rem 1rem 0;
+    max-width: 48%;
+}
+:root .ck-content .image-style-align-right {
+    float: right;
+    margin: 0.25rem 0 1rem 1rem;
+    max-width: 48%;
+}
+:root .ck-content .image-style-align-center {
+    display: block;
+    margin: 0.5rem auto 1rem;
+    max-width: 70%;
+}
+:root .ck-content .image-style-side {
+    float: right;
+    margin: 0.25rem 0 1rem 1rem;
+    max-width: 35%;
+}
+
 /* =========================================================
    ADMIN THEME V2 (Premium, ultra readable)
    ========================================================= */
