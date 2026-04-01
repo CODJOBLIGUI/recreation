@@ -1218,6 +1218,7 @@ font-size: 2rem;
     min-width: 0 !important;
     flex: 1 1 auto !important;
     width: 100% !important;
+    color: #1f1f1f !important;
   }
 
   .header__newsletter-form button {
@@ -1281,6 +1282,11 @@ font-size: 2rem;
     box-shadow: none !important;
     flex: 0 0 auto !important;
     white-space: nowrap !important;
+  }
+
+  .header__newsletter-form input::placeholder {
+    color: #6e6e6e !important;
+    opacity: 1 !important;
   }
 }
 
