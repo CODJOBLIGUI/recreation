@@ -363,7 +363,7 @@ class Livre(TimeStampedModel, SEOModel):
         null=True,
         verbose_name="Collection",
     )
-    resume = models.TextField(verbose_name="R\u00e9sum\u00e9")
+    resume = RichTextField(verbose_name="R\u00e9sum\u00e9")
     isbn = models.CharField(max_length=20, unique=True, verbose_name="ISBN", db_index=True)
     prix = models.CharField(max_length=50, verbose_name="Prix")
     parution = models.DateField(verbose_name="Date de parution", db_index=True)
