@@ -7,6 +7,39 @@ Ces modèles de base permettent d'éviter la répétition de code.
 
 from django.db import models
 from django.utils.text import slugify
+from html import unescape
+
+
+def _normalize_text_value(value):
+    if value is None:
+        return value
+    if not isinstance(value, str):
+        return value
+    text = unescape(value)
+    replacements = {
+        "ÃƒÂ©": "é",
+        "ÃƒÂ¨": "è",
+        "ÃƒÂª": "ê",
+        "ÃƒÂ«": "ë",
+        "ÃƒÂ ": "à",
+        "ÃƒÂ¢": "â",
+        "ÃƒÂ®": "î",
+        "ÃƒÂ´": "ô",
+        "ÃƒÂ¹": "ù",
+        "ÃƒÂ»": "û",
+        "ÃƒÂ§": "ç",
+        "Ãƒâ€°": "É",
+        "Ãƒâ‚¬": "À",
+        "Ã¢â‚¬â„¢": "’",
+        "Ã¢â‚¬Å“": "“",
+        "Ã¢â‚¬Â": "”",
+        "Ã¢â‚¬â€œ": "–",
+        "Ã¢â‚¬â€": "—",
+        "Ã‚": "",
+    }
+    for bad, good in replacements.items():
+        text = text.replace(bad, good)
+    return text
 
 class TimeStampedModel(models.Model):
     """
@@ -25,6 +58,19 @@ class TimeStampedModel(models.Model):
     )
     class Meta:
         abstract = True  # Ce modèle ne créera pas de table en BDD
+
+    def save(self, *args, **kwargs):
+        # Nettoie automatiquement les textes pour éviter les caractères corrompus
+        for field in self._meta.fields:
+            if isinstance(field, (models.CharField, models.TextField)):
+                if isinstance(field, (models.EmailField, models.URLField, models.SlugField)):
+                    continue
+                value = getattr(self, field.name, None)
+                if isinstance(value, str) and value:
+                    cleaned = _normalize_text_value(value)
+                    if cleaned != value:
+                        setattr(self, field.name, cleaned)
+        super().save(*args, **kwargs)
 
 
 class SEOModel(models.Model):
