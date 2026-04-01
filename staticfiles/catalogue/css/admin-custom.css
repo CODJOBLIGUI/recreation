@@ -1,0 +1,987 @@
+﻿/* ============================================================================
+   PREMIUM ADMIN THEME - EDITIONS RECREATION (LIGHT)
+   ============================================================================ */
+
+:root {
+    --admin-accent: #1f4acc;
+    --admin-accent-dark: #173a9e;
+    --admin-bg: #f6f5f3;
+    --admin-surface: #ffffff;
+    --admin-surface-2: #fbfaf8;
+    --admin-border: #e6e2dc;
+    --admin-text: #1f2937;
+    --admin-muted: #6b7280;
+    --admin-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+}
+
+:root[data-theme="dark"] {
+    --admin-accent: #7aa2ff;
+    --admin-accent-dark: #5b7fe0;
+}
+
+body,
+.unfold-body,
+#container {
+    background: var(--admin-bg);
+    color: var(--admin-text);
+}
+
+/* Logo */
+.unfold-logo img {
+    max-height: 56px !important;
+    width: auto !important;
+}
+
+/* Sidebar */
+.unfold-sidebar,
+.sidebar {
+    background: var(--admin-surface);
+    border-right: 1px solid var(--admin-border);
+}
+
+.sidebar .nav,
+.unfold-sidebar nav {
+    gap: 8px;
+}
+
+.sidebar .nav a,
+.unfold-sidebar a {
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: var(--admin-text) !important;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar .nav a:hover,
+.unfold-sidebar a:hover {
+    background: rgba(31, 74, 204, 0.08);
+    color: var(--admin-accent) !important;
+}
+
+.sidebar .nav a.active,
+.unfold-sidebar a.active {
+    background: rgba(31, 74, 204, 0.12);
+    color: var(--admin-accent) !important;
+    font-weight: 600;
+}
+
+/* Cards / modules */
+.module,
+.card,
+.dashboard-module,
+.unfold-card,
+.unfold-box {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 16px;
+    box-shadow: var(--admin-shadow);
+}
+
+/* Tables */
+.changelist th {
+    background: var(--admin-accent) !important;
+    color: #ffffff !important;
+}
+
+.changelist tbody tr:hover {
+    background: rgba(31, 74, 204, 0.06);
+}
+
+/* Buttons */
+.button,
+.btn,
+button {
+    border-radius: 10px;
+}
+
+.button.primary,
+.btn-primary,
+.button.default {
+    background: var(--admin-accent) !important;
+    border-color: var(--admin-accent) !important;
+    color: #ffffff !important;
+}
+
+.button.primary:hover,
+.btn-primary:hover,
+.button.default:hover {
+    background: var(--admin-accent-dark) !important;
+    border-color: var(--admin-accent-dark) !important;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+    border-radius: 10px !important;
+    border: 1px solid var(--admin-border) !important;
+    background: var(--admin-surface-2) !important;
+    color: var(--admin-text) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--admin-accent) !important;
+    box-shadow: 0 0 0 3px rgba(31, 74, 204, 0.15) !important;
+}
+
+/* Breadcrumbs / links */
+a {
+    color: var(--admin-accent);
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+    color: var(--admin-text);
+}
+
+/* Top bar */
+.header,
+.unfold-header {
+    background: var(--admin-surface);
+    border-bottom: 1px solid var(--admin-border);
+}
+
+/* Make actions look premium */
+.actions,
+.object-tools {
+    gap: 8px;
+}
+
+/* Premium admin header */
+.unfold-header,
+.header {
+    background: linear-gradient(120deg, #ffffff 0%, #f7f3ee 45%, #eef1f8 100%);
+    border-bottom: 1px solid var(--admin-border);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.unfold-header .breadcrumbs,
+.header .breadcrumbs {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.unfold-header .breadcrumbs a,
+.header .breadcrumbs a {
+    color: var(--admin-accent);
+}
+
+/* Subtle top bar accent line */
+.unfold-header::after,
+.header::after {
+    content: "";
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, var(--admin-accent), #5aa0ff, #e8edf9);
+}
+/* Dark mode text color */
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] .unfold-body,
+:root[data-theme="dark"] #container,
+:root[data-theme="dark"] .unfold-content,
+:root[data-theme="dark"] .sidebar,
+:root[data-theme="dark"] .unfold-sidebar {
+    color: #ffffff !important;
+}
+
+:root[data-theme="dark"] a,
+:root[data-theme="dark"] .breadcrumbs a,
+:root[data-theme="dark"] .sidebar .nav a,
+:root[data-theme="dark"] .unfold-sidebar a {
+    color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .text-subtle,
+:root[data-theme="dark"] .text-muted,
+:root[data-theme="dark"] .help,
+:root[data-theme="dark"] .form-row .help,
+:root[data-theme="dark"] .form-row .help-text {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+/* Force white text in dark mode tables and links */
+:root[data-theme="dark"] .changelist a,
+:root[data-theme="dark"] .changelist th,
+:root[data-theme="dark"] .changelist td,
+:root[data-theme="dark"] .changelist tbody td a,
+:root[data-theme="dark"] .changelist thead th a,
+:root[data-theme="dark"] .changelist .column-username a,
+:root[data-theme="dark"] .result_list a,
+:root[data-theme="dark"] .result_list th,
+:root[data-theme="dark"] .result_list td {
+    color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .changelist thead th a:hover,
+:root[data-theme="dark"] .changelist tbody td a:hover {
+    color: #ffffff !important;
+}
+/* Links white by default, blue on hover */
+:root[data-theme="dark"] a,
+:root[data-theme="dark"] .breadcrumbs a,
+:root[data-theme="dark"] .sidebar .nav a,
+:root[data-theme="dark"] .unfold-sidebar a,
+:root[data-theme="dark"] .changelist a,
+:root[data-theme="dark"] .result_list a {
+    color: #ffffff !important;
+}
+
+:root[data-theme="dark"] a:hover,
+:root[data-theme="dark"] .breadcrumbs a:hover,
+:root[data-theme="dark"] .sidebar .nav a:hover,
+:root[data-theme="dark"] .unfold-sidebar a:hover,
+:root[data-theme="dark"] .changelist a:hover,
+:root[data-theme="dark"] .result_list a:hover {
+    color: var(--admin-accent) !important;
+}
+/* ADMIN polish: layout, spacing, typography */
+.unfold-content,
+#content {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+body, .unfold-body, #container {
+    font-family: "Source Serif 4", "Cormorant Garamond", serif;
+}
+
+h1, h2, h3 {
+    letter-spacing: 0.01em;
+}
+
+/* Softer table header for light mode */
+:root:not([data-theme="dark"]) .changelist th {
+    background: #eef2ff !important;
+    color: #1f2937 !important;
+}
+
+:root:not([data-theme="dark"]) .changelist thead th a {
+    color: #1f2937 !important;
+}
+
+/* Zebra rows for readability */
+.changelist tbody tr:nth-child(even) {
+    background: rgba(15, 23, 42, 0.03);
+}
+
+/* Cards padding */
+.module, .card, .dashboard-module, .unfold-card, .unfold-box {
+    padding: 18px 20px;
+}
+
+/* Form rows spacing */
+.form-row {
+    margin-bottom: 14px;
+}
+
+.form-row label {
+    font-weight: 600;
+}
+
+/* Buttons consistent height */
+.button, .btn, button {
+    min-height: 38px;
+}
+
+/* Search input in list view */
+#toolbar input[type="search"],
+#toolbar input[type="text"] {
+    border-radius: 10px;
+    padding: 8px 12px;
+}
+
+/* Dark mode surface contrast */
+:root[data-theme="dark"] .module,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .dashboard-module,
+:root[data-theme="dark"] .unfold-card,
+:root[data-theme="dark"] .unfold-box {
+    background: #0f172a;
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+:root[data-theme="dark"] .changelist tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Fix dark mode list readability */
+:root[data-theme="dark"] .changelist,
+:root[data-theme="dark"] .changelist table,
+:root[data-theme="dark"] .result_list,
+:root[data-theme="dark"] .module table,
+:root[data-theme="dark"] .dashboard-module table {
+    color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .changelist thead th,
+:root[data-theme="dark"] .changelist th,
+:root[data-theme="dark"] .result_list th {
+    background: #0b1220 !important;
+    color: #f8fafc !important;
+    border-color: rgba(148, 163, 184, 0.25) !important;
+}
+
+:root[data-theme="dark"] .changelist td,
+:root[data-theme="dark"] .result_list td {
+    color: #e5e7eb !important;
+    border-color: rgba(148, 163, 184, 0.18) !important;
+}
+
+:root[data-theme="dark"] .changelist tbody tr,
+:root[data-theme="dark"] .result_list tbody tr {
+    background: #0f172a !important;
+}
+
+:root[data-theme="dark"] .changelist tbody tr:nth-child(even),
+:root[data-theme="dark"] .result_list tbody tr:nth-child(even) {
+    background: #111c33 !important;
+}
+
+:root[data-theme="dark"] .changelist a,
+:root[data-theme="dark"] .result_list a,
+:root[data-theme="dark"] .module a {
+    color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .changelist a:hover,
+:root[data-theme="dark"] .result_list a:hover {
+    color: var(--admin-accent) !important;
+}
+
+:root[data-theme="dark"] .breadcrumbs,
+:root[data-theme="dark"] .breadcrumbs a {
+    color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] #toolbar,
+:root[data-theme="dark"] .filters {
+    background: #0b1220 !important;
+    border-color: rgba(148, 163, 184, 0.25) !important;
+}
+
+/* Light mode: enforce readable text (no pale gray) */
+:root:not([data-theme="dark"]) .changelist,
+:root:not([data-theme="dark"]) .result_list,
+:root:not([data-theme="dark"]) .module table {
+    color: #111827 !important;
+}
+
+:root:not([data-theme="dark"]) .changelist td,
+:root:not([data-theme="dark"]) .result_list td,
+:root:not([data-theme="dark"]) .changelist th,
+:root:not([data-theme="dark"]) .result_list th {
+    color: #111827 !important;
+}
+
+:root:not([data-theme="dark"]) .changelist a,
+:root:not([data-theme="dark"]) .result_list a,
+:root:not([data-theme="dark"]) .module a {
+    color: #111827 !important;
+}
+
+:root:not([data-theme="dark"]) .changelist a:hover,
+:root:not([data-theme="dark"]) .result_list a:hover {
+    color: var(--admin-accent) !important;
+}
+
+:root:not([data-theme="dark"]) .text-muted,
+:root:not([data-theme="dark"]) .help,
+:root:not([data-theme="dark"]) .form-row .help,
+:root:not([data-theme="dark"]) .form-row .help-text {
+    color: #4b5563 !important;
+}
+
+/* Light mode: force label/title text in list cards */
+:root:not([data-theme="dark"]) .changelist .result_list th,
+:root:not([data-theme="dark"]) .changelist .result_list td,
+:root:not([data-theme="dark"]) .result_list th,
+:root:not([data-theme="dark"]) .result_list td,
+:root:not([data-theme="dark"]) .result_list .field-box,
+:root:not([data-theme="dark"]) .result_list .text-muted,
+:root:not([data-theme="dark"]) .result_list .quiet,
+:root:not([data-theme="dark"]) .result_list .field-label,
+:root:not([data-theme="dark"]) .result_list .column,
+:root:not([data-theme="dark"]) .result_list .col,
+:root:not([data-theme="dark"]) .result_list .card-title {
+    color: #111827 !important;
+}
+
+:root:not([data-theme="dark"]) .result_list .field-label,
+:root:not([data-theme="dark"]) .result_list .column,
+:root:not([data-theme="dark"]) .result_list .col,
+:root:not([data-theme="dark"]) .result_list .quiet {
+    opacity: 1 !important;
+}
+
+/* Admin: light mode gray surfaces + force label visibility */
+:root:not([data-theme="dark"]) {
+    --admin-bg: #f1f1f1;
+    --admin-surface: #f5f5f5;
+    --admin-surface-2: #f3f3f3;
+    --admin-border: #d6d6d6;
+    --admin-text: #111111;
+    --admin-muted: #333333;
+}
+
+:root:not([data-theme="dark"]) .module,
+:root:not([data-theme="dark"]) .card,
+:root:not([data-theme="dark"]) .dashboard-module,
+:root:not([data-theme="dark"]) .unfold-card,
+:root:not([data-theme="dark"]) .unfold-box,
+:root:not([data-theme="dark"]) .result_list,
+:root:not([data-theme="dark"]) .result_list tr,
+:root:not([data-theme="dark"]) .result_list td,
+:root:not([data-theme="dark"]) .result_list th,
+:root:not([data-theme="dark"]) .changelist,
+:root:not([data-theme="dark"]) .changelist table,
+:root:not([data-theme="dark"]) #content,
+:root:not([data-theme="dark"]) .content,
+:root:not([data-theme="dark"]) .unfold-content {
+    background: var(--admin-surface) !important;
+}
+
+:root:not([data-theme="dark"]) .result_list td,
+:root:not([data-theme="dark"]) .result_list th,
+:root:not([data-theme="dark"]) .changelist td,
+:root:not([data-theme="dark"]) .changelist th,
+:root:not([data-theme="dark"]) .changelist .field-label,
+:root:not([data-theme="dark"]) .result_list .field-label,
+:root:not([data-theme="dark"]) .result_list .quiet,
+:root:not([data-theme="dark"]) .changelist .quiet,
+:root:not([data-theme="dark"]) .changelist .column,
+:root:not([data-theme="dark"]) .result_list .column,
+:root:not([data-theme="dark"]) .changelist .col,
+:root:not([data-theme="dark"]) .result_list .col {
+    color: #111111 !important;
+    opacity: 1 !important;
+}
+
+/* Admin: gray backgrounds with white text (light mode) */
+:root:not([data-theme="dark"]) {
+    --admin-bg: #2f2f2f;
+    --admin-surface: #3a3a3a;
+    --admin-surface-2: #454545;
+    --admin-border: #555555;
+    --admin-text: #ffffff;
+    --admin-muted: #e5e7eb;
+}
+
+:root:not([data-theme="dark"]) body,
+:root:not([data-theme="dark"]) .unfold-body,
+:root:not([data-theme="dark"]) #container,
+:root:not([data-theme="dark"]) .unfold-content,
+:root:not([data-theme="dark"]) #content,
+:root:not([data-theme="dark"]) .content {
+    background: var(--admin-bg) !important;
+    color: var(--admin-text) !important;
+}
+
+:root:not([data-theme="dark"]) .module,
+:root:not([data-theme="dark"]) .card,
+:root:not([data-theme="dark"]) .dashboard-module,
+:root:not([data-theme="dark"]) .unfold-card,
+:root:not([data-theme="dark"]) .unfold-box,
+:root:not([data-theme="dark"]) .result_list,
+:root:not([data-theme="dark"]) .changelist,
+:root:not([data-theme="dark"]) .changelist table {
+    background: var(--admin-surface) !important;
+    color: var(--admin-text) !important;
+    border-color: var(--admin-border) !important;
+}
+
+:root:not([data-theme="dark"]) .changelist th,
+:root:not([data-theme="dark"]) .result_list th,
+:root:not([data-theme="dark"]) .changelist td,
+:root:not([data-theme="dark"]) .result_list td,
+:root:not([data-theme="dark"]) .changelist .field-label,
+:root:not([data-theme="dark"]) .result_list .field-label,
+:root:not([data-theme="dark"]) .changelist .quiet,
+:root:not([data-theme="dark"]) .result_list .quiet,
+:root:not([data-theme="dark"]) .changelist .column,
+:root:not([data-theme="dark"]) .result_list .column,
+:root:not([data-theme="dark"]) .changelist .col,
+:root:not([data-theme="dark"]) .result_list .col {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+:root:not([data-theme="dark"]) a,
+:root:not([data-theme="dark"]) .breadcrumbs a {
+    color: #ffffff !important;
+}
+
+:root:not([data-theme="dark"]) a:hover {
+    color: var(--admin-accent) !important;
+}
+
+:root:not([data-theme="dark"]) input,
+:root:not([data-theme="dark"]) select,
+:root:not([data-theme="dark"]) textarea {
+    background: #2b2b2b !important;
+    color: #ffffff !important;
+    border-color: #5a5a5a !important;
+}
+
+/* Admin: force all text white (dark + light modes) */
+:root[data-theme="dark"] *,
+:root:not([data-theme="dark"]) * {
+    color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .text-muted,
+:root[data-theme="dark"] .quiet,
+:root[data-theme="dark"] .help,
+:root:not([data-theme="dark"]) .text-muted,
+:root:not([data-theme="dark"]) .quiet,
+:root:not([data-theme="dark"]) .help {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+:root[data-theme="dark"] a,
+:root[data-theme="dark"] a:visited,
+:root:not([data-theme="dark"]) a,
+:root:not([data-theme="dark"]) a:visited {
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   ADMIN THEME RESET (Readable, clean, modern)
+   ========================================================= */
+
+:root {
+    --admin-bg: #0b1220;
+    --admin-surface: #111827;
+    --admin-surface-2: #0f172a;
+    --admin-border: #1f2937;
+    --admin-text: #e5e7eb;
+    --admin-text-strong: #f8fafc;
+    --admin-muted: #94a3b8;
+    --admin-accent: #60a5fa;
+    --admin-accent-2: #93c5fd;
+}
+
+/* Base surfaces */
+:root body,
+:root .unfold-body,
+:root #container,
+:root .unfold-content,
+:root #content,
+:root .content {
+    background: var(--admin-bg) !important;
+    color: var(--admin-text) !important;
+}
+
+/* Cards / tables */
+:root .module,
+:root .card,
+:root .dashboard-module,
+:root .unfold-card,
+:root .unfold-box,
+:root .result_list,
+:root .changelist,
+:root .changelist table {
+    background: var(--admin-surface) !important;
+    color: var(--admin-text) !important;
+    border-color: var(--admin-border) !important;
+}
+
+:root .result_list tr:nth-child(even),
+:root .changelist tr:nth-child(even) {
+    background: var(--admin-surface-2) !important;
+}
+
+/* Headings / labels */
+:root h1,
+:root h2,
+:root h3,
+:root h4,
+:root .breadcrumbs,
+:root .breadcrumbs a,
+:root .module h2,
+:root .card h2 {
+    color: var(--admin-text-strong) !important;
+}
+
+:root .field-label,
+:root .column,
+:root .col,
+:root .help,
+:root .quiet,
+:root .text-muted {
+    color: var(--admin-muted) !important;
+}
+
+/* Links */
+:root a,
+:root .breadcrumbs a {
+    color: var(--admin-accent-2) !important;
+}
+
+:root a:hover {
+    color: var(--admin-accent) !important;
+}
+
+/* Inputs */
+:root input,
+:root select,
+:root textarea,
+:root .vTextField,
+:root .vLargeTextField,
+:root .form-row input,
+:root .form-row select,
+:root .form-row textarea {
+    background: #0f172a !important;
+    color: var(--admin-text) !important;
+    border-color: #334155 !important;
+}
+
+/* Buttons */
+:root .button,
+:root .btn,
+:root .submit-row input[type="submit"],
+:root .submit-row input[type="button"] {
+    background: var(--admin-accent) !important;
+    color: #0b1220 !important;
+    border-color: transparent !important;
+}
+
+/* CKEditor: readable toolbar + editor */
+:root .cke,
+:root .cke * {
+    color: #111827 !important;
+}
+
+:root .cke,
+:root .cke_top,
+:root .cke_bottom,
+:root .cke_toolbar,
+:root .cke_toolgroup,
+:root .cke_toolbar_group,
+:root .cke_combo,
+:root .cke_combo_button,
+:root .cke_button,
+:root .cke_path {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+
+:root .cke_contents,
+:root .cke_wysiwyg_frame,
+:root .cke_wysiwyg_div {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+/* =========================================================
+   ADMIN THEME V2 (Premium, ultra readable)
+   ========================================================= */
+
+:root {
+    --adm-bg: #f4f6fb;
+    --adm-surface: #ffffff;
+    --adm-surface-2: #f8fafc;
+    --adm-border: #e2e8f0;
+    --adm-text: #0f172a;
+    --adm-muted: #475569;
+    --adm-accent: #1d4ed8;
+    --adm-accent-2: #2563eb;
+    --adm-success: #16a34a;
+    --adm-danger: #dc2626;
+    --adm-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* Base */
+:root body,
+:root .unfold-body,
+:root #container,
+:root .unfold-content,
+:root #content,
+:root .content {
+    background: var(--adm-bg) !important;
+    color: var(--adm-text) !important;
+}
+
+/* Cards and panels */
+:root .module,
+:root .card,
+:root .dashboard-module,
+:root .unfold-card,
+:root .unfold-box,
+:root .result_list,
+:root .changelist,
+:root .changelist table {
+    background: var(--adm-surface) !important;
+    color: var(--adm-text) !important;
+    border-color: var(--adm-border) !important;
+    box-shadow: var(--adm-shadow) !important;
+}
+
+/* Tables */
+:root .result_list tr:nth-child(even),
+:root .changelist tr:nth-child(even) {
+    background: var(--adm-surface-2) !important;
+}
+
+:root .result_list th,
+:root .changelist th {
+    background: #eef2ff !important;
+    color: var(--adm-text) !important;
+    border-color: var(--adm-border) !important;
+}
+
+/* Headings and labels */
+:root h1,
+:root h2,
+:root h3,
+:root h4,
+:root .module h2,
+:root .card h2,
+:root .breadcrumbs {
+    color: var(--adm-text) !important;
+    letter-spacing: -0.2px !important;
+}
+
+:root .field-label,
+:root .column,
+:root .col,
+:root .help,
+:root .quiet,
+:root .text-muted {
+    color: var(--adm-muted) !important;
+}
+
+/* Links */
+:root a,
+:root .breadcrumbs a {
+    color: var(--adm-accent) !important;
+}
+
+:root a:hover {
+    color: var(--adm-accent-2) !important;
+}
+
+/* Inputs */
+:root input,
+:root select,
+:root textarea,
+:root .vTextField,
+:root .vLargeTextField,
+:root .form-row input,
+:root .form-row select,
+:root .form-row textarea {
+    background: #ffffff !important;
+    color: var(--adm-text) !important;
+    border-color: var(--adm-border) !important;
+    border-radius: 10px !important;
+}
+
+/* Buttons */
+:root .button,
+:root .btn,
+:root .submit-row input[type="submit"],
+:root .submit-row input[type="button"] {
+    background: var(--adm-accent) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+    border-radius: 999px !important;
+    padding: 0.55rem 1.1rem !important;
+    font-weight: 600 !important;
+}
+
+/* Status badges */
+:root .success,
+:root .status-ok,
+:root .action-success {
+    color: var(--adm-success) !important;
+}
+
+:root .error,
+:root .status-error,
+:root .action-error {
+    color: var(--adm-danger) !important;
+}
+
+/* Make dashboard app/model labels white */
+:root .app-list,
+:root .app-list .app-label,
+:root .app-list .model,
+:root .app-list .model a,
+:root .dashboard-module .module-title,
+:root .dashboard-module .module-title a,
+:root .dashboard-module .module-content,
+:root .app-models,
+:root .app-models a {
+    color: #ffffff !important;
+}
+
+/* Recent actions block */
+:root #recent-actions-module,
+:root #recent-actions-module h2,
+:root #recent-actions-module a,
+:root #recent-actions-module .actionlist,
+:root #recent-actions-module .actionlist li,
+:root #recent-actions-module .actionlist .mini,
+:root #recent-actions-module .actionlist .actionlist__item,
+:root #recent-actions-module .actionlist .actionlist__item a {
+    color: #ffffff !important;
+}
+
+/* App section headers (e.g., Core (Utilitaires)) */
+:root .app-list .app-label,
+:root .app-label,
+:root .app-list h2,
+:root .app-list h3 {
+    color: #ffffff !important;
+}
+
+/* Dashboard list items: improve readability */
+:root .app-list .model,
+:root .app-list .model a,
+:root .app-list .model .addlink,
+:root .app-list .model .changelink,
+:root .app-list .model .deletelink,
+:root .app-list .model .viewlink {
+    color: #ffffff !important;
+}
+
+:root .app-list .model {
+    background: #1f2937 !important;
+    border: 1px solid #374151 !important;
+}
+
+:root .app-list .model + .model {
+    border-top-color: #334155 !important;
+}
+
+:root .app-list .model .addlink::after,
+:root .app-list .model .addlink::before,
+:root .app-list .model .addlink,
+:root .app-list .model .addlink svg,
+:root .app-list .model .addlink i {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+/* Force model row text visibility */
+:root .app-list .model th,
+:root .app-list .model td,
+:root .app-list .model .model-name,
+:root .app-list .model .model-name a,
+:root .app-list .model .model-name span,
+:root .app-list .model .model-name strong,
+:root .app-list .model .model-name em,
+:root .app-list .model .object-name,
+:root .app-list .model .object-name a {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Ensure all model row text is white */
+:root .app-list .model *,
+:root .app-list .model th *,
+:root .app-list .model td * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Admin footer styling (match dashboard look) */
+:root #footer,
+:root footer,
+:root .unfold-footer,
+:root .footer {
+    background: #111827 !important;
+    color: #ffffff !important;
+    border-top: 1px solid #1f2937 !important;
+}
+
+:root #footer a,
+:root footer a,
+:root .unfold-footer a,
+:root .footer a {
+    color: #ffffff !important;
+}
+
+/* White input zones must have black text */
+:root input,
+:root select,
+:root textarea,
+:root .vTextField,
+:root .vLargeTextField,
+:root .selector-filter input,
+:root .selector-available select,
+:root .selector-chosen select,
+:root .selector select {
+    color: #111111 !important;
+}
+
+/* Force dual-list selector boxes to be white with black text */
+:root .selector,
+:root .selector-available,
+:root .selector-chosen,
+:root .selector .selector-available,
+:root .selector .selector-chosen,
+:root .selector .selector-available select,
+:root .selector .selector-chosen select,
+:root .selector select,
+:root .selector option {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+
+:root .selector-filter,
+:root .selector-filter input {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+
+/* Django admin select filter widgets */
+:root select.selectfilter,
+:root select.selectfilterstacked,
+:root .filtered select,
+:root .filtered option {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+
+/* Select2 (if used in filters) */
+:root .select2-container .select2-selection,
+:root .select2-container .select2-dropdown,
+:root .select2-container .select2-results__option {
+    background: #ffffff !important;
+    color: #111111 !important;
+}
+
+/* White buttons in auth user/group selectors */
+:root .selector-chooseall,
+:root .selector-clearall,
+:root .selector-choose,
+:root .selector-clear,
+:root .selector-add,
+:root .selector-remove,
+:root .selector .selector-chooseall,
+:root .selector .selector-clearall {
+    background: #ffffff !important;
+    color: #111111 !important;
+    border-color: #cbd5f5 !important;
+}
+
+/* Admin toggle (switch) highlight */
+.unfold-body .switch, .unfold-body .form-switch { 
+    --switch-on: #0A18FF; 
+    --switch-off: #9aa3b2; 
+}
+.unfold-body .switch input:checked + .switch__slider,
+.unfold-body .form-switch input:checked + .switch__slider {
+    background: var(--switch-on);
+    box-shadow: 0 0 0 2px rgba(10,24,255,0.25);
+}
+.unfold-body .switch input + .switch__slider,
+.unfold-body .form-switch input + .switch__slider {
+    background: var(--switch-off);
+}
+.unfold-body .switch__slider::before,
+.unfold-body .form-switch .switch__slider::before {
+    background: #ffffff;
+}
