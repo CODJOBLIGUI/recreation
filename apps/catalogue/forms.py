@@ -93,6 +93,24 @@ class NewsletterForm(forms.ModelForm):
 class SoumissionManuscritForm(forms.ModelForm):
     """Formulaire de soumission de manuscrit."""
 
+    autre_nationalite = forms.CharField(
+        required=False,
+        label="Autre nationalité",
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Précisez votre nationalité"}
+        ),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "nationalite" in self.fields:
+            self.fields["nationalite"].widget.attrs.update(
+                {
+                    "list": "nationalites-list",
+                    "autocomplete": "off",
+                }
+            )
+
     class Meta:
         model = SoumissionManuscrit
         fields = [
@@ -146,6 +164,18 @@ class SoumissionManuscritForm(forms.ModelForm):
             'photo_auteur': 'Photo HD de l’auteur sans monde autour',
             'carte_identite': 'Carte d’identité en cours de validité',
         }
+
+    def clean(self):
+        cleaned = super().clean()
+        nationalite = (cleaned.get("nationalite") or "").strip()
+        autre_nationalite = (cleaned.get("autre_nationalite") or "").strip()
+
+        if not nationalite or nationalite.lower().startswith("autre"):
+            if autre_nationalite:
+                cleaned["nationalite"] = autre_nationalite
+            else:
+                self.add_error("autre_nationalite", "Veuillez préciser votre nationalité.")
+        return cleaned
 
 
 class AudioConversionForm(forms.ModelForm):

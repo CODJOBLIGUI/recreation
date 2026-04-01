@@ -620,6 +620,9 @@ class SoumissionManuscritView(FormView):
         context = super().get_context_data(**kwargs)
         if context.get("site_content") and context["site_content"].soumission_meta_keywords:
             context["page_keywords"] = context["site_content"].soumission_meta_keywords
+        context["nationalites_list"] = list(
+            Nationalite.objects.all().order_by("nom").values_list("nom", flat=True)
+        )
         return context
 
     def form_valid(self, form):

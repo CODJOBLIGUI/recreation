@@ -56,7 +56,19 @@
             <div class="form-group">
                 <label for="id_nationalite">{{ form.nationalite.label }} *</label>
                 {{ form.nationalite }}
+                <datalist id="nationalites-list">
+                    {% for nat in nationalites_list %}
+                    <option value="{{ nat }}"></option>
+                    {% endfor %}
+                    <option value="Autre (à préciser)"></option>
+                </datalist>
                 {% if form.nationalite.errors %}<span class="form-error">{{ form.nationalite.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group" id="other-nationalite-field" style="display: none;">
+                <label for="id_autre_nationalite">{{ form.autre_nationalite.label }}</label>
+                {{ form.autre_nationalite }}
+                {% if form.autre_nationalite.errors %}<span class="form-error">{{ form.autre_nationalite.errors.0 }}</span>{% endif %}
             </div>
 
             <div class="form-group">
@@ -123,5 +135,27 @@
         </form>
     </div>
 </section>
+
+<script>
+    (function () {
+        const nationaliteInput = document.getElementById("id_nationalite");
+        const otherField = document.getElementById("other-nationalite-field");
+        const otherInput = document.getElementById("id_autre_nationalite");
+
+        if (!nationaliteInput || !otherField) return;
+
+        function toggleOtherField() {
+            const value = (nationaliteInput.value || "").trim().toLowerCase();
+            const isOther = value.startsWith("autre");
+            otherField.style.display = isOther ? "block" : "none";
+            if (!isOther && otherInput) {
+                otherInput.value = "";
+            }
+        }
+
+        nationaliteInput.addEventListener("input", toggleOtherField);
+        toggleOtherField();
+    })();
+</script>
 
 {% endblock %}

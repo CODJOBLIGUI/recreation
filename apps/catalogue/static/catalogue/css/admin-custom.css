@@ -783,6 +783,28 @@ h1, h2, h3 {
 :root .ck-content * {
     color: #111827 !important;
 }
+:root .ck-content a,
+:root .ck-editor__editable_inline a {
+    color: #1f4acc !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+}
+
+/* Strong guarantee for link color in CKEditor */
+:root .ck-content a,
+:root .ck-editor__editable_inline a,
+:root .ck-content a:visited,
+:root .ck-editor__editable_inline a:visited {
+    color: #1f4acc !important;
+    text-decoration: none !important;
+}
+
+:root .ck-content a *,
+:root .ck-editor__editable_inline a *,
+:root .ck-content a:visited *,
+:root .ck-editor__editable_inline a:visited * {
+    color: #1f4acc !important;
+}
 :root .ck-content {
     background: #ffffff !important;
 }

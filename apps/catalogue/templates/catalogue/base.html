@@ -423,6 +423,24 @@
             });
         })();
     </script>
+    <script>
+        (function () {
+            const animated = document.querySelectorAll('.is-animate-fade, .is-animate-slide-up');
+            if (!animated.length || !('IntersectionObserver' in window)) {
+                animated.forEach((el) => el.classList.add('is-animated'));
+                return;
+            }
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-animated');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            animated.forEach((el) => observer.observe(el));
+        })();
+    </script>
     
     <!-- Scripts supplémentaires spécifiques à chaque page -->
     {% block extra_js %}{% endblock %}
