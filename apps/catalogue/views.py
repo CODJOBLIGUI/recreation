@@ -839,6 +839,19 @@ class ActualitesView(ListView):
         return context
 
 
+class CollectionsView(TemplateView):
+    """Vue liste des collections."""
+
+    template_name = "catalogue/collections.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        collections = Collection.objects.filter(est_active=True).order_by("ordre_affichage", "nom")
+        context["collections"] = collections
+        context["page_title"] = "Collections - Editions Récréation"
+        return context
+
+
 class ActualiteDetailView(DetailView):
     """Vue detail actualite."""
 
@@ -1247,17 +1260,34 @@ class AudioConversionView(FormView):
             if not demande.paiement_requis:
                 try:
                     _generate_audio(demande.id, normalized_text, demande.langue, demande.voix)
-                    demande.statut = "free_generated"
-                    demande.save(update_fields=["statut", "updated_at"])
                 except Exception:
                     demande.statut = "error"
                     demande.save(update_fields=["statut", "updated_at"])
                     self.request.session["audio_request_id"] = demande.id
+                    messages.error(
+                        self.request,
+                        "La génération de l’audio a échoué. Veuillez réessayer.",
+                    )
                     return redirect(self.success_url)
+
+                demande.refresh_from_db()
+                if demande.audio:
+                    demande.statut = "free_generated"
+                    demande.save(update_fields=["statut", "updated_at"])
+                    messages.success(
+                        self.request,
+                        "Votre audio est prêt. Vous pouvez l'écouter en cliquant sur play. Vous pouvez aussi le télécharger gratuitement.",
+                    )
+                else:
+                    demande.statut = "error"
+                    demande.save(update_fields=["statut", "updated_at"])
+                    messages.error(
+                        self.request,
+                        "La génération de l’audio n’a pas abouti. Veuillez réessayer.",
+                    )
 
         self.request.session["audio_request_id"] = demande.id
 
-        messages.success(self.request, "Votre audio est prêt. Vous pouvez l'écouter en cliquant sur play. Vous pouvez aussi le télécharger gratuitement.")
         return redirect(self.success_url)
 
 

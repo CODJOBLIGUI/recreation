@@ -367,7 +367,7 @@ class CollectionAdmin(ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
 
     fieldsets = (
-        ("Informations", {"fields": ("nom", "slug", "image")}),
+        ("Informations", {"fields": ("nom", "slug", "logo", "image")}),
         ("Description", {"fields": ("description",)}),
         ("Affichage", {"fields": ("ordre_affichage", "est_active")}),
         ("SEO", {"fields": ("meta_title", "meta_description", "meta_keywords"), "classes": ("collapse",)}),

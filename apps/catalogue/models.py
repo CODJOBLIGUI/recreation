@@ -216,6 +216,12 @@ class Collection(TimeStampedModel, SEOModel):
     nom = models.CharField(max_length=150, verbose_name="Nom")
     slug = models.SlugField(max_length=200, unique=True, blank=True, verbose_name="Slug")
     description = RichTextField(blank=True, verbose_name="Description")
+    logo = models.ImageField(
+        upload_to="collections/logos/%Y/%m/",
+        blank=True,
+        null=True,
+        verbose_name="Logo",
+    )
     image = models.ImageField(upload_to="collections/%Y/%m/", blank=True, null=True, verbose_name="Image")
     ordre_affichage = models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")
     est_active = models.BooleanField(default=True, verbose_name="Est active")
