@@ -1,5 +1,6 @@
 ﻿{% extends 'catalogue/base.html' %}
 {% load static %}
+{% load text_extras %}
 
 {% block content %}
 
@@ -129,10 +130,12 @@
                     {% endif %}
                 </div>
                 <div class="author-card__info team-member__info">
-                    <h3 class="author-card__name team-member__name">{{ membre.nom_complet }}</h3>
-                    <p class="author-card__specialty team-member__role">{{ membre.poste }}</p>
+                    <h3 class="author-card__name team-member__name">{{ membre.nom_complet|unescape|fix_mojibake }}</h3>
+                    <p class="author-card__specialty team-member__role">{{ membre.poste|unescape|fix_mojibake }}</p>
                     {% if membre.biographie %}
-                    <p class="author-card__bio team-member__bio">{{ membre.biographie|truncatewords:30 }}</p>
+                    <p class="author-card__bio team-member__bio">{{ membre.biographie|striptags|unescape|fix_mojibake|truncatewords:30 }}</p>
+                    {% elif membre.biographie_longue %}
+                    <p class="author-card__bio team-member__bio">{{ membre.biographie_longue|striptags|unescape|fix_mojibake|truncatewords:30 }}</p>
                     {% endif %}
                     <a href="{% url 'catalogue:membre-detail' membre.pk %}" class="btn btn--secondary">Découvrir</a>
                 </div>

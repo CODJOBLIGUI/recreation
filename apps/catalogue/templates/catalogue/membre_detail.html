@@ -1,5 +1,6 @@
 {% extends 'catalogue/base.html' %}
 {% load static %}
+{% load text_extras %}
 
 {% block content %}
 
@@ -23,18 +24,18 @@
                 {% endif %}
             </div>
             <div class="auteur-detail__info">
-                <h1>{{ membre.nom_complet }}</h1>
+                <h1>{{ membre.nom_complet|unescape|fix_mojibake }}</h1>
                 {% if membre.poste %}
-                <p class="auteur-detail__specialty">{{ membre.poste }}</p>
+                <p class="auteur-detail__specialty">{{ membre.poste|unescape|fix_mojibake }}</p>
                 {% endif %}
 
                 <div class="auteur-detail__bio">
                     <h2>Biographie</h2>
                     <div class="auteur-detail__bio-text">
                         {% if membre.biographie_longue %}
-                            {{ membre.biographie_longue|safe }}
+                            {{ membre.biographie_longue|unescape|fix_mojibake|safe }}
                         {% elif membre.biographie %}
-                            {{ membre.biographie|safe }}
+                            {{ membre.biographie|unescape|fix_mojibake|safe }}
                         {% endif %}
                     </div>
                 </div>
