@@ -1313,3 +1313,22 @@ font-size: 2rem;
     white-space: nowrap !important;
   }
 }
+
+/* MOBILE: newsletter line fixes */
+@media (max-width: 768px) {
+  .header__newsletter-form {
+    gap: 0.4rem !important;
+    padding: 0.25rem 0.4rem !important;
+  }
+
+  .header__newsletter-form input {
+    font-size: 0.85rem !important;
+    padding: 0.35rem 0.5rem !important;
+  }
+
+  .header__newsletter-form button {
+    font-size: 0.8rem !important;
+    padding: 0.32rem 0.6rem !important;
+    min-width: 86px !important;
+  }
+}
