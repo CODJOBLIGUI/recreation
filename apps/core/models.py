@@ -704,6 +704,127 @@ class SiteContent(TimeStampedModel):
         default="Envoyer le message",
     )
 
+    newsletter_message_success = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Newsletter - succès",
+        default="Merci ! Vous êtes inscrit à notre newsletter.",
+    )
+    newsletter_message_reactivated = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Newsletter - réactivation",
+        default="Votre inscription a été réactivée.",
+    )
+    newsletter_message_already = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Newsletter - déjà inscrit",
+        default="Vous êtes déjà inscrit.",
+    )
+    newsletter_message_error = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Newsletter - erreur",
+        default="Une erreur s'est produite. Veuillez vérifier votre email.",
+    )
+    newsletter_message_invalid = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Newsletter - email invalide",
+        default="Veuillez saisir une adresse email valide.",
+    )
+    contact_message_success = models.CharField(
+        max_length=240,
+        blank=True,
+        verbose_name="Contact - succès",
+        default="Votre message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.",
+    )
+    contact_message_error = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Contact - erreur",
+        default="Une erreur s'est produite. Veuillez vérifier les informations saisies.",
+    )
+    contact_message_missing = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Contact - champs manquants",
+        default="Veuillez remplir tous les champs obligatoires.",
+    )
+    soumission_message_success = models.CharField(
+        max_length=240,
+        blank=True,
+        verbose_name="Soumission - succès",
+        default="Merci ! Votre manuscrit a été soumis avec succès. Nous vous contacterons rapidement.",
+    )
+    soumission_message_error = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Soumission - erreur",
+        default="Une erreur s'est produite. Veuillez vérifier les informations saisies.",
+    )
+    committee_signup_success = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Comité - demande envoyée",
+        default="Votre demande a été envoyée. Un administrateur doit l’approuver.",
+    )
+    committee_review_saved = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="Comité - évaluation enregistrée",
+        default="Évaluation enregistrée.",
+    )
+    audio_message_success = models.CharField(
+        max_length=260,
+        blank=True,
+        verbose_name="Audio - prêt",
+        default="Votre audio est prêt. Vous pouvez l'écouter en cliquant sur play. Vous pouvez aussi le télécharger gratuitement.",
+    )
+    audio_message_failed = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Audio - échec",
+        default="La génération de l’audio a échoué. Veuillez réessayer.",
+    )
+    audio_message_not_ready = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Audio - non abouti",
+        default="La génération de l’audio n’a pas abouti. Veuillez réessayer.",
+    )
+    audio_payment_pending_message = models.CharField(
+        max_length=240,
+        blank=True,
+        verbose_name="Audio - paiement à vérifier",
+        default="Merci. Nous allons vérifier votre paiement et vous contacter très rapidement par e-mail.",
+    )
+    account_signup_success = models.CharField(
+        max_length=240,
+        blank=True,
+        verbose_name="Compte - création",
+        default="Compte créé. Un email de confirmation vous a été envoyé. Activez votre compte pour continuer.",
+    )
+    account_activation_success = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Compte - activation ok",
+        default="Votre compte est activé. Vous pouvez utiliser le service.",
+    )
+    account_activation_invalid = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Compte - activation invalide",
+        default="Lien d’activation invalide ou expiré.",
+    )
+    account_login_invalid = models.CharField(
+        max_length=120,
+        blank=True,
+        verbose_name="Compte - identifiants invalides",
+        default="Identifiants invalides.",
+    )
+
     footer_link_catalogue = models.CharField(max_length=80, blank=True, verbose_name="Lien catalogue", default="Catalogue")
     footer_link_livres_numeriques = models.CharField(max_length=120, blank=True, verbose_name="Lien livres numeriques", default="Livres numériques")
     footer_link_livres_audio = models.CharField(max_length=120, blank=True, verbose_name="Lien livres audio", default="Livres audio")

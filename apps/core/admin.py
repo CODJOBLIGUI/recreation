@@ -174,6 +174,33 @@ class SiteContentAdmin(admin.ModelAdmin):
             },
         ),
         (
+            "Notifications",
+            {
+                "fields": (
+                    "newsletter_message_success",
+                    "newsletter_message_reactivated",
+                    "newsletter_message_already",
+                    "newsletter_message_error",
+                    "newsletter_message_invalid",
+                    "contact_message_success",
+                    "contact_message_error",
+                    "contact_message_missing",
+                    "soumission_message_success",
+                    "soumission_message_error",
+                    "committee_signup_success",
+                    "committee_review_saved",
+                    "audio_message_success",
+                    "audio_message_failed",
+                    "audio_message_not_ready",
+                    "audio_payment_pending_message",
+                    "account_signup_success",
+                    "account_activation_success",
+                    "account_activation_invalid",
+                    "account_login_invalid",
+                )
+            },
+        ),
+        (
             "Comit? de lecture",
             {
                 "fields": (

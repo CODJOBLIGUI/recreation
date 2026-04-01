@@ -52,7 +52,7 @@ from .models import (
     ManuscriptReview,
     CommitteeApplication,
 )
-from apps.core.models import SiteAppearance
+from apps.core.models import SiteAppearance, SiteContent
 
 
 # -------------------------------------------------------------------------------
@@ -74,6 +74,15 @@ def _text_contains(normalized_query, *values):
         if normalized_query in _normalize_text(value):
             return True
     return False
+
+
+def _get_site_content():
+    return SiteContent.objects.first()
+
+
+def _content_value(content, field_name, default):
+    value = getattr(content, field_name, None) if content else None
+    return value or default
 
 
 # -------------------------------------------------------------------------------
@@ -130,6 +139,7 @@ class IndexView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = NewsletterForm(request.POST)
+        content = _get_site_content()
         if form.is_valid():
             email = form.cleaned_data["email"]
             inscription, created = InscriptionNewsletter.objects.get_or_create(
@@ -137,16 +147,44 @@ class IndexView(TemplateView):
                 defaults={"est_actif": True},
             )
             if created:
-                messages.success(request, "Merci ! Vous \u00eates inscrit \u00e0 notre newsletter.")
+                messages.success(
+                    request,
+                    _content_value(
+                        content,
+                        "newsletter_message_success",
+                        "Merci ! Vous \u00eates inscrit \u00e0 notre newsletter.",
+                    ),
+                )
             else:
                 if not inscription.est_actif:
                     inscription.est_actif = True
                     inscription.save(update_fields=["est_actif", "updated_at"])
-                    messages.success(request, "Votre inscription a \u00e9t\u00e9 r\u00e9activ\u00e9e.")
+                    messages.success(
+                        request,
+                        _content_value(
+                            content,
+                            "newsletter_message_reactivated",
+                            "Votre inscription a \u00e9t\u00e9 r\u00e9activ\u00e9e.",
+                        ),
+                    )
                 else:
-                    messages.info(request, "Vous \u00eates d\u00e9j\u00e0 inscrit.")
+                    messages.info(
+                        request,
+                        _content_value(
+                            content,
+                            "newsletter_message_already",
+                            "Vous \u00eates d\u00e9j\u00e0 inscrit.",
+                        ),
+                    )
         else:
-            messages.error(request, "Une erreur s'est produite. Veuillez v\u00e9rifier votre email.")
+            messages.error(
+                request,
+                _content_value(
+                    content,
+                    "newsletter_message_error",
+                    "Une erreur s'est produite. Veuillez v\u00e9rifier votre email.",
+                ),
+            )
 
         return redirect("catalogue:index")
 
@@ -433,14 +471,22 @@ class ContactView(FormView):
         form.save()
         messages.success(
             self.request,
-            "Votre message a \u00e9t\u00e9 envoy\u00e9 avec succ\u00e8s ! Nous vous r\u00e9pondrons dans les plus brefs d\u00e9lais.",
+            _content_value(
+                _get_site_content(),
+                "contact_message_success",
+                "Votre message a \u00e9t\u00e9 envoy\u00e9 avec succ\u00e8s ! Nous vous r\u00e9pondrons dans les plus brefs d\u00e9lais.",
+            ),
         )
         return super().form_valid(form)
 
     def form_invalid(self, form):
         messages.error(
             self.request,
-            "Une erreur s'est produite. Veuillez v\u00e9rifier les informations saisies.",
+            _content_value(
+                _get_site_content(),
+                "contact_message_error",
+                "Une erreur s'est produite. Veuillez v\u00e9rifier les informations saisies.",
+            ),
         )
         return super().form_invalid(form)
 
@@ -586,13 +632,21 @@ class SoumissionManuscritView(FormView):
 
         messages.success(
             self.request,
-            "Merci ! Votre manuscrit a ?t? soumis avec succ?s. Nous vous contacterons rapidement.",
+            _content_value(
+                _get_site_content(),
+                "soumission_message_success",
+                "Merci ! Votre manuscrit a ?t? soumis avec succ?s. Nous vous contacterons rapidement.",
+            ),
         )
         return super().form_valid(form)
     def form_invalid(self, form):
         messages.error(
             self.request,
-            "Une erreur s'est produite. Veuillez v\u00e9rifier les informations saisies.",
+            _content_value(
+                _get_site_content(),
+                "soumission_message_error",
+                "Une erreur s'est produite. Veuillez v\u00e9rifier les informations saisies.",
+            ),
         )
         return super().form_invalid(form)
 
@@ -1064,7 +1118,14 @@ def committee_signup(request):
             confidentiality_ack=signup_form.cleaned_data["confidentiality_ack"],
             unpaid_ack=signup_form.cleaned_data["unpaid_ack"],
         )
-        messages.success(request, "Votre demande a été envoyée. Un administrateur doit l’approuver.")
+        messages.success(
+            request,
+            _content_value(
+                _get_site_content(),
+                "committee_signup_success",
+                "Votre demande a été envoyée. Un administrateur doit l’approuver.",
+            ),
+        )
         return redirect("catalogue:committee-portal")
 
     return render(
@@ -1088,7 +1149,14 @@ def committee_submission_detail(request, pk):
     form = ManuscriptReviewForm(request.POST or None, instance=review)
     if request.method == "POST" and form.is_valid():
         form.save()
-        messages.success(request, "Évaluation enregistrée.")
+        messages.success(
+            request,
+            _content_value(
+                _get_site_content(),
+                "committee_review_saved",
+                "\u00c9valuation enregistr\u00e9e.",
+            ),
+        )
         return redirect("catalogue:committee-submission", pk=submission.pk)
 
     return render(
@@ -1266,7 +1334,11 @@ class AudioConversionView(FormView):
                     self.request.session["audio_request_id"] = demande.id
                     messages.error(
                         self.request,
-                        "La génération de l’audio a échoué. Veuillez réessayer.",
+                        _content_value(
+                            _get_site_content(),
+                            "audio_message_failed",
+                            "La g\u00e9n\u00e9ration de l\u2019audio a \u00e9chou\u00e9. Veuillez r\u00e9essayer.",
+                        ),
                     )
                     return redirect(self.success_url)
 
@@ -1276,14 +1348,22 @@ class AudioConversionView(FormView):
                     demande.save(update_fields=["statut", "updated_at"])
                     messages.success(
                         self.request,
-                        "Votre audio est prêt. Vous pouvez l'écouter en cliquant sur play. Vous pouvez aussi le télécharger gratuitement.",
+                        _content_value(
+                            _get_site_content(),
+                            "audio_message_success",
+                            "Votre audio est pr\u00eat. Vous pouvez l'\u00e9couter en cliquant sur play. Vous pouvez aussi le t\u00e9l\u00e9charger gratuitement.",
+                        ),
                     )
                 else:
                     demande.statut = "error"
                     demande.save(update_fields=["statut", "updated_at"])
                     messages.error(
                         self.request,
-                        "La génération de l’audio n’a pas abouti. Veuillez réessayer.",
+                        _content_value(
+                            _get_site_content(),
+                            "audio_message_not_ready",
+                            "La g\u00e9n\u00e9ration de l\u2019audio n\u2019a pas abouti. Veuillez r\u00e9essayer.",
+                        ),
                     )
 
         self.request.session["audio_request_id"] = demande.id
@@ -1398,7 +1478,11 @@ def conversion_payment_already_paid(request, demande_id):
             pass
     messages.info(
         request,
-        "Merci. Nous allons vérifier votre paiement et vous contacter très rapidement par e-mail.",
+        _content_value(
+            _get_site_content(),
+            "audio_payment_pending_message",
+            "Merci. Nous allons v\u00e9rifier votre paiement et vous contacter tr\u00e8s rapidement par e-mail.",
+        ),
     )
     return redirect("catalogue:conversion-audio")
 
@@ -1506,7 +1590,11 @@ class SignupView(FormView):
 
         messages.success(
             self.request,
-            "Compte créé. Un email de confirmation vous a été envoyé. Activez votre compte pour continuer.",
+            _content_value(
+                _get_site_content(),
+                "account_signup_success",
+                "Compte cr\u00e9\u00e9. Un email de confirmation vous a \u00e9t\u00e9 envoy\u00e9. Activez votre compte pour continuer.",
+            ),
         )
         return super().form_valid(form)
 
@@ -1525,9 +1613,23 @@ def activate_account(request, uidb64, token):
         user.is_active = True
         user.save(update_fields=["is_active"])
         login(request, user)
-        messages.success(request, "Votre compte est activé. Vous pouvez utiliser le service.")
+        messages.success(
+            request,
+            _content_value(
+                _get_site_content(),
+                "account_activation_success",
+                "Votre compte est activ\u00e9. Vous pouvez utiliser le service.",
+            ),
+        )
         return redirect("catalogue:conversion-audio")
-    messages.error(request, "Lien d’activation invalide ou expiré.")
+    messages.error(
+        request,
+        _content_value(
+            _get_site_content(),
+            "account_activation_invalid",
+            "Lien d\u2019activation invalide ou expir\u00e9.",
+        ),
+    )
     return redirect("catalogue:login")
 
 
@@ -1551,7 +1653,14 @@ class LoginView(DjangoLoginView):
                 user = authenticate(self.request, username=user_obj.username, password=password)
 
         if user is None:
-            messages.error(self.request, "Identifiants invalides.")
+            messages.error(
+                self.request,
+                _content_value(
+                    _get_site_content(),
+                    "account_login_invalid",
+                    "Identifiants invalides.",
+                ),
+            )
             return self.form_invalid(form)
         login(self.request, user)
         return super(DjangoLoginView, self).form_valid(form)
@@ -1578,22 +1687,51 @@ def inscription_newsletter(request):
 
     if request.method == "POST":
         email = request.POST.get("email", "").strip()
+        content = _get_site_content()
         if email:
             inscription, created = InscriptionNewsletter.objects.get_or_create(
                 email=email,
                 defaults={"est_actif": True},
             )
             if created:
-                messages.success(request, "Merci ! Vous \u00eates inscrit \u00e0 notre newsletter.")
+                messages.success(
+                    request,
+                    _content_value(
+                        content,
+                        "newsletter_message_success",
+                        "Merci ! Vous \u00eates inscrit \u00e0 notre newsletter.",
+                    ),
+                )
             else:
                 if not inscription.est_actif:
                     inscription.est_actif = True
                     inscription.save()
-                    messages.success(request, "Votre inscription a \u00e9t\u00e9 r\u00e9activ\u00e9e.")
+                    messages.success(
+                        request,
+                        _content_value(
+                            content,
+                            "newsletter_message_reactivated",
+                            "Votre inscription a \u00e9t\u00e9 r\u00e9activ\u00e9e.",
+                        ),
+                    )
                 else:
-                    messages.info(request, "Vous \u00eates d\u00e9j\u00e0 inscrit.")
+                    messages.info(
+                        request,
+                        _content_value(
+                            content,
+                            "newsletter_message_already",
+                            "Vous \u00eates d\u00e9j\u00e0 inscrit.",
+                        ),
+                    )
         else:
-            messages.error(request, "Veuillez saisir une adresse email valide.")
+            messages.error(
+                request,
+                _content_value(
+                    content,
+                    "newsletter_message_invalid",
+                    "Veuillez saisir une adresse email valide.",
+                ),
+            )
 
     return redirect(request.META.get("HTTP_REFERER", "catalogue:index"))
 
@@ -1616,9 +1754,23 @@ def contact_submit(request):
                 sujet=sujet,
                 message=message_text,
             )
-            messages.success(request, "Votre message a \u00e9t\u00e9 envoy\u00e9 avec succ\u00e8s.")
+            messages.success(
+                request,
+                _content_value(
+                    _get_site_content(),
+                    "contact_message_success",
+                    "Votre message a \u00e9t\u00e9 envoy\u00e9 avec succ\u00e8s.",
+                ),
+            )
             return redirect("catalogue:contact")
-        messages.error(request, "Veuillez remplir tous les champs obligatoires.")
+        messages.error(
+            request,
+            _content_value(
+                _get_site_content(),
+                "contact_message_missing",
+                "Veuillez remplir tous les champs obligatoires.",
+            ),
+        )
 
     return redirect("catalogue:contact")
 
