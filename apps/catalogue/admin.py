@@ -116,6 +116,9 @@ class AuteurAdmin(ModelAdmin):
 
 @admin.register(Livre)
 class LivreAdmin(ModelAdmin):
+    formfield_overrides = {
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
+    }
     list_display = (
         "titre",
         "auteurs_affichage",

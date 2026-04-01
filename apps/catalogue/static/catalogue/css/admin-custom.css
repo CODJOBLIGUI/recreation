@@ -749,6 +749,36 @@ h1, h2, h3 {
     column-gap: 2rem;
 }
 
+/* Force CKEditor 5 to light theme inside dark admin */
+:root .ck.ck-editor {
+    background: #ffffff !important;
+}
+:root .ck.ck-toolbar,
+:root .ck.ck-toolbar * {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border-color: #e5e7eb !important;
+}
+:root .ck.ck-button,
+:root .ck.ck-button * {
+    color: #111827 !important;
+}
+:root .ck.ck-button:not(.ck-disabled):hover,
+:root .ck.ck-button:not(.ck-disabled):hover * {
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+}
+:root .ck.ck-dropdown__panel {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border-color: #e5e7eb !important;
+}
+:root .ck.ck-editor__editable_inline {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #e5e7eb !important;
+}
+
 /* =========================================================
    ADMIN THEME V2 (Premium, ultra readable)
    ========================================================= */
