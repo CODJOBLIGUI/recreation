@@ -254,13 +254,15 @@ class MembreAdmin(ModelAdmin):
     list_display = ("nom_complet", "poste", "nationalites_affichage", "ordre_affichage", "est_actif", "created_at")
     list_editable = ("ordre_affichage", "est_actif")
     list_filter = ("est_actif", "created_at")
-    search_fields = ("nom_complet", "poste", "biographie", "nationalites__nom", "nationalites__code_iso")
+    search_fields = ("nom_complet", "poste", "biographie", "biographie_longue", "nationalites__nom", "nationalites__code_iso")
     readonly_fields = ("created_at", "updated_at")
     filter_horizontal = ("nationalites",)
 
     fieldsets = (
         ("Informations", {"fields": ("nom_complet", "poste", "photo", "nationalites")}),
-        ("Biographie", {"fields": ("biographie", "email")}),
+        ("Biographie", {"fields": ("biographie", "biographie_longue")}),
+        ("Contact", {"fields": ("email", "telephone", "site_web")}),
+        ("Réseaux sociaux", {"fields": ("linkedin", "facebook", "x_twitter", "instagram", "tiktok", "youtube", "whatsapp")}),
         ("Affichage", {"fields": ("ordre_affichage", "est_actif")}),
         ("Dates", {"fields": ("created_at", "updated_at"), "classes": ("collapse",)}),
     )

@@ -1,0 +1,88 @@
+{% extends 'catalogue/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="auteur-detail section team-member-detail">
+    <div class="container">
+        <div class="auteur-detail__header">
+            <div class="auteur-detail__photo detail-media--rounded-box author-card__photo">
+                {% if membre.photo %}
+                <img class="detail-media--rounded" style="border-radius:18px;overflow:hidden;display:block;clip-path:inset(0 round 18px);" src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}">
+                {% endif %}
+                {% if membre.nationalites.all %}
+                <div class="author-card__flags" aria-label="Nationalités">
+                    {% for nat in membre.nationalites.all %}
+                    {% if nat.drapeau %}
+                    <div class="author-card__flag" title="{{ nat.nom }}">
+                        <img src="{{ nat.drapeau.url }}" alt="{{ nat.nom }}">
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="auteur-detail__info">
+                <h1>{{ membre.nom_complet }}</h1>
+                {% if membre.poste %}
+                <p class="auteur-detail__specialty">{{ membre.poste }}</p>
+                {% endif %}
+
+                <div class="auteur-detail__bio">
+                    <h2>Biographie</h2>
+                    <div class="auteur-detail__bio-text">
+                        {% if membre.biographie_longue %}
+                            {{ membre.biographie_longue|safe }}
+                        {% elif membre.biographie %}
+                            {{ membre.biographie|safe }}
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if membre.email or membre.telephone %}
+                <div class="team-member-detail__contacts">
+                    {% if membre.email %}
+                    <a href="mailto:{{ membre.email }}" class="team-member__email">
+                        {{ membre.email }}
+                    </a>
+                    {% endif %}
+                    {% if membre.telephone %}
+                    <a href="tel:{{ membre.telephone }}" class="team-member__phone">
+                        {{ membre.telephone }}
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="team-member-detail__socials">
+                    {% if membre.linkedin %}
+                    <a href="{{ membre.linkedin }}" aria-label="LinkedIn" class="header-social__icon"><i class="fab fa-linkedin"></i></a>
+                    {% endif %}
+                    {% if membre.facebook %}
+                    <a href="{{ membre.facebook }}" aria-label="Facebook" class="header-social__icon"><i class="fab fa-facebook-f"></i></a>
+                    {% endif %}
+                    {% if membre.x_twitter %}
+                    <a href="{{ membre.x_twitter }}" aria-label="X" class="header-social__icon"><i class="fab fa-x-twitter"></i></a>
+                    {% endif %}
+                    {% if membre.instagram %}
+                    <a href="{{ membre.instagram }}" aria-label="Instagram" class="header-social__icon"><i class="fab fa-instagram"></i></a>
+                    {% endif %}
+                    {% if membre.tiktok %}
+                    <a href="{{ membre.tiktok }}" aria-label="TikTok" class="header-social__icon"><i class="fab fa-tiktok"></i></a>
+                    {% endif %}
+                    {% if membre.youtube %}
+                    <a href="{{ membre.youtube }}" aria-label="YouTube" class="header-social__icon"><i class="fab fa-youtube"></i></a>
+                    {% endif %}
+                    {% if membre.whatsapp %}
+                    <a href="{{ membre.whatsapp }}" aria-label="WhatsApp" class="header-social__icon"><i class="fab fa-whatsapp"></i></a>
+                    {% endif %}
+                    {% if membre.site_web %}
+                    <a href="{{ membre.site_web }}" aria-label="Site web" class="header-social__icon"><i class="fas fa-globe"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

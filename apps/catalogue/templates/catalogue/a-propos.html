@@ -134,11 +134,7 @@
                     {% if membre.biographie %}
                     <p class="author-card__bio team-member__bio">{{ membre.biographie|truncatewords:30 }}</p>
                     {% endif %}
-                    {% if membre.email %}
-                    <a href="mailto:{{ membre.email }}" class="team-member__email">
-                        <i class="fas fa-envelope"></i> Contact
-                    </a>
-                    {% endif %}
+                    <a href="{% url 'catalogue:membre-detail' membre.pk %}" class="btn btn--secondary">Découvrir</a>
                 </div>
             </div>
             {% endfor %}

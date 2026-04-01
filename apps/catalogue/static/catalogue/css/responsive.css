@@ -1421,3 +1421,22 @@ font-size: 2rem;
     white-space: nowrap !important;
   }
 }
+
+/* MOBILE: committee portal layout fixes */
+@media (max-width: 768px) {
+  .committee-dashboard { display: block !important; }
+  .committee-sidebar { width: 100% !important; margin-bottom: 1rem !important; }
+  .committee-main { width: 100% !important; }
+  .committee-topbar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+  .committee-topbar__user {
+    width: 100% !important;
+    text-align: left !important;
+  }
+  .committee-topbar__note { text-align: left !important; }
+  .committee-topbar__logout { width: 100% !important; }
+  .committee-topbar__logout .btn { width: 100% !important; }
+}

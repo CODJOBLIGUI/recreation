@@ -435,6 +435,24 @@ class AuteurDetailView(DetailView):
         return context
 
 
+class MembreDetailView(DetailView):
+    """Vue detail membre de l'équipe."""
+
+    model = Membre
+    template_name = "catalogue/membre_detail.html"
+    context_object_name = "membre"
+    pk_url_kwarg = "pk"
+
+    def get_queryset(self):
+        return Membre.objects.filter(est_actif=True).prefetch_related("nationalites")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        membre = self.get_object()
+        context["page_title"] = f"{membre.nom_complet} - Editions Recr\u00e9ation"
+        return context
+
+
 # -------------------------------------------------------------------------------
 # CONTACT
 # -------------------------------------------------------------------------------

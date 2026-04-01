@@ -90,7 +90,7 @@
                     <h2>Équipe</h2>
                     <div class="search-results__grid">
                         {% for membre in membres %}
-                            <a class="search-card" href="{% url 'catalogue:a-propos' %}#equipe">
+                            <a class="search-card" href="{% url 'catalogue:membre-detail' membre.pk %}">
                                 <div class="search-card__media">
                                     {% if membre.photo %}
                                     <img src="{{ membre.photo.url }}" alt="{{ membre.nom_complet }}" loading="lazy">
@@ -104,6 +104,8 @@
                                     {% endif %}
                                     {% if membre.biographie %}
                                     <p class="search-card__snippet">{{ membre.biographie|striptags|unescape|fix_mojibake|truncatewords:16|highlight_query:query }}</p>
+                                    {% elif membre.biographie_longue %}
+                                    <p class="search-card__snippet">{{ membre.biographie_longue|striptags|unescape|fix_mojibake|truncatewords:16|highlight_query:query }}</p>
                                     {% endif %}
                                 </div>
                             </a>
