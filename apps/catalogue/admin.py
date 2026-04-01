@@ -54,6 +54,9 @@ class UserProfileInline(admin.StackedInline):
 
 @admin.register(ManuscriptReview)
 class ManuscriptReviewAdmin(ModelAdmin):
+    formfield_overrides = {
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
+    }
     list_display = ("soumission", "reviewer", "note", "decision", "created_at")
     list_filter = ("decision", "created_at")
     search_fields = ("soumission__titre_ouvrage", "reviewer__username", "reviewer__email")
@@ -528,6 +531,9 @@ class ActualiteAdmin(ModelAdmin):
 
 @admin.register(PrixLitteraire)
 class PrixLitteraireAdmin(ModelAdmin):
+    formfield_overrides = {
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
+    }
     list_display = ("titre", "annee", "auteur", "livre", "est_actif", "created_at")
     list_editable = ("est_actif",)
     list_filter = ("est_actif", "annee")
