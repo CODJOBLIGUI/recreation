@@ -138,6 +138,7 @@ CKEDITOR_5_CONFIGS = {
                 "|",
                 "bold",
                 "italic",
+                "alignment",
                 "link",
                 "bulletedList",
                 "numberedList",
@@ -174,6 +175,7 @@ CKEDITOR_5_CONFIGS = {
                 "subscript",
                 "superscript",
                 "highlight",
+                "alignment",
                 "|",
                 "codeBlock",
                 "sourceEditing",
@@ -244,6 +246,7 @@ CKEDITOR_5_CONFIGS = {
 
 # Uploads for CKEditor 5
 CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
+CKEDITOR_5_UPLOAD_PATH = "uploads/"
 
 # Email (configure via environment for production)
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
