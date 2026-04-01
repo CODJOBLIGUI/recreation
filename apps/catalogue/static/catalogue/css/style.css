@@ -3102,6 +3102,10 @@ html {
     border-radius: var(--radius-media) !important;
 }
 
+.livre-detail__image img {
+    border-radius: var(--radius-media) !important;
+}
+
 .team-member-detail .team-member__photo {
     max-height: 320px;
 }

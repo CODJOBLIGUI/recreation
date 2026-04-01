@@ -24,7 +24,7 @@
                 {% endif %}
             </div>
             <div class="auteur-detail__info">
-                <h1>{{ membre.nom_complet|unescape|fix_mojibake }}</h1>
+                <h1>{{ membre.nom_affichage|unescape|fix_mojibake }}</h1>
                 {% if membre.poste %}
                 <p class="auteur-detail__specialty">{{ membre.poste|unescape|fix_mojibake }}</p>
                 {% endif %}

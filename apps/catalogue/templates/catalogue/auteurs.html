@@ -45,7 +45,7 @@
                     {% endif %}
                 </div>
                 <div class="author-card__info">
-                    <h3 class="author-card__name">{{ auteur.nom }}</h3>
+                    <h3 class="author-card__name">{{ auteur.nom_affichage }}</h3>
                     <p class="author-card__bio">{{ auteur.biographie_texte|truncatewords:30 }}</p>
                     <a href="{% url 'catalogue:auteur-detail' auteur.slug %}" class="btn btn--secondary">{{ site_content.auteurs_card_cta_label|default:"Voir la bibliographie" }}</a>
                 </div>

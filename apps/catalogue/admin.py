@@ -91,7 +91,7 @@ class AuteurAdmin(ModelAdmin):
     filter_horizontal = ("nationalites",)
 
     fieldsets = (
-        ("Informations principales", {"fields": ("nom", "specialite", "photo", "nationalites")}),
+        ("Informations principales", {"fields": ("prefixe", "nom", "specialite", "photo", "nationalites")}),
         ("Biographie", {"fields": ("biographie",)}),
         ("SEO", {"fields": ("slug", "meta_title", "meta_description", "meta_keywords"), "classes": ("collapse",)}),
         ("Statistiques", {"fields": ("nombre_livres", "created_at", "updated_at"), "classes": ("collapse",)}),
@@ -259,7 +259,7 @@ class MembreAdmin(ModelAdmin):
     filter_horizontal = ("nationalites",)
 
     fieldsets = (
-        ("Informations", {"fields": ("nom_complet", "poste", "photo", "nationalites")}),
+        ("Informations", {"fields": ("prefixe", "nom_complet", "poste", "photo", "nationalites")}),
         ("Biographie", {"fields": ("biographie", "biographie_longue")}),
         ("Contact", {"fields": ("email", "telephone", "site_web")}),
         ("Réseaux sociaux", {"fields": ("linkedin", "facebook", "x_twitter", "instagram", "tiktok", "youtube", "whatsapp")}),

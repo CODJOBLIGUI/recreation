@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="search-card__body">
                                     <div class="search-card__type">Auteur</div>
-                                    <h3 class="search-card__title">{{ auteur.nom|unescape|fix_mojibake|highlight_query:query }}</h3>
+                                    <h3 class="search-card__title">{{ auteur.nom_affichage|unescape|fix_mojibake|highlight_query:query }}</h3>
                                     <p class="search-card__snippet">{{ auteur.biographie_texte|striptags|unescape|fix_mojibake|truncatewords:18|highlight_query:query }}</p>
                                 </div>
                             </a>
@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="search-card__body">
                                     <div class="search-card__type">Équipe</div>
-                                    <h3 class="search-card__title">{{ membre.nom_complet|unescape|fix_mojibake|highlight_query:query }}</h3>
+                                    <h3 class="search-card__title">{{ membre.nom_affichage|unescape|fix_mojibake|highlight_query:query }}</h3>
                                     {% if membre.poste %}
                                     <p class="search-card__meta">{{ membre.poste|unescape|fix_mojibake|highlight_query:query }}</p>
                                     {% endif %}

@@ -252,6 +252,7 @@ class Collection(TimeStampedModel, SEOModel):
 class Auteur(TimeStampedModel, SEOModel):
     """Modèle Auteur."""
     
+    prefixe = models.CharField(max_length=30, blank=True, verbose_name="Préfixe (Dr, Pr, Prof...)")
     nom = models.CharField(max_length=200, verbose_name="Nom complet", db_index=True)
     specialite = models.CharField(max_length=100, verbose_name="Spécialité")
     biographie = RichTextField(verbose_name="Biographie")
@@ -285,7 +286,12 @@ class Auteur(TimeStampedModel, SEOModel):
         super().save(*args, **kwargs)
     
     def __str__(self):
-        return self.nom
+        return self.nom_affichage
+
+    @property
+    def nom_affichage(self):
+        prefixe = (self.prefixe or "").strip()
+        return f"{prefixe} {self.nom}".strip()
     
     def get_absolute_url(self):
         return reverse('catalogue:auteur-detail', kwargs={'slug': self.slug})
@@ -504,6 +510,7 @@ class Livre(TimeStampedModel, SEOModel):
 class Membre(TimeStampedModel):
     """Modèle Membre de l'équipe."""
     
+    prefixe = models.CharField(max_length=30, blank=True, verbose_name="Préfixe (Dr, Pr, Prof...)")
     nom_complet = models.CharField(max_length=200, verbose_name="Nom complet")
     poste = models.CharField(max_length=150, verbose_name="Poste/Rôle")
     photo = models.ImageField(upload_to='team/%Y/%m/', verbose_name="Photo")
@@ -536,6 +543,11 @@ class Membre(TimeStampedModel):
     
     def __str__(self):
         return f"{self.nom_complet} - {self.poste}"
+
+    @property
+    def nom_affichage(self):
+        prefixe = (self.prefixe or "").strip()
+        return f"{prefixe} {self.nom_complet}".strip()
 
 
 # -------------------------------------------------------------------------------
