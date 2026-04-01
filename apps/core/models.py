@@ -348,9 +348,9 @@ class SiteContent(TimeStampedModel):
     default_meta_keywords = models.CharField(
         max_length=255,
         blank=True,
-        verbose_name="Meta keywords par d?faut",
+        verbose_name="Meta keywords par défaut",
         default="",
-        help_text="Mots-cl?s s?par?s par des virgules",
+        help_text="Mots-clés séparés par des virgules",
     )
     home_meta_keywords = models.CharField(
         max_length=255,
@@ -373,7 +373,7 @@ class SiteContent(TimeStampedModel):
     actualites_meta_keywords = models.CharField(
         max_length=255,
         blank=True,
-        verbose_name="Meta keywords Actualit?s",
+        verbose_name="Meta keywords Actualités",
         default="",
     )
     auteurs_meta_keywords = models.CharField(
@@ -385,7 +385,7 @@ class SiteContent(TimeStampedModel):
     a_propos_meta_keywords = models.CharField(
         max_length=255,
         blank=True,
-        verbose_name="Meta keywords ? propos",
+        verbose_name="Meta keywords À propos",
         default="",
     )
     nos_contrats_meta_keywords = models.CharField(
