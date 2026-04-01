@@ -939,7 +939,8 @@ class MessageContactAdmin(ModelAdmin):
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name in {"message", "notes_admin"}:
-            kwargs["widget"] = CKEditor5Widget(config_name="simple")
+            config = "ultra_simple" if db_field.name == "notes_admin" else "simple"
+            kwargs["widget"] = CKEditor5Widget(config_name=config)
         return super().formfield_for_dbfield(db_field, request, **kwargs)
 
 

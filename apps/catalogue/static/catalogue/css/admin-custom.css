@@ -728,6 +728,27 @@ h1, h2, h3 {
     max-width: 35%;
 }
 
+/* Editorial styles preview in admin */
+:root .ck-content .is-gold-title {
+    color: #c8a44d;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+:root .ck-content .is-elegant-quote {
+    border-left: 4px solid #c8a44d;
+    background: #fff9ef;
+    color: #4b3b1f;
+    font-style: italic;
+}
+:root .ck-content .is-lead {
+    font-size: 1.1rem;
+    color: #374151;
+}
+:root .ck-content .two-columns {
+    column-count: 2;
+    column-gap: 2rem;
+}
+
 /* =========================================================
    ADMIN THEME V2 (Premium, ultra readable)
    ========================================================= */

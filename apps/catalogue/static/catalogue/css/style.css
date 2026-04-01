@@ -4604,6 +4604,27 @@ html {
     text-align: left;
 }
 
+/* Editorial styles */
+.rich-content .is-gold-title {
+    color: #c8a44d;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+.rich-content .is-elegant-quote {
+    border-left: 4px solid #c8a44d;
+    background: #fff9ef;
+    color: #4b3b1f;
+    font-style: italic;
+}
+.rich-content .is-lead {
+    font-size: 1.1rem;
+    color: #374151;
+}
+.rich-content .two-columns {
+    column-count: 2;
+    column-gap: 2rem;
+}
+
 @media (max-width: 768px) {
     .rich-content .image-style-align-left,
     .rich-content .image-style-align-right,
@@ -4613,6 +4634,9 @@ html {
         display: block;
         margin: 0.5rem auto 1rem;
         max-width: 100%;
+    }
+    .rich-content .two-columns {
+        column-count: 1;
     }
 }
 

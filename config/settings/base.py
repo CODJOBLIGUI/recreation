@@ -164,6 +164,18 @@ CKEDITOR_5_CONFIGS = {
         },
         "language": "fr",
     },
+    "ultra_simple": {
+        "toolbar": {
+            "items": [
+                "bold",
+                "italic",
+                "undo",
+                "redo",
+            ],
+            "shouldNotGroupWhenFull": True,
+        },
+        "language": "fr",
+    },
     "extends": {
         "blockToolbar": [
             "paragraph",
@@ -179,6 +191,7 @@ CKEDITOR_5_CONFIGS = {
         "toolbar": {
             "items": [
                 "heading",
+                "style",
                 "|",
                 "outdent",
                 "indent",
@@ -248,6 +261,14 @@ CKEDITOR_5_CONFIGS = {
                 {"model": "heading1", "view": "h1", "title": "Heading 1", "class": "ck-heading_heading1"},
                 {"model": "heading2", "view": "h2", "title": "Heading 2", "class": "ck-heading_heading2"},
                 {"model": "heading3", "view": "h3", "title": "Heading 3", "class": "ck-heading_heading3"},
+            ]
+        },
+        "style": {
+            "definitions": [
+                {"name": "Titre dore", "element": "h2", "classes": ["is-gold-title"]},
+                {"name": "Citation elegante", "element": "blockquote", "classes": ["is-elegant-quote"]},
+                {"name": "Paragraphe d'intro", "element": "p", "classes": ["is-lead"]},
+                {"name": "Texte en 2 colonnes", "element": "p", "classes": ["two-columns"]},
             ]
         },
     },
