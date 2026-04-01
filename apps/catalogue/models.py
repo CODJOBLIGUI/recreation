@@ -575,7 +575,7 @@ class PrixLitteraire(TimeStampedModel):
         related_name="prix_litteraires",
         verbose_name="Livre",
     )
-    description = models.TextField(blank=True, verbose_name="Description")
+    description = RichTextField(blank=True, verbose_name="Description")
     est_actif = models.BooleanField(default=True, verbose_name="Actif")
     
     class Meta:
@@ -852,9 +852,9 @@ class SoumissionManuscrit(TimeStampedModel):
         verbose_name="Type de contrat souhaité",
         default="compte_auteur",
     )
-    synopsis = models.TextField(verbose_name="Synopsis ou résumé")
+    synopsis = RichTextField(verbose_name="Synopsis ou résumé")
     avantages = RichTextField(verbose_name="Avantages pour les lecteurs")
-    inconvenients = models.TextField(verbose_name="Inconvénients pour les lecteurs")
+    inconvenients = RichTextField(verbose_name="Inconvénients pour les lecteurs")
 
     fichier_ouvrage = models.FileField(upload_to='soumissions/manuscrits/%Y/%m/', verbose_name="Fichier de l'ouvrage")
     photo_auteur = models.ImageField(upload_to='soumissions/auteurs/%Y/%m/', verbose_name="Photo de l'auteur")
@@ -899,7 +899,7 @@ class ManuscriptReview(TimeStampedModel):
         verbose_name="Évaluateur",
     )
     note = models.PositiveSmallIntegerField(verbose_name="Note (/20)")
-    observation = models.TextField(blank=True, verbose_name="Observation")
+    observation = RichTextField(blank=True, verbose_name="Observation")
     decision = models.CharField(max_length=10, choices=DECISION_CHOICES, verbose_name="Décision")
 
     class Meta:
