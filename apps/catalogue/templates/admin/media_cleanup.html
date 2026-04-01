@@ -1,0 +1,172 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'catalogue/css/admin-media.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="media-cleanup">
+  <a class="media-cleanup__back" href="/">Retourner sur la page d'accueil</a>
+
+  <div class="media-cleanup__header">
+    <div class="media-cleanup__title">
+      <h1>Gestion des médias</h1>
+      <p>Sélectionnez les fichiers à supprimer du dossier média.</p>
+    </div>
+    <div class="media-cleanup__toolbar">
+      <input id="media-search" class="media-cleanup__input" type="search" placeholder="Rechercher un fichier..." />
+      <select id="media-type" class="media-cleanup__select">
+        <option value="">Tous</option>
+        <option value="image">Images</option>
+        <option value="audio">Audios</option>
+        <option value="pdf">PDF</option>
+        <option value="other">Autres</option>
+      </select>
+      <select id="media-sort" class="media-cleanup__select">
+        <option value="name">Trier par nom</option>
+        <option value="size">Trier par taille</option>
+      </select>
+      <select id="media-order" class="media-cleanup__select">
+        <option value="asc">Croissant</option>
+        <option value="desc">Décroissant</option>
+      </select>
+      <div class="media-cleanup__view">
+        <button type="button" class="media-cleanup__btn media-cleanup__btn--active" data-view="grid">Grille</button>
+        <button type="button" class="media-cleanup__btn" data-view="list">Liste</button>
+      </div>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="media-cleanup__message media-cleanup__message--{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post" class="media-cleanup__form">
+    {% csrf_token %}
+    <div class="media-cleanup__actions">
+      <label class="media-cleanup__file">
+        <span>Choisir un fichier</span>
+        <input type="file" disabled>
+      </label>
+      <button class="media-cleanup__btn media-cleanup__btn--primary" type="submit">Téléverser</button>
+      <div class="media-cleanup__stats">
+        <div class="media-cleanup__stat">
+          <span>Fichiers</span>
+          <strong>{{ files|length }}</strong>
+        </div>
+        <div class="media-cleanup__stat">
+          <span>Sélectionnés</span>
+          <strong id="media-selected-count">0</strong>
+        </div>
+      </div>
+      <div class="media-cleanup__bulk">
+        <button type="button" class="media-cleanup__link" id="media-select-all">Tout sélectionner</button>
+        <button type="button" class="media-cleanup__link" id="media-select-none">Tout désélectionner</button>
+        <button type="submit" class="media-cleanup__btn media-cleanup__btn--danger">Supprimer</button>
+      </div>
+    </div>
+
+    <div id="media-grid" class="media-cleanup__grid">
+      {% for f in files %}
+      <label class="media-card" data-name="{{ f.path|lower }}" data-type="{{ f.type }}" data-size="{{ f.size }}">
+        <input class="media-card__check" type="checkbox" name="paths" value="{{ f.path }}">
+        <div class="media-card__preview">
+          {% if f.type == "image" %}
+            <img src="{{ f.url }}" alt="{{ f.path }}" loading="lazy">
+          {% elif f.type == "audio" %}
+            <audio controls preload="none"><source src="{{ f.url }}"></audio>
+          {% elif f.type == "pdf" %}
+            <div class="media-card__icon">PDF</div>
+          {% else %}
+            <div class="media-card__icon">Fichier</div>
+          {% endif %}
+        </div>
+        <div class="media-card__meta">
+          <div class="media-card__name">{{ f.path }}</div>
+          <div class="media-card__type">{{ f.type|capfirst }}</div>
+          <div class="media-card__size">{{ f.size }} octets</div>
+        </div>
+      </label>
+      {% endfor %}
+    </div>
+  </form>
+</div>
+
+<script>
+(() => {
+  const grid = document.getElementById("media-grid");
+  if (!grid) return;
+
+  const search = document.getElementById("media-search");
+  const typeSelect = document.getElementById("media-type");
+  const sortSelect = document.getElementById("media-sort");
+  const orderSelect = document.getElementById("media-order");
+  const viewButtons = document.querySelectorAll("[data-view]");
+  const selectAll = document.getElementById("media-select-all");
+  const selectNone = document.getElementById("media-select-none");
+  const selectedCount = document.getElementById("media-selected-count");
+
+  const cards = Array.from(grid.querySelectorAll(".media-card"));
+
+  function updateSelectedCount() {
+    const count = cards.filter(c => c.querySelector("input").checked).length;
+    selectedCount.textContent = count;
+  }
+
+  function applyFilters() {
+    const q = (search.value || "").toLowerCase();
+    const type = typeSelect.value;
+    cards.forEach(card => {
+      const name = card.dataset.name || "";
+      const ctype = card.dataset.type || "";
+      const matchQ = !q || name.includes(q);
+      const matchType = !type || ctype === type;
+      card.style.display = matchQ && matchType ? "" : "none";
+    });
+  }
+
+  function applySort() {
+    const key = sortSelect.value;
+    const dir = orderSelect.value === "desc" ? -1 : 1;
+    const sorted = cards.slice().sort((a, b) => {
+      if (key === "size") {
+        return (Number(a.dataset.size) - Number(b.dataset.size)) * dir;
+      }
+      return (a.dataset.name.localeCompare(b.dataset.name)) * dir;
+    });
+    sorted.forEach(card => grid.appendChild(card));
+  }
+
+  search.addEventListener("input", applyFilters);
+  typeSelect.addEventListener("change", applyFilters);
+  sortSelect.addEventListener("change", applySort);
+  orderSelect.addEventListener("change", applySort);
+
+  viewButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      viewButtons.forEach(b => b.classList.remove("media-cleanup__btn--active"));
+      btn.classList.add("media-cleanup__btn--active");
+      grid.classList.toggle("media-cleanup__grid--list", btn.dataset.view === "list");
+    });
+  });
+
+  selectAll.addEventListener("click", () => {
+    cards.forEach(c => { c.querySelector("input").checked = true; });
+    updateSelectedCount();
+  });
+  selectNone.addEventListener("click", () => {
+    cards.forEach(c => { c.querySelector("input").checked = false; });
+    updateSelectedCount();
+  });
+
+  cards.forEach(c => c.querySelector("input").addEventListener("change", updateSelectedCount));
+  updateSelectedCount();
+  applyFilters();
+  applySort();
+})();
+</script>
+{% endblock %}
