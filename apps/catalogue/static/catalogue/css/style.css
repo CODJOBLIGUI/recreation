@@ -4508,7 +4508,7 @@ html {
     border-radius: 18px !important;
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
 }
 
