@@ -1314,21 +1314,42 @@ font-size: 2rem;
   }
 }
 
-/* MOBILE: newsletter line fixes */
+/* MOBILE: force exact desktop newsletter style on one line */
 @media (max-width: 768px) {
   .header__newsletter-form {
-    gap: 0.4rem !important;
-    padding: 0.25rem 0.4rem !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    background: #f7f5f2 !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 999px !important;
+    padding: 0.25rem 0.45rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .header__newsletter-form input {
-    font-size: 0.85rem !important;
-    padding: 0.35rem 0.5rem !important;
+    border: 0 !important;
+    outline: none !important;
+    background: transparent !important;
+    font-size: 0.9rem !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
   }
 
   .header__newsletter-form button {
-    font-size: 0.8rem !important;
-    padding: 0.32rem 0.6rem !important;
-    min-width: 86px !important;
+    border: 0 !important;
+    background: var(--color-accent) !important;
+    color: #ffffff !important;
+    padding: 0.3rem 0.7rem !important;
+    border-radius: 999px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
   }
 }
