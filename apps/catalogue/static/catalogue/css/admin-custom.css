@@ -778,6 +778,19 @@ h1, h2, h3 {
     color: #111827 !important;
     border: 1px solid #e5e7eb !important;
 }
+:root .ck-content,
+:root .ck-editor__editable_inline,
+:root .ck-content * {
+    color: #111827 !important;
+}
+:root .ck-content {
+    background: #ffffff !important;
+}
+:root .ck.ck-button svg,
+:root .ck.ck-button svg * {
+    fill: #111827 !important;
+    stroke: #111827 !important;
+}
 
 /* =========================================================
    ADMIN THEME V2 (Premium, ultra readable)
