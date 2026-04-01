@@ -996,6 +996,51 @@ font-size: 2rem;
         position: static !important;
     }
 }
+
+/* MOBILE OVERRIDE v2: tighter header columns, no overflow */
+@media (max-width: 768px) {
+  .header__top {
+    grid-template-columns: 72px 1fr !important;
+  }
+
+  .header__brand {
+    width: 72px !important;
+    max-width: 72px !important;
+    justify-content: flex-start !important;
+  }
+
+  .header__logo {
+    width: 72px !important;
+  }
+
+  .header__logo img {
+    max-height: 44px !important;
+    width: auto !important;
+  }
+
+  .header__social {
+    justify-content: flex-end !important;
+    width: 100% !important;
+  }
+
+  .header__actions {
+    display: block !important;
+  }
+
+  .header__newsletter-form,
+  .header-search {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .header__newsletter-form input,
+  .header-search input {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
 /* === OVERRIDES FINAL MOBILE (header/search/committee) === */
 @media (max-width: 768px) {
   body { overflow-x: hidden; }
