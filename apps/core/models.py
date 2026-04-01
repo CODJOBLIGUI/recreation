@@ -331,19 +331,19 @@ class SiteContent(TimeStampedModel):
         max_length=200,
         blank=True,
         verbose_name="Copyright",
-        default="Editions Recr?ation - Tous droits r?serv?s - 2026",
+        default="Editions Recréation - Tous droits réservés - 2026",
     )
     default_meta_title = models.CharField(
         max_length=120,
         blank=True,
-        verbose_name="Meta title par d?faut",
-        default="Editions Recr?ation - Maison d'?dition g?n?raliste",
+        verbose_name="Meta title par défaut",
+        default="Editions Recréation - Maison d'édition généraliste",
     )
     default_meta_description = models.TextField(
         max_length=200,
         blank=True,
-        verbose_name="Meta description par d?faut",
-        default="Editions Recr?ation, maison d'?dition g?n?raliste. D?couvrez nos livres papier, num?riques et audio.",
+        verbose_name="Meta description par défaut",
+        default="Editions Recréation, maison d'édition généraliste. Découvrez nos livres papier, numériques et audio.",
     )
     default_meta_keywords = models.CharField(
         max_length=255,
@@ -385,7 +385,7 @@ class SiteContent(TimeStampedModel):
     a_propos_meta_keywords = models.CharField(
         max_length=255,
         blank=True,
-        verbose_name="Meta keywords À propos",
+        verbose_name="Meta keywords A propos",
         default="",
     )
     nos_contrats_meta_keywords = models.CharField(
@@ -409,65 +409,65 @@ class SiteContent(TimeStampedModel):
     committee_login_brand_title = models.CharField(
         max_length=120,
         blank=True,
-        verbose_name="Comit? - Titre marque",
-        default="Editions Recr?ation",
+        verbose_name="Comite - Titre marque",
+        default="Editions Recreation",
     )
     committee_login_brand_subtitle = models.CharField(
         max_length=160,
         blank=True,
-        verbose_name="Comit? - Sous-titre marque",
-        default="Membres du Comit? de lecture",
+        verbose_name="Comite - Sous-titre marque",
+        default="Membres du Comite de lecture",
     )
     committee_login_title = models.CharField(
         max_length=80,
         blank=True,
-        verbose_name="Comit? - Titre connexion",
+        verbose_name="Comite - Titre connexion",
         default="Connexion",
     )
     committee_login_text_primary = models.CharField(
         max_length=220,
         blank=True,
-        verbose_name="Comit? - Texte connexion 1",
-        default="Connectez-vous pour acc?der ? l?espace des membres du Comit? de lecture.",
+        verbose_name="Comite - Texte connexion 1",
+        default="Connectez-vous pour acceder a l'espace des membres du Comite de lecture.",
     )
     committee_login_text_secondary = models.CharField(
         max_length=200,
         blank=True,
-        verbose_name="Comit? - Texte connexion 2",
-        default="Si vous n?avez pas encore un compte ?valuateur, inscrivez-vous.",
+        verbose_name="Comite - Texte connexion 2",
+        default="Si vous n'avez pas encore un compte evaluateur, inscrivez-vous.",
     )
     committee_signup_title = models.CharField(
         max_length=120,
         blank=True,
-        verbose_name="Comit? - Titre inscription",
-        default="Inscription ?valuateur",
+        verbose_name="Comite - Titre inscription",
+        default="Inscription evaluateur",
     )
     committee_signup_intro = models.TextField(
         blank=True,
-        verbose_name="Comit? - Introduction inscription",
-        default="Veuillez compl?ter ce formulaire afin de soumettre votre demande d'acc?s. Votre demande fera l'objet d'une analyse par un administrateur. Une fois la conformit? de votre profil ? nos crit?res valid?e, votre compte sera activ?.",
+        verbose_name="Comite - Introduction inscription",
+        default="Veuillez completer ce formulaire afin de soumettre votre demande d'acces. Votre demande fera l'objet d'une analyse par un administrateur. Une fois la conformite de votre profil a nos criteres validee, votre compte sera active.",
     )
     committee_signup_confidentiality_text = models.TextField(
         blank=True,
-        verbose_name="Comit? - Texte confidentialit?",
-        default="Votre inscription implique votre accord pour garantir la confidentialit? des donn?es personnelles de nos auteurs et de tous les fichiers dont vous auriez connaissance, afin d?emp?cher toute divulgation ? des tiers. Les fichiers t?l?charg?s lors de l??valuation des dossiers d??dition ne doivent en aucun cas ?tre conserv?s. La suppression est imp?rative dans un d?lai inf?rieur ? une semaine. Prenez-vous acte de ces dispositions et consentez-vous ? en respecter strictement toutes les clauses ?",
+        verbose_name="Comite - Texte confidentialite",
+        default="Votre inscription implique votre accord pour garantir la confidentialite des donnees personnelles de nos auteurs et de tous les fichiers dont vous auriez connaissance, afin d'empecher toute divulgation a des tiers. Les fichiers telecharges lors de l'evaluation des dossiers d'edition ne doivent en aucun cas etre conserves. La suppression est imperative dans un delai inferieur a une semaine. Prenez-vous acte de ces dispositions et consentez-vous a en respecter strictement toutes les clauses ?",
     )
     committee_signup_motivation_label = models.CharField(
         max_length=220,
         blank=True,
-        verbose_name="Comit? - Question motivation",
-        default="Qu?est-ce qui vous motive ? rejoindre l??quipe des membres du Comit? de lecture des ?ditions Recr?ation ?",
+        verbose_name="Comite - Question motivation",
+        default="Qu'est-ce qui vous motive a rejoindre l'equipe des membres du Comite de lecture des editions Recreation ?",
     )
     committee_signup_unpaid_label = models.CharField(
         max_length=200,
         blank=True,
-        verbose_name="Comit? - Question mission non r?mun?r?e",
-        default="Cette mission n?est pas r?mun?r?e. En avez-vous conscience et ?tes-vous toujours partant pour nous rejoindre ?",
+        verbose_name="Comite - Question mission non remuneree",
+        default="Cette mission n'est pas remuneree. En avez-vous conscience et etes-vous toujours partant pour nous rejoindre ?",
     )
     committee_signup_submit_label = models.CharField(
         max_length=80,
         blank=True,
-        verbose_name="Comit? - Bouton inscription",
+        verbose_name="Comité - Bouton inscription",
         default="Envoyer la demande",
     )
     nav_brand_label = models.CharField(
@@ -521,7 +521,7 @@ class SiteContent(TimeStampedModel):
     nav_drawer_committee_label = models.CharField(
         max_length=220,
         blank=True,
-        verbose_name="Lien comite lecture (menu mobile)",
+        verbose_name="Lien comité lecture (menu mobile)",
         default="Espace des membres du Comité de lecture",
     )
 
@@ -711,7 +711,7 @@ class SiteContent(TimeStampedModel):
         default="Une question ? Un projet ? N'hésitez pas à nous contacter.",
     )
     contact_address_label = models.CharField(max_length=80, blank=True, verbose_name="Label adresse", default="Adresse")
-    contact_phone_label = models.CharField(max_length=80, blank=True, verbose_name="Label telephone", default="Téléphone")
+    contact_phone_label = models.CharField(max_length=80, blank=True, verbose_name="Label telephone", default="Telephone")
     contact_email_label = models.CharField(max_length=80, blank=True, verbose_name="Label email", default="Email")
     contact_address_text = models.CharField(
         max_length=240,
@@ -722,7 +722,7 @@ class SiteContent(TimeStampedModel):
     contact_phone_display = models.CharField(
         max_length=60,
         blank=True,
-        verbose_name="Telephone affiche",
+        verbose_name="Téléphone affiche",
         default="(+229) 01 68 80 97 77",
     )
     contact_phone_link = models.CharField(
@@ -884,9 +884,9 @@ class SiteContent(TimeStampedModel):
     footer_link_nos_contrats = models.CharField(max_length=80, blank=True, verbose_name="Lien nos contrats", default="Nos contrats")
     footer_link_equipe = models.CharField(max_length=80, blank=True, verbose_name="Lien equipe", default="Equipe")
     footer_link_devenir_auteur = models.CharField(max_length=120, blank=True, verbose_name="Lien devenir auteur", default="Devenir auteur")
-    footer_link_rejoindre_comite = models.CharField(max_length=200, blank=True, verbose_name="Lien comite lecture", default="Rejoindre notre Comité de lecture")
-    footer_link_mentions = models.CharField(max_length=120, blank=True, verbose_name="Lien mentions", default="Mentions légales")
-    footer_link_confidentialite = models.CharField(max_length=120, blank=True, verbose_name="Lien confidentialite", default="Confidentialité")
+    footer_link_rejoindre_comite = models.CharField(max_length=200, blank=True, verbose_name="Lien comité lecture", default="Rejoindre notre Comité de lecture")
+    footer_link_mentions = models.CharField(max_length=120, blank=True, verbose_name="Lien mentions", default="Mentions legales")
+    footer_link_confidentialite = models.CharField(max_length=120, blank=True, verbose_name="Lien confidentialité", default="Confidentialité")
     footer_link_cookies = models.CharField(max_length=80, blank=True, verbose_name="Lien cookies", default="Cookies")
     class Meta:
         verbose_name = "Contenu du site"
