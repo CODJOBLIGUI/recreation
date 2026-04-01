@@ -287,7 +287,7 @@
                             </ul>
 
                             <h3 class="footer-fayard__menu-title footer-fayard__menu-title--spaced">
-                                <a href="{% url 'catalogue:collections' %}">{{ site_content.footer_collections_title|default:"Collections" }}</a>
+                                <a href="/collections/">{{ site_content.footer_collections_title|default:"Collections" }}</a>
                             </h3>
                             <ul class="footer-fayard__menu-list">
                                 {% for collection in collections_list|slice:":6" %}
