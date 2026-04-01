@@ -7,6 +7,25 @@
     <meta name="description" content="{{ page_description|default:site_content.default_meta_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
     <meta name="keywords" content="{{ page_keywords|default:site_content.default_meta_keywords|default:appearance.site_meta_keywords|default:'' }}">
     <title>{{ page_title|default:site_content.default_meta_title|default:appearance.site_name|default:'Editions Recréation' }}</title>
+    {% with request.scheme|add:'://'|add:request.get_host as base_url %}
+    <link rel="canonical" href="{{ base_url }}{{ request.path }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ page_title|default:site_content.default_meta_title|default:appearance.site_name|default:'Editions Recréation' }}">
+    <meta property="og:description" content="{{ page_description|default:site_content.default_meta_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+    {% if appearance and appearance.logo %}
+    <meta property="og:image" content="{{ base_url }}{{ appearance.logo.url }}">
+    {% else %}
+    <meta property="og:image" content="{{ base_url }}{% static 'catalogue/images/logo.jpg' %}">
+    {% endif %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title|default:site_content.default_meta_title|default:appearance.site_name|default:'Editions Recréation' }}">
+    <meta name="twitter:description" content="{{ page_description|default:site_content.default_meta_description|default:'Editions Recréation - Maison d\'édition africaine' }}">
+    {% if appearance and appearance.logo %}
+    <meta name="twitter:image" content="{{ base_url }}{{ appearance.logo.url }}">
+    {% else %}
+    <meta name="twitter:image" content="{{ base_url }}{% static 'catalogue/images/logo.jpg' %}">
+    {% endif %}
+    {% endwith %}
     {% if appearance and appearance.favicon %}
     <link rel="icon" type="image/png" href="{{ appearance.favicon.url }}">
     {% else %}
@@ -29,6 +48,42 @@
     
     <!-- CSS supplémentaire spécifique à chaque page -->
     {% block extra_css %}{% endblock %}
+
+    {% with request.scheme|add:'://'|add:request.get_host as base_url %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "{{ appearance.site_name|default:'Editions Recréation'|escapejs }}",
+      "url": "{{ base_url }}",
+      {% if appearance and appearance.logo %}
+      "logo": "{{ base_url }}{{ appearance.logo.url }}",
+      {% endif %}
+      "sameAs": [
+        {% if appearance.instagram %}"{{ appearance.instagram }}"{% endif %}
+        {% if appearance.facebook %}{% if appearance.instagram %},{% endif %}"{{ appearance.facebook }}"{% endif %}
+        {% if appearance.x_twitter %}{% if appearance.instagram or appearance.facebook %},{% endif %}"{{ appearance.x_twitter }}"{% endif %}
+        {% if appearance.tiktok %}{% if appearance.instagram or appearance.facebook or appearance.x_twitter %},{% endif %}"{{ appearance.tiktok }}"{% endif %}
+        {% if appearance.linkedin %}{% if appearance.instagram or appearance.facebook or appearance.x_twitter or appearance.tiktok %},{% endif %}"{{ appearance.linkedin }}"{% endif %}
+        {% if appearance.youtube %}{% if appearance.instagram or appearance.facebook or appearance.x_twitter or appearance.tiktok or appearance.linkedin %},{% endif %}"{{ appearance.youtube }}"{% endif %}
+        {% if appearance.whatsapp %}{% if appearance.instagram or appearance.facebook or appearance.x_twitter or appearance.tiktok or appearance.linkedin or appearance.youtube %},{% endif %}"{{ appearance.whatsapp }}"{% endif %}
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "{{ appearance.site_name|default:'Editions Recréation'|escapejs }}",
+      "url": "{{ base_url }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ base_url }}{% url 'catalogue:search' %}?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    {% endwith %}
 </head>
 <body class="{% if request.resolver_match.url_name != 'index' %}page--inner{% endif %}">
     {% if appearance %}

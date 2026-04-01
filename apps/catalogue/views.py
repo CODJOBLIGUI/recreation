@@ -4,7 +4,7 @@ FICHIER : apps/catalogue/views.py
 
 from django.contrib import messages
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core.files.base import ContentFile
 from django.utils.text import slugify
 from django.utils import timezone
@@ -1843,6 +1843,76 @@ def auteurs_json(request):
         ]
     }
     return JsonResponse(data)
+
+
+def robots_txt(request):
+    base_url = f"{request.scheme}://{request.get_host()}"
+    content = "\n".join(
+        [
+            "User-agent: *",
+            "Allow: /",
+            f"Sitemap: {base_url}/sitemap.xml",
+        ]
+    )
+    return HttpResponse(content, content_type="text/plain")
+
+
+def sitemap_xml(request):
+    base_url = f"{request.scheme}://{request.get_host()}"
+
+    def _url(path):
+        return f"{base_url}{path}"
+
+    static_paths = [
+        "/",
+        "/catalogue/",
+        "/collections/",
+        "/auteurs/",
+        "/actualites/",
+        "/a-propos/",
+        "/contact/",
+        "/nos-contrats/",
+        "/conversion-texte-audio/",
+        "/conversion-texte-audio/synthetique/",
+        "/conversion-texte-audio/humaine/",
+        "/lecture-evaluation-des-soumissions-de-manuscrit-ou-tapuscrits/",
+    ]
+
+    entries = []
+    for path in static_paths:
+        entries.append({"loc": _url(path)})
+
+    for page in Page.objects.filter(is_active=True):
+        entries.append({"loc": _url(f"/page/{page.slug}/"), "lastmod": page.updated_at})
+
+    for actualite in Actualite.objects.filter(est_publie=True):
+        entries.append({"loc": _url(f"/actualite/{actualite.slug}/"), "lastmod": actualite.updated_at})
+
+    for auteur in Auteur.objects.all():
+        entries.append({"loc": _url(f"/auteur/{auteur.slug}/"), "lastmod": auteur.updated_at})
+
+    for collection in Collection.objects.all():
+        entries.append({"loc": _url(f"/collection/{collection.slug}/"), "lastmod": collection.updated_at})
+
+    for livre in Livre.objects.filter(est_publie=True):
+        entries.append({"loc": _url(f"/livre/{livre.slug}/"), "lastmod": livre.updated_at})
+
+    for membre in Membre.objects.filter(est_actif=True):
+        entries.append({"loc": _url(f"/equipe/{membre.pk}/"), "lastmod": membre.updated_at})
+
+    lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for entry in entries:
+        lines.append("  <url>")
+        lines.append(f"    <loc>{entry['loc']}</loc>")
+        lastmod = entry.get("lastmod")
+        if lastmod:
+            lines.append(f"    <lastmod>{lastmod.date().isoformat()}</lastmod>")
+        lines.append("  </url>")
+    lines.append("</urlset>")
+    return HttpResponse("\n".join(lines), content_type="application/xml")
 
 
 def livre_detail_json(request, livre_id):

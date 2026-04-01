@@ -12,6 +12,8 @@ app_name = 'catalogue'
 urlpatterns = [
     # Pages principales
     path('', views.IndexView.as_view(), name='index'),
+    path('robots.txt', views.robots_txt, name='robots'),
+    path('sitemap.xml', views.sitemap_xml, name='sitemap'),
     path('catalogue/', views.CatalogueView.as_view(), name='catalogue'),
     path('livres-numeriques/', views.LivresNumeriquesView.as_view(), name='livres-numeriques'),
     path('livres-audio/', views.LivresAudioView.as_view(), name='livres-audio'),
