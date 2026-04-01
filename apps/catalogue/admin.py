@@ -18,7 +18,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 from django.contrib import messages
 from ckeditor.fields import RichTextField
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django_ckeditor_5.widgets import CKEditor5Widget
 from unfold.admin import ModelAdmin
 
 from .utils.audio_conversion import extract_text_from_file, normalize_tts_text, detect_tts_language
@@ -81,7 +81,7 @@ class UserAdmin(DjangoUserAdmin):
 @admin.register(Auteur)
 class AuteurAdmin(ModelAdmin):
     formfield_overrides = {
-        RichTextField: {"widget": CKEditorUploadingWidget},
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     list_display = ("nom", "specialite", "nationalites_affichage", "nombre_livres", "created_at")
     list_filter = ("specialite", "nationalites", "created_at")
@@ -249,7 +249,7 @@ class LivreAdmin(ModelAdmin):
 @admin.register(Membre)
 class MembreAdmin(ModelAdmin):
     formfield_overrides = {
-        RichTextField: {"widget": CKEditorUploadingWidget},
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     list_display = ("nom_complet", "poste", "nationalites_affichage", "ordre_affichage", "est_actif", "created_at")
     list_editable = ("ordre_affichage", "est_actif")
@@ -310,7 +310,7 @@ class NationaliteAdmin(ModelAdmin):
 @admin.register(Page)
 class PageAdmin(ModelAdmin):
     formfield_overrides = {
-        RichTextField: {"widget": CKEditorUploadingWidget},
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     list_display = ("title", "slug", "is_active", "show_team", "created_at")
     list_display_links = ("title",)
@@ -360,7 +360,7 @@ class PageAdmin(ModelAdmin):
 @admin.register(Collection)
 class CollectionAdmin(ModelAdmin):
     formfield_overrides = {
-        RichTextField: {"widget": CKEditorUploadingWidget},
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     list_display = ("nom", "est_active", "ordre_affichage", "created_at")
     list_editable = ("est_active", "ordre_affichage")
@@ -449,13 +449,13 @@ class ActualiteAdmin(ModelAdmin):
             model = Actualite
             fields = "__all__"
             widgets = {
-                "extrait": CKEditorUploadingWidget(),
-                "contenu": CKEditorUploadingWidget(),
+                "extrait": CKEditor5Widget(config_name="extends"),
+                "contenu": CKEditor5Widget(config_name="extends"),
             }
 
     form = ActualiteAdminForm
     formfield_overrides = {
-        RichTextField: {"widget": CKEditorUploadingWidget},
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     list_display = ("titre", "date_publication", "est_publie", "est_une_a_la_une", "created_at")
     list_editable = ("est_publie", "est_une_a_la_une")
@@ -535,7 +535,7 @@ class PrixLitteraireAdmin(ModelAdmin):
 @admin.register(PageBlock)
 class PageBlockAdmin(ModelAdmin):
     formfield_overrides = {
-        RichTextField: {"widget": CKEditorUploadingWidget},
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     list_display = ("page", "block_type", "ordre", "titre", "apercu", "est_actif")
     list_editable = ("ordre", "est_actif")
@@ -584,7 +584,7 @@ class PageBlockAdmin(ModelAdmin):
 @admin.register(PageBlockItem)
 class PageBlockItemAdmin(ModelAdmin):
     formfield_overrides = {
-        RichTextField: {"widget": CKEditorUploadingWidget},
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     list_display = ("block", "ordre", "titre", "est_actif")
     list_editable = ("ordre", "est_actif")
@@ -893,7 +893,7 @@ class AudioConversionGeneratedAdmin(AudioConversionRequestAdmin):
 @admin.register(MessageContact)
 class MessageContactAdmin(ModelAdmin):
     formfield_overrides = {
-        RichTextField: {"widget": CKEditorUploadingWidget},
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     list_display = ("nom", "email", "sujet", "statut", "lu", "date_reception")
     list_editable = ("statut", "lu")
@@ -934,7 +934,7 @@ class MessageContactAdmin(ModelAdmin):
 @admin.register(SoumissionManuscrit)
 class SoumissionManuscritAdmin(ModelAdmin):
     formfield_overrides = {
-        RichTextField: {"widget": CKEditorUploadingWidget},
+        RichTextField: {"widget": CKEditor5Widget(config_name="extends")},
     }
     list_display = ("titre_ouvrage", "nom_auteur", "nom_complet", "type_contrat", "nationalite", "pays_residence", "whatsapp", "audio_link", "created_at")
     list_filter = ("created_at",)

@@ -17,8 +17,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', '(k*=u_l0=y4c*%=e+i+ecy7l9x#1@eo%_#8y$84fyt
 # Application definition
 
 INSTALLED_APPS = [
-    'ckeditor',
-    'ckeditor_uploader',
+    'django_ckeditor_5',
     'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -121,18 +120,56 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# CKEditor uploads
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_ALLOW_NONIMAGE_FILES = True
-CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 360,
-        'filebrowserUploadUrl': '/ckeditor/upload/',
-        'filebrowserImageUploadUrl': '/ckeditor/upload/',
-    }
+# CKEditor 5
+CKEDITOR_5_CONFIGS = {
+    "default": {
+        "toolbar": {
+            "items": [
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "underline",
+                "link",
+                "bulletedList",
+                "numberedList",
+                "blockQuote",
+                "imageUpload",
+                "insertTable",
+                "mediaEmbed",
+                "undo",
+                "redo",
+            ],
+            "shouldNotGroupWhenFull": True,
+        },
+        "language": "fr",
+    },
+    "extends": {
+        "toolbar": {
+            "items": [
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "underline",
+                "link",
+                "bulletedList",
+                "numberedList",
+                "blockQuote",
+                "imageUpload",
+                "insertTable",
+                "mediaEmbed",
+                "removeFormat",
+                "|",
+                "undo",
+                "redo",
+            ],
+            "shouldNotGroupWhenFull": True,
+        },
+        "language": "fr",
+    },
 }
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
 
 # Email (configure via environment for production)
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")

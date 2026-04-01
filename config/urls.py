@@ -14,8 +14,8 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url='/static/catalogue/images/favicon.ico?v=2', permanent=False)),
     # Interface d'administration Django
     path('edrecreation/', admin.site.urls),
-    # CKEditor upload endpoints
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    # CKEditor 5 endpoints
+    path("ckeditor5/", include("django_ckeditor_5.urls")),
     
     # URLs de l'application catalogue (toutes les pages du site)
     path('', include('apps.catalogue.urls', namespace='catalogue')),
